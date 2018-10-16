@@ -1,8 +1,8 @@
 var express = require('express');
 var app = express();
 
-app.get("/hello", function(req,res){
-  res.render("hello", {name:req.query.nameQuery});
+app.get("/", (req, res) => {
+    res.send({ hello: "world" });
 });
 
 var port = process.env.PORT || 3000; //*
