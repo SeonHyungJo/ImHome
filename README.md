@@ -53,3 +53,10 @@ ex) :house: seonhyungjo / docs / 형상관리 테스트 진행
 - style: 코드 포맷 변경, 세미 콜론 누락, 코드 수정이 없는 경우
 - refactor: 프로덕션 코드 리팩터링
 - test: 테스트 추가, 테스트 리팩터링 (프로덕션 코드 변경 없음)
+
+## Front 기본 셋팅 진행(2018-10-16)
+
+- CRA v2 진행(즉 babel7이 적용되었음 또한 브라우저 지정가능)
+- package.json 내부 eslint설정 (airbnb-eslint 적용)
+- sass 적용 : 우리가 사용하는 것은 엄밀히 따지면 scss
+- gitignore : build 폴더 추가
