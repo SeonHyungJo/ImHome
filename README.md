@@ -39,9 +39,9 @@ commit은 무조건 titile별로 한다.
 
 ```md
 
-:house: Your_name / Type / Detail Comment
+> Your_name / Type / Detail Comment
 
-ex) :house: seonhyungjo / docs / 형상관리 테스트 진행
+ex) seonhyungjo / docs / 형상관리 테스트 진행
 
 ```
 
