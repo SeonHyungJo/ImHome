@@ -39,7 +39,7 @@ commit은 무조건 titile별로 한다.
 
 ```md
 
-> Your_name / Type / Detail Comment
+Your_name / Type / Detail Comment
 
 ex) seonhyungjo / docs / 형상관리 테스트 진행
 
