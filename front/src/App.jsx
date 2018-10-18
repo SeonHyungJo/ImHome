@@ -7,9 +7,6 @@ import AdminMain from './pages/admin/AdminMain';
 import { Login } from './pages/common/auth';
 
 class App extends Component {
-  constructor() {
-    super();
-  }
 
   render() {
     const PATH = '/admin';
