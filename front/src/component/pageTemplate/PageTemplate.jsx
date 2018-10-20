@@ -4,7 +4,7 @@ import Nav from '../nav/NavContainer';
 
 class PageTemplate extends Component {
 
-    render() {
+    render() {  
         return (
             <div>
                 <Header />
