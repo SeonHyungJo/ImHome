@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import './App.scss';
 import { Provider } from 'react-redux';
 import {BrowserRouter , Route} from 'react-router-dom';
-import UserMain from './pages/user/UserMain';
-import AdminMain from './pages/admin/AdminMain';
+import { UserMain } from './pages/user';
+import { AdminMain } from './pages/admin';
 import { Login } from './pages/common/auth';
 
 class App extends Component {
