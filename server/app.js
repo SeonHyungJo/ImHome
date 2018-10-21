@@ -1,37 +1,42 @@
-var cool = require('cool-ascii-faces');
-var express = require('express');
-var mongoose = require('mongoose');
 require('dotenv').config();
 
-var app = express();
+const express = require('express');
+const mongoose = require('mongoose');
+const user = require('./router/api/user');
+const admin = require('./router/api/admin');
+const auth = require('./router/auth');
+const bodyParser = require('body-parser');
+const morgan = require('morgan')
 
-var port = process.env.PORT || 3000;
+const app = express();
+const port = process.env.PORT || 3000;
+
+// Body-parser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// print the request log on console
+app.use(morgan('dev'))
+
+// set the secret key variable for jwt
+app.set('jwt-secret', 'SeCrEtKeYfOrHaShInG')
+
+// Node.js의 native Promise 사용
+mongoose.Promise = global.Promise;
 
 // CONNECT TO MONGODB SERVER
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
+  .then(() => console.log('Successfully connected to mongodb'))
+  .catch(e => console.error(e));
 
-// DEFINE MODEL
-var Books = require('./models/books');
+// SETTING TO AUTH
+app.use('/api', auth);
 
-app.get("/", (req, res) => {
-    res.send({ hello: "world" });
-});
+// SETTING TO ROUTER
+app.use("/api", user);
+app.use("/api/admin", admin);
+//app.use("/api/auth", auth);
 
-app.get('/cool', function(request, response) {
-  response.send(cool());
-});
-
-// GET ALL BOOKS
-app.get('/books', function(req,res){
-  Books.find(function(err, books){
-    if(err){
-      return res.status(500).send({error: 'database failure'});
-    } 
-
-    res.json(books);
-  });
-});
-
-app.listen(port, function(){
+app.listen(port, function () {
   console.log('Node app is running on port', port);
 });
