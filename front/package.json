@@ -13,7 +13,8 @@
     "react-scripts": "2.0.5",
     "redux": "^4.0.1",
     "redux-actions": "^2.6.1",
-    "redux-pender": "^1.2.1"
+    "redux-pender": "^1.2.1",
+    "styled-components": "^4.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

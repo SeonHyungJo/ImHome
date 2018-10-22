@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PageTemplate from '../../component/pageTemplate/PageTemplate';
+import { PageTemplate } from '../../component/template';
 
 class UserMain extends Component {
     constructor() {
