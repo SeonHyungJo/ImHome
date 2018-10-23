@@ -9,11 +9,15 @@ const Wrapper = styled.div`
     }
 `;
 
-const Label = styled.label`
-    font-size: 0.8rem;
+const Label = styled.div`
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: bold;
     color: #000000;
     margin-bottom: 0.25rem;
     margin-right: 4rem;
+    display: inline-block;
+    width: 20%;
 `;
 
 const Input = styled.input`
@@ -21,11 +25,12 @@ const Input = styled.input`
     border: 1px solid #c2c2c2;
     outline: none;
     border-radius: 3px;
-    height: 1.4em;
+    height: 1.2em;
     font-size: 1.2rem;
     padding-left: 0.5rem;
     padding-right: 0.01rem;
     ::placeholder {
+        font-size: 0.7rem;
         color: #7d7d7d;
     }
 `;
