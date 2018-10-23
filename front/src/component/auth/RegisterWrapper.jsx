@@ -21,7 +21,7 @@ const TitleWrapper = styled.div`
 // children 이 들어가는 곳
 const Contents = styled.div`
     background: white;
-    padding: 2rem;
+    padding: 1.5rem;
     height: auto;
 `;
 
@@ -34,7 +34,7 @@ const Image = styled.img`
     height: 20%;
 `
 
-const RegisterWrapper = ({title, children}) => (
+const RegisterWrapper = ({children}) => (
         <Wrapper>
             <TitleWrapper>
                 <LogoWrapper>
