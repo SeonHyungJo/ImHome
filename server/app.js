@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const user = require('./router/api/user');
-const admin = require('./router/api/admin');
+const product = require('./router/api/product');
 const auth = require('./router/auth');
 const bodyParser = require('body-parser');
 const morgan = require('morgan')
@@ -34,7 +34,7 @@ app.use('/api', auth);
 
 // SETTING TO ROUTER
 app.use("/api", user);
-app.use("/api/admin", admin);
+app.use("/api", product);
 //app.use("/api/auth", auth);
 
 app.listen(port, function () {
