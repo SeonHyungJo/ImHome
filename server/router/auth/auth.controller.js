@@ -3,47 +3,28 @@ var jwt = require('jsonwebtoken');
 
 
 /*
-    POST /api/auth
+    POST /api/register
     {
-        username,
+        id,
         password
     }
 */
-
 exports.register = (req, res) => {
-    const { username, password } = req.body
-    let newUser = null
+    const { id } = req.body
 
     // create a new user if does not exist
     const create = (user) => {
         if(user) {
-            throw new Error('username exists')
+            throw new Error('id exists');
         } else {
-            return User.create(username, password)
-        }
-    }
-
-    // count the number of the user
-    const count = (user) => {
-        newUser = user
-        return User.count({}).exec()
-    }
-
-    // assign admin if count is 1
-    const assign = (count) => {
-        if(count === 1) {
-            return newUser.assignAdmin()
-        } else {
-            // if not, return a promise that returns false
-            return Promise.resolve(false)
+            return Users.create(req.body);
         }
     }
 
     // respond to the client
-    const respond = (isAdmin) => {
-        res.json({
+    const respond = () => {
+        res.status(200).json({
             message: 'registered successfully',
-            admin: isAdmin ? true : false
         })
     }
 
@@ -55,10 +36,8 @@ exports.register = (req, res) => {
     }
 
     // check username duplication
-    User.findOneByUsername(username)
+    Users.findOneById(id)
     .then(create)
-    .then(count)
-    .then(assign)
     .then(respond)
     .catch(onError)
 }
@@ -127,16 +106,15 @@ exports.login = (req, res) => {
     }
 
     // find the user
-    Users.findOneAndUpdate(id)
+    Users.findOne(id)
     .then(check)
     .then(respond)
     .catch(onError)
 }
 
 /*
-    GET /api/auth/check
+    GET /api/check
 */
-
 exports.check = (req, res) => {
     // read the token from header or url 
     const token = req.headers['x-access-token'] || req.query.token
