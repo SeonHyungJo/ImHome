@@ -20,6 +20,7 @@ const usersSchema = new Schema({
   timestamps: true
 });
 
+
 /**
  * @author seonhyungjo
  * @summary 새로운 유저 회원가입
@@ -116,6 +117,5 @@ usersSchema.methods.checkingAdmin = function(id, password) {
   }
 
   return false;
-}
 
 module.exports = mongoose.model('users', usersSchema);

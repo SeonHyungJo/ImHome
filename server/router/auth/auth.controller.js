@@ -1,7 +1,6 @@
 var Users = require('../../models/users');
 var jwt = require('jsonwebtoken');
 
-
 /*
     POST /api/register
     {
