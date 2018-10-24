@@ -36,10 +36,6 @@ productsSchema.statics.findOneByCompanyCode = function (companyCode) {
   return this.find({ companyCode });
 };
 
-productsSchema.statics.findOneById = function (id, payload) {
-  return this.findOneAndUpdate({ id }, payload, { new: true });
-};
-
 productsSchema.statics.deleteById = function (id) {
   return this.remove({ id });
 };
