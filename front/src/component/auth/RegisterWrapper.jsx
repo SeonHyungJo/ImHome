@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// 너비, 그림자 설정
 const Wrapper = styled.div`
     width: 42%;
     text-align: center;
