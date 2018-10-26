@@ -7,7 +7,7 @@ import { AdminMain, AdminUser } from './pages/admin';
 import { Login } from './pages/common/auth';
 
 class App extends Component {
-
+ 
   render() {
     const PATH = '/admin';
     const {store} = this.props;
