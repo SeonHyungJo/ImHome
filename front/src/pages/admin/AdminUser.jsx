@@ -12,7 +12,7 @@ class AdminMain extends Component {
             <PageTemplate>
                 <div className="App">
                     <header className="App-header">
-                        <p>AdminMain</p>
+                        <p>AdminUser</p>
                     </header>
                 </div>
             </PageTemplate>
