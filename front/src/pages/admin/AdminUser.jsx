@@ -10,11 +10,9 @@ class AdminMain extends Component {
     render() {
         return (
             <PageTemplate>
-                <div className="App">
-                    <header className="App-header">
-                        <p>AdminUser</p>
-                    </header>
-                </div>
+                <div  style={{backgroundColor: 'black'}}>
+                    <p>AdminUser</p>
+                </div>        
             </PageTemplate>
         );
     }

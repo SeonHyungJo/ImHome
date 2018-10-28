@@ -9,32 +9,60 @@ const Wrapper = styled.div`
     position: relative;
     color: black;
     text-align: center;
-    z-index : 3;    
+    z-index : 3;
+        
 `;
 
 const LogoWrapper = styled.div`
-    width: 10%;
+    width: 5%;
     min-height: 6vh;
-    display: inline-block;
-    background-image: url('/images/logo.png');
-    background-repeat: no-repeat;
     position: relative;
     float: left;
-    cursor: pointer; 
+    cursor: pointer;
+    text-align: center;
 `
 const Image = styled.img`
     position: relative;
     bottom: 0;
+    height: 3rem;
+    padding-top: 1.5rem;
+    padding-left: 3.5rem;
 `
 
-const MenuWrapper = styled.div`
-    float: right;
+const MenuWrapper = styled.ul`
+    width:50rem;
+    background:white;
+    float:right;
+    list-style:none;
+    padding-top:1rem;
+    padding-right:2rem;
+    li{
+        float: right;
+        margin-right:2.5rem;
+    };
+    li a {
+        font-size:1rem;
+        color:#000000;
+        font-weight:bold;
+        text-decoration:none
+    };
+    li a:hover {
+        color:#fe4c8d;
+    };
+    li .on {
+        color:#fe4c8d;
+    }
 `;
 
 const HeaderContainer = ({children}) => (
-    <div>
-        <h2>Header</h2>
-    </div>
+    <Wrapper>
+        <LogoWrapper>
+            <Image src='/images/m_logo.png' />
+        </LogoWrapper>
+        <MenuWrapper>
+            {children}
+        </MenuWrapper>
+    </Wrapper>
 );
 
 export default HeaderContainer;
