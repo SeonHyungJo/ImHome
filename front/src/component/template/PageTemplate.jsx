@@ -16,9 +16,24 @@ class PageTemplate extends Component {
                     <li><NavLink to="#">주문내역조회</NavLink></li>
                     <li><NavLink to="#">품목관리</NavLink></li>
                 </Header>
-                <Nav />
+                <Nav>
+                    {
+                        this.props.navData && this.props.navData.map((data, index) => {
+                            return (
+                                data.id === this.props.storeId ?
+                                    <li className='on' key={index} id={data.id}>
+                                        {data.name}
+                                    </li>
+                                    :
+                                    <li key={index} id={data.id}>
+                                        {data.name}
+                                    </li>
+                            );
+                        })
+                    }
+                </Nav>
                 {this.props.children}
-                
+
             </div>
         );
     }
