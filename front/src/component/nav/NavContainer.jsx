@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
     background-color: white;
-    min-height: 100vh;
+    min-height: 89.8vh;
     border-bottom: 1px dashed #c2c2c2;
     width: 17rem;
     position: relative;
@@ -12,53 +12,45 @@ const Wrapper = styled.div`
     z-index : 3;  
     float: left;  
     background-position: 0 0; 
-    border-right: 1px solid black;
-`;
-
-const LogoWrapper = styled.div`
-    width: 5%;
-    min-height: 6vh;
-    position: relative;
-    float: left;
-    cursor: pointer;
-    text-align: center;
-`
-const Image = styled.img`
-    position: relative;
-    bottom: 0;
-    height: 3rem;
-    padding-top: 1.5rem;
-    padding-left: 3.5rem;
 `
 
-const MenuWrapper = styled.ul`
-    width:50rem;
+const NavWrapper = styled.ul`
+    width:13rem;
     background:white;
-    float:right;
+    text-align:left;
     list-style:none;
-    padding-top:1rem;
-    padding-right:2rem;
+    padding-top:0.5rem;
     li{
-        float: right;
-        margin-right:2.5rem;
-    };
-    li a {
-        font-size:1rem;
-        color:#000000;
+        box-sizing: border-box;
+        padding: 1.4rem 0.5rem 0.5rem 2.5rem;
+        font-size:1.1rem;
+        color:#555555;
         font-weight:bold;
-        text-decoration:none
+        text-decoration:none;
+        background-image: url('/images/icon_b.png');
+        background-repeat: no-repeat;
+        background-position: 8% 70%;
+        background-size: 1.1rem;
+        border-bottom: 1px solid #d7d7d7
     };
-    li a:hover {
-        color:#fe4c8d;
+    li:hover {
+        background-color:#fe4c8d;
+        color: #ffffff;
+        background-image:url('/images/icon_w.png')
     };
-    li .on {
-        color:#fe4c8d;
+    .on {
+        background-color:#fe4c8d;
+        color: #ffffff;
+        background-image:url('/images/icon_w.png');
+        background-repeat: no-repeat;
     }
-`;
+`
 
-const NavContainer = ({children}) => (
+const NavContainer = ({ children }) => (
     <Wrapper>
-       메
+        <NavWrapper>
+            {children}
+        </NavWrapper>
     </Wrapper>
 );
 
