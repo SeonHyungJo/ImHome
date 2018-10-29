@@ -33,7 +33,6 @@ class PageTemplate extends Component {
                     }
                 </Nav>
                 {this.props.children}
-
             </div>
         );
     }

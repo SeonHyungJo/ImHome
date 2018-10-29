@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { RegisterTemplate } from '../../component/template';
-import { RegisterWrapper, RegisterTitle, RegisterContent, Button, InputWithLabel } from '../../component/auth/';
+import { RegisterWrapper, RegisterTitle, RegisterContent } from '../../component/auth/';
+import { Button, InputWithLabel } from '../../component/common';
 
 class UserRegister extends Component {
     constructor() {
