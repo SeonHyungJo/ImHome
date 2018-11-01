@@ -3,7 +3,7 @@ var router = express.Router();
 var Users = require('../../models/users');
 const authMiddleware = require('../../middlewares/auth')
 
-router.use('/', authMiddleware);
+//router.use('/', authMiddleware);
 
 router.get('/user', function (req, res) {
     Users.find(function (err, users) {
