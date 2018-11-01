@@ -2,10 +2,14 @@ var express = require('express');
 var router = express.Router();
 var Users = require('../../models/users');
 
+<<<<<<< HEAD
 router.use(function timeLog(req, res, next) {
     console.log('Time: ', Date.now());
     next();
 });
+=======
+//router.use('/', authMiddleware);
+>>>>>>> :house: seonhyungjo / feat / Order Model생성 및 수정 진행
 
 router.get('/', function (req, res) {
     Users.find(function (err, users) {
