@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
+<<<<<<< HEAD
 var Orders = require('../../models/orders');
+=======
+var Orders = require('../../models/Orders');
+>>>>>>> :house: seonhyungjo / feat / Order Model생성 및 수정 진행
 const mongoose = require('mongoose')
 var Users = mongoose.model('users')
 
