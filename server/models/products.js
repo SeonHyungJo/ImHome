@@ -40,8 +40,9 @@ productsSchema.statics.deleteById = function (id) {
   return this.remove({ id });
 };
 
-productsSchema.statics.deleteByCompanyCode = function (companyCode) {
-  return this.remove({ companyCode });
-};
+productsSchema.methods.assignAdmin = function () {
+  this.admin = true
+  return this.save()
+}
 
 module.exports = mongoose.model('products', productsSchema);
