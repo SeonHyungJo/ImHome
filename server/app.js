@@ -50,9 +50,7 @@ mongoose.Promise = global.Promise;
 
 // CONNECT TO MONGODB SERVER
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
-  .then(() => {
-    console.log('Successfully connected to mongodb')
-  })
+  .then(() => console.log('Successfully connected to mongodb'))
   .catch(e => console.error(e));
 
 // SETTING TO AUTH
