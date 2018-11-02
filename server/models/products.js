@@ -36,16 +36,17 @@ productsSchema.statics.findOneByCompanyCode = function (companyCode) {
   return this.find({ companyCode });
 };
 
-productsSchema.statics.findOneById = function (id, payload) {
-  return this.findOneAndUpdate({ id }, payload, { new: true });
+productsSchema.statics.deleteById = function (id) {
+  return this.remove({ id });
 };
 
-productsSchema.statics.findOneAndUpdateNew = function (companyCode, productInfo) {
-  return this.findOneAndUpdate({ companyCode }, productInfo, { new: true });
-};
+productsSchema.methods.verify = function (password) {
+  return this.password === password
+}
 
-productsSchema.statics.deleteByCompanyCode = function (companyCode) {
-  return this.remove({ companyCode });
-};
+productsSchema.methods.assignAdmin = function () {
+  this.admin = true
+  return this.save()
+}
 
 module.exports = mongoose.model('products', productsSchema);
