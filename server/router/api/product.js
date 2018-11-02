@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var Products = require('../../models/Products');
+var Products = require('../../models/products');
 
 router.use(function timeLog(req, res, next) {
     console.log('Time: ', Date.now());
