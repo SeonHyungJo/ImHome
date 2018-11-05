@@ -106,7 +106,7 @@ exports.login = (req, res) => {
     }
 
     // find the user
-    Users.findOne(id)
+    Users.findOneById(id)
     .then(check)
     .then(respond)
     .catch(onError)
