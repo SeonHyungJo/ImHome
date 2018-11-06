@@ -4,8 +4,8 @@
   "description": "imhome server",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
+    "start": "node app.js --exec babel-node",
+    "dev": "nodemon app.js --exec babel-node",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -27,5 +27,10 @@
   "engines": {
     "node": "8.11.1",
     "npm": "5.6.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.1.0"
   }
 }

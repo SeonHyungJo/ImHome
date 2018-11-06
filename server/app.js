@@ -1,7 +1,6 @@
 require('dotenv').config();
 
-// middleware for server
-const express = require('express');
+import express from 'express';
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
