@@ -1,14 +1,14 @@
 require('dotenv').config();
 
 import express from 'express';
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const morgan = require('morgan');
-const helmet = require('helmet');
-const session = require('express-session');
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+import morgan from 'morgan';
+import helmet from 'helmet';
+import session from 'express-session';
 
 // api uri
-const routers = require('./router/api/router');
+import routers from './router/api/router';
 // auth 설정
 const auth = require('./router/auth');
 

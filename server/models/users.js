@@ -1,24 +1,26 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // usersSchema
-const usersSchema = new Schema({
-  id: { type: String, required: true, unique: true },
-  password: { type: String, required: true},
-  name: { type: String, required: true },
-  bNumber: { type: String, required: true, unique: true },
-  bAddress: { type: String, required: true },
-  cName: { type: String, required: true },
-  email: { type: String, required: true },
-  pNumber: { type: String, required: true },
-  branchName: { type: String, required: true },
-  branchCode: { type: String, unique: true },
-  checkUser: { type: Boolean, default: false },
-  checkAdmin: { type: Boolean, default: false },
-},
-{
-  timestamps: true
-});
+const usersSchema = new Schema(
+  {
+    id: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    name: { type: String, required: true },
+    bNumber: { type: String, required: true, unique: true },
+    bAddress: { type: String, required: true },
+    cName: { type: String, required: true },
+    email: { type: String, required: true },
+    pNumber: { type: String, required: true },
+    branchName: { type: String, required: true },
+    branchCode: { type: String, unique: true },
+    checkUser: { type: Boolean, default: false },
+    checkAdmin: { type: Boolean, default: false }
+  },
+  {
+    timestamps: true
+  }
+);
 
 /**
  * @author seonhyungjo
@@ -28,7 +30,7 @@ const usersSchema = new Schema({
  * @see None
  * @returns user.save()
  */
-usersSchema.statics.create = function (newUser) {
+usersSchema.statics.create = function(newUser) {
   const user = new this(newUser);
   return user.save();
 };
@@ -37,11 +39,11 @@ usersSchema.statics.create = function (newUser) {
  * @author seonhyungjo
  * @summary 모든 유저 검색
  * @memberof Admin
- * @param 
+ * @param
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.findAll = function () {
+usersSchema.statics.findAll = function() {
   return this.find({});
 };
 
@@ -53,7 +55,7 @@ usersSchema.statics.findAll = function () {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.findOneById = function (id) {
+usersSchema.statics.findOneById = function(id) {
   return this.findOne({ id });
 };
 
@@ -66,7 +68,7 @@ usersSchema.statics.findOneById = function (id) {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.findOneAndUpdate = function (id, userInfo) {
+usersSchema.statics.findOneAndUpdate = function(id, userInfo) {
   return this.findOneAndUpdate({ id }, userInfo, { new: true });
 };
 
@@ -78,7 +80,7 @@ usersSchema.statics.findOneAndUpdate = function (id, userInfo) {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.deleteById = function (id) {
+usersSchema.statics.deleteById = function(id) {
   return this.remove({ id });
 };
 
@@ -93,29 +95,29 @@ usersSchema.statics.deleteById = function (id) {
  */
 usersSchema.methods.verify = function(password) {
   // const userPassword = usersSchema.statics.findOneById.password
-  console.log("password : " + password);
-  console.log("this.password : " + this.password);
+  console.log('password : ' + password);
+  console.log('this.password : ' + this.password);
   return this.password === password;
-}
+};
 
 /**
  * @author seonhyungjo
  * @summary 해당 아이디로 Admin 계정 확인
  * @private
  * @memberof Admin
- * @param 
+ * @param
  * @see None
  * @returns «Query»
  */
 usersSchema.methods.checkingAdmin = function(id, password) {
-  const accountCheck = this.methods.verify(id,password); //Boolean
+  const accountCheck = this.methods.verify(id, password); //Boolean
 
-  if(accountCheck){
+  if (accountCheck) {
     const resultAdmin = usersSchema.statics.findOneById.checkAdmin || false;
     return resultAdmin;
   }
 
   return false;
-}
+};
 
 module.exports = mongoose.model('users', usersSchema);

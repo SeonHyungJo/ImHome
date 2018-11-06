@@ -1,9 +1,9 @@
-const express = require('express');
+import express from 'express';
+import mongoose from 'mongoose';
 const Orders = require('../../models/orders');
-const mongoose = require('mongoose');
 const Users = mongoose.model('users');
 
-let router = express.Router();
+export let router = express.Router();
 
 router.use(function timeLog(req, res, next) {
     console.log('Time: ', Date.now());
@@ -65,5 +65,3 @@ router.delete('/order/:branchCode', (req, res) => {
         .then(() => res.sendStatus(200))
         .catch(err => res.status(500).send(err));
 });
-
-module.exports = router;

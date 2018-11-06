@@ -1,0 +1,6 @@
+{
+    "prettier.singleQuote": true,
+    "prettier.tabWidth": 4,
+    "editor.formatOnSave": true,
+    "files.eol": "\n"
+}

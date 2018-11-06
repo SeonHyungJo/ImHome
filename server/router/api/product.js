@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const Products = require('../../models/products');
 
-let router = express.Router();
+export let router = express.Router();
 
 router.use(function timeLog(req, res, next) {
     console.log('Time: ', Date.now());
@@ -54,5 +54,3 @@ router.delete('/product/:companyCode', (req, res) => {
         .then(() => res.sendStatus(200))
         .catch(err => res.status(500).send(err));
 });
-
-module.exports = router;

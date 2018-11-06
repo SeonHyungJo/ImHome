@@ -1,9 +1,9 @@
 let routers = [];
 
-// require로 추가한 뒤 routers에 푸쉬한다.
-const user = require('./user');
-const product = require('./product');
-const order = require('./order');
+// module을 불러와 routers에 푸쉬한다.
+import { router as user } from './user';
+import { router as product } from './product';
+import { router as order } from './order';
 
 routers.push(user);
 routers.push(product);
@@ -23,4 +23,6 @@ routers.push(order);
 //         routers.push(router);
 //     });
 
-module.exports = routers;
+// module.exports = routers;
+// default로 export하는 경우 let || var 를 함께 못쓴다 따라서 아래와 같이 코딩한다.
+export default routers;
