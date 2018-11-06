@@ -1,7 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var Users = require('../../models/users');
-const authMiddleware = require('../../middlewares/auth')
+const express = require('express');
+const Users = require('../../models/users');
+const authMiddleware = require('../../middlewares/auth');
+
+let router = express.Router();
 
 router.use(function timeLog(req, res, next) {
     console.log('Time: ', Date.now());
@@ -9,8 +10,8 @@ router.use(function timeLog(req, res, next) {
 });
 //router.use('/', authMiddleware);
 
-router.get('/user', function (req, res) {
-    Users.find(function (err, users) {
+router.get('/user', function(req, res) {
+    Users.find(function(err, users) {
         if (err) {
             return res.status(500).send({ error: 'database failure' });
         }
@@ -19,9 +20,9 @@ router.get('/user', function (req, res) {
 });
 
 // GET by branchCode
-router.get('/user/:branchCode', function (req, res) {
+router.get('/user/:branchCode', function(req, res) {
     Users.findOneById(req.params.branchCode)
-        .then((user) => {
+        .then(user => {
             if (!user) return res.status(404).send({ err: 'user not found' });
             console.log(user);
             res.json(user);

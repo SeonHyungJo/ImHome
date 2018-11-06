@@ -1,17 +1,19 @@
 require('dotenv').config();
 
+// middleware for server
 const express = require('express');
 const mongoose = require('mongoose');
-const user = require('./router/api/user');
-const product = require('./router/api/product');
-const order = require('./router/api/order');
-const auth = require('./router/auth');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const session = require('express-session');
 
+// api uri
+const routers = require('./router/api/router');
+// auth 설정
+const auth = require('./router/auth');
 
+// 서버 기동
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -35,33 +37,35 @@ app.disable('x-powered-by');
 // );
 
 // set the secret key variable for jwt
-app.set('jwt-secret', process.env.secret)
+app.set('jwt-secret', process.env.secret);
 
 // Body-parser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // print the request log on console
-app.use(morgan('dev'))
+app.use(morgan('dev'));
 
 // Node.js의 native Promise 사용
 mongoose.Promise = global.Promise;
 
 // CONNECT TO MONGODB SERVER
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
-  .then(() => {
-    console.log('Successfully connected to mongodb')
-  })
-  .catch(e => console.error(e));
+mongoose
+    .connect(
+        process.env.MONGODB_URI,
+        { useNewUrlParser: true }
+    )
+    .then(() => {
+        console.log('Successfully connected to mongodb');
+    })
+    .catch(e => console.error(e));
 
 // SETTING TO AUTH
 app.use('/api', auth);
 
 // SETTING TO ROUTER
-app.use("/api", user);
-app.use("/api", product);
-app.use("/api", order);
+routers.map(router => app.use('/api', router));
 
-app.listen(port, function () {
-  console.log('Node app is running on port', port);
+app.listen(port, function() {
+    console.log('Node app is running on port', port);
 });
