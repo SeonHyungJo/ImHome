@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-    width: 100%;
+    width: 55%;
     text-align: center;
     background-color: #fe4c8d;
 `;
@@ -17,7 +17,6 @@ const TitleWrapper = styled.div`
 // children 이 들어가는 곳
 const Contents = styled.div`
     background: #fe4c8d;
-    padding: 1.5rem;
     height: auto;
 `;
 
@@ -26,16 +25,14 @@ const LogoWrapper = styled.div`
 `
 
 const Image = styled.img`
-    width: 10%;
-    height: 10%;
+    width: 35%;
+    height: 35%;
 `
 
 const LoginWrapper = ({ children }) => (
     <Wrapper>
         <TitleWrapper>
-            <LogoWrapper>
-                <Image src='/images/log_logo.png' />
-            </LogoWrapper>
+            <Image src='/images/log_logo.png' />
             <Contents>
                 {children}
             </Contents>
