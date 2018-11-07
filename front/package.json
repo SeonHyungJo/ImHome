@@ -18,7 +18,9 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "build": "react-scripts build"
+        "build": "react-scripts build",
+        "test": "yarn start",
+        "eject": "react-scripts eject"
     },
     "eslintConfig": {
         "parser": "babel-eslint",
