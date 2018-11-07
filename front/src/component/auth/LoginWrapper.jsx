@@ -20,10 +20,6 @@ const Contents = styled.div`
     height: auto;
 `;
 
-const LogoWrapper = styled.div`
-    padding-top: 9%;
-`
-
 const Image = styled.img`
     width: 35%;
     height: 35%;
