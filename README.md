@@ -1,5 +1,9 @@
 # Inventory-Management
 
+[![Build Status](https://travis-ci.com/SeonHyungJo/YourHome.svg?branch=dev)](https://travis-ci.com/SeonHyungJo/YourHome) [![GitHub issues](https://img.shields.io/github/issues/SeonHyungJo/YourHome.svg)](https://github.com/SeonHyungJo/YourHome/issues)
+[![GitHub stars](https://img.shields.io/github/stars/SeonHyungJo/YourHome.svg)](https://github.com/SeonHyungJo/YourHome/stargazers)
+[![GitHub license](https://img.shields.io/github/license/SeonHyungJo/YourHome.svg)](https://github.com/SeonHyungJo/YourHome/blob/master/LICENSE)
+
 Inventory Management for ImHome developed with React and Express
 
 ## Branch 관리
