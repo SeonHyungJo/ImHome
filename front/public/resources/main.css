@@ -9,3 +9,15 @@
     font-size: calc(10px + 2vmin);
     color: white;
 }
+
+.login-background {
+    background-color: #fe4c8d;
+    min-height: 100vh;
+    background-size : cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
