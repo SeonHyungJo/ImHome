@@ -24,7 +24,7 @@ const LogoWrapper = styled.div`
 const Image = styled.img`
     position: relative;
     bottom: 0;
-    height: 3rem;
+    height: 2.6rem;
     padding-top: 1.5rem;
     padding-left: 3.5rem;
 `
@@ -54,7 +54,7 @@ const MenuWrapper = styled.ul`
     }
 `;
 
-const HeaderContainer = ({children}) => (
+const HeaderContainer = ({ children }) => (
     <Wrapper>
         <LogoWrapper>
             <Image src='/images/m_logo.png' />
