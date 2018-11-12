@@ -12,7 +12,7 @@ install:
     - cd ./front
     - yarn
 after_success:
-    - firebase deploy --token $1/Co2rFNFnfZIcvXyGr9S670qupI6qCPbvJ4solkuQSq8 --non-interactive
+    - firebase deploy --token 1/Co2rFNFnfZIcvXyGr9S670qupI6qCPbvJ4solkuQSq8 --non-interactive
 notifications:
     email:
         on_failure: change
