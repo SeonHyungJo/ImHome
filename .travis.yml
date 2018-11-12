@@ -1,4 +1,10 @@
 # .travis.yml
+before_deploy: "echo 'deploy start'"
+deploy:
+    provider: firebase
+    token:
+        secure: '1/Co2rFNFnfZIcvXyGr9S670qupI6qCPbvJ4solkuQSq8'
+    project: 'im-home-demo'
 language: node_js
 node_js:
     - '8'
@@ -7,9 +13,3 @@ before_install:
 install:
     - cd ./front
     - yarn
-before_deploy: "echo 'deploy start'"
-deploy:
-    provider: firebase
-    token:
-        secure: '1/Co2rFNFnfZIcvXyGr9S670qupI6qCPbvJ4solkuQSq8'
-    project: 'im-home-demo'
