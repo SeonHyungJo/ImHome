@@ -1,15 +1,19 @@
 # .travis.yml
-before_deploy: "echo 'deploy start'"
-deploy:
-    provider: firebase
-    token:
-        secure: '1/Co2rFNFnfZIcvXyGr9S670qupI6qCPbvJ4solkuQSq8'
-    project: 'im-home-demo'
 language: node_js
 node_js:
     - '8'
+branches:
+    only:
+        - dev
 before_install:
     - npm install -g yarn --cache-min 999999999
+    - npm install -g firebase-tools
 install:
     - cd ./front
     - yarn
+after_success:
+    - firebase deploy --token $1/Co2rFNFnfZIcvXyGr9S670qupI6qCPbvJ4solkuQSq8 --non-interactive
+notifications:
+    email:
+        on_failure: change
+        on_success: change
