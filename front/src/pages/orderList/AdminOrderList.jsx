@@ -13,6 +13,14 @@ class AdminMain extends Component {
             { id: "businessNum", numeric: false, disablePadding: true, label: '사업자번호' },
             { id: "totalMoney", numeric: true, disablePadding: true, label: '총 거래금액(원)' }
         ];
+
+        const orders = [
+            { name: "아이스크림", count: 2, cost: 3000},
+            { name: "아메리카노", count: 1, cost: 4000},
+            { name: "카페라떼", count: 100, cost: 5000},
+            { name: "곡물라떼", count: 20, cost: 7000},
+        ];
+
         this.state = {
             navData: [
                 {id: 1, name: '분당점'},
@@ -28,6 +36,8 @@ class AdminMain extends Component {
             ],
             storeId : 1,
             headerData: headerData,
+            orders,
+            branchName: "분당점",
             data: [
                 { registDate: '2018-10-29', storeName: '분당점', custName: '최장길', custId: 'imhome', businessNum: '426-50-00326', totalMoney: 10000500 }
             ],
@@ -40,8 +50,8 @@ class AdminMain extends Component {
                 <div style={{width: '100%', height: '50px'}}>
                     상단헤더
                 </div>
-                <OrderListTable/>
-                <OrderListTable/>
+                <OrderListTable branchName={this.state.branchName} orderList={this.state.orders}/>
+                {/* <OrderListTable orderList={this.state.orders}/> */}
             </PageTemplate>
         );
     }

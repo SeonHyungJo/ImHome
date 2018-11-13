@@ -1,54 +1,63 @@
 import React from 'react';
 import styled from 'styled-components';
+import { OrderListTableList } from './';
 
 const ContentWrapper = styled.div`
     display: inline-block;
     width: 35vw;
     height: 75vh;
     background-color: #fe4c8d;
-    border: 2px solid white;
-    margin: 0px 20px;
+    padding: 10px;
+
+    .dashedContainer {
+        border: 1px dashed white;
+        height: 100%;        
+    }
+
+    .mainContainer {
+        padding: 0px 60px;
+        height: 100%; 
+    }
 `
 
-const Table = styled.table`
-    border-top: none;
+const Header = styled.h2`
+    color: white;
+    padding: 10px 20px 0px 20px;
+`
+
+const OrderTable = styled.table`
     width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-    color: #333;
-    table-layout: fixed;
-    border-spacing: 0;
-    width: 100%;
+
     th {
-        text-align: center;
-        border-right: 1px solid #e0e0e0;
-        border-bottom: 1px solid #e0e0e0;
-        background: #fafafa;
-        height: 35px;
-        line-height: 18px;
-        color: #666666;
-        font-size: 13px;
-        padding: 5px;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-    };
-    td {
-        border-right: 1px solid #e0e0e0;
-        border-bottom: 1px solid #e0e0e0;
-        padding: 5px;
-        line-height: 22px;
-        color: #666666;
-        font-size: 13px;
-        height: 30px;
-        box-sizing: border-box;
-        letter-spacing: -0.04em;
-    };
+        color: red;
+    }
 `
 
-const OrderListTable = ({ title, children }) => (
+const OrderListTable = ({ branchName, orderList }) => (
     <ContentWrapper>
-        주문내역
+        <div className={"dashedContainer"}>
+            <div className={"mainContainer"}>
+                <Header>
+                    {branchName} 주문내역
+                </Header>
+                <OrderTable>
+                    <tr>
+                        <th>
+                            test
+                        </th>
+                        <th>
+                            test
+                        </th>
+                        <th>
+                            test
+                        </th>
+                        <th>
+                            test
+                        </th>
+                    </tr>
+                </OrderTable>
+            </div>
+        </div>
     </ContentWrapper>
 );
 
