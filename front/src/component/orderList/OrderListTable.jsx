@@ -21,15 +21,25 @@ const ContentWrapper = styled.div`
 `
 
 const Header = styled.h2`
+    font-size: 24px;
     color: white;
-    padding: 10px 20px 0px 20px;
+    padding-left: 15px;
+    margin: 0px;
+    margin-top: 30px;
 `
 
 const OrderTable = styled.table`
     width: 100%;
+    color: white;
+    padding-left: 15px;
+    padding-bottom: 5px;
+    
+    .underLineDash{
+        border-bottom: 1px dashed white;
+    }
 
     th {
-        color: red;
+        text-align: left;
     }
 `
 
@@ -41,24 +51,28 @@ const OrderListTable = ({ branchName, orderList }) => (
                     {branchName} 주문내역
                 </Header>
                 <OrderTable>
-                    <tr>
-                        <th>
-                            test
-                        </th>
-                        <th>
-                            test
-                        </th>
-                        <th>
-                            test
-                        </th>
-                        <th>
-                            test
-                        </th>
-                    </tr>
+                    <Thead/>
+                    <OrderListTableList orderList={orderList}/>
                 </OrderTable>
             </div>
         </div>
     </ContentWrapper>
 );
+
+const Thead = () => (
+    <thead className={"underLineDash"}>
+        <tr>
+            <th>
+                PRODUCT
+        </th>
+            <th>
+                수량
+        </th>
+            <th>
+                단가
+        </th>
+        </tr>
+    </thead>
+)
 
 export default OrderListTable;

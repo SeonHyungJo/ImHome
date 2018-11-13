@@ -35,13 +35,13 @@ class AdminMain extends Component {
                 {id: 10, name: '용인죽전점'}
             ],
             storeId : 1,
-            headerData: headerData,
+            headerData,
             orders,
-            branchName: "분당점",
-            data: [
-                { registDate: '2018-10-29', storeName: '분당점', custName: '최장길', custId: 'imhome', businessNum: '426-50-00326', totalMoney: 10000500 }
-            ],
         };
+    }
+
+    getCurrentBranchName(){
+        return this.state.navData.filter(obj => obj.id === this.state.storeId).map( result => result.name);
     }
 
     render() {
@@ -50,7 +50,7 @@ class AdminMain extends Component {
                 <div style={{width: '100%', height: '50px'}}>
                     상단헤더
                 </div>
-                <OrderListTable branchName={this.state.branchName} orderList={this.state.orders}/>
+                <OrderListTable branchName={this.getCurrentBranchName()} orderList={this.state.orders}/>
                 {/* <OrderListTable orderList={this.state.orders}/> */}
             </PageTemplate>
         );
