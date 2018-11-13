@@ -13,7 +13,7 @@ class PageTemplate extends Component {
                     <li><NavLink to="/register" activeClassName="on">로그아웃</NavLink></li>
                     <li><NavLink to="/admin/users" activeClassName="on">회원정보</NavLink></li>
                     <li><NavLink to="#">출고내역조회</NavLink></li>
-                    <li><NavLink to="#">주문내역조회</NavLink></li>
+                    <li><NavLink to="/admin/orderlist" activeClassName="on">주문내역조회</NavLink></li>
                     <li><NavLink to="#">품목관리</NavLink></li>
                 </Header>
                 <Nav>

@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { UserMain, UserRegister } from './pages/user';
 import { AdminMain, AdminUser } from './pages/admin';
+import { OrderList } from './pages/orderList';
 import { Login } from './pages/common';
 
 class App extends Component {
@@ -20,6 +21,7 @@ class App extends Component {
               {/* Admin router : 관리자 라우터*/}
               <Route exact={true} component={AdminMain} path={PATH} />
               <Route exact={true} component={AdminUser} path={PATH + '/users'} />
+              <Route exact={true} component={OrderList} path={PATH + '/orderlist'} />
               {/* User router : 사용자 라우터*/}
               <Route exact={true} component={UserMain} path='/' />
               <Route exact={true} component={UserRegister} path='/register' />
