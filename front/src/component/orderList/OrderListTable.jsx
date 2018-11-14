@@ -1,6 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { OrderListTableList } from './';
+import React from 'react'
+import styled from 'styled-components'
+import { OrderListTableList, OrderListTableTotal } from './'
+import classNames from 'classnames'
 
 const ContentWrapper = styled.div`
     display: inline-block;
@@ -11,68 +12,165 @@ const ContentWrapper = styled.div`
 
     .dashedContainer {
         border: 1px dashed white;
-        height: 100%;        
+        height: 100%;
     }
 
     .mainContainer {
-        padding: 0px 60px;
-        height: 100%; 
+        padding: 30px 60px 0px 60px;
+        height: calc(100% - 100px);
+    }
+
+    .buttonContainer {
+        display: flex;
+        padding: 0px 40px 30px 40px;
+        height: 60px;
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: space-around;
     }
 `
 
-const Header = styled.h2`
-    font-size: 24px;
+const Header = styled.h3`
     color: white;
-    padding-left: 15px;
+    padding: 0px 0px 0px 10px;
     margin: 0px;
-    margin-top: 30px;
 `
 
-const OrderTable = styled.table`
-    width: 100%;
+const OrderTable = styled.div`
     color: white;
-    padding-left: 15px;
-    padding-bottom: 5px;
-    
-    .underLineDash{
+    width: 100%;
+    height: calc(100% - 50px);
+
+    .thead {
+        display: block;
+        padding: 10px;
+        width: calc(100% - 20px);
+        height: 21px;
+    }
+
+    .theadTh {
+        display: inline-block;
+        text-align: left;
+        font-weight: 700;
+
+        :nth-of-type(1) {
+            width: 50%;
+        }
+
+        :nth-of-type(2) {
+            width: 20%;
+        }
+
+        :nth-of-type(3) {
+            width: 30%;
+        }
+    }
+
+    .tbody {
+        display: block;
+        width: calc(100% - 20px);
+        height: calc(80% - 20px);
+        padding: 10px;
+    }
+
+    .tbodyTr {
+        display: block;
+    }
+
+    .tbodyTd {
+        display: inline-block;
+        text-align: left;
+        border-collapse: collapse;
+        color: rgba(255, 255, 255, 0.6);
+
+        :nth-of-type(1) {
+            width: 50%;
+        }
+
+        :nth-of-type(2) {
+            width: 20%;
+        }
+
+        :nth-of-type(3) {
+            width: 30%;
+        }
+    }
+
+    .footerTr {
+        display: block;
+        width: calc(100% - 20px);
+        padding: 10px;
+    }
+
+    .footerTd {
+        display: inline-block;
+        text-align: left;
+        font-size: 18px;
+        font-weight: 700;
+
+        :nth-of-type(1) {
+            width: 65%;
+        }
+
+        :nth-of-type(2) {
+            width: 35%;
+        }
+    }
+
+    .underLineDash {
         border-bottom: 1px dashed white;
     }
 
-    th {
-        text-align: left;
+    .text-center {
+        text-align: center;
     }
 `
 
-const OrderListTable = ({ branchName, orderList }) => (
+const Button = styled.button`
+    color: #fe4c8d;
+    background-color: white;
+    border: 0px;
+    border-radius: 3px;
+    font-size: 18px;
+    font-weight: 800;
+    max-height: 40px;
+    padding: 5px 15px;
+`
+
+const OrderListTable = ({ branchName, orderList, buttonList }) => (
     <ContentWrapper>
-        <div className={"dashedContainer"}>
-            <div className={"mainContainer"}>
-                <Header>
-                    {branchName} 주문내역
-                </Header>
+        <div className={'dashedContainer'}>
+            <div className={'mainContainer'}>
+                <Header>{branchName} 주문내역</Header>
                 <OrderTable>
-                    <Thead/>
-                    <OrderListTableList orderList={orderList}/>
+                    <Thead />
+                    <OrderListTableList orderList={orderList} />
+                    <OrderListTableTotal
+                        totalCost={orderList
+                            .map(order => order.count * order.cost)
+                            .reduce((cost, currentCost) => cost + currentCost)}
+                    />
                 </OrderTable>
             </div>
+            <Buttons buttonList={buttonList} />
         </div>
     </ContentWrapper>
-);
-
-const Thead = () => (
-    <thead className={"underLineDash"}>
-        <tr>
-            <th>
-                PRODUCT
-        </th>
-            <th>
-                수량
-        </th>
-            <th>
-                단가
-        </th>
-        </tr>
-    </thead>
 )
 
-export default OrderListTable;
+const Thead = () => (
+    <div className={classNames('thead', 'underLineDash')}>
+        <div className={classNames('theadTh')}>PRODUCT</div>
+        <div className={classNames('theadTh', 'text-center')}>수량</div>
+        <div className={classNames('theadTh')}>단가</div>
+    </div>
+)
+
+const Buttons = ({ buttonList }) => (
+    <div className={'buttonContainer'}>
+        {buttonList.map(button => (
+            <Button>{`${button.name}`}</Button>
+        ))}
+    </div>
+)
+
+export default OrderListTable

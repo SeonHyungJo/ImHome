@@ -1,30 +1,16 @@
-import React from 'react';
-import styled from 'styled-components';
-
-const Tbody = styled.tbody`
-    td {
-        color: rgba(255, 255, 255, 0.5);
-    }
-`
+import React from 'react'
+import classNames from 'classnames'
 
 const OrderListTableList = ({ orderList }) => (
-    <Tbody>
-        {orderList.map(order => <Order pName={order.name} pCount={order.count} pCost={order.cost}/>)}
-    </Tbody>
-);
-
-const Order = ({pName, pCount, pCost}) => (
-    <tr>
-        <td>
-            {pName}
-        </td>
-        <td>
-            {pCount}
-        </td>
-        <td>
-            {pCost}
-        </td>
-    </tr>
+    <div className={classNames('tbody', 'underLineDash')}>
+        {orderList.map(order => (
+            <div className={'tbodyTr'}>
+                <div className={classNames('tbodyTd')}>{order.name}</div>
+                <div className={classNames('tbodyTd', 'text-center')}>{order.count}</div>
+                <div className={classNames('tbodyTd')}>{`: $ ${order.cost}`}</div>
+            </div>
+        ))}
+    </div>
 )
 
-export default OrderListTableList;
+export default OrderListTableList
