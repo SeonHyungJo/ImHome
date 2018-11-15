@@ -17,7 +17,7 @@ class PageTemplate extends Component {
                     <li><NavLink to="/admin/orderlist" activeClassName="on">주문내역조회</NavLink></li>
                     <li><NavLink to="#">품목관리</NavLink></li>
                 </HeaderContainer>
-                <NavTemplate navData={this.props.navData} />
+                <NavTemplate navData={this.props.navData} storeId={this.props.storeId} />
                 <Content>
                     {this.props.children}
                 </Content>

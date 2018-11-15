@@ -47,7 +47,6 @@ const NavWrapper = styled.ul`
 `
 
 const NavContainer = ({ children }) => (
-
     <Wrapper>
         <NavWrapper>
             {children}
