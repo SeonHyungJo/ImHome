@@ -1,39 +1,23 @@
 import React, { Component } from 'react';
-import Header from '../header/HeaderContainer';
-import Nav from '../nav/NavContainer';
-import Content from '../content/ContentContainer';
+import HeaderContainer from '../header/HeaderContainer';
 import { NavLink } from 'react-router-dom';
+import { NavTemplate } from '../nav';
+import Content from '../content/ContentContainer';
 
 
 class PageTemplate extends Component {
 
     render() {
-        console.log("A");
         return (
             <div>
-                <Header>
+                <HeaderContainer>
                     <li><NavLink to="/register" activeClassName="on">로그아웃</NavLink></li>
                     <li><NavLink to="/admin/users" activeClassName="on">회원정보</NavLink></li>
                     <li><NavLink to="#">출고내역조회</NavLink></li>
                     <li><NavLink to="/admin/orderlist" activeClassName="on">주문내역조회</NavLink></li>
                     <li><NavLink to="#">품목관리</NavLink></li>
-                </Header>
-                <Nav>
-                    {
-                        this.props.navData && this.props.navData.map((data, index) => {
-                            return (
-                                data.id === this.props.storeId ?
-                                    <li className='on' key={index} id={data.id}>
-                                        {data.name}
-                                    </li>
-                                    :
-                                    <li key={index} id={data.id}>
-                                        {data.name}
-                                    </li>
-                            );
-                        })
-                    }
-                </Nav>
+                </HeaderContainer>
+                <NavTemplate navData={this.props.navData} />
                 <Content>
                     {this.props.children}
                 </Content>
