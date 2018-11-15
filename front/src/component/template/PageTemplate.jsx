@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import Header from '../header/HeaderContainer';
 import Nav from '../nav/NavContainer';
+import Content from '../content/ContentContainer';
 import { NavLink } from 'react-router-dom';
 
 
 class PageTemplate extends Component {
 
     render() {
+        console.log("A");
         return (
             <div>
                 <Header>
@@ -32,7 +34,9 @@ class PageTemplate extends Component {
                         })
                     }
                 </Nav>
-                {this.props.children}
+                <Content>
+                    {this.props.children}
+                </Content>
             </div>
         );
     }

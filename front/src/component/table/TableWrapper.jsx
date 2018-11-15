@@ -3,10 +3,8 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
     background: white;
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    width: 73rem;
-    float: right;
-    margin-right: 2.3rem;
+    padding: 0 1rem 0.5rem 2rem;
+    
 `;
 
 const Title = styled.h4`
