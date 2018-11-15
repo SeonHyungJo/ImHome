@@ -167,8 +167,8 @@ const Thead = () => (
 
 const Buttons = ({ buttonList }) => (
     <div className={'buttonContainer'}>
-        {buttonList.map(button => (
-            <Button>{`${button.name}`}</Button>
+        {buttonList.map((button, index) => (
+            <Button key={index}>{`${button.name}`}</Button>
         ))}
     </div>
 )
