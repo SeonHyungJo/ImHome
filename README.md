@@ -99,3 +99,17 @@ git push heroku master
 ```cmd
 heroku open
 ```
+
+### 브랜치 관리 방법 공유
+
+깃허브 - master, dev
+master : 언제든 배포가능한 수준의 완벽한 소스만 머지
+dev : 각자 작업한 소스를 여기에 바로 커밋
+
+작업 순서 :
+
+1. dev브랜치를 받고 본인의 로컬 브랜치를 만든다.
+2. 각자 로컬 브랜치에서 작업한다
+3. 작업이 끝나면 dev브랜치로 다시 이동
+4. git rebase 자신의 브랜치
+5. git push origin dev
