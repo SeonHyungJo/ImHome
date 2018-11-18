@@ -7,40 +7,35 @@ class AdminMain extends Component {
         super();
         const headerData = [
             {
-                id: 'registDate',
+                id: 'p_name',
                 numeric: false,
                 disablePadding: true,
-                label: '등록일자'
+                label: '품목'
             },
             {
-                id: 'storeName',
+                id: 'p_unit',
                 numeric: false,
                 disablePadding: true,
-                label: '지점명'
+                label: '단위'
             },
             {
-                id: 'custName',
-                numeric: false,
-                disablePadding: true,
-                label: '대표자'
-            },
-            {
-                id: 'custId',
-                numeric: false,
-                disablePadding: true,
-                label: '아이디'
-            },
-            {
-                id: 'businessNum',
-                numeric: false,
-                disablePadding: true,
-                label: '사업자번호'
-            },
-            {
-                id: 'totalMoney',
+                id: 'p_cost',
                 numeric: true,
                 disablePadding: true,
-                label: '총 거래금액(원)'
+                label: '가격'
+            },
+            {
+                // 추가함
+                id: 'p_quan',
+                numeric: true,
+                disablePadding: true,
+                label: '수량'
+            },
+            {
+                id: 'p_edit',
+                numeric: false,
+                disablePadding: true,
+                label: '수정'
             }
         ];
 
@@ -76,12 +71,28 @@ class AdminMain extends Component {
             headerData: headerData,
             data: [
                 {
-                    registDate: '2018-10-29',
-                    storeName: '분당점',
-                    custName: '최장길',
-                    custId: 'imhome',
-                    businessNum: '426-50-00326',
-                    totalMoney: 10000500
+                    p_name: '밀크 아이스크림',
+                    p_unit: 'box 3kg',
+                    p_cost: '32,500',
+                    p_quan: '1'
+                },
+                {
+                    p_name: '말차 아이스크림',
+                    p_unit: 'box 3kg',
+                    p_cost: '32,500',
+                    p_quan: '1'
+                },
+                {
+                    p_name: '코코넛 아이스크림',
+                    p_unit: 'box 3kg',
+                    p_cost: '27,500',
+                    p_quan: '2'
+                },
+                {
+                    p_name: '레몬 아이스크림',
+                    p_unit: 'box 3kg',
+                    p_cost: '31,500',
+                    p_quan: '3'
                 }
             ],
             products
@@ -91,7 +102,12 @@ class AdminMain extends Component {
     render() {
         return (
             <PageTemplate navData={this.state.navData} storeId={this.state.storeId}>
-                <Product products={this.state.products} />
+                <Product
+                    products={this.state.products}
+                    tableHeader={this.state.headerData}
+                    tableData={this.state.data}
+                    tableTitle={'아이스크림 류'}
+                />
             </PageTemplate>
         );
     }
