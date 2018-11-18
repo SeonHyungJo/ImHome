@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 `
 
 const ContentWrapper = styled.div`
-    width: 100rem;
+    width: 78rem;
     background:white;
     padding-top:0.5rem;
 `
