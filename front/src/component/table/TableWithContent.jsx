@@ -20,10 +20,11 @@ const Table = styled.table`
         border-right: 1px solid #e0e0e0;
         border-bottom: 1px solid #e0e0e0;
         background: #fafafa;
-        height: 35px;
-        line-height: 18px;
+        height: 3.5rem;
+        line-height: 2.5rem;
         color: #666666;
         font-size: 13px;
+        font-weight: bold;
         padding: 5px;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
@@ -36,9 +37,11 @@ const Table = styled.table`
         line-height: 22px;
         color: #666666;
         font-size: 13px;
-        height: 30px;
+        font-weight: bold;
+        height: 2.5rem;
         box-sizing: border-box;
         letter-spacing: -0.04em;
+        cursor: pointer;
     };
 `
 

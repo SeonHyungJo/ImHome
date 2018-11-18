@@ -32,7 +32,7 @@ class TableWithScroll extends React.Component {
                     <tr>
                         {this.props.headerData && this.props.headerData.map((column, index) => {
                             return (
-                                <th key={index} style={{}}>{column.label}</th>
+                                <th key={index}>{column.label}</th>
                             );
                         }, this)}
                     </tr>
@@ -40,12 +40,16 @@ class TableWithScroll extends React.Component {
                 <TableWithContent>
                     {this.props.data.map((n, index) => {
                         return (
-                            <tr key={index}>
+                            <tr key={index} onClick={() => this.props.clickRow(n.id)}>
                                 {
                                     this.props.headerData && this.props.headerData.map((data, index) => {
                                         let textAlign = data.numeric ? "right" : "center";
                                         return (
-                                            <td key={index} style={{ textAlign: textAlign }}>{n[data.id]}</td>
+                                            <td
+                                                key={index}
+                                                style={{ textAlign: textAlign }}>
+                                                {n[data.id]}
+                                            </td>
                                         );
                                     })
 
