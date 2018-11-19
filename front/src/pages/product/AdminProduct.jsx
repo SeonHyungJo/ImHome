@@ -5,40 +5,6 @@ import { Product } from '../../component/product';
 class AdminMain extends Component {
     constructor() {
         super();
-        const headerData = [
-            {
-                id: 'p_name',
-                numeric: false,
-                disablePadding: true,
-                label: '품목'
-            },
-            {
-                id: 'p_unit',
-                numeric: false,
-                disablePadding: true,
-                label: '단위'
-            },
-            {
-                id: 'p_cost',
-                numeric: true,
-                disablePadding: true,
-                label: '가격'
-            },
-            {
-                // 추가함
-                id: 'p_quan',
-                numeric: true,
-                disablePadding: true,
-                label: '수량'
-            },
-            {
-                id: 'p_edit',
-                numeric: false,
-                disablePadding: true,
-                label: '수정'
-            }
-        ];
-
         const products = [
             {
                 name: '에스프레소',
@@ -67,47 +33,15 @@ class AdminMain extends Component {
                 { id: 4, name: '이대본점' },
                 { id: 5, name: '용인죽전점' }
             ],
-            storeId: 1,
-            headerData: headerData,
-            data: [
-                {
-                    p_name: '밀크 아이스크림',
-                    p_unit: 'box 3kg',
-                    p_cost: '32,500',
-                    p_quan: '1'
-                },
-                {
-                    p_name: '말차 아이스크림',
-                    p_unit: 'box 3kg',
-                    p_cost: '32,500',
-                    p_quan: '1'
-                },
-                {
-                    p_name: '코코넛 아이스크림',
-                    p_unit: 'box 3kg',
-                    p_cost: '27,500',
-                    p_quan: '2'
-                },
-                {
-                    p_name: '레몬 아이스크림',
-                    p_unit: 'box 3kg',
-                    p_cost: '31,500',
-                    p_quan: '3'
-                }
-            ],
-            products
+            products,
+            storeId: 1
         };
     }
 
     render() {
         return (
             <PageTemplate navData={this.state.navData} storeId={this.state.storeId}>
-                <Product
-                    products={this.state.products}
-                    tableHeader={this.state.headerData}
-                    tableData={this.state.data}
-                    tableTitle={'아이스크림 류'}
-                />
+                <Product products={this.state.products} />
             </PageTemplate>
         );
     }
