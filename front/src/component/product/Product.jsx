@@ -95,7 +95,7 @@ const Product = ({ products, tableData, tableHeader, tableTitle }) => (
                                 <div className={'desc'}>{product.desc}</div>
                             </div>
                             <div className={'categorySub'}>
-                                <div className={'icon'}>⬇️</div>
+                                <span>></span>
                             </div>
                         </div>
                     ))}
@@ -111,7 +111,6 @@ const Product = ({ products, tableData, tableHeader, tableTitle }) => (
                     headerData={tableHeader}
                     data={tableData}
                     gridTitle={tableTitle + ' 상세'}
-                    // clickRow={this.clickRow}
                 />
                 <hr />
                 <div className={'footerContainer'}>
