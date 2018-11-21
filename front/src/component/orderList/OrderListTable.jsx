@@ -1,10 +1,9 @@
-import React from 'react'
-import styled from 'styled-components'
-import { OrderListTableList, OrderListTableTotal } from './'
-import classNames from 'classnames'
+import React from 'react';
+import styled from 'styled-components';
+import { OrderListTableList, OrderListTableTotal } from './';
+import classNames from 'classnames';
 
 const ContentWrapper = styled.div`
-    display: inline-block;
     width: 35vw;
     height: 75vh;
     background-color: #fe4c8d;
@@ -28,13 +27,13 @@ const ContentWrapper = styled.div`
         align-content: center;
         justify-content: space-around;
     }
-`
+`;
 
 const Header = styled.h3`
     color: white;
     padding: 0px 0px 0px 10px;
     margin: 0px;
-`
+`;
 
 const OrderTable = styled.div`
     color: white;
@@ -106,7 +105,7 @@ const OrderTable = styled.div`
         display: inline-block;
         text-align: left;
         font-size: 18px;
-        font-weight: 700;
+        font-weight: 500;
 
         :nth-of-type(1) {
             width: 65%;
@@ -124,7 +123,7 @@ const OrderTable = styled.div`
     .text-center {
         text-align: center;
     }
-`
+`;
 
 const Button = styled.button`
     color: #fe4c8d;
@@ -135,7 +134,7 @@ const Button = styled.button`
     font-weight: 800;
     max-height: 40px;
     padding: 5px 15px;
-`
+`;
 
 const OrderListTable = ({ branchName, orderList, buttonList }) => (
     <ContentWrapper>
@@ -155,7 +154,7 @@ const OrderListTable = ({ branchName, orderList, buttonList }) => (
             <Buttons buttonList={buttonList} />
         </div>
     </ContentWrapper>
-)
+);
 
 const Thead = () => (
     <div className={classNames('thead', 'underLineDash')}>
@@ -163,7 +162,7 @@ const Thead = () => (
         <div className={classNames('theadTh', 'text-center')}>수량</div>
         <div className={classNames('theadTh')}>단가</div>
     </div>
-)
+);
 
 const Buttons = ({ buttonList }) => (
     <div className={'buttonContainer'}>
@@ -171,6 +170,6 @@ const Buttons = ({ buttonList }) => (
             <Button key={index}>{`${button.name}`}</Button>
         ))}
     </div>
-)
+);
 
-export default OrderListTable
+export default OrderListTable;
