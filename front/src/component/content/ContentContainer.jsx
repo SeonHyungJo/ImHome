@@ -7,22 +7,21 @@ const Wrapper = styled.div`
     border-bottom: 1px dashed #c2c2c2;
     position: relative;
     color: black;
-    z-index : 3;  
-    float: left;  
-    background-position: 0 0; 
-`
+    z-index: 3;
+    float: left;
+    background-position: 0 0;
+    padding-left: 0.5rem;
+`;
 
 const ContentWrapper = styled.div`
     width: 78rem;
-    background:white;
-    padding-top:0.5rem;
-`
+    background: white;
+    padding-top: 0.5rem;
+`;
 
 const ContentContainer = ({ children }) => (
     <Wrapper>
-        <ContentWrapper>
-            {children}
-        </ContentWrapper>
+        <ContentWrapper>{children}</ContentWrapper>
     </Wrapper>
 );
 
