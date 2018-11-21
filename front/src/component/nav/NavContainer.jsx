@@ -41,6 +41,7 @@ const NavWrapper = styled.ul`
         padding: 1.4rem 0.5rem 0.5rem 2.5rem;
         font-size: 1.1rem;
         color: #555555;
+        cursor: pointer;
         font-weight: bold;
         text-decoration: none;
         background-image: url('/images/icon_b.png');
