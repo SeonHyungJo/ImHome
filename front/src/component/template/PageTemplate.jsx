@@ -3,6 +3,7 @@ import HeaderContainer from '../header/HeaderContainer';
 import { NavLink } from 'react-router-dom';
 import { NavTemplate } from '../nav';
 import Content from '../content/ContentContainer';
+import ContentTwoDivContainer from '../content/ContentTwoDivContainer';
 
 class PageTemplate extends Component {
     render() {
@@ -34,7 +35,11 @@ class PageTemplate extends Component {
                     </li>
                 </HeaderContainer>
                 <NavTemplate navData={this.props.navData} storeId={this.props.storeId} />
-                <Content>{this.props.children}</Content>
+                {!!this.props.children[0] === true && this.props.children[0].type === 'header' ? (
+                    <ContentTwoDivContainer>{this.props.children}</ContentTwoDivContainer>
+                ) : (
+                    <Content>{this.props.children}</Content>
+                )}
             </div>
         );
     }
