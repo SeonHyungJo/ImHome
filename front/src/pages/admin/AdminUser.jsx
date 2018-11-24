@@ -26,8 +26,10 @@ class AdminUser extends Component {
         };
     }
 
-    componentDidMount() {
-        this.getStoreList();
+    async componentDidMount() {
+        await this.getStoreList();
+        await this.getNavData();
+        await this.getRowData();
     };
 
     //최초 로드시 매장 정보를 가져와 redux form에 store 정보 저장
@@ -37,34 +39,58 @@ class AdminUser extends Component {
             console.log(store);
             await UserActions.getStoreList();
 
+            let data = store[0].id;
+
+            UserActions.changeInput({
+                form: 'user',
+                value: data,
+                name: 'storeId'
+            });
+
         } catch (e) {
             console.log(e);
         }
     }
 
-    clickNav = async (id) => {
+    getNavData = async (id) => {
         const { UserActions } = this.props;
+        const { form, list } = this.props;
 
-        console.log(id);
+        let storeId = id ? id : form.toJS().storeId;
 
-        this.setState({ storeId: id });
+        console.log(storeId);
+
+        this.setState({ storeId: storeId });
 
         try {
             await UserActions.getUserList({
-                id
+                storeId
             });
+
+            if (!id) {
+                console.log("A");
+                let data = list[0].id;
+
+                UserActions.changeInput({
+                    form: 'user',
+                    value: data,
+                    name: 'id'
+                });
+            }
 
         } catch (e) {
             console.log("error");
         }
     }
 
-    clickRow = async (custNo) => {
-        console.log(custNo);
+    getRowData = async (id) => {
+        const { UserActions, form } = this.props;
 
-        const { UserActions } = this.props;
+        let custNo = id ? id : form.toJS().id;
 
         this.setState({ custNo: custNo });
+
+        console.log(custNo);
 
         try {
             await UserActions.getUserData({
@@ -81,13 +107,13 @@ class AdminUser extends Component {
         const { store, list, form } = this.props;
 
         return (
-            <PageTemplate navData={store} id={this.state.storeId} clickNav={this.clickNav}>
+            <PageTemplate navData={store} id={this.state.storeId} clickNav={this.getNavData}>
                 <ViewForUser viewTitle="회원정보 조회" viewData={form} />
                 <TableWithScroll
                     headerData={this.state.headerData}
                     data={list}
                     gridTitle="회원목록 및 정보"
-                    clickRow={this.clickRow}
+                    clickRow={this.getRowData}
                     id={this.state.custNo} />
             </PageTemplate>
         );
