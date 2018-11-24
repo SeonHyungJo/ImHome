@@ -39,13 +39,15 @@ class AdminUser extends Component {
             console.log(store);
             await UserActions.getStoreList();
 
-            let data = store[0].id;
+            if (store) {
+                let data = store[0].id;
 
-            UserActions.changeInput({
-                form: 'user',
-                value: data,
-                name: 'storeId'
-            });
+                UserActions.changeInput({
+                    form: 'user',
+                    value: data,
+                    name: 'storeId'
+                });
+            }
 
         } catch (e) {
             console.log(e);
