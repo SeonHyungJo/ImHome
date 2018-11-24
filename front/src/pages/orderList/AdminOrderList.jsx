@@ -49,7 +49,7 @@ class AdminMain extends Component {
 
     render() {
         return (
-            <PageTemplate navData={this.state.navData} storeId={this.state.storeId}>
+            <PageTemplate navData={this.state.navData} id={this.state.storeId}>
                 <header>주문일자 : {this.state.modifiedDate}</header>
                 <OrderListTable
                     branchName={this.getCurrentBranchName()}
