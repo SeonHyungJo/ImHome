@@ -43,6 +43,12 @@ const Table = styled.table`
         letter-spacing: -0.04em;
         cursor: pointer;
     };
+    .on {
+        background-color: #fe4c8d;
+        td {
+            color: #ffffff;   
+        }
+    }
 `
 
 const TableWithContent = ({ title, children }) => (

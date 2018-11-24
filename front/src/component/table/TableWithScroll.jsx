@@ -39,8 +39,8 @@ class TableWithScroll extends React.Component {
                 </TableWithTitle>
                 <TableWithContent>
                     {this.props.data.map((n, index) => {
-                        return (
-                            <tr key={index} onClick={() => this.props.clickRow(n.id)}>
+                        return this.props.id && n.id === this.props.id ? (
+                            <tr className="on" key={index} onClick={() => this.props.clickRow(n.id)}>
                                 {
                                     this.props.headerData && this.props.headerData.map((data, index) => {
                                         let textAlign = data.numeric ? "right" : "center";
@@ -55,7 +55,23 @@ class TableWithScroll extends React.Component {
 
                                 }
                             </tr>
-                        );
+                        ) : (
+                                <tr key={index} onClick={() => this.props.clickRow(n.id)}>
+                                    {
+                                        this.props.headerData && this.props.headerData.map((data, index) => {
+                                            let textAlign = data.numeric ? "right" : "center";
+                                            return (
+                                                <td
+                                                    key={index}
+                                                    style={{ textAlign: textAlign }}>
+                                                    {n[data.id]}
+                                                </td>
+                                            );
+                                        })
+
+                                    }
+                                </tr>
+                            );
                     })
                     }
                 </TableWithContent>

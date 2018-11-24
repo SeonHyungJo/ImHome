@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import { PageTemplate } from '../../component/template';
 import { TableWithScroll } from '../../component/table';
 import { ViewForUser } from '../../component/view';
+import * as UserActions from '../../redux/modules/user';
 
-class AdminMain extends Component {
+class AdminUser extends Component {
     constructor() {
         super();
         const headerData = [
@@ -15,62 +20,89 @@ class AdminMain extends Component {
             { id: "totalMoney", numeric: true, disablePadding: true, label: '총 거래금액(원)' }
         ];
         this.state = {
-            navData: [
-                { id: 1, name: '분당점' },
-                { id: 2, name: '백현점' },
-                { id: 3, name: '광주탄천점' },
-                { id: 4, name: '이대본점' },
-                { id: 5, name: '용인죽전점' }
-            ],
             storeId: 1,
-            headerData: headerData,
-            data: [
-                { id: 1, registDate: '2018-10-29', storeName: '분당점', custName: '최장길', custId: 'imhome', businessNum: '426-50-00326', totalMoney: 10000500 }
-            ],
-            viewData: {
-                id: 1,
-                storeName: '분당점',
-                custName: '최장길',
-                custId: 'imhome',
-                companyName: 'Caffee24',
-                businessNum: '426-50-00326',
-                storeAddress: '경기도 성남시 분당구 황새울로 85번길 12 1층',
-                custEmail: 'imhome@imhome.com',
-                storePhone: '031-123-4567',
-                custPhone: '010-1234-5678'
-            }
+            custNo: 1,
+            headerData: headerData
         };
     }
 
-    clickRow = (id) => {
+    componentDidMount() {
+        this.getStoreList();
+    };
+
+    //최초 로드시 매장 정보를 가져와 redux form에 store 정보 저장
+    getStoreList = async () => {
+        const { store } = this.props;
+        try {
+            console.log(store);
+            await UserActions.getStoreList();
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    clickNav = async (id) => {
+        const { UserActions } = this.props;
+
         console.log(id);
-        //TODO
-        //axios 태워서 storeId에 맞는 데이터 가져오기
-        //가져온뒤 viewData에 세팅
-        this.setState({
-            viewData: {
-                id: 2,
-                storeName: '분당점2',
-                custName: '최장길2',
-                custId: 'imhome2',
-                companyName: 'Caffee242',
-                businessNum: '426-50-003262',
-                storeAddress: '경기도 성남시 분당구 황새울로 85번길 12 1층2',
-                custEmail: 'imhome@imhome.com2',
-                storePhone: '031-123-4567',
-                custPhone: '010-1234-5678'
-            }
-        });
+
+        this.setState({ storeId: id });
+
+        try {
+            await UserActions.getUserList({
+                id
+            });
+
+        } catch (e) {
+            console.log("error");
+        }
+    }
+
+    clickRow = async (custNo) => {
+        console.log(custNo);
+
+        const { UserActions } = this.props;
+
+        this.setState({ custNo: custNo });
+
+        try {
+            await UserActions.getUserData({
+                custNo
+            });
+
+        } catch (e) {
+            console.log("error");
+        }
+
     }
 
     render() {
+        const { store, list, form } = this.props;
+
         return (
-            <PageTemplate navData={this.state.navData} storeId={this.state.storeId}>
-                <ViewForUser viewTitle="회원정보 조회" viewData={this.state.viewData} />
-                <TableWithScroll headerData={this.state.headerData} data={this.state.data} gridTitle="회원목록 및 정보" clickRow={this.clickRow} />
+            <PageTemplate navData={store} id={this.state.storeId} clickNav={this.clickNav}>
+                <ViewForUser viewTitle="회원정보 조회" viewData={form} />
+                <TableWithScroll
+                    headerData={this.state.headerData}
+                    data={list}
+                    gridTitle="회원목록 및 정보"
+                    clickRow={this.clickRow}
+                    id={this.state.custNo} />
             </PageTemplate>
         );
     }
 }
 
-export default AdminMain;
+export default connect(
+    (state) => ({
+        form: state.user.getIn(['user', 'form']),
+        list: state.user.getIn(['user', 'list']),
+        store: state.user.getIn(['user', 'store']),
+        error: state.user.getIn(['user', 'error']),
+        result: state.user.get('result')
+    }),
+    (dispatch) => ({
+        UserActions: bindActionCreators(UserActions, dispatch),
+    })
+)(AdminUser);

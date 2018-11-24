@@ -34,12 +34,12 @@ class PageTemplate extends Component {
                         </NavLink>
                     </li>
                 </HeaderContainer>
-                <NavTemplate navData={this.props.navData} storeId={this.props.storeId} />
+                <NavTemplate navData={this.props.navData} id={this.props.id} clickNav={this.props.clickNav} />
                 {!!this.props.children[0] === true && this.props.children[0].type === 'header' ? (
                     <ContentTwoDivContainer>{this.props.children}</ContentTwoDivContainer>
                 ) : (
-                    <Content>{this.props.children}</Content>
-                )}
+                        <Content>{this.props.children}</Content>
+                    )}
             </div>
         );
     }

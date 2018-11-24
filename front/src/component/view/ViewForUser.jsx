@@ -1,42 +1,49 @@
 import React from 'react';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import { ViewWrapper, ViewWithContent } from './';
+import * as UserActions from '../../redux/modules/user';
 
 class ViewForUser extends React.Component {
 
     render() {
+        const { storeName, custName, custId, companyName, businessNum,
+            storeAddress, custEmail, storePhone, custPhone } = this.props.form.toJS();
 
         return (
             <ViewWrapper title={this.props.viewTitle}>
                 <ViewWithContent>
                     <tr>
                         <th>지점명</th>
-                        <td>{this.props.viewData.storeName}</td>
+                        <td>{storeName}</td>
                         <th></th>
                         <td></td>
                     </tr>
                     <tr>
                         <th>대표자</th>
-                        <td>{this.props.viewData.custName}</td>
+                        <td>{custName}</td>
                         <th>아이디</th>
-                        <td>{this.props.viewData.custId}</td>
+                        <td>{custId}</td>
                     </tr>
                     <tr>
                         <th>회사명</th>
-                        <td>{this.props.viewData.companyName}</td>
+                        <td>{companyName}</td>
                         <th>사업자 번호</th>
-                        <td>{this.props.viewData.businessNum}</td>
+                        <td>{businessNum}</td>
                     </tr>
                     <tr>
                         <th>사업장 주소</th>
-                        <td>{this.props.viewData.storeAddress}</td>
+                        <td>{storeAddress}</td>
                         <th>이메일 주소</th>
-                        <td>{this.props.viewData.custEmail}</td>
+                        <td>{custEmail}</td>
                     </tr>
                     <tr>
                         <th>사업장 연락처</th>
-                        <td>{this.props.viewData.storePhone}</td>
+                        <td>{storePhone}</td>
                         <th>사업주 연락처</th>
-                        <td>{this.props.viewData.custPhone}</td>
+                        <td>{custPhone}</td>
                     </tr>
                 </ViewWithContent>
             </ViewWrapper>
@@ -45,4 +52,15 @@ class ViewForUser extends React.Component {
     }
 }
 
-export default ViewForUser;
+export default connect(
+    (state) => ({
+        form: state.user.getIn(['user', 'form']),
+        list: state.user.getIn(['user', 'list']),
+        store: state.user.getIn(['user', 'store']),
+        error: state.user.getIn(['user', 'error']),
+        result: state.user.get('result')
+    }),
+    (dispatch) => ({
+        UserActions: bindActionCreators(UserActions, dispatch),
+    })
+)(ViewForUser);
