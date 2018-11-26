@@ -36,7 +36,6 @@ class AdminUser extends Component {
     getStoreList = async () => {
         const { store } = this.props;
         try {
-            console.log(store);
             await UserActions.getStoreList();
 
             if (store) {
@@ -60,8 +59,6 @@ class AdminUser extends Component {
 
         let storeId = id ? id : form.toJS().storeId;
 
-        console.log(storeId);
-
         this.setState({ storeId: storeId });
 
         try {
@@ -70,7 +67,6 @@ class AdminUser extends Component {
             });
 
             if (!id) {
-                console.log("A");
                 let data = list[0].id;
 
                 UserActions.changeInput({
@@ -91,8 +87,6 @@ class AdminUser extends Component {
         let custNo = id ? id : form.toJS().id;
 
         this.setState({ custNo: custNo });
-
-        console.log(custNo);
 
         try {
             await UserActions.getUserData({
