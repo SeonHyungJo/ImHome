@@ -11,8 +11,8 @@ const TitleWrapper = styled.div`
     background-color: #fe4c8d;
     width: 100%;
     text-align: center;
-    min-height: 30vh;     
-`
+    min-height: 30vh;
+`;
 
 // children 이 들어가는 곳
 const Contents = styled.div`
@@ -23,15 +23,13 @@ const Contents = styled.div`
 const Image = styled.img`
     width: 35%;
     height: 35%;
-`
+`;
 
 const LoginWrapper = ({ children }) => (
     <Wrapper>
         <TitleWrapper>
-            <Image src='/images/log_logo.png' />
-            <Contents>
-                {children}
-            </Contents>
+            <Image src="/images/log_logo.png" />
+            <Contents>{children}</Contents>
         </TitleWrapper>
     </Wrapper>
 );

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { LoginWrapper, LoginContent } from '../../component/auth'
-import { InputWithLabel, Button } from '../../component/common'
+import { LoginWrapper, LoginContent } from '../../component/auth';
+import { InputWithLabel, LoginBtn, RegisterText } from '../../component/common';
 import { LoginTemplate } from '../../component/template';
 class Login extends Component {
     constructor() {
@@ -13,21 +13,24 @@ class Login extends Component {
             <LoginTemplate>
                 <LoginWrapper>
                     <LoginContent>
-                        <InputWithLabel label="아이디"
+                        <InputWithLabel
+                            label="id"
                             type="text"
                             name="custId"
                             placeholder="Username"
-                            autoFocus />
-                        <InputWithLabel label="비밀번호"
+                            autoFocus
+                        />
+                        <InputWithLabel
+                            label="password"
                             type="text"
                             name="custPasswd"
-                            placeholder="Password" />
-                        <Button>log in</Button>
+                            placeholder="Password"
+                        />
+                        <LoginBtn>log in</LoginBtn>
                     </LoginContent>
-                    <Button>Create an Account</Button>
+                    <RegisterText>Create an Account</RegisterText>
                 </LoginWrapper>
             </LoginTemplate>
-
         );
     }
 }
