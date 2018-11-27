@@ -21,7 +21,7 @@ router.get('/user', function(req, res) {
 
 // GET by branchCode
 router.get('/user/:branchCode', function(req, res) {
-    Users.findOneById(req.params.branchCode)
+    Users.findOneByBranchcode(req.params.branchCode)
         .then(user => {
             if (!user) return res.status(404).send({ err: 'user not found' });
             console.log(user);
@@ -33,7 +33,7 @@ router.get('/user/:branchCode', function(req, res) {
 // Update by branchCode
 router.put('/user/:branchCode', (req, res) => {
     Users.updateById(req.params.branchCode, req.body)
-        .then(user => res.send(user))
+        .then(user => res.sendStatus(200))
         .catch(err => res.status(500).send(err));
 });
 

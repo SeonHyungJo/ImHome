@@ -3,23 +3,22 @@ const Schema = mongoose.Schema;
 
 // usersSchema
 const usersSchema = new Schema(
-  {
-    id: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    name: { type: String, required: true },
-    bNumber: { type: String, required: true, unique: true },
-    bAddress: { type: String, required: true },
-    cName: { type: String, required: true },
-    email: { type: String, required: true },
-    pNumber: { type: String, required: true },
-    branchName: { type: String, required: true },
-    branchCode: { type: String, unique: true },
-    checkUser: { type: Boolean, default: false },
-    checkAdmin: { type: Boolean, default: false }
-  },
-  {
-    timestamps: true
-  }
+    {
+        id: { type: String, required: true, unique: true },
+        password: { type: String, required: true },
+        name: { type: String, required: true },
+        bNumber: { type: String, required: true, unique: true },
+        bAddress: { type: String, required: true },
+        cName: { type: String, required: true },
+        email: { type: String, required: true },
+        pNumber: { type: String, required: true },
+        branchName: { type: String, required: true },
+        branchCode: { type: String, unique: true },
+        checkAdmin: { type: Boolean, default: false }
+    },
+    {
+        timestamps: true
+    }
 );
 
 /**
@@ -31,8 +30,8 @@ const usersSchema = new Schema(
  * @returns user.save()
  */
 usersSchema.statics.create = function(newUser) {
-  const user = new this(newUser);
-  return user.save();
+    const user = new this(newUser);
+    return user.save();
 };
 
 /**
@@ -44,7 +43,7 @@ usersSchema.statics.create = function(newUser) {
  * @returns «Query»
  */
 usersSchema.statics.findAll = function() {
-  return this.find({});
+    return this.find({});
 };
 
 /**
@@ -56,7 +55,19 @@ usersSchema.statics.findAll = function() {
  * @returns «Query»
  */
 usersSchema.statics.findOneById = function(id) {
-  return this.findOne({ id });
+    return this.findOne({ id });
+};
+
+/**
+ * @author seonhyungjo
+ * @summary 해당 아이디로 유저 검색
+ * @memberof Admin
+ * @param id : 찾으려는 해당 id
+ * @see None
+ * @returns «Query»
+ */
+usersSchema.statics.findOneByBranchcode = function(branchCode) {
+    return this.findOne({ branchCode });
 };
 
 /**
@@ -68,8 +79,8 @@ usersSchema.statics.findOneById = function(id) {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.findOneAndUpdate = function(id, userInfo) {
-  return this.findOneAndUpdate({ id }, userInfo, { new: true });
+usersSchema.statics.updateById = function(id, userInfo) {
+    return this.findOneAndUpdate({ id }, userInfo, { new: true });
 };
 
 /**
@@ -81,7 +92,7 @@ usersSchema.statics.findOneAndUpdate = function(id, userInfo) {
  * @returns «Query»
  */
 usersSchema.statics.deleteById = function(id) {
-  return this.remove({ id });
+    return this.remove({ id });
 };
 
 /**
@@ -94,10 +105,10 @@ usersSchema.statics.deleteById = function(id) {
  * @returns «Query»
  */
 usersSchema.methods.verify = function(password) {
-  // const userPassword = usersSchema.statics.findOneById.password
-  console.log('password : ' + password);
-  console.log('this.password : ' + this.password);
-  return this.password === password;
+    // const userPassword = usersSchema.statics.findOneById.password
+    console.log('password : ' + password);
+    console.log('this.password : ' + this.password);
+    return this.password === password;
 };
 
 /**
@@ -110,14 +121,14 @@ usersSchema.methods.verify = function(password) {
  * @returns «Query»
  */
 usersSchema.methods.checkingAdmin = function(id, password) {
-  const accountCheck = this.methods.verify(id, password); //Boolean
+    const accountCheck = this.methods.verify(id, password); //Boolean
 
-  if (accountCheck) {
-    const resultAdmin = usersSchema.statics.findOneById.checkAdmin || false;
-    return resultAdmin;
-  }
+    if (accountCheck) {
+        const resultAdmin = usersSchema.statics.findOneById.checkAdmin || false;
+        return resultAdmin;
+    }
 
-  return false;
+    return false;
 };
 
 module.exports = mongoose.model('users', usersSchema);
