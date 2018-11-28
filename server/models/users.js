@@ -13,7 +13,8 @@ const usersSchema = new Schema(
         email: { type: String, required: true },
         pNumber: { type: String, required: true },
         branchName: { type: String, required: true },
-        branchCode: { type: String, unique: true },
+        branchCode: { type: String, required: true },
+        checkUser: { type: Boolean, default: false },
         checkAdmin: { type: Boolean, default: false }
     },
     {
@@ -48,6 +49,18 @@ usersSchema.statics.findAll = function() {
 
 /**
  * @author seonhyungjo
+ * @summary 해당 시퀀스 아이디로 유저 검색
+ * @memberof Admin
+ * @param _id : 찾으려는 해당 _id
+ * @see None
+ * @returns «Query»
+ */
+usersSchema.statics.findOneById = function(_id) {
+    return this.findOne({ _id });
+};
+
+/**
+ * @author seonhyungjo
  * @summary 해당 아이디로 유저 검색
  * @memberof Admin
  * @param userId : 찾으려는 해당 userId
@@ -66,20 +79,20 @@ usersSchema.statics.findOneByUserId = function(id) {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.findOneById = function(id) {
+usersSchema.statics.findOneByUserId = function(id) {
     return this.findOne({ id });
 };
 
 /**
  * @author seonhyungjo
- * @summary 해당 아이디로 유저 검색
+ * @summary 해당 브랜치 코드로 모든 유저 검색
  * @memberof Admin
- * @param id : 찾으려는 해당 id
+ * @param branchCode : 찾으려는 해당 branchCode
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.findOneByBranchcode = function(branchCode) {
-    return this.findOne({ branchCode });
+usersSchema.statics.findOneByBranchCode = function(branchCode) {
+    return this.find({ branchCode });
 };
 
 /**
@@ -91,8 +104,8 @@ usersSchema.statics.findOneByBranchcode = function(branchCode) {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.updateById = function(id, userInfo) {
-    return this.findOneAndUpdate({ id }, userInfo, { new: true });
+usersSchema.statics.findOneAndUpdate = function(_id, userInfo) {
+    return this.findOneAndUpdate({ _id }, userInfo, { new: true });
 };
 
 /**
@@ -103,8 +116,8 @@ usersSchema.statics.updateById = function(id, userInfo) {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.deleteById = function(id) {
-    return this.remove({ id });
+usersSchema.statics.deleteById = function(_id) {
+    return this.remove({ _id });
 };
 
 /**
