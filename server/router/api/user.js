@@ -38,8 +38,8 @@ router.put('/user/:branchCode', (req, res) => {
 });
 
 // Delete by branchCode
-router.delete('/user/:branchCode', (req, res) => {
-    Users.deleteById(req.params.branchCode)
+router.delete('/user/:id', (req, res) => {
+    Users.deleteById(req.params.id)
         .then(() => res.sendStatus(200))
         .catch(err => res.status(500).send(err));
 });

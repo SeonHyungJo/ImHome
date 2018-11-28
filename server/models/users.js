@@ -50,7 +50,19 @@ usersSchema.statics.findAll = function() {
  * @author seonhyungjo
  * @summary 해당 아이디로 유저 검색
  * @memberof Admin
- * @param id : 찾으려는 해당 id
+ * @param userId : 찾으려는 해당 userId
+ * @see None
+ * @returns «Query»
+ */
+usersSchema.statics.findOneByUserId = function(id) {
+    return this.findOne({ id });
+};
+
+/**
+ * @author seonhyungjo
+ * @summary 해당 브랜치 코드로 모든 유저 검색
+ * @memberof Admin
+ * @param branchCode : 찾으려는 해당 branchCode
  * @see None
  * @returns «Query»
  */
