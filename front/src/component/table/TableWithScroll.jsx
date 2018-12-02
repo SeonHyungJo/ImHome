@@ -26,6 +26,7 @@ class TableWithScroll extends React.Component {
     }
 
     render() {
+        console.log(this.props.data);
         return (
             <TableWrapper title={this.props.gridTitle}>
                 <TableWithTitle>
@@ -39,8 +40,8 @@ class TableWithScroll extends React.Component {
                 </TableWithTitle>
                 <TableWithContent>
                     {this.props.data.map((n, index) => {
-                        return this.props.id && n.id === this.props.id ? (
-                            <tr className="on" key={index} onClick={() => this.props.clickRow(n.id)}>
+                        return this.props.id && n._id === this.props.id ? (
+                            <tr className="on" key={index} onClick={() => this.props.clickRow(n._id)}>
                                 {
                                     this.props.headerData && this.props.headerData.map((data, index) => {
                                         let textAlign = data.numeric ? "right" : "center";
@@ -56,7 +57,7 @@ class TableWithScroll extends React.Component {
                                 }
                             </tr>
                         ) : (
-                                <tr key={index} onClick={() => this.props.clickRow(n.id)}>
+                                <tr key={index} onClick={() => this.props.clickRow(n._id)}>
                                     {
                                         this.props.headerData && this.props.headerData.map((data, index) => {
                                             let textAlign = data.numeric ? "right" : "center";

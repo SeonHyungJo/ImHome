@@ -12,12 +12,12 @@ class AdminUser extends Component {
     constructor() {
         super();
         const headerData = [
-            { id: "registDate", numeric: false, disablePadding: true, label: '등록일자' },
-            { id: "storeName", numeric: false, disablePadding: true, label: '지점명' },
-            { id: "custName", numeric: false, disablePadding: true, label: '대표자' },
-            { id: "custId", numeric: false, disablePadding: true, label: '아이디' },
-            { id: "businessNum", numeric: false, disablePadding: true, label: '사업자번호' },
-            { id: "totalMoney", numeric: true, disablePadding: true, label: '총 거래금액(원)' }
+            { id: "createdAt", numeric: false, disablePadding: true, label: '등록일자' },
+            { id: "branchName", numeric: false, disablePadding: true, label: '지점명' },
+            { id: "name", numeric: false, disablePadding: true, label: '대표자' },
+            { id: "id", numeric: false, disablePadding: true, label: '아이디' },
+            { id: "bNumber", numeric: false, disablePadding: true, label: '사업자번호' },
+            { id: "__v", numeric: true, disablePadding: true, label: '총 거래금액(원)' }
         ];
         this.state = {
             storeId: 1,
@@ -38,12 +38,10 @@ class AdminUser extends Component {
     //최초 로드시 매장 정보를 가져와 redux form에 store 정보 저장
     getStoreList = async () => {
         const { UserActions, store } = this.props;
-        console.log(store);
         try {
 
             if (store) {
                 let data = store[0].branchCode;
-                console.log('data', data);
 
                 UserActions.changeInput({
                     form: 'user',
@@ -67,19 +65,17 @@ class AdminUser extends Component {
         this.setState({ storeId: storeId });
 
         try {
-            await UserActions.getUserList({
-                storeId
-            });
+            await UserActions.getUserList(storeId);
 
-            if (!id) {
-                let data = list[0].id;
+            // if (!id) {
+            //     let data = list[0].id;
 
-                UserActions.changeInput({
-                    form: 'user',
-                    value: data,
-                    name: 'id'
-                });
-            }
+            //     UserActions.changeInput({
+            //         form: 'user',
+            //         value: data,
+            //         name: 'id'
+            //     });
+            // }
 
         } catch (e) {
             console.log("error");

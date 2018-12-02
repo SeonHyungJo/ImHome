@@ -35,17 +35,8 @@ const initialState = Map({
             custPhone: '010-1234-5678'
         }),
         error: null,
-        store: [
-            { id: 1, name: '분당점1' },
-            { id: 2, name: '백현점' },
-            { id: 3, name: '광주탄천점' },
-            { id: 4, name: '이대본점' },
-            { id: 5, name: '용인죽전점' }
-        ],
-        list: [
-            { id: 1, registDate: '2018-10-29', storeName: '분당점1', custName: '최장길', custId: 'imhome', businessNum: '426-50-00326', totalMoney: 10000500 },
-            { id: 2, registDate: '2018-10-29', storeName: '분당점2', custName: '최장길2', custId: 'imhome', businessNum: '426-50-00326', totalMoney: 10000500 }
-        ]
+        store: [],
+        list: []
     }),
     result: Map({})
 });
