@@ -27,6 +27,9 @@ class AdminUser extends Component {
     }
 
     async componentDidMount() {
+        const { UserActions } = this.props;
+
+        await UserActions.getStoreList();
         await this.getStoreList();
         await this.getNavData();
         await this.getRowData();
@@ -34,17 +37,18 @@ class AdminUser extends Component {
 
     //최초 로드시 매장 정보를 가져와 redux form에 store 정보 저장
     getStoreList = async () => {
-        const { store } = this.props;
+        const { UserActions, store } = this.props;
+        console.log(store);
         try {
-            await UserActions.getStoreList();
 
             if (store) {
-                let data = store[0].id;
+                let data = store[0].branchCode;
+                console.log('data', data);
 
                 UserActions.changeInput({
                     form: 'user',
                     value: data,
-                    name: 'storeId'
+                    name: 'branchCode'
                 });
             }
 
@@ -57,7 +61,8 @@ class AdminUser extends Component {
         const { UserActions } = this.props;
         const { form, list } = this.props;
 
-        let storeId = id ? id : form.toJS().storeId;
+        console.log(form.toJS());
+        let storeId = id ? id : form.toJS().branchCode;
 
         this.setState({ storeId: storeId });
 
@@ -100,11 +105,11 @@ class AdminUser extends Component {
     }
 
     render() {
-        const { store, list, form } = this.props;
+        const { store, list } = this.props;
 
         return (
             <PageTemplate navData={store} id={this.state.storeId} clickNav={this.getNavData}>
-                <ViewForUser viewTitle="회원정보 조회" viewData={form} />
+                <ViewForUser viewTitle="회원정보 조회" />
                 <TableWithScroll
                     headerData={this.state.headerData}
                     data={list}

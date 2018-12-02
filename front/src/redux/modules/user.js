@@ -23,7 +23,7 @@ const initialState = Map({
     user: Map({
         form: Map({
             custNo: 1,
-            storeId: 1,
+            branchCode: 1,
             storeName: '분당점2',
             custName: '최장길2',
             custId: 'imhome2',

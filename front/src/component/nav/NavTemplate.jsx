@@ -8,13 +8,13 @@ class NavTemplate extends Component {
             <NavContainer>
                 {this.props.navData &&
                     this.props.navData.map((data, index) => {
-                        return data.id === this.props.id ? (
-                            <li className="on" key={index} id={data.id} onClick={() => this.props.clickNav && this.props.clickNav(data.id)}>
-                                {data.name}
+                        return data.branchCode === this.props.id ? (
+                            <li className="on" key={index} id={data.branchCode} onClick={() => this.props.clickNav && this.props.clickNav(data.id)}>
+                                {data.branchName}
                             </li>
                         ) : (
                                 <li key={index} id={data.id} onClick={() => this.props.clickNav && this.props.clickNav(data.id)}>
-                                    {data.name}
+                                    {data.branchName}
                                 </li>
                             );
                     })}
