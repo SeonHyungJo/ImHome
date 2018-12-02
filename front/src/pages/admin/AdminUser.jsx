@@ -66,7 +66,6 @@ class AdminUser extends Component {
 
         try {
             await UserActions.getUserList(storeId);
-            console.log("DDD", this.props.list);
             await UserActions.changeInput({
                 form: 'user',
                 value: this.props.list.length > 0 ? this.props.list[0]._id : '0',
