@@ -46,22 +46,14 @@ class TableWithScroll extends React.Component {
                                     {
                                         this.props.headerData && this.props.headerData.map((data, index) => {
                                             let textAlign = data.numeric ? "right" : "center";
-                                            return (
-                                                <td
-                                                    key={index}
-                                                    style={{ textAlign: textAlign }}>
-                                                    {n[data.id]}
-                                                </td>
-                                            );
-                                        })
+                                            if (typeof (data.formatter) === 'function' && data.formatter) {
+                                                return (
+                                                    <td key={index} style={{ textAlign: textAlign }}>
+                                                        {data.formatter(n[data.id])}
+                                                    </td>
+                                                )
 
-                                    }
-                                </tr>
-                            ) : (
-                                    <tr key={index} onClick={() => this.props.clickRow(n._id)}>
-                                        {
-                                            this.props.headerData && this.props.headerData.map((data, index) => {
-                                                let textAlign = data.numeric ? "right" : "center";
+                                            } else {
                                                 return (
                                                     <td
                                                         key={index}
@@ -69,8 +61,30 @@ class TableWithScroll extends React.Component {
                                                         {n[data.id]}
                                                     </td>
                                                 );
-                                            })
+                                            }
+                                        })
+                                    }
+                                </tr>
+                            ) : (
+                                    <tr key={index} onClick={() => this.props.clickRow(n._id)}>
+                                        {
+                                            this.props.headerData && this.props.headerData.map((data, index) => {
+                                                let textAlign = data.numeric ? "right" : "center";
+                                                if (typeof (data.formatter) === 'function' && data.formatter) {
+                                                    return (<td key={index} style={{ textAlign: textAlign }}
+                                                    > {data.formatter(n[data.id])}
+                                                    </td>)
 
+                                                } else {
+                                                    return (
+                                                        <td
+                                                            key={index}
+                                                            style={{ textAlign: textAlign }}>
+                                                            {n[data.id]}
+                                                        </td>
+                                                    );
+                                                }
+                                            })
                                         }
                                     </tr>
                                 );

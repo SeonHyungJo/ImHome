@@ -7,12 +7,17 @@ import { PageTemplate } from '../../component/template';
 import { TableWithScroll } from '../../component/table';
 import { ViewForUser } from '../../component/view';
 import * as UserActions from '../../redux/modules/user';
+import * as CommonUtil from '../../util/commonUtil';
 
 class AdminUser extends Component {
     constructor() {
         super();
         const headerData = [
-            { id: "createdAt", numeric: false, disablePadding: true, label: '등록일자' },
+            {
+                id: "createdAt", numeric: false, disablePadding: true, label: '등록일자', formatter: function (data) {
+                    return CommonUtil.setDate(data);
+                }
+            },
             { id: "branchName", numeric: false, disablePadding: true, label: '지점명' },
             { id: "name", numeric: false, disablePadding: true, label: '대표자' },
             { id: "id", numeric: false, disablePadding: true, label: '아이디' },
@@ -91,7 +96,7 @@ class AdminUser extends Component {
     }
 
     render() {
-        const { store, list, form } = this.props;
+        const { store, list } = this.props;
         return (
             <PageTemplate navData={store} id={this.state.storeId} clickNav={this.getNavData}>
                 <ViewForUser viewTitle="회원정보 조회" />
