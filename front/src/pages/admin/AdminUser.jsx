@@ -32,20 +32,17 @@ class AdminUser extends Component {
         await UserActions.getStoreList();
         await this.getStoreList();
         await this.getNavData();
-        await this.getRowData();
+        //await this.getRowData();
     };
 
     //최초 로드시 매장 정보를 가져와 redux form에 store 정보 저장
     getStoreList = async () => {
         const { UserActions, store } = this.props;
         try {
-
             if (store) {
-                let data = store[0].branchCode;
-
-                UserActions.changeInput({
+                await UserActions.changeInput({
                     form: 'user',
-                    value: data,
+                    value: store[0].branchCode,
                     name: 'branchCode'
                 });
             }
@@ -56,53 +53,45 @@ class AdminUser extends Component {
     }
 
     getNavData = async (id) => {
-        const { UserActions } = this.props;
-        const { form, list } = this.props;
+        const { UserActions, form } = this.props;
 
-        console.log(form.toJS());
         let storeId = id ? id : form.toJS().branchCode;
 
         this.setState({ storeId: storeId });
 
         try {
             await UserActions.getUserList(storeId);
-
-            // if (!id) {
-            //     let data = list[0].id;
-
-            //     UserActions.changeInput({
-            //         form: 'user',
-            //         value: data,
-            //         name: 'id'
-            //     });
-            // }
-
+            console.log("DDD", this.props.list);
+            await UserActions.changeInput({
+                form: 'user',
+                value: this.props.list.length > 0 ? this.props.list[0]._id : '0',
+                name: '_id'
+            });
+            await this.getRowData();
         } catch (e) {
-            console.log("error");
+            console.log(e);
         }
     }
 
     getRowData = async (id) => {
         const { UserActions, form } = this.props;
 
-        let custNo = id ? id : form.toJS().id;
+        let custNo = id ? id : form.toJS()._id;
 
         this.setState({ custNo: custNo });
 
         try {
-            await UserActions.getUserData({
-                custNo
-            });
+            if (custNo)
+                await UserActions.getUserData(custNo);
 
         } catch (e) {
-            console.log("error");
+            console.log(e);
         }
 
     }
 
     render() {
-        const { store, list } = this.props;
-
+        const { store, list, form } = this.props;
         return (
             <PageTemplate navData={store} id={this.state.storeId} clickNav={this.getNavData}>
                 <ViewForUser viewTitle="회원정보 조회" />

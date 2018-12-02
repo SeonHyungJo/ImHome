@@ -22,17 +22,16 @@ export const getUserData = createAction(GET_USER_DATA, userAPI.getUserData);
 const initialState = Map({
     user: Map({
         form: Map({
-            custNo: 1,
-            branchCode: 1,
-            storeName: '분당점2',
-            custName: '최장길2',
-            custId: 'imhome2',
-            companyName: 'Caffee242',
-            businessNum: '426-50-003262',
-            storeAddress: '경기도 성남시 분당구 황새울로 85번길 12 1층2',
-            custEmail: 'imhome@imhome.com2',
-            storePhone: '031-123-4567',
-            custPhone: '010-1234-5678'
+            _id: '',
+            branchCode: '',
+            branchName: '',
+            name: '',
+            id: '',
+            cName: '',
+            bNumber: '',
+            bAddress: '',
+            email: '',
+            pNumber: '',
         }),
         error: null,
         store: [],
@@ -64,6 +63,6 @@ export default handleActions({
     }),
     ...pender({
         type: GET_USER_DATA,
-        onSuccess: (state, action) => state.setIn(['user', 'form'], action.payload.data)
+        onSuccess: (state, action) => state.setIn(['user', 'form'], Map(action.payload.data))
     }),
 }, initialState);

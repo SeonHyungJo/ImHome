@@ -46,7 +46,7 @@ const Table = styled.table`
     .on {
         background-color: #fe4c8d;
         td {
-            color: #ffffff;   
+            color: black;   
         }
     }
 `

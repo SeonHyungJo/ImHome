@@ -26,7 +26,7 @@ class TableWithScroll extends React.Component {
     }
 
     render() {
-        console.log(this.props.data);
+        console.log(this.props.data)
         return (
             <TableWrapper title={this.props.gridTitle}>
                 <TableWithTitle>
@@ -39,25 +39,10 @@ class TableWithScroll extends React.Component {
                     </tr>
                 </TableWithTitle>
                 <TableWithContent>
-                    {this.props.data.map((n, index) => {
-                        return this.props.id && n._id === this.props.id ? (
-                            <tr className="on" key={index} onClick={() => this.props.clickRow(n._id)}>
-                                {
-                                    this.props.headerData && this.props.headerData.map((data, index) => {
-                                        let textAlign = data.numeric ? "right" : "center";
-                                        return (
-                                            <td
-                                                key={index}
-                                                style={{ textAlign: textAlign }}>
-                                                {n[data.id]}
-                                            </td>
-                                        );
-                                    })
-
-                                }
-                            </tr>
-                        ) : (
-                                <tr key={index} onClick={() => this.props.clickRow(n._id)}>
+                    {this.props.data.length > 0 ?
+                        this.props.data.map((n, index) => {
+                            return this.props.id && n._id === this.props.id ? (
+                                <tr className="on" key={index} onClick={() => this.props.clickRow(n._id)}>
                                     {
                                         this.props.headerData && this.props.headerData.map((data, index) => {
                                             let textAlign = data.numeric ? "right" : "center";
@@ -72,8 +57,30 @@ class TableWithScroll extends React.Component {
 
                                     }
                                 </tr>
-                            );
-                    })
+                            ) : (
+                                    <tr key={index} onClick={() => this.props.clickRow(n._id)}>
+                                        {
+                                            this.props.headerData && this.props.headerData.map((data, index) => {
+                                                let textAlign = data.numeric ? "right" : "center";
+                                                return (
+                                                    <td
+                                                        key={index}
+                                                        style={{ textAlign: textAlign }}>
+                                                        {n[data.id]}
+                                                    </td>
+                                                );
+                                            })
+
+                                        }
+                                    </tr>
+                                );
+                        })
+                        :
+                        <tr>
+                            <td style={{ textAlign: 'center' }} colspan={Object.keys(this.props.headerData).length}>
+                                데이터가 없습니다.
+                            </td>
+                        </tr>
                     }
                 </TableWithContent>
             </TableWrapper>

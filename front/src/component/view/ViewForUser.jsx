@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -6,44 +6,43 @@ import { bindActionCreators } from 'redux';
 import { ViewWrapper, ViewWithContent } from './';
 import * as UserActions from '../../redux/modules/user';
 
-class ViewForUser extends React.Component {
+class ViewForUser extends Component {
 
     render() {
-        const { storeName, custName, custId, companyName, businessNum,
-            storeAddress, custEmail, storePhone, custPhone } = this.props.form.toJS();
+        const { branchName, name, id, cName, bNumber, bAddress, email, pNumber } = this.props.form.toJS();
 
         return (
             <ViewWrapper title={this.props.viewTitle}>
                 <ViewWithContent>
                     <tr>
                         <th>지점명</th>
-                        <td>{storeName}</td>
+                        <td>{branchName ? branchName : '-'}</td>
                         <th></th>
                         <td></td>
                     </tr>
                     <tr>
                         <th>대표자</th>
-                        <td>{custName}</td>
+                        <td>{name ? name : '-'}</td>
                         <th>아이디</th>
-                        <td>{custId}</td>
+                        <td>{id ? id : '-'}</td>
                     </tr>
                     <tr>
                         <th>회사명</th>
-                        <td>{companyName}</td>
+                        <td>{cName ? cName : '-'}</td>
                         <th>사업자 번호</th>
-                        <td>{businessNum}</td>
+                        <td>{bNumber ? bNumber : '-'}</td>
                     </tr>
                     <tr>
                         <th>사업장 주소</th>
-                        <td>{storeAddress}</td>
+                        <td>{bAddress ? bAddress : '-'}</td>
                         <th>이메일 주소</th>
-                        <td>{custEmail}</td>
+                        <td>{email ? email : '-'}</td>
                     </tr>
                     <tr>
                         <th>사업장 연락처</th>
-                        <td>{storePhone}</td>
+                        <td>{pNumber ? pNumber : '-'}</td>
                         <th>사업주 연락처</th>
-                        <td>{custPhone}</td>
+                        <td>{pNumber ? pNumber : '-'}</td>
                     </tr>
                 </ViewWithContent>
             </ViewWrapper>
