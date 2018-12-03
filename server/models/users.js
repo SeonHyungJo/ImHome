@@ -44,7 +44,19 @@ usersSchema.statics.create = function(newUser) {
  * @returns «Query»
  */
 usersSchema.statics.findAll = function() {
-    return this.find({});
+    return this.find().select({
+        _id: 1, // 시퀀스
+        id: 1, // 아이디
+        name: 1, //일단은 대표자 이름으로 설정
+        bNumber: 1, // 사업자 번호
+        bAddress: 1, // 사업장 주소
+        cName: 1, // 회사명
+        email: 1, // 이메일
+        pNumber: 1, // 전화번호
+        branchName: 1, // 지점명
+        branchCode: 1, // 지점코드
+        updatedAt: 1 // 수정일자
+    });
 };
 
 /**
@@ -56,31 +68,19 @@ usersSchema.statics.findAll = function() {
  * @returns «Query»
  */
 usersSchema.statics.findOneById = function(_id) {
-    return this.findOne({ _id });
-};
-
-/**
- * @author seonhyungjo
- * @summary 해당 아이디로 유저 검색
- * @memberof Admin
- * @param userId : 찾으려는 해당 userId
- * @see None
- * @returns «Query»
- */
-usersSchema.statics.findOneByUserId = function(id) {
-    return this.findOne({ id });
-};
-
-/**
- * @author seonhyungjo
- * @summary 해당 브랜치 코드로 모든 유저 검색
- * @memberof Admin
- * @param branchCode : 찾으려는 해당 branchCode
- * @see None
- * @returns «Query»
- */
-usersSchema.statics.findOneByUserId = function(id) {
-    return this.findOne({ id });
+    return this.findOne({ _id }).select({
+        _id: 1, // 시퀀스
+        id: 1, // 아이디
+        name: 1, //일단은 대표자 이름으로 설정
+        bNumber: 1, // 사업자 번호
+        bAddress: 1, // 사업장 주소
+        cName: 1, // 회사명
+        email: 1, // 이메일
+        pNumber: 1, // 전화번호
+        branchName: 1, // 지점명
+        branchCode: 1, // 지점코드
+        updatedAt: 1 // 수정일자
+    });
 };
 
 /**
@@ -92,7 +92,19 @@ usersSchema.statics.findOneByUserId = function(id) {
  * @returns «Query»
  */
 usersSchema.statics.findOneByBranchCode = function(branchCode) {
-    return this.find({ branchCode });
+    return this.find({ branchCode }).select({
+        _id: 1, // 시퀀스
+        id: 1, // 아이디
+        name: 1, //일단은 대표자 이름으로 설정
+        bNumber: 1, // 사업자 번호
+        bAddress: 1, // 사업장 주소
+        cName: 1, // 회사명
+        email: 1, // 이메일
+        pNumber: 1, // 전화번호
+        branchName: 1, // 지점명
+        branchCode: 1, // 지점코드
+        updatedAt: 1 // 수정일자
+    });
 };
 
 /**
@@ -104,7 +116,7 @@ usersSchema.statics.findOneByBranchCode = function(branchCode) {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.findOneAndUpdate = function(_id, userInfo) {
+usersSchema.statics.updateById = function(_id, userInfo) {
     return this.findOneAndUpdate({ _id }, userInfo, { new: true });
 };
 
@@ -119,6 +131,9 @@ usersSchema.statics.findOneAndUpdate = function(_id, userInfo) {
 usersSchema.statics.deleteById = function(_id) {
     return this.remove({ _id });
 };
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 /**
  * @author seonhyungjo
