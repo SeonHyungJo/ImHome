@@ -1,6 +1,6 @@
 import express from 'express';
-const Users = require('../../models/users');
 const Stores = require('../../models/stores');
+const reponseError = require('../common/responseError');
 const authMiddleware = require('../../middlewares/auth');
 
 export let router = express.Router();
@@ -14,32 +14,22 @@ router.use(function timeLog(req, res, next) {
 router.get('/store/list', function(req, res) {
     Stores.findAll()
         .then(store => {
-            if (!store) return res.status(404).send({ err: 'user not found' });
-            console.log(store);
-
-            res.json(store);
+            if (!store) return reponseError(res, 'NOT_FIND_ODER');
+            res.status(200).send(store);
         })
-        .catch(err => res.status(500).send(err));
+        .catch(err => {
+            console.log(err);
+            reponseError(res, 'NOT_FIND_ODER');
+        });
 });
 
 router.post('/store/list', function(req, res) {
     Stores.create(req.body)
         .then(store => {
-            if (!store) return res.status(404).send({ err: 'user not found' });
-            console.log(store);
-
-            res.json(store);
+            res.status(200).send({ success: '0000' });
         })
-        .catch(err => res.status(500).send(err));
-});
-
-router.get('/store/list2', function(req, res) {
-    Users.getAllBranches()
-        .then(user => {
-            if (!user) return res.status(404).send({ err: 'user not found' });
-            console.log(user);
-
-            res.json(user);
-        })
-        .catch(err => res.status(500).send(err));
+        .catch(err => {
+            console.log(err);
+            reponseError(res, 'NOT_FIND_ODER');
+        });
 });
