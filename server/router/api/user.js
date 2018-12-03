@@ -51,12 +51,18 @@ router.get('/user/list/:branchCode', function(req, res) {
 router.put('/user/:_id', (req, res) => {
     Users.updateById(req.params._id, req.body)
         .then(user => res.status(200).send({ success: '0000' }))
-        .catch(err => reponseError(res, 'UPDATE_ERROR'));
+        .catch(err => {
+            console.log(err);
+            reponseError(res, 'UPDATE_USER_ERROR');
+        });
 });
 
 // Delete by _id
 router.delete('/user/:_id', (req, res) => {
     Users.deleteById(req.params._id)
         .then(() => res.status(200).send({ success: '0000' }))
-        .catch(err => reponseError(res, 'DELETE_ERROR'));
+        .catch(err => {
+            console.log(err);
+            reponseError(res, 'DELETE_USER_ERROR');
+        });
 });

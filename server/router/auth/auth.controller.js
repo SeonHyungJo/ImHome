@@ -1,112 +1,118 @@
-var Users = require('../../models/users');
-var jwt = require('jsonwebtoken');
+const Users = require('../../models/users');
+const reponseError = require('../common/responseError');
+const jwt = require('jsonwebtoken');
 
-/*
-    POST /api/register
-    {
-        id,
-        password
-    }
-*/
+/**
+ * POST /api/register
+ *
+ * @author seonhyungjo
+ * @summary 회원가입
+ * @memberof USER
+ * @param
+ * {
+ *     id : USER_ID,
+ *     password: PASSWORD,
+ *     name : NAME,
+ *     bNumber : BUSINESS_NUMBER,
+ *     bAddress : BUSINESS_ADDRESS,
+ *     cName : COMPANY_NAME,
+ *     email : EMAIL,
+ *     pNumber : PHONE_NUMBER,
+ *     branchName : BRANCH_NAME,
+ *     branchCode : BRANCH_CODE
+ * }
+ */
+
 exports.register = (req, res) => {
-    const { id } = req.body;
+    const userInfo = req.body;
 
-    // create a new user if does not exist
+    /*
+        아이디가 존재한다면 ERROR처리 
+        없다면 새로 생성
+    */
     const create = user => {
         if (user) {
-            throw new Error('id exists');
+            throw new Error('ID Exists');
         } else {
-            return Users.create(req.body);
+            return Users.create(userInfo);
         }
     };
 
-    // respond to the client
     const respond = () => {
-        res.status(200).json({
-            message: 'registered successfully'
-        });
+        res.status(200).send({ success: '0000' });
     };
 
     // run when there is an error (username exists)
     const onError = error => {
-        res.status(409).json({
-            message: error.message
-        });
+        console.log(error.message);
+        reponseError(res, 'REGISTER_FAIL');
     };
 
-    // check username duplication
-    Users.findOneByUserId(id)
+    // 해당 아이디 복수 확인
+    Users.findOneByUserId(userInfo.id)
         .then(create)
         .then(respond)
         .catch(onError);
 };
 
-/*
-    POST /api/login
-    {
-        id,
-        password
-    }
-*/
+/**
+ * POST /api/login
+ *
+ * @author seonhyungjo
+ * @summary 로그인
+ * @memberof USER
+ * @param
+ * {
+ *      id,
+ *      password
+ * }
+ */
 exports.login = (req, res) => {
     const { id, password } = req.body;
     const secret = req.app.get('jwt-secret');
 
-    console.log(secret);
-
-    // check the user info & generate the jwt
     const check = user => {
-        if (!user) {
-            // user does not exist
-            throw new Error('login failed');
+        const checkPassword = user.verify(password);
+        const checkAdmin = user.checkingAdmin();
+
+        if (checkPassword) {
+            return new Promise((resolve, reject) => {
+                jwt.sign(
+                    {
+                        id: user.id,
+                        username: user.username,
+                        branchCode: user.branchCode,
+                        admin: checkAdmin
+                    },
+                    secret,
+                    {
+                        expiresIn: '5m',
+                        issuer: 'imhome.com',
+                        subject: 'userInfo'
+                    },
+                    (err, token) => {
+                        if (err) reject(err);
+                        resolve(token);
+                    }
+                );
+            });
         } else {
-            // user exists, check the password
-            console.log(user);
-            if (user.verify(password)) {
-                // create a promise that generates jwt asynchronously
-                const p = new Promise((resolve, reject) => {
-                    jwt.sign(
-                        {
-                            id: user.id,
-                            username: user.username,
-                            branchCode: user.branchCode,
-                            admin: user.checkAdmin || 'false'
-                        },
-                        secret,
-                        {
-                            expiresIn: '5m',
-                            issuer: 'imhome.com',
-                            subject: 'userInfo'
-                        },
-                        (err, token) => {
-                            if (err) reject(err);
-                            resolve(token);
-                        }
-                    );
-                });
-                return p;
-            } else {
-                throw new Error('login failed');
-            }
+            throw new Error('login failed');
         }
     };
 
-    // respond the token
     const respond = token => {
-        res.json({
-            message: 'logged in successfully',
+        res.send({
+            success: '0000',
             imhomeToken: token
         });
     };
 
-    // error occured
     const onError = error => {
-        res.status(403).json({
-            message: error.message
-        });
+        console.log(error);
+        reponseError(res, 'LOGIN_FAIL');
     };
 
-    // find the user
     Users.findOneByUserId(id)
         .then(check)
         .then(respond)
@@ -116,42 +122,46 @@ exports.login = (req, res) => {
 /*
     GET /api/check
 */
+
+/**
+ * POST /api/login
+ *
+ * @author seonhyungjo
+ * @summary 로그인
+ * @memberof USER
+ * @param
+ * {
+ *      id,
+ *      password
+ * }
+ */
+
 exports.check = (req, res) => {
-    // read the token from header or url
     const token = req.headers['x-access-token'] || req.query.token;
 
-    // token does not exist
     if (!token) {
-        return res.status(403).json({
-            success: false,
-            message: 'not logged in'
-        });
+        console.log('Dont have Token');
+        reponseError(res, 'NOT_LOGIN');
     }
 
-    // create a promise that decodes the token
-    const p = new Promise((resolve, reject) => {
+    const checkToken = new Promise((resolve, reject) => {
         jwt.verify(token, req.app.get('jwt-secret'), (err, decoded) => {
             if (err) reject(err);
             resolve(decoded);
         });
     });
 
-    // if token is valid, it will respond with its info
     const respond = token => {
         res.json({
-            success: true,
+            success: '0000',
             info: token
         });
     };
 
-    // if it has failed to verify, it will return an error message
     const onError = error => {
-        res.status(403).json({
-            success: false,
-            message: error.message
-        });
+        console.log(error.message);
+        reponseError(res, 'NOT_LOGIN');
     };
 
-    // process the promise
-    p.then(respond).catch(onError);
+    checkToken.then(respond).catch(onError);
 };

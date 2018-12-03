@@ -47,6 +47,7 @@ usersSchema.statics.findAll = function() {
     return this.find().select({
         _id: 1, // 시퀀스
         id: 1, // 아이디
+        password: 1, //임시로 꺼내기
         name: 1, //일단은 대표자 이름으로 설정
         bNumber: 1, // 사업자 번호
         bAddress: 1, // 사업장 주소
@@ -70,7 +71,32 @@ usersSchema.statics.findAll = function() {
 usersSchema.statics.findOneById = function(_id) {
     return this.findOne({ _id }).select({
         _id: 1, // 시퀀스
+        id: 1, // 아이디,
+        name: 1, //일단은 대표자 이름으로 설정
+        bNumber: 1, // 사업자 번호
+        bAddress: 1, // 사업장 주소
+        cName: 1, // 회사명
+        email: 1, // 이메일
+        pNumber: 1, // 전화번호
+        branchName: 1, // 지점명
+        branchCode: 1, // 지점코드
+        updatedAt: 1 // 수정일자
+    });
+};
+
+/**
+ * @author seonhyungjo
+ * @summary 아이디로 유저 검색
+ * @memberof Admin
+ * @param id : 찾으려는 해당 id
+ * @see None
+ * @returns «Query»
+ */
+usersSchema.statics.findOneByUserId = function(id) {
+    return this.findOne({ id }).select({
+        _id: 1, // 시퀀스
         id: 1, // 아이디
+        password: 1,
         name: 1, //일단은 대표자 이름으로 설정
         bNumber: 1, // 사업자 번호
         bAddress: 1, // 사업장 주소
@@ -145,7 +171,6 @@ usersSchema.statics.deleteById = function(_id) {
  * @returns «Query»
  */
 usersSchema.methods.verify = function(password) {
-    // const userPassword = usersSchema.statics.findOneById.password
     console.log('password : ' + password);
     console.log('this.password : ' + this.password);
     return this.password === password;
@@ -160,15 +185,8 @@ usersSchema.methods.verify = function(password) {
  * @see None
  * @returns «Query»
  */
-usersSchema.methods.checkingAdmin = function(id, password) {
-    const accountCheck = this.methods.verify(id, password); //Boolean
-
-    if (accountCheck) {
-        const resultAdmin = usersSchema.statics.findOneById.checkAdmin || false;
-        return resultAdmin;
-    }
-
-    return false;
+usersSchema.methods.checkingAdmin = function() {
+    return usersSchema.statics.findOneByUserId.checkAdmin || false;
 };
 
 module.exports = mongoose.model('users', usersSchema);
