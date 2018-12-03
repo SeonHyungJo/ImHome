@@ -1,5 +1,7 @@
 const Users = require('../../models/users');
+const Store = require('../../models/stores');
 const reponseError = require('../common/responseError');
+const reponseSuccess = require('../common/responseSuccess');
 const jwt = require('jsonwebtoken');
 
 /**
@@ -31,15 +33,20 @@ exports.register = (req, res) => {
         없다면 새로 생성
     */
     const create = user => {
-        if (user) {
-            throw new Error('ID Exists');
-        } else {
-            return Users.create(userInfo);
-        }
+        const branchCode = userInfo.branchCode;
+        const branchName = userInfo.branchName;
+
+        return new Promise((resolve, reject) => {
+            Store.checkBranch(branchCode, branchName).then(result => {
+                return result != null
+                    ? resolve(Users.create(userInfo))
+                    : reject(new Error('Not Find Branch'));
+            });
+        });
     };
 
     const respond = () => {
-        res.status(200).send({ success: '0000' });
+        reponseSuccess(res);
     };
 
     // run when there is an error (username exists)

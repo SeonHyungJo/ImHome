@@ -28,4 +28,8 @@ storeSchema.statics.deleteByBranchCode = function(branchCode) {
     return this.remove({ branchCode });
 };
 
+storeSchema.statics.checkBranch = function(branchCode, branchName) {
+    return this.findOne({ branchCode, branchName });
+};
+
 module.exports = mongoose.model('store', storeSchema);
