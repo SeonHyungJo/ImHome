@@ -150,7 +150,7 @@ usersSchema.statics.updateById = function(_id, userInfo) {
  * @author seonhyungjo
  * @summary 해당 아이디로 유저 삭제
  * @memberof Admin
- * @param id : 삭제하려는 해당 id
+ * @param _id : 삭제하려는 유저 _id
  * @see None
  * @returns «Query»
  */
@@ -165,8 +165,7 @@ usersSchema.statics.deleteById = function(_id) {
  * @author seonhyungjo
  * @summary 해당 아이디로 유저 유효성검사
  * @memberof Admin
- * @param id : 찾으려는 해당 id
- *        password : 유효성검사를 위한 비밀번호
+ * @param password : 유효성검사를 위한 비밀번호
  * @see None
  * @returns «Query»
  */
