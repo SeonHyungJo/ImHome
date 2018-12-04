@@ -35,6 +35,12 @@ const reponseErrorType = (res, type) => {
         case 'DELETE_ODER_ERROR':
             res.status(500).send({ fail: '3004' });
             break;
+        case 'DONT_EXIT':
+            res.status(500).send({ fail: '3009' });
+            break;
+        case 'AREADY_COMPLETE':
+            res.status(500).send({ fail: '3010' });
+            break;
         //------------------------------------------------------
         default:
             res.status(500).send({ fail: '9999' });
