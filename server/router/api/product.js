@@ -3,7 +3,7 @@ const Products = require('../../models/products');
 
 export let router = express.Router();
 
-router.use(function timeLog(req, res, next) {
+router.use('/product', function timeLog(req, res, next) {
     console.log('Time: ', Date.now());
     next();
 });
@@ -34,8 +34,7 @@ router.post('/product', (req, res) => {
 router.get('/product/:companyCode', function(req, res) {
     Products.findOneByCompanyCode(req.params.companyCode)
         .then(product => {
-            if (!product)
-                return res.status(404).send({ err: 'product not found' });
+            if (!product) return res.status(404).send({ err: 'product not found' });
             console.log(product);
             res.json(product);
         })
