@@ -92,4 +92,4 @@ storeSchema.statics.checkBranch = function(branchCode, branchName) {
     return this.findOne({ branchCode, branchName });
 };
 
-module.exports = mongoose.model('store', storeSchema);
+module.exports = mongoose.model('stores', storeSchema);
