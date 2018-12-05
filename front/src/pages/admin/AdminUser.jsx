@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { PageTemplate } from '../../component/template';
 import { TableWithScroll } from '../../component/table';
 import { ViewForUser } from '../../component/view';
+import { TableBtn } from '../../component/common';
 import * as UserActions from '../../redux/modules/user';
 import * as CommonUtil from '../../util/commonUtil';
 
@@ -104,7 +105,8 @@ class AdminUser extends Component {
                     data={list}
                     gridTitle="회원목록 및 정보"
                     clickRow={this.getRowData}
-                    id={this.state.custNo} />
+                    id={this.state.custNo}
+                    button={<TableBtn>회원삭제</TableBtn>} />
             </PageTemplate>
         );
     }

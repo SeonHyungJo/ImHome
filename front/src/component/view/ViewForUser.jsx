@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { FormBtn } from '../common';
 import { ViewWrapper, ViewWithContent } from './';
 import * as UserActions from '../../redux/modules/user';
 
@@ -45,8 +46,10 @@ class ViewForUser extends Component {
                         <td>{pNumber ? pNumber : '-'}</td>
                     </tr>
                 </ViewWithContent>
+                <div style={{ textAlign: 'right' }}>
+                    <FormBtn onClick={this.popUpdateForm}>회원정보수정</FormBtn>
+                </div>
             </ViewWrapper>
-
         );
     }
 }

@@ -95,6 +95,11 @@ class TableWithScroll extends React.Component {
                             </td>
                         </tr>
                     }
+                    <tr>
+                        <th colspan={Object.keys(this.props.headerData).length} style={{ textAlign: 'right', padding: '0.5rem', lineHeight: '1.5rem', height: '2rem' }}>
+                            {this.props.button ? this.props.button : null}
+                        </th>
+                    </tr>
                 </TableWithContent>
             </TableWrapper>
 
