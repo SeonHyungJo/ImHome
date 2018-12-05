@@ -22,6 +22,7 @@ const orderSchema = new Schema(
         branchName: { type: String, required: true },
         branchCode: { type: String, required: true },
         items: [itemsSchema],
+        tradeStatementCount: { type: Number, default: 0 },
         complete: { type: Boolean, default: false }
     },
     {
@@ -45,6 +46,47 @@ orderSchema.statics.create = function(payload) {
 
 /**
  * @author seonhyungjo
+ * @summary 출고완료되지 않은 브랜치 리스트
+ * @private
+ * @memberof Admin
+ * @param
+ * @see None
+ * @returns «Query»
+ */
+orderSchema.statics.findInCompleteBranches = function() {
+    return this.find({ complete: false })
+        .select({ _id: 0, branchCode: 1, branchName: 1, updatedAt: 1 })
+        .sort({ updatedAt: -1 });
+};
+
+/**
+ * @author seonhyungjo
+ * @summary 출고완료되지 않은 주문내역 가져오기
+ * @private
+ * @memberof Admin
+ * @param _id : 주문 아이디
+ * @see None
+ * @returns «Query»
+ */
+orderSchema.statics.findInCompleteOrderByBranchcode = function(_id) {
+    return this.find({ _id, complete: false });
+};
+
+/**
+ * @author seonhyungjo
+ * @summary 출고된 주문내역 가져오기
+ * @private
+ * @memberof Admin
+ * @param branchCode : 지점코드로 구분
+ * @see None
+ * @returns «Query»
+ */
+orderSchema.statics.findInCompleteOrderByBranchcode = function(branchCode) {
+    return this.find({ branchCode, complete: true });
+};
+
+/**
+ * @author seonhyungjo
  * @summary 출고완료되지 않은 주문내역 가져오기
  * @private
  * @memberof Admin
@@ -52,8 +94,14 @@ orderSchema.statics.create = function(payload) {
  * @see None
  * @returns «Query»
  */
-orderSchema.statics.findInCompleteOrder = function(branchCode) {
-    return this.find({ branchCode, complete: false });
+orderSchema.statics.findInCompleteOrderByBranchcode = function(branchCode) {
+    return this.find({ branchCode, complete: false }).select({
+        _id: 1,
+        branchCode: 1,
+        branchName: 1,
+        items: 1,
+        updatedAt: 1
+    });
 };
 
 /**
@@ -74,7 +122,7 @@ orderSchema.statics.findOneAndUpdateNew = function(branchCode, productInfo) {
  * @author seonhyungjo
  * @summary Complete = true로 변경 진행(출고완료처리)
  * @private
- * @memberof AdminchangeCompleteTrue
+ * @memberof Admin
  * @param branchCode : 지점코드로 구분
  * @see None
  * @returns «Query»
@@ -83,8 +131,17 @@ orderSchema.statics.changeCompleteTrue = function(branchCode) {
     return this.findOneAndUpdate({ branchCode, complete: false }, { complete: true });
 };
 
-orderSchema.statics.deleteByBranchCode = function(branchCode) {
-    return this.remove({ branchCode });
+/**
+ * @author seonhyungjo
+ * @summary 주문내역을 삭제한다.
+ * @private
+ * @memberof AdminchangeCompleteTrue
+ * @param _id : 주문 아이디
+ * @see None
+ * @returns «Query»
+ */
+orderSchema.statics.deleteByBranchCode = function(_id) {
+    return this.remove({ _id });
 };
 
 module.exports = mongoose.model('orders', orderSchema);

@@ -38,6 +38,52 @@ router.get('/order', function(req, res) {
 });
 
 /**
+ * GET /api/order/br
+ *
+ * @author seonhyungjo
+ * @summary 주문내역 관련 브랜치 리스트 가져오기
+ * @private
+ * @memberof Admin
+ * @param
+ * @see None
+ * @returns «Query»
+ */
+router.get('/order/branch/incomplete', function(req, res) {
+    Orders.findInCompleteBranches()
+        .then(branchList => {
+            if (!branchList) throw new Error('branch not found');
+            res.status(200).send(branchList);
+        })
+        .catch(err => {
+            console.log(err);
+            reponseError(res, 'NOT_FIND_BRANCH');
+        });
+});
+
+/**
+ * GET /api/order/br
+ *
+ * @author seonhyungjo
+ * @summary 출고내역 관련 브랜치 리스트 가져오기
+ * @private
+ * @memberof Admin
+ * @param
+ * @see None
+ * @returns «Query»
+ */
+router.get('/order/branch/complete', function(req, res) {
+    Orders.findCompleteBranches()
+        .then(branchList => {
+            if (!branchList) throw new Error('branch not found');
+            res.status(200).send(branchList);
+        })
+        .catch(err => {
+            console.log(err);
+            reponseError(res, 'NOT_FIND_BRANCH');
+        });
+});
+
+/**
  * GET /api/order/:branchCode
  *
  * @author seonhyungjo
@@ -55,7 +101,7 @@ router.get('/order/:branchCode', function(req, res) {
                 throw new Error('Dont exit branchCode');
             }
 
-            return Orders.findInCompleteOrder(req.params.branchCode);
+            return Orders.findInCompleteOrderByBranchcode(req.params.branchCode);
         })
         .then(order => {
             if (!order) throw new Error('order not found');
@@ -79,12 +125,19 @@ router.get('/order/:branchCode', function(req, res) {
  * @returns «Query»
  */
 router.post('/order', (req, res) => {
-    Orders.findInCompleteOrder(req.body.branchCode)
+    Stores.findStoreByBranchcode(req.body.branchCode)
+        .then(store => {
+            // branchName을 잘못 넣을 것을 대비해서 만듬
+            req.body.branchName = store.branchName;
+            return Orders.findInCompleteOrderByBranchcode(store.branchCode);
+        })
         .then(order => {
             if (order.length !== 0) {
                 //기존에 complete:false인 내역이 있을 경우 수정진행
                 console.log('Modified');
-                return Orders.findOneAndUpdateNew(req.body.branchCode, req.body);
+                const modifiedOrder = Object.assign({}, order, req.body);
+
+                return Orders.findOneAndUpdateNew(req.body.branchCode, modifiedOrder);
                 //throw new Error('Already exit');
             }
             // 기존에 complete:false인 내역이 없을 경우 주문내역 추가
@@ -111,7 +164,7 @@ router.post('/order', (req, res) => {
  * @returns «Query»
  */
 router.put('/order/complete/:branchCode', (req, res) => {
-    Orders.findInCompleteOrder(req.params.branchCode)
+    Orders.findInCompleteOrderByBranchcode(req.params.branchCode)
         .then(order => {
             if (order.length == 0) {
                 console.log('Dont exit');
@@ -128,8 +181,24 @@ router.put('/order/complete/:branchCode', (req, res) => {
         });
 });
 
-router.delete('/order/:branchCode', (req, res) => {
-    Orders.deleteByBranchCode(req.params.branchCode)
-        .then(() => res.sendStatus(200))
-        .catch(err => res.status(500).send(err));
+/**
+ * DELETE /api/order/:_id
+ *
+ * @author seonhyungjo
+ * @summary 지점별 출고완료 처리하기
+ * @private
+ * @memberof Admin
+ * @param
+ * @see None
+ * @returns «Query»
+ */
+router.delete('/order/:_id', (req, res) => {
+    Orders.deleteByBranchCode(req.params._id)
+        .then(() => {
+            res.status(200).send({ success: '0000' });
+        })
+        .catch(err => {
+            console.log(err);
+            reponseError(res, 'DELETE_ODER_ERROR');
+        });
 });

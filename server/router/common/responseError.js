@@ -35,6 +35,9 @@ const reponseErrorType = (res, type) => {
         case 'DELETE_ODER_ERROR':
             res.status(200).send({ fail: '3004' });
             break;
+        case 'NOT_FIND_BRANCH':
+            res.status(200).send({ fail: '3004' });
+            break;
         case 'DONT_EXIT':
             res.status(200).send({ fail: '3009' });
             break;
