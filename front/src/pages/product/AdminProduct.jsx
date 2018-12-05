@@ -40,8 +40,8 @@ class AdminMain extends Component {
 
     render() {
         return (
-            <PageTemplate navData={this.state.navData} storeId={this.state.storeId}>
-                <Product products={this.state.products} />
+            <PageTemplate navData={this.state.navData} id={this.state.storeId}>
+                <Product products={this.state.products} storeId={this.state.storeId} />
             </PageTemplate>
         );
     }
