@@ -26,7 +26,7 @@ router.use('/order', function timeLog(req, res, next) {
  * @returns «Query»
  */
 router.get('/order', function(req, res) {
-    Orders.find()
+    Orders.findAllOrder()
         .then(orderList => {
             if (!orderList) throw new Error('order not found');
             res.status(200).send(orderList);
@@ -38,7 +38,7 @@ router.get('/order', function(req, res) {
 });
 
 /**
- * GET /api/order/br
+ * GET /api/order/branch/incomplete
  *
  * @author seonhyungjo
  * @summary 주문내역 관련 브랜치 리스트 가져오기
@@ -70,17 +70,19 @@ router.get('/order/branch/incomplete', function(req, res) {
  * @param
  * @see None
  * @returns «Query»
+ * @deprecated
  */
 router.get('/order/branch/complete', function(req, res) {
-    Orders.findCompleteBranches()
-        .then(branchList => {
-            if (!branchList) throw new Error('branch not found');
-            res.status(200).send(branchList);
-        })
-        .catch(err => {
-            console.log(err);
-            reponseError(res, 'NOT_FIND_BRANCH');
-        });
+    // Orders.findCompleteBranches()
+    //     .then(branchList => {
+    //         if (!branchList) throw new Error('branch not found');
+    //         res.status(200).send(branchList);
+    //     })
+    //     .catch(err => {
+    //         console.log(err);
+    //         reponseError(res, 'NOT_FIND_BRANCH');
+    //     });
+    reponseError(res, 'NOT_FIND_BRANCH');
 });
 
 /**

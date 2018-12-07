@@ -84,12 +84,11 @@ storeSchema.statics.deleteByBranchCode = function(branchCode) {
  * @private
  * @memberof Admin
  * @param branchCode 지점 코드
- * @param branchName 지점명
  * @see None
  * @returns «Query»
  */
-storeSchema.statics.checkBranch = function(branchCode, branchName) {
-    return this.findOne({ branchCode, branchName });
+storeSchema.statics.checkBranch = function(branchCode) {
+    return this.findOne({ branchCode });
 };
 
 module.exports = mongoose.model('stores', storeSchema);

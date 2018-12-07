@@ -34,13 +34,15 @@ exports.register = (req, res) => {
     */
     const create = user => {
         const branchCode = userInfo.branchCode;
-        const branchName = userInfo.branchName;
 
         return new Promise((resolve, reject) => {
-            Store.checkBranch(branchCode, branchName).then(result => {
-                return result != null
-                    ? resolve(Users.create(userInfo))
-                    : reject(new Error('Not Find Branch'));
+            Store.checkBranch(branchCode).then(result => {
+                if (result != null) {
+                    userInfo.branchName = result.branchName;
+                    return resolve(Users.create(userInfo));
+                }
+
+                return reject(new Error('Not Find Branch'));
             });
         });
     };

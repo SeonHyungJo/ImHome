@@ -47,7 +47,6 @@ usersSchema.statics.findAll = function() {
     return this.find().select({
         _id: 1, // 시퀀스
         id: 1, // 아이디
-        password: 1, //임시로 꺼내기
         name: 1, //일단은 대표자 이름으로 설정
         bNumber: 1, // 사업자 번호
         bAddress: 1, // 사업장 주소

@@ -44,6 +44,10 @@ orderSchema.statics.create = function(payload) {
     return product.save();
 };
 
+orderSchema.statics.findAllOrder = function(payload) {
+    return this.find().select({ _id: 1, branchCode: 1, branchName: 1, items: 1, updatedAt: 1 });
+};
+
 /**
  * @author seonhyungjo
  * @summary 출고완료되지 않은 브랜치 리스트
@@ -81,7 +85,7 @@ orderSchema.statics.findInCompleteOrderByBranchcode = function(_id) {
  * @see None
  * @returns «Query»
  */
-orderSchema.statics.findInCompleteOrderByBranchcode = function(branchCode) {
+orderSchema.statics.findCompleteOrderByBranchcode = function(branchCode) {
     return this.find({ branchCode, complete: true });
 };
 

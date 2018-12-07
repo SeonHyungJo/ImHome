@@ -95,7 +95,7 @@ router.delete('/store/:branchCode', function(req, res) {
     Stores.findStoreByBranchcode(req.params.branchCode)
         .then(store => {
             if (!store) throw new Error("Can't find branchCode");
-            return Stores.deleteByBranchCode(req.branchCode);
+            return Stores.deleteByBranchCode(req.params.branchCode);
         })
         .then(() => {
             res.status(200).send({ success: '0000' });

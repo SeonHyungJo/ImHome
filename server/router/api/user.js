@@ -40,7 +40,7 @@ router.get('/user', function(req, res) {
  * GET /api/user/:_id
  *
  * @author seonhyungjo
- * @summary 유저 정보 가져오기
+ * @summary 특정 유저 정보 가져오기
  * @private
  * @memberof Admin
  * @param _id: 유저 시퀀스 아이디
@@ -62,7 +62,7 @@ router.get('/user/:_id', function(req, res) {
 });
 
 /**
- * GET /api/user/:branchCode
+ * GET /api/user/list/:branchCode
  *
  * @author seonhyungjo
  * @summary 지점관련 유저들 가져오기
