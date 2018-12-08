@@ -8,7 +8,20 @@ import { Button, InputWithLabel } from '../../component/common';
 import * as UserActions from '../../redux/modules/user';
 
 class PopUserInfo extends Component {
+
+    handleChange = (e) => {
+        const { UserActions } = this.props;
+        const { name, value } = e.target;
+        // this.setError(null);
+        UserActions.changeInput({
+            name,
+            value,
+            form: 'user'
+        });
+    };
+
     render() {
+        const { handleChange } = this;
         const { branchName, name, cName, bNumber, bAddress, email, pNumber } = this.props.form.toJS();
 
         return (
@@ -22,41 +35,48 @@ class PopUserInfo extends Component {
                         name="custName"
                         placeholder="대표 성함"
                         value={name}
+                        onChange={handleChange}
                         autoFocus />
                     <InputWithLabel label="사업자 번호"
                         type="text"
                         name="custNumber"
                         placeholder="사업자 번호"
+                        onChange={handleChange}
                         value={bNumber}
                     />
                     <InputWithLabel label="사업장 주소"
                         type="text"
                         name="custAddress"
                         placeholder="사업장 주소"
+                        onChange={handleChange}
                         value={bAddress}
                     />
                     <InputWithLabel label="회사명"
                         type="text"
                         name="companyName"
                         placeholder="사업자 등록증 상의 회사명"
+                        onChange={handleChange}
                         value={cName}
                     />
                     <InputWithLabel label="이메일 주소"
                         type="text"
                         name="custEmail"
                         placeholder="세금계산서 받으실 수 있는 이메일 주소"
+                        onChange={handleChange}
                         value={email}
                     />
                     <InputWithLabel label="휴대폰 번호"
                         type="text"
                         name="custPhoneNumber"
                         placeholder="휴대폰 번호"
+                        onChange={handleChange}
                         value={pNumber}
                     />
                     <InputWithLabel label="지점명"
                         type="text"
                         name="storName"
                         placeholder="지점명"
+                        onChange={handleChange}
                         value={branchName}
                     />
                 </PopUserContent>
