@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { LoginWrapper, LoginContent } from '../../component/auth';
-import { InputWithLabel, LoginBtn, RegisterText } from '../../component/common';
+import { LoginInputWithLabel, LoginBtn, RegisterText } from '../../component/common';
 import { LoginTemplate } from '../../component/template';
 class Login extends Component {
     constructor() {
@@ -13,14 +13,14 @@ class Login extends Component {
             <LoginTemplate>
                 <LoginWrapper>
                     <LoginContent>
-                        <InputWithLabel
+                        <LoginInputWithLabel
                             label="id"
                             type="text"
                             name="custId"
                             placeholder="Username"
                             autoFocus
                         />
-                        <InputWithLabel
+                        <LoginInputWithLabel
                             label="password"
                             type="text"
                             name="custPasswd"

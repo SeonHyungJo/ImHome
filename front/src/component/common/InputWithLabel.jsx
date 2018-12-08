@@ -1,8 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Icon } from 'react-icons-kit';
-import { userO } from 'react-icons-kit/fa/userO';
-import { ic_lock_outline } from 'react-icons-kit/md/ic_lock_outline';
 
 // 두개가 함께 있을땐 상단 (그 사이) 에 여백을 준다
 const Wrapper = styled.div`
@@ -10,45 +7,39 @@ const Wrapper = styled.div`
         margin-top: 1rem;
         margin-bottom: 1rem;
     }
-
-    display: flex;
-    justify-content: space-around;
-    width: 45%;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 10px;
-    border-bottom: 1px solid white;
 `;
 
 const Label = styled.div`
     text-align: left;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 0.25rem;
+    margin-right: 4rem;
     display: inline-block;
+    width: 20%;
 `;
 
 const Input = styled.input`
-    width: 85%;
-    border: 0px;
-    font-size: 1rem;
-    background-color: transparent;
-    color: white;
-
+    width: 50%;
+    border: 1px solid #c2c2c2;
+    outline: none;
+    border-radius: 3px;
+    height: 1.2em;
+    font-size: 1.2rem;
+    padding-left: 0.5rem;
+    padding-right: 0.01rem;
     ::placeholder {
-        font-size: 1rem;
-        color: white;
+        font-size: 0.7rem;
+        color: #7d7d7d;
     }
 `;
 
 // rest 쪽에는 onChange, type, name, value, placeholder 등의 input 에서 사용 하는 값들을 넣어줄수 있다.
 const InputWithLabel = ({ label, ...rest }) => (
     <Wrapper>
-        <Label>
-            {label === 'id' ? (
-                <Icon icon={userO} size={22} style={{ color: 'white' }} />
-            ) : (
-                <Icon icon={ic_lock_outline} size={22} style={{ color: 'white' }} />
-            )}
-        </Label>
-        <Input {...rest} maxlength="20" />
+        <Label>{label}</Label>
+        <Input {...rest} />
     </Wrapper>
 );
 
