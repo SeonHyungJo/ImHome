@@ -21,6 +21,28 @@ class PopUserInfo extends Component {
         });
     };
 
+    updateData = async () => {
+        const { UserActions, updateForm } = this.props;
+        const { _id, branchName, name, cName, bNumber, bAddress, email, pNumber } = updateForm.toJS();
+
+        try {
+            await UserActions.updateUserData(_id, {
+                branchName, name, cName, bNumber, bAddress, email, pNumber
+            });
+
+            const loggedInfo = this.props.result.toJS();
+
+            if (loggedInfo.success === '0000') {
+                UserActions.getUserData(_id);
+                alert('회원 정보가 수정되었습니다.');
+                this.props.closePop();
+            }
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     render() {
         const { handleChange } = this;
         const { branchName, name, cName, bNumber, bAddress, email, pNumber } = this.props.updateForm.toJS();
@@ -80,7 +102,7 @@ class PopUserInfo extends Component {
                         value={branchName ? branchName : ''}
                     />
                 </PopUserContent>
-                <Button style={{ marginRight: '1rem', width: '6rem' }}>수정하기</Button>
+                <Button style={{ marginRight: '1rem', width: '6rem' }} onClick={this.updateData}>수정하기</Button>
                 <Button style={{ width: '6rem' }} onClick={this.props.closePop}>닫기</Button>
             </PopUserWrapper>
         );

@@ -10,6 +10,7 @@ const GET_STORE_LIST = 'user/GET_STORE_LIST'; // 매장 목록 가져오기
 const GET_USER_LIST = 'user/GET_USER_LIST'; //해당 매장의 회원 목록 가져오기
 const GET_USER_DATA = 'user/GET_USER_DATA'; //해당 회원의 상세 정보 가져오기
 const GET_USER_UPDATE_DATA = 'user/GET_USER_UPDATE_DATA'; //해당 회원의 상세 정보 가져오기
+const UPDATE_USER_DATA = 'user/UPDATE_USER_DATA'; //해당 회원의 정보 수정
 
 export const changeInput = createAction(CHANGE_INPUT); // {form, name, value}
 export const initializeForm = createAction(INITIALIZE_FORM); // form
@@ -19,6 +20,7 @@ export const getStoreList = createAction(GET_STORE_LIST, userAPI.getStoreList);
 export const getUserList = createAction(GET_USER_LIST, userAPI.getUserList);
 export const getUserData = createAction(GET_USER_DATA, userAPI.getUserData);
 export const getUserUpdateData = createAction(GET_USER_UPDATE_DATA, userAPI.getUserUpdateData);
+export const updateUserData = createAction(UPDATE_USER_DATA, userAPI.updateUserData);
 
 // 초기값 설정
 const initialState = Map({
@@ -82,5 +84,9 @@ export default handleActions({
     ...pender({
         type: GET_USER_UPDATE_DATA,
         onSuccess: (state, action) => state.setIn(['user', 'updateForm'], Map(action.payload.data))
+    }),
+    ...pender({
+        type: UPDATE_USER_DATA,
+        onSuccess: (state, action) => state.set('result', Map(action.payload.data))
     }),
 }, initialState);
