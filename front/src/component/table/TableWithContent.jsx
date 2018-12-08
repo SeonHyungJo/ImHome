@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const TableContentWrapper = styled.div`
-    overflow: auto;
+    overflow-y : scroll;
+    height : 20vh;
     padding: 0;
 `
 

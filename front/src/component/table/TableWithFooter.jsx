@@ -1,35 +1,31 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ViewContentWrapper = styled.div`
+const TableContentWrapper = styled.div`
     overflow: auto;
     padding: 0;
-    border-right: none;
 `
 
 const Table = styled.table`
-    border-top: 2px solid #fe4c8d;
-    border-bottom: 2px solid #fe4c8d;
+    border-top: none;
     width: 100%;
     border-collapse: collapse;
     font-size: 12px;
     color: #333;
     table-layout: fixed;
     border-spacing: 0;
-    border-right : none;
+    width: 100%;
     th {
-        text-align: left;
-        width: 9rem
+        text-align: center;
         border-right: 1px solid #e0e0e0;
         border-bottom: 1px solid #e0e0e0;
         background: #fafafa;
-        height: 3rem;
-        line-height: 18px;
+        height: 3.5rem;
+        line-height: 2.5rem;
         color: #666666;
         font-size: 13px;
         font-weight: bold;
         padding: 5px;
-        padding-left: 1rem;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
@@ -38,26 +34,31 @@ const Table = styled.table`
         border-right: 1px solid #e0e0e0;
         border-bottom: 1px solid #e0e0e0;
         padding: 5px;
-        padding-left: 1rem;
         line-height: 22px;
         color: #666666;
-        font-size: 0.8rem;
+        font-size: 13px;
         font-weight: bold;
-        height: 3rem;
+        height: 2.5rem;
         box-sizing: border-box;
         letter-spacing: -0.04em;
-        text-overflow:ellipsis; overflow:hidden; white-space:nowrap;
+        cursor: pointer;
     };
+    .on {
+        background-color: #fe4c8d;
+        td {
+            color: black;   
+        }
+    }
 `
 
-const ViewWithContent = ({ title, children }) => (
-    <ViewContentWrapper>
+const TableWithContent = ({ title, children }) => (
+    <TableContentWrapper>
         <Table>
             <tbody>
                 {children}
             </tbody>
         </Table>
-    </ViewContentWrapper>
+    </TableContentWrapper>
 );
 
-export default ViewWithContent;
+export default TableWithContent;

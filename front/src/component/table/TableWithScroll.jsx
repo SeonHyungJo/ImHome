@@ -3,28 +3,6 @@ import { TableWrapper, TableWithContent, TableWithTitle } from './';
 
 class TableWithScroll extends React.Component {
 
-    scrollTable1 = (e) => {
-        this.table2.scrollLeft = this.table1.scrollLeft;
-
-    }
-
-    scrollTable2 = (e) => {
-        this.table1.scrollLeft = this.table2.scrollLeft;
-
-        if (this.props.progressShow === false) {
-            if ((this.table2.scrollHeight - this.table2.scrollTop === this.table2.clientHeight) && (this.props.totalCount !== this.props.rowData.length)) {
-
-                this.props.goSearch();
-            } else {
-                return;
-            }
-        } else {
-            return;
-        }
-
-        // document.getElementById("table1").scrollRight = document.getElementById("table2").scrollRight;
-    }
-
     render() {
         return (
             <TableWrapper title={this.props.gridTitle}>
@@ -95,12 +73,19 @@ class TableWithScroll extends React.Component {
                             </td>
                         </tr>
                     }
-                    <tr>
-                        <th colSpan={Object.keys(this.props.headerData).length} style={{ textAlign: 'right', padding: '0.5rem', lineHeight: '1.5rem', height: '2rem' }}>
-                            {this.props.button ? this.props.button : null}
-                        </th>
-                    </tr>
+
                 </TableWithContent>
+                {this.props.button ?
+                    (
+                        <TableWithContent>
+                            <tr>
+                                <th colSpan={Object.keys(this.props.headerData).length} style={{ textAlign: 'right', padding: '0.5rem', lineHeight: '1.5rem', height: '2rem' }}>
+                                    {this.props.button}
+                                </th>
+                            </tr>
+                        </TableWithContent>
+                    ) : <div />
+                }
             </TableWrapper>
 
         );
