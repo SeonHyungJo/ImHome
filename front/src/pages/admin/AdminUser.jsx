@@ -70,7 +70,7 @@ class AdminUser extends Component {
             await UserActions.getUserList(storeId);
             await UserActions.changeInput({
                 form: 'user',
-                value: this.props.list.length > 0 ? this.props.list[0]._id : '0',
+                value: this.props.list.length > 0 ? this.props.list[0]._id : '',
                 name: '_id'
             });
             await this.getRowData();
@@ -106,19 +106,24 @@ class AdminUser extends Component {
 
     render() {
         const { store, list } = this.props;
+        const { _id } = this.props.form.toJS();
+        console.log(_id);
         return (
             <PageTemplate navData={store} id={this.state.storeId} clickNav={this.getNavData}>
                 <ViewForUser viewTitle="회원정보 조회" />
-                <div style={{ textAlign: 'right', marginRight: '1rem' }}>
-                    <FormBtn onClick={this.popUpdateForm}>회원정보수정</FormBtn>
-                </div>
+                {_id ? (
+                    <div style={{ textAlign: 'right', marginRight: '1rem' }}>
+                        <FormBtn onClick={this.popUpdateForm}>회원정보수정</FormBtn>
+                    </div>) :
+                    <div />
+                }
                 <TableWithScroll
                     headerData={this.state.headerData}
                     data={list}
                     gridTitle="회원목록 및 정보"
                     clickRow={this.getRowData}
                     id={this.state.custNo}
-                    button={<TableBtn>회원삭제</TableBtn>} />
+                    button={_id ? <TableBtn>회원삭제</TableBtn> : null} />
                 <PopUserInfo displayPop={this.state.displayPop} closePop={this.closePop} />
             </PageTemplate>
         );

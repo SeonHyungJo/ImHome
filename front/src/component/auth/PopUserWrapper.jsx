@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-    width: 42%;
+    width: 53%;
     text-align: center;
     background-color: white;
     border : 1px solid black;  

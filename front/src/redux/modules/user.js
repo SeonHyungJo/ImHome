@@ -22,7 +22,7 @@ export const getUserData = createAction(GET_USER_DATA, userAPI.getUserData);
 const initialState = Map({
     user: Map({
         form: Map({
-            _id: '',
+            _id: null,
             branchCode: '',
             branchName: '',
             name: '',

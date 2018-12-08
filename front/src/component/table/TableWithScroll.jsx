@@ -90,13 +90,13 @@ class TableWithScroll extends React.Component {
                         })
                         :
                         <tr>
-                            <td style={{ textAlign: 'center' }} colspan={Object.keys(this.props.headerData).length}>
+                            <td style={{ textAlign: 'center' }} colSpan={Object.keys(this.props.headerData).length}>
                                 데이터가 없습니다.
                             </td>
                         </tr>
                     }
                     <tr>
-                        <th colspan={Object.keys(this.props.headerData).length} style={{ textAlign: 'right', padding: '0.5rem', lineHeight: '1.5rem', height: '2rem' }}>
+                        <th colSpan={Object.keys(this.props.headerData).length} style={{ textAlign: 'right', padding: '0.5rem', lineHeight: '1.5rem', height: '2rem' }}>
                             {this.props.button ? this.props.button : null}
                         </th>
                     </tr>

@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { FormBtn } from '../common';
-import { ViewWrapper, ViewWithContent, PopUserInfo } from './';
+import { ViewWrapper, ViewWithContent } from './';
 import * as UserActions from '../../redux/modules/user';
 
 class ViewForUser extends Component {

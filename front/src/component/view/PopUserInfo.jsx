@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { RegisterTemplate } from '../../component/template';
 import { PopUserWrapper, PopUserTitle, PopUserContent } from '../../component/auth/';
 import { Button, InputWithLabel } from '../../component/common';
 import * as UserActions from '../../redux/modules/user';
