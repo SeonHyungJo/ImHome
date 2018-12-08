@@ -87,8 +87,10 @@ class AdminUser extends Component {
         this.setState({ custNo: custNo });
 
         try {
-            if (custNo)
+            if (custNo) {
                 await UserActions.getUserData(custNo);
+                await UserActions.getUserUpdateData(custNo);
+            }
 
         } catch (e) {
             console.log(e);
@@ -101,7 +103,10 @@ class AdminUser extends Component {
     }
 
     closePop = () => {
+        const { UserActions } = this.props;
+
         this.setState({ displayPop: false })
+        UserActions.getUserUpdateData(this.state.custNo);
     }
 
     render() {

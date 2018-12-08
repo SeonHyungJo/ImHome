@@ -16,13 +16,14 @@ class PopUserInfo extends Component {
         UserActions.changeInput({
             name,
             value,
-            form: 'user'
+            form: 'user',
+            targetForm: 'updateForm'
         });
     };
 
     render() {
         const { handleChange } = this;
-        const { branchName, name, cName, bNumber, bAddress, email, pNumber } = this.props.form.toJS();
+        const { branchName, name, cName, bNumber, bAddress, email, pNumber } = this.props.updateForm.toJS();
         return (
             <PopUserWrapper style={{ display: this.props.displayPop ? 'block' : 'none' }}>
                 <PopUserTitle title="회원정보수정">
@@ -88,7 +89,7 @@ class PopUserInfo extends Component {
 
 export default connect(
     (state) => ({
-        form: state.user.getIn(['user', 'form']),
+        updateForm: state.user.getIn(['user', 'updateForm']),
         list: state.user.getIn(['user', 'list']),
         store: state.user.getIn(['user', 'store']),
         error: state.user.getIn(['user', 'error']),
