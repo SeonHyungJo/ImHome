@@ -18,6 +18,9 @@ const Wrapper = styled.button`
     font-weight: bold;
 `;
 
-const Button = ({ children, onClick }) => <Wrapper onClick={onClick}>{children}</Wrapper>;
+const Button = ({ children, onClick, style }) =>
+    <Wrapper style={style ? style : {}} onClick={onClick}>
+        {children}
+    </Wrapper>;
 
 export default Button;

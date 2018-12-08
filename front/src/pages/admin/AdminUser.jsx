@@ -5,8 +5,8 @@ import { bindActionCreators } from 'redux';
 
 import { PageTemplate } from '../../component/template';
 import { TableWithScroll } from '../../component/table';
-import { ViewForUser } from '../../component/view';
-import { TableBtn } from '../../component/common';
+import { ViewForUser, PopUserInfo } from '../../component/view';
+import { TableBtn, FormBtn } from '../../component/common';
 import * as UserActions from '../../redux/modules/user';
 import * as CommonUtil from '../../util/commonUtil';
 
@@ -28,7 +28,8 @@ class AdminUser extends Component {
         this.state = {
             storeId: 1,
             custNo: 1,
-            headerData: headerData
+            headerData: headerData,
+            displayPop: false
         };
     }
 
@@ -95,11 +96,22 @@ class AdminUser extends Component {
 
     }
 
+    popUpdateForm = () => {
+        this.setState({ displayPop: true })
+    }
+
+    closePop = () => {
+        this.setState({ displayPop: false })
+    }
+
     render() {
         const { store, list } = this.props;
         return (
             <PageTemplate navData={store} id={this.state.storeId} clickNav={this.getNavData}>
                 <ViewForUser viewTitle="회원정보 조회" />
+                <div style={{ textAlign: 'right', marginRight: '1rem' }}>
+                    <FormBtn onClick={this.popUpdateForm}>회원정보수정</FormBtn>
+                </div>
                 <TableWithScroll
                     headerData={this.state.headerData}
                     data={list}
@@ -107,6 +119,7 @@ class AdminUser extends Component {
                     clickRow={this.getRowData}
                     id={this.state.custNo}
                     button={<TableBtn>회원삭제</TableBtn>} />
+                <PopUserInfo displayPop={this.state.displayPop} closePop={this.closePop} />
             </PageTemplate>
         );
     }
