@@ -10,11 +10,10 @@ const Wrapper = styled.div`
     z-index: 3;
     float: left;
     background-position: 0 0;
-    padding-left: 0.5rem;
 `;
 
 const ContentWrapper = styled.div`
-    width: 78rem;
+    width: 62rem;
     background: white;
     padding-top: 0.5rem;
 `;
