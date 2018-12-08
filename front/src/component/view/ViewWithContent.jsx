@@ -46,6 +46,7 @@ const Table = styled.table`
         height: 3.5rem;
         box-sizing: border-box;
         letter-spacing: -0.04em;
+        text-overflow:ellipsis; overflow:hidden; white-space:nowrap;
     };
 `
 

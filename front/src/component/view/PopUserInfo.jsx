@@ -23,7 +23,6 @@ class PopUserInfo extends Component {
     render() {
         const { handleChange } = this;
         const { branchName, name, cName, bNumber, bAddress, email, pNumber } = this.props.form.toJS();
-
         return (
             <PopUserWrapper style={{ display: this.props.displayPop ? 'block' : 'none' }}>
                 <PopUserTitle title="회원정보수정">
@@ -32,52 +31,52 @@ class PopUserInfo extends Component {
                 <PopUserContent>
                     <InputWithLabel label="대표 성함"
                         type="text"
-                        name="custName"
+                        name="name"
                         placeholder="대표 성함"
-                        value={name}
+                        value={name ? name : ''}
                         onChange={handleChange}
                         autoFocus />
                     <InputWithLabel label="사업자 번호"
                         type="text"
-                        name="custNumber"
+                        name="bNumber"
                         placeholder="사업자 번호"
                         onChange={handleChange}
-                        value={bNumber}
+                        value={bNumber ? bNumber : ''}
                     />
                     <InputWithLabel label="사업장 주소"
                         type="text"
-                        name="custAddress"
+                        name="bAddress"
                         placeholder="사업장 주소"
                         onChange={handleChange}
-                        value={bAddress}
+                        value={bAddress ? bAddress : ''}
                     />
                     <InputWithLabel label="회사명"
                         type="text"
-                        name="companyName"
+                        name="cName"
                         placeholder="사업자 등록증 상의 회사명"
                         onChange={handleChange}
-                        value={cName}
+                        value={cName ? cName : ''}
                     />
                     <InputWithLabel label="이메일 주소"
                         type="text"
-                        name="custEmail"
+                        name="email"
                         placeholder="세금계산서 받으실 수 있는 이메일 주소"
                         onChange={handleChange}
-                        value={email}
+                        value={email ? email : ''}
                     />
                     <InputWithLabel label="휴대폰 번호"
                         type="text"
-                        name="custPhoneNumber"
+                        name="pNumber"
                         placeholder="휴대폰 번호"
                         onChange={handleChange}
-                        value={pNumber}
+                        value={pNumber ? pNumber : ''}
                     />
                     <InputWithLabel label="지점명"
                         type="text"
-                        name="storName"
+                        name="branchName"
                         placeholder="지점명"
                         onChange={handleChange}
-                        value={branchName}
+                        value={branchName ? branchName : ''}
                     />
                 </PopUserContent>
                 <Button style={{ marginRight: '1rem', width: '6rem' }}>수정하기</Button>
