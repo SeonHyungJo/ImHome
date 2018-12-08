@@ -98,6 +98,25 @@ class AdminUser extends Component {
 
     }
 
+    deleteData = async () => {
+        const { UserActions, form } = this.props;
+        const { _id } = form.toJS();
+
+        try {
+            await UserActions.deleteUserData(_id);
+
+            const loggedInfo = this.props.result.toJS();
+
+            if (loggedInfo.success === '0000') {
+                this.getNavData(this.state.storeId);
+                alert('회원 정보가 삭제되었습니다.');
+            }
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     popUpdateForm = () => {
         this.setState({ displayPop: true })
     }
@@ -127,7 +146,7 @@ class AdminUser extends Component {
                     gridTitle="회원목록 및 정보"
                     clickRow={this.getRowData}
                     id={this.state.custNo}
-                    button={_id && _id !== '0' ? <TableBtn>회원삭제</TableBtn> : null} />
+                    button={_id && _id !== '0' ? <TableBtn onClick={this.deleteData}>회원삭제</TableBtn> : null} />
                 <PopUserInfo displayPop={this.state.displayPop} closePop={this.closePop} />
             </PageTemplate>
         );

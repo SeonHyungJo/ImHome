@@ -6,3 +6,4 @@ export const getUserData = (custNo) => axios.get('/api/user/' + custNo);
 export const getUserUpdateData = (custNo) => axios.get('/api/user/' + custNo);
 export const updateUserData = (custNo, { branchName, name, cName, bNumber, bAddress, email, pNumber }) =>
     axios.put('/api/user/' + custNo, { branchName, name, cName, bNumber, bAddress, email, pNumber });
+export const deleteUserData = (custNo) => axios.delete('/api/user/' + custNo);
