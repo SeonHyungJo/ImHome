@@ -134,9 +134,10 @@ const Button = styled.button`
     font-weight: 800;
     max-height: 40px;
     padding: 5px 15px;
+    cursor: pointer;
 `;
 
-const OrderListTable = ({ branchName, orderList, buttonList }) => (
+const OrderListTable = ({ branchName, orderList, buttonList, clickComplete }) => (
     <ContentWrapper>
         <div className={'dashedContainer'}>
             <div className={'mainContainer'}>
@@ -144,17 +145,28 @@ const OrderListTable = ({ branchName, orderList, buttonList }) => (
                 <OrderTable>
                     <Thead />
                     <OrderListTableList orderList={orderList} />
-                    <OrderListTableTotal
-                        totalCost={orderList
-                            .map(order => order.count * order.cost)
-                            .reduce((cost, currentCost) => cost + currentCost)}
-                    />
+                    <OrderListTableTotal totalCost={calTotalCost(orderList)} />
                 </OrderTable>
             </div>
-            <Buttons buttonList={buttonList} />
+            <Buttons buttonList={buttonList} clickComplete={clickComplete} />
         </div>
     </ContentWrapper>
 );
+
+/**
+ * @summary 주문내역 총 가격 계산
+ * @param orderList
+ */
+const calTotalCost = orderList => {
+    return orderList instanceof Array
+        ? orderList
+              .map(order => {
+                  console.log(parseInt(order.itemCount, 10) * parseInt(order.itemCost, 10));
+                  return parseInt(order.itemCount, 10) * parseInt(order.itemCost, 10);
+              })
+              .reduce((cost, currentCost) => cost + currentCost)
+        : 0;
+};
 
 const Thead = () => (
     <div className={classNames('thead', 'underLineDash')}>
@@ -164,11 +176,15 @@ const Thead = () => (
     </div>
 );
 
-const Buttons = ({ buttonList }) => (
+const Buttons = ({ buttonList, clickComplete }) => (
     <div className={'buttonContainer'}>
-        {buttonList.map((button, index) => (
-            <Button key={index}>{`${button.name}`}</Button>
-        ))}
+        {buttonList.map((button, index) => {
+            return index === 1 ? (
+                <Button key={index} onClick={() => clickComplete()}>{`${button.name}`}</Button>
+            ) : (
+                <Button key={index}>{`${button.name}`}</Button>
+            );
+        })}
     </div>
 );
 
