@@ -48,7 +48,7 @@ const LoginInputWithLabel = ({ label, ...rest }) => (
                     <Icon icon={ic_lock_outline} size={22} style={{ color: 'white' }} />
                 )}
         </Label>
-        <Input {...rest} maxlength="20" />
+        <Input {...rest} maxLength="20" />
     </Wrapper>
 );
 
