@@ -1,24 +1,17 @@
 import React, { Component } from 'react';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import { PageTemplate } from '../../component/template';
 import { OrderListTable } from '../../component/orderList';
 import { SpecificationTable } from '../../component/specificationTable';
+import * as OrderListActions from '../../redux/modules/orderList';
+import * as CommonUtil from '../../util/commonUtil';
 
-class AdminMain extends Component {
+class AdminOrderList extends Component {
     constructor() {
         super();
-        const navData = [
-            { id: 1, name: '분당점' },
-            { id: 2, name: '백현점' },
-            { id: 3, name: '광주탄천점' },
-            { id: 4, name: '이대본점' },
-            { id: 5, name: '용인죽전점' },
-            { id: 6, name: '분당점' },
-            { id: 7, name: '백현점' },
-            { id: 8, name: '광주탄천점' },
-            { id: 9, name: '이대본점' },
-            { id: 10, name: '용인죽전점' }
-        ];
-
         const orders = [
             { name: '아이스크림', count: 2, cost: 3000 },
             { name: '아메리카노', count: 1, cost: 4000 },
@@ -33,31 +26,69 @@ class AdminMain extends Component {
         ];
 
         this.state = {
-            storeId: 1,
-            navData,
             orders,
             buttons,
             modifiedDate: '2018.11.21 15시 35분'
         };
     }
 
-    getCurrentBranchName() {
-        return this.state.navData
-            .filter(obj => obj.id === this.state.storeId)
-            .map(result => result.name);
+    async componentDidMount() {
+        const { OrderListActions } = this.props;
+
+        // 주문내역 브랜치 리스트 가져오기
+        await OrderListActions.getStoreList();
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        //return this.state.currentOrder != nextState.currentOrder ? true : false;
+        return true;
+    }
+
+    // 리스트 클릭시 상세 주문내역 가져오기
+    getNavData = async id => {
+        try {
+            const { OrderListActions, currentOrder } = this.props;
+            const storeId = id ? id : currentOrder.toJS().branchCode;
+            this.setState({ storeId });
+
+            // 선택한 지점 주문내역 불러오기
+            await OrderListActions.getOrderData(storeId);
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    // 출고완료처리하기
+    setComplete = async () => {
+        try {
+            const { OrderListActions, currentOrder } = this.props;
+            // 선택한 지점 출고처리하기
+            const result = await OrderListActions.updateComplete(currentOrder.branchCode);
+
+            if (result.data.success === '0000') {
+                // 주문내역 브랜치 리스트 가져오기
+                const storeList = await OrderListActions.getStoreList();
+                await this.getNavData(storeList.data[0].branchCode);
+                alert('출고처리가 되었습니다.');
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
     render() {
+        const { store, currentOrder } = this.props;
         return (
-            <PageTemplate navData={this.state.navData} id={this.state.storeId}>
-                <header>주문일자 : {this.state.modifiedDate}</header>
+            <PageTemplate navData={store} id={this.state.storeId} clickNav={this.getNavData}>
+                <header>주문일자 : {CommonUtil.setDate(currentOrder.updatedAt)}</header>
                 <OrderListTable
-                    branchName={this.getCurrentBranchName()}
-                    orderList={this.state.orders}
+                    branchName={currentOrder.branchName}
+                    orderList={currentOrder.items}
                     buttonList={this.state.buttons}
+                    clickComplete={this.setComplete}
                 />
                 <SpecificationTable
-                    branchName={this.getCurrentBranchName()}
+                    branchName={this.state.storeId}
                     orderList={this.state.orders}
                     buttonList={this.state.buttons}
                 />
@@ -66,4 +97,15 @@ class AdminMain extends Component {
     }
 }
 
-export default AdminMain;
+export default connect(
+    state => ({
+        currentOrder: state.orderList.getIn(['orderList', 'currentOrder']),
+        list: state.orderList.getIn(['orderList', 'list']),
+        store: state.orderList.getIn(['orderList', 'store']),
+        error: state.orderList.getIn(['orderList', 'error']),
+        result: state.orderList.get('result')
+    }),
+    dispatch => ({
+        OrderListActions: bindActionCreators(OrderListActions, dispatch)
+    })
+)(AdminOrderList);

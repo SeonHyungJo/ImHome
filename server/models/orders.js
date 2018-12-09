@@ -45,7 +45,14 @@ orderSchema.statics.create = function(payload) {
 };
 
 orderSchema.statics.findAllOrder = function(payload) {
-    return this.find().select({ _id: 1, branchCode: 1, branchName: 1, items: 1, updatedAt: 1 });
+    return this.find().select({
+        _id: 1,
+        branchCode: 1,
+        branchName: 1,
+        items: 1,
+        updatedAt: 1,
+        complete: 1
+    });
 };
 
 /**
@@ -59,7 +66,7 @@ orderSchema.statics.findAllOrder = function(payload) {
  */
 orderSchema.statics.findInCompleteBranches = function() {
     return this.find({ complete: false })
-        .select({ _id: 0, branchCode: 1, branchName: 1, updatedAt: 1 })
+        .select({ _id: 1, branchCode: 1, branchName: 1, updatedAt: 1 })
         .sort({ updatedAt: -1 });
 };
 

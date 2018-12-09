@@ -7,10 +7,6 @@ const ContentWrapper = styled.div`
     padding: 10px;
 `;
 
-const SpecificationTable = () => (
-    <ContentWrapper>
-        <div>명세서 23일까지</div>
-    </ContentWrapper>
-);
+const SpecificationTable = () => <ContentWrapper />;
 
 export default SpecificationTable;

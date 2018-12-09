@@ -61,7 +61,7 @@ router.get('/order/branch/incomplete', function(req, res) {
 });
 
 /**
- * GET /api/order/br
+ * GET /api/order/branch/complete
  *
  * @author seonhyungjo
  * @summary 출고내역 관련 브랜치 리스트 가져오기
