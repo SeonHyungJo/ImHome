@@ -16,7 +16,7 @@ class Login extends Component {
     login = async () => {
         const { AuthActions } = this.props;
         const { id, password } = this.props.form.toJS(); // form 에서 email 과 password 값을 읽어옴
-        //const { history } = this.props;
+        const { history } = this.props;
 
         await AuthActions.userLogin({
             id: id,
@@ -28,7 +28,7 @@ class Login extends Component {
         if (loggedInfo.success === '0000') {
             alert('성공적으로 로그인 하였습니다');
             localStorage.setItem('accessToken', loggedInfo.imhomeToken);
-            //history.push('/admin/product');
+            history.push('/admin/product');
         } else {
             alert('로그인 실패')
         }
