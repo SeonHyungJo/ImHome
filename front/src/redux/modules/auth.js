@@ -1,4 +1,4 @@
-import { createAction, handleActions} from 'redux-actions';
+import { createAction, handleActions } from 'redux-actions';
 import { pender } from 'redux-pender';
 import * as AuthAPI from '../../lib/api/auth';
 import { Map } from 'immutable';
@@ -29,9 +29,8 @@ const initialState = Map({
     }),
     login: Map({
         form: Map({
-            custNo : null,
-            custId: '',
-            custPasswd: '',
+            id: '',
+            password: '',
         }),
         error: null
     }),
@@ -39,18 +38,18 @@ const initialState = Map({
 });
 
 export default handleActions({
-    [CHANGE_INPUT] : (state, action) => {
+    [CHANGE_INPUT]: (state, action) => {
         const { form, name, value } = action.payload;
         return state.setIn([form, 'form', name], value);
     },
-    [INITIALIZE_FORM] : (state, action) => {
+    [INITIALIZE_FORM]: (state, action) => {
         const initialForm = initialState.get(action.payload);
         return state.set(action.payload, initialForm);
     },
     [SET_ERROR]: (state, action) => {
         const { form, message } = action.payload;
         return state.setIn([form, 'error'], message);
-    }, 
+    },
     ...pender({
         type: USER_LOGIN,
         onSuccess: (state, action) => state.set('result', Map(action.payload.data))

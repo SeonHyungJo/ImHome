@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const userRegister = ({ custEmail, custPasswd }) => //@TODO 필드 추가 필요
-    axios.post('/excenter/api/customer/register', { custEmail, custPasswd });
-export const userLogin = ({ custId, custPasswd }) => axios.post('/excenter/api/customer/login', { custId, custPasswd });
-export const logout = () => axios.post('/excenter/api/auth/logout');
+export const userRegister = ({ id, password }) => //@TODO 필드 추가 필요
+    axios.post('/api/register', { id, password });
+export const userLogin = ({ id, password }) => axios.post('/api/login', { id, password });
+export const logout = () => axios.post('/api/logout');
