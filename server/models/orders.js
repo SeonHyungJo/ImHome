@@ -57,6 +57,25 @@ orderSchema.statics.findAllOrder = function(payload) {
 
 /**
  * @author seonhyungjo
+ * @summary 해당 지점의 출고완료된 주문내역 리스트 가져오기
+ * @private
+ * @memberof Admin
+ * @param
+ * @see None
+ * @returns «Query»
+ */
+orderSchema.statics.findOrderList = function(branchCode) {
+    return this.find({ branchCode, complete: true }).select({
+        _id: 1,
+        branchCode: 1,
+        branchName: 1,
+        items: 1,
+        updatedAt: 1
+    });
+};
+
+/**
+ * @author seonhyungjo
  * @summary 출고완료되지 않은 브랜치 리스트
  * @private
  * @memberof Admin

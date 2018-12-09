@@ -38,6 +38,29 @@ router.get('/order', function(req, res) {
 });
 
 /**
+ * GET /api/order/list/:branchCode
+ *
+ * @author seonhyungjo
+ * @summary 모든 주문내역 조회
+ * @private
+ * @memberof Admin
+ * @param
+ * @see None
+ * @returns «Query»
+ */
+router.get('/order/list/:branchCode', function(req, res) {
+    Orders.findOrderList(req.params.branchCode)
+        .then(orderList => {
+            if (!orderList) throw new Error('order not found');
+            res.status(200).send(orderList);
+        })
+        .catch(err => {
+            console.log(err);
+            reponseError(res, 'NOT_FIND_ODER');
+        });
+});
+
+/**
  * GET /api/order/branch/incomplete
  *
  * @author seonhyungjo
