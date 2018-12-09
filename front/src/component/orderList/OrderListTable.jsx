@@ -159,12 +159,10 @@ const OrderListTable = ({ branchName, orderList, buttonList, clickComplete }) =>
  */
 const calTotalCost = orderList => {
     return orderList instanceof Array
-        ? orderList
-              .map(order => {
-                  console.log(parseInt(order.itemCount, 10) * parseInt(order.itemCost, 10));
-                  return parseInt(order.itemCount, 10) * parseInt(order.itemCost, 10);
-              })
-              .reduce((cost, currentCost) => cost + currentCost)
+        ? orderList.reduce((total, order) => {
+              console.log('total', total);
+              return parseInt(order.itemCount, 10) * parseInt(order.itemCost, 10) + total;
+          }, 0)
         : 0;
 };
 

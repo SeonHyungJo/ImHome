@@ -15,8 +15,9 @@ class TableWithScroll extends React.Component {
                     </tr>
                 </TableWithTitle>
                 <TableWithContent>
-                    {this.props.data.length > 0 ? (
+                    {this.props.data != null && this.props.data.length > 0 ? (
                         this.props.data.map((n, index) => {
+                            /* 선택된 항목 일경우 처리 */
                             return this.props.id && n._id === this.props.id ? (
                                 <tr
                                     className="on"
@@ -44,13 +45,30 @@ class TableWithScroll extends React.Component {
                                                         key={index}
                                                         style={{ textAlign: textAlign }}
                                                     >
-                                                        {n[data.id]}
+                                                        {data.id === 'totalDealCost'
+                                                            ? n['items'].reduce((total, order) => {
+                                                                  return (
+                                                                      parseInt(
+                                                                          order.itemCount,
+                                                                          10
+                                                                      ) *
+                                                                          parseInt(
+                                                                              order.itemCost,
+                                                                              10
+                                                                          ) +
+                                                                      total
+                                                                  );
+                                                              }, 0)
+                                                            : n[data.id] == null
+                                                            ? '-'
+                                                            : n[data.id]}
                                                     </td>
                                                 );
                                             }
                                         })}
                                 </tr>
                             ) : (
+                                /* 선택되지 않은 항목 일경우 처리 */
                                 <tr key={index} onClick={() => this.props.clickRow(n._id)}>
                                     {this.props.headerData &&
                                         this.props.headerData.map((data, index) => {
@@ -74,7 +92,23 @@ class TableWithScroll extends React.Component {
                                                         key={index}
                                                         style={{ textAlign: textAlign }}
                                                     >
-                                                        {n[data.id]}
+                                                        {data.id === 'totalDealCost'
+                                                            ? n['items'].reduce((total, order) => {
+                                                                  return (
+                                                                      parseInt(
+                                                                          order.itemCount,
+                                                                          10
+                                                                      ) *
+                                                                          parseInt(
+                                                                              order.itemCost,
+                                                                              10
+                                                                          ) +
+                                                                      total
+                                                                  );
+                                                              }, 0)
+                                                            : n[data.id] == null
+                                                            ? '-'
+                                                            : n[data.id]}
                                                     </td>
                                                 );
                                             }
@@ -97,9 +131,13 @@ class TableWithScroll extends React.Component {
                     <tr>
                         {this.props.bottom.map((context, index) => {
                             return this.props.bottom.length === index + 1 ? (
-                                <th style={{ border: '0px', textAlign: 'right' }}>{context}</th>
+                                <th key={index} style={{ border: '0px', textAlign: 'right' }}>
+                                    {context}
+                                </th>
                             ) : (
-                                <th style={{ border: '0px' }}>{context}</th>
+                                <th key={index} style={{ border: '0px' }}>
+                                    {context}
+                                </th>
                             );
                         })}
                     </tr>
