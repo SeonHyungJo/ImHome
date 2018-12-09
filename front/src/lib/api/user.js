@@ -1,9 +1,10 @@
-import axios from 'axios';
+import * as ApiService from './ApiService'
 
-export const getStoreList = () => axios.get('/api/store/list/');
-export const getUserList = (storeId) => axios.get('/api/user/list/' + storeId);
-export const getUserData = (custNo) => axios.get('/api/user/' + custNo);
-export const getUserUpdateData = (custNo) => axios.get('/api/user/' + custNo);
+
+export const getStoreList = () => ApiService.get('/api/store/list/');
+export const getUserList = (storeId) => ApiService.get('/api/user/list/', storeId);
+export const getUserData = (custNo) => ApiService.get('/api/user/', custNo);
+export const getUserUpdateData = (custNo) => ApiService.get('/api/user/', custNo);
 export const updateUserData = (custNo, { branchName, name, cName, bNumber, bAddress, email, pNumber }) =>
-    axios.put('/api/user/' + custNo, { branchName, name, cName, bNumber, bAddress, email, pNumber });
-export const deleteUserData = (custNo) => axios.delete('/api/user/' + custNo);
+    ApiService.put('/api/user/', custNo, { branchName, name, cName, bNumber, bAddress, email, pNumber });
+export const deleteUserData = (custNo) => ApiService.del('/api/user/', custNo);
