@@ -5,6 +5,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { UserMain, UserRegister } from './pages/user';
 import { AdminMain, AdminUser } from './pages/admin';
 import { OrderList } from './pages/orderList';
+import { ReleaseList } from './pages/releaseList';
 import { Product } from './pages/product';
 import { Login } from './pages/common';
 
@@ -22,6 +23,11 @@ class App extends Component {
                             <Route exact={true} component={AdminMain} path={PATH} />
                             <Route exact={true} component={AdminUser} path={PATH + '/users'} />
                             <Route exact={true} component={OrderList} path={PATH + '/orderlist'} />
+                            <Route
+                                exact={true}
+                                component={ReleaseList}
+                                path={PATH + '/releaselist'}
+                            />
                             <Route exact={true} component={Product} path={PATH + '/product'} />
                             {/* User router : 사용자 라우터*/}
                             <Route exact={true} component={UserMain} path="/" />
