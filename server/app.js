@@ -6,6 +6,8 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import session from 'express-session';
+import logger from 'morgan';
+import cors from 'cors';
 
 // api uri
 import routers from './router/api/router';
@@ -18,6 +20,8 @@ const port = process.env.PORT || 3000;
 
 // 보안을 위한 helmet 라이브러리 사용
 app.use(helmet());
+app.use(cors());
+app.use(logger());
 // X-Powered-By 헤더는 사용하지 않도록 설정
 app.disable('x-powered-by');
 

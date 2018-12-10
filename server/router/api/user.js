@@ -5,10 +5,10 @@ const authMiddleware = require('../../middlewares/auth');
 
 export let router = express.Router();
 
-router.use('/user/', function timeLog(req, res, next) {
-    console.log('Time: ', Date.now());
-    next();
-});
+// router.use('/user/', function timeLog(req, res, next) {
+//     console.log('Time: ', Date.now());
+//     next();
+// });
 //router.use('/', authMiddleware);
 
 /**
