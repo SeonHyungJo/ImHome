@@ -51,5 +51,5 @@
         "eslint-plugin-react": "^7.11.1",
         "prettier-eslint": "^8.8.2"
     },
-    "proxy": "http://localhost:3100"
+    "proxy": "https://imhome-server.herokuapp.com"
 }
