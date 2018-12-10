@@ -1,11 +1,8 @@
 import express from 'express';
-import mongoose from 'mongoose';
 const Orders = require('../../models/orders');
 const Stores = require('../../models/stores');
-const Users = mongoose.model('users');
 const reponseError = require('../common/responseError');
-//const Orders = mongoose.model('orders');
-//const Stores = mongoose.model('stores');
+const authMiddleware = require('../../middlewares/auth');
 
 export let router = express.Router();
 
@@ -13,6 +10,7 @@ router.use('/order', function timeLog(req, res, next) {
     console.log('Time: ', Date.now());
     next();
 });
+router.use('/order', authMiddleware);
 
 /**
  * GET /api/order
