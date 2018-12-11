@@ -96,7 +96,7 @@ class AdminReleaseList extends Component {
         return (
             <PageTemplate navData={store} id={this.state.storeId} clickNav={this.getNavData}>
                 <ViewForRelease type="date" viewTitle="출고내역 및 세금게산서 발행내역 조회">
-                    <FormBtn>조회</FormBtn>
+                    <FormBtn style={{ width: '80px', margin: '0' }}>조회</FormBtn>
                 </ViewForRelease>
 
                 <ViewForRelease
