@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { PageTemplate } from '../../component/template';
 import { Product } from '../../component/product';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ProductListActions from '../../redux/modules/productList';
 
-class AdminMain extends Component {
+class AdminProduct extends Component {
     constructor() {
         super();
         const products = [
@@ -26,25 +29,65 @@ class AdminMain extends Component {
         ];
 
         this.state = {
-            navData: [
-                { id: 1, name: '분당점' },
-                { id: 2, name: '백현점' },
-                { id: 3, name: '광주탄천점' },
-                { id: 4, name: '이대본점' },
-                { id: 5, name: '용인죽전점' }
-            ],
             products,
-            storeId: 1
+            companyId: '001'
         };
     }
 
+    async componentDidMount() {
+        const { ProductListActions } = this.props;
+
+        await ProductListActions.getCompanyList();
+    }
+
+    // componentWillUnmount() {
+    //     const { ProductListActions } = this.props;
+    //     ProductListActions.initializeForm('productList');
+    // }
+
+    getNavData = async id => {
+        // const { ProductListActions, form } = this.props;
+
+        // let storeId = id ? id : form.toJS().branchCode;
+
+        // this.setState({ storeId: storeId });
+
+        // try {
+        //     await ProductListActions.getUserList(storeId);
+        //     await ProductListActions.changeInput({
+        //         form: 'user',
+        //         value: this.props.list.length > 0 ? this.props.list[0]._id : '0',
+        //         name: '_id'
+        //     });
+        //     await this.getRowData();
+        // } catch (e) {
+        //     console.log(e);
+        // }
+
+        //setstate
+        this.setState({ companyId: id });
+    };
+
     render() {
+        const { company } = this.props;
         return (
-            <PageTemplate navData={this.state.navData} id={this.state.storeId}>
-                <Product products={this.state.products} storeId={this.state.storeId} />
+            <PageTemplate navData={company} id={this.state.companyId} clickNav={this.getNavData}>
+                <Product products={this.state.products} companyId={this.state.companyId} />
             </PageTemplate>
         );
     }
 }
 
-export default AdminMain;
+export default connect(
+    state => ({
+        form: state.productList.getIn(['productList', 'form']),
+        list: state.productList.getIn(['productList', 'list']),
+        store: state.productList.getIn(['productList', 'store']),
+        company: state.productList.getIn(['productList', 'company']),
+        error: state.productList.getIn(['productList', 'error']),
+        result: state.productList.get('result')
+    }),
+    dispatch => ({
+        ProductListActions: bindActionCreators(ProductListActions, dispatch)
+    })
+)(AdminProduct);
