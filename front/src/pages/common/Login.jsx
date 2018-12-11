@@ -24,7 +24,7 @@ class Login extends Component {
         });
 
         const loggedInfo = this.props.result.toJS();
-
+        console.log(loggedInfo);
         if (loggedInfo.success === '0000') {
             alert('성공적으로 로그인 하였습니다');
             localStorage.setItem('accessToken', loggedInfo.imhomeToken);
