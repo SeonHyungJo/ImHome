@@ -95,9 +95,10 @@ exports.login = (req, res) => {
                     },
                     secret,
                     {
-                        expiresIn: '5m',
+                        expiresIn: '30m',
                         issuer: 'imhome.com',
-                        subject: 'userInfo'
+                        subject: 'userInfo',
+                        algorithm: 'HS512'
                     },
                     (err, token) => {
                         if (err) reject(err);

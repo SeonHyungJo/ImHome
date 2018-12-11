@@ -9,6 +9,7 @@ const usersSchema = new Schema(
         name: { type: String, required: true },
         bNumber: { type: String, required: true, unique: true },
         bAddress: { type: String, required: true },
+        bPhoneNumber: { type: String, required: true },
         cName: { type: String, required: true },
         email: { type: String, required: true },
         pNumber: { type: String, required: true },
@@ -50,6 +51,7 @@ usersSchema.statics.findAll = function() {
         name: 1, //일단은 대표자 이름으로 설정
         bNumber: 1, // 사업자 번호
         bAddress: 1, // 사업장 주소
+        bPhoneNumber: 1, // 대표 전화번호
         cName: 1, // 회사명
         email: 1, // 이메일
         pNumber: 1, // 전화번호
@@ -75,6 +77,7 @@ usersSchema.statics.findOneById = function(_id) {
             name: 1, //일단은 대표자 이름으로 설정
             bNumber: 1, // 사업자 번호
             bAddress: 1, // 사업장 주소
+            bPhoneNumber: 1, // 대표 전화번호
             cName: 1, // 회사명
             email: 1, // 이메일
             pNumber: 1, // 전화번호
@@ -91,6 +94,7 @@ usersSchema.statics.findOneById = function(_id) {
                 name: null, //일단은 대표자 이름으로 설정
                 bNumber: null, // 사업자 번호
                 bAddress: null, // 사업장 주소
+                bPhoneNumber: null, // 대표 전화번호
                 cName: null, // 회사명
                 email: null, // 이메일
                 pNumber: null, // 전화번호
@@ -118,6 +122,7 @@ usersSchema.statics.findOneByUserId = function(id) {
         name: 1, //일단은 대표자 이름으로 설정
         bNumber: 1, // 사업자 번호
         bAddress: 1, // 사업장 주소
+        bPhoneNumber: 1, // 대표 전화번호
         cName: 1, // 회사명
         email: 1, // 이메일
         pNumber: 1, // 전화번호
@@ -142,6 +147,7 @@ usersSchema.statics.findOneByBranchCode = function(branchCode) {
         name: 1, //일단은 대표자 이름으로 설정
         bNumber: 1, // 사업자 번호
         bAddress: 1, // 사업장 주소
+        bPhoneNumber: 1, // 대표 전화번호
         cName: 1, // 회사명
         email: 1, // 이메일
         pNumber: 1, // 전화번호
