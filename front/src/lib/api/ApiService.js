@@ -12,7 +12,8 @@ export function get(path, data) {
 };
 
 export function post(path, data) {
-    return axios.post(path, data, axiosConfig);
+    let requestData = data ? data : '';
+    return axios.post(path, requestData, axiosConfig);
 };
 
 export function put(path, id, data) {

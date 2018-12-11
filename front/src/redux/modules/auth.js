@@ -9,6 +9,7 @@ const USER_REGISTER = 'auth/USER_REGISTER'; // 이메일 가입
 const USER_LOGIN = 'auth/USER_LOGIN'; // 이메일 로그인
 const LOGOUT = 'auth/LOGOUT'; // 로그아웃
 const SET_ERROR = 'auth/SET_ERROR'; // 오류 설정
+const CHECK_STATUS = 'auth/CHECK_STATUS';
 
 export const changeInput = createAction(CHANGE_INPUT); // {form, name, value}
 export const initializeForm = createAction(INITIALIZE_FORM); // form
@@ -16,6 +17,7 @@ export const userRegister = createAction(USER_REGISTER, AuthAPI.userRegister); /
 export const userLogin = createAction(USER_LOGIN, AuthAPI.userLogin); // { email, password }
 export const logout = createAction(LOGOUT, AuthAPI.logout);
 export const setError = createAction(SET_ERROR); // { form, message }
+export const checkStatus = createAction(CHECK_STATUS, AuthAPI.checkStatus);
 
 // 초기값 설정 @TODO 필드 추가 필요
 const initialState = Map({
@@ -56,6 +58,10 @@ export default handleActions({
     }),
     ...pender({
         type: USER_REGISTER,
+        onSuccess: (state, action) => state.set('result', Map(action.payload.data))
+    }),
+    ...pender({
+        type: CHECK_STATUS,
         onSuccess: (state, action) => state.set('result', Map(action.payload.data))
     }),
 }, initialState);
