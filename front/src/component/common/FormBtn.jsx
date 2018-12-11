@@ -10,7 +10,7 @@ const Button = styled.button`
     border-radius: 3px;
     background: white;
     color: white;
-    background-color : orange;
+    background-color: orange;
 
     text-align: center;
     font-size: 0.9rem;
@@ -23,6 +23,9 @@ const Button = styled.button`
 //     text-align: right;
 // `;
 
-const FormBtn = ({ children, onClick }) =>
-    <Button onClick={onClick}>{children}</Button>
+const FormBtn = ({ children, style, onClick }) => (
+    <Button style={style ? style : {}} onClick={onClick}>
+        {children}
+    </Button>
+);
 export default FormBtn;
