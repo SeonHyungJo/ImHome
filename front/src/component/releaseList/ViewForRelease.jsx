@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { ViewWrapper, ViewWithContent } from '../view';
+import { WhiteBtn, DefaultRadio, MonthPicker } from '../../component/common';
 
 class ViewForUser extends Component {
     render() {
@@ -19,11 +20,38 @@ class ViewForUser extends Component {
                     <ViewWithContent>
                         <tr>
                             <th>조회기간</th>
-                            <td />
+                            <td>
+                                <div>
+                                    <WhiteBtn>1주일</WhiteBtn>
+                                    <WhiteBtn>15일</WhiteBtn>
+                                    <WhiteBtn>1개월</WhiteBtn>
+                                    <WhiteBtn>3개월</WhiteBtn>
+                                </div>
+                                <div>
+                                    <MonthPicker />
+                                    <WhiteBtn>월별선택</WhiteBtn>
+                                </div>
+                                <div>
+                                    ※조회내역은 본 시스템을 사용한 시점부터 조회가 가능합니다.
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <th>조회내용</th>
-                            <td />
+                            <td>
+                                <DefaultRadio name="searchType" value="all">
+                                    전체선택
+                                </DefaultRadio>
+                                <DefaultRadio name="searchType" value="any">
+                                    선택내역
+                                </DefaultRadio>
+                                <DefaultRadio name="searchType" value="bill">
+                                    세금계산서
+                                </DefaultRadio>
+                                <DefaultRadio name="searchType" value="bill2">
+                                    거래명세서
+                                </DefaultRadio>
+                            </td>
                         </tr>
                         <tr>
                             <th colSpan="2" style={{ textAlign: 'center' }}>
