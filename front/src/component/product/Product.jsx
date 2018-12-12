@@ -13,11 +13,12 @@ const Header = styled.div`
 
 class Product extends Component {
     render() {
+        console.log(this.props);
         const content =
-            this.props.companyId === '001' ? (
-                <Imhome products={this.props.products} />
+            this.props.companyCode === '001' ? (
+                <Imhome lists={this.props.lists} />
             ) : (
-                <StoreProduct />
+                <StoreProduct product={this.props.lists[0]} />
             );
 
         return (

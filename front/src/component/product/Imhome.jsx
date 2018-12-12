@@ -149,7 +149,7 @@ class Imhome extends Component {
     }
 
     _clickCategory = index =>
-        this.setState({ clickedCate: index, tableTitle: this.props.products[index].name });
+        this.setState({ clickedCate: index, tableTitle: this.props.lists[index].productName });
 
     _deleteCate = () => {
         this.state.clickedCate === -1
@@ -161,7 +161,7 @@ class Imhome extends Component {
         return (
             <ContentWrapper>
                 <MainContainer>
-                    {this.props.products.map((product, index) => (
+                    {this.props.lists.map((product, index) => (
                         <div
                             className={
                                 this.state.clickedCate === index
@@ -172,8 +172,8 @@ class Imhome extends Component {
                         >
                             <div className={'categoryDesc'}>
                                 <div className={'categoryMain'}>
-                                    <div className={'name'}>{product.name}</div>
-                                    <div className={'desc'}>{product.desc}</div>
+                                    <div className={'name'}>{product.productName}</div>
+                                    <div className={'desc'}>{product.productDesc}</div>
                                 </div>
                                 <div
                                     className={'categorySub'}

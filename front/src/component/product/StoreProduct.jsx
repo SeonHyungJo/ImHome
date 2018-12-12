@@ -107,19 +107,20 @@ class StoreProduct extends Component {
                     p_cost: '31,500',
                     p_quan: '3'
                 }
-            ],
-            tableTitle: 'user정보 + Order'
+            ]
         };
     }
 
     render() {
+        const { lists } = this.props;
+        console.log(this.props);
         return (
             <ContentWrapper>
                 <MainContainer>
                     <TableWithScroll
                         headerData={this.state.headerData}
                         data={this.state.data}
-                        gridTitle={this.state.tableTitle}
+                        gridTitle={this.props.product.companyName + 'Order'}
                     />
                     <hr />
                     <div className={'footerContainer'}>

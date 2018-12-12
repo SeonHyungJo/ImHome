@@ -18,6 +18,8 @@ const initialState = Map({
             _id: '',
             companyName: '',
             companyCode: '',
+            productName: '',
+            productCode: '',
             items: List([
                 Map({
                     itemCode: '',
@@ -32,9 +34,8 @@ const initialState = Map({
             updatedAt: ''
         }),
         error: null,
-        store: [],
-        company: [],
-        products: []
+        companys: [],
+        lists: []
     }),
     result: Map({})
 });
@@ -48,12 +49,11 @@ export default handleActions(
         ...pender({
             type: GET_COMPANY_LIST,
             onSuccess: (state, action) =>
-                state.setIn(['productList', 'company'], action.payload.data)
+                state.setIn(['productList', 'companys'], action.payload.data)
         }),
         ...pender({
             type: GET_PRODUCTS,
-            onSuccess: (state, action) =>
-                state.setIn(['productList', 'products'], action.payload.data)
+            onSuccess: (state, action) => state.setIn(['productList', 'lists'], action.payload.data)
         })
     },
     initialState
