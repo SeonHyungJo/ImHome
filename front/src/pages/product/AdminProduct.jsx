@@ -38,6 +38,7 @@ class AdminProduct extends Component {
         const { ProductListActions } = this.props;
 
         await ProductListActions.getCompanyList();
+        await ProductListActions.getProducts();
     }
 
     // componentWillUnmount() {

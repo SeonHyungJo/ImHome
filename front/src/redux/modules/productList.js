@@ -3,13 +3,13 @@ import { pender } from 'redux-pender';
 import * as productList from '../../lib/api/productList';
 import { Map, List } from 'immutable';
 
-const GET_STORE_LIST = 'productList/GET_STORE_LIST'; // 매장 목록 가져오기
-const GET_COMPANY_LIST = 'productList/GET_COMPANY_LIST'; // 매장 목록 가져오기
-// const GET_ORDER_DATA = 'orderList/GET_ORDER_DATA'; //해당 회원의 상세 정보 가져오기
-// const UPDATE_ORDER_COMPLETE = 'orderList/UPDATE_ORDER_COMPLETE'; //해당 회원의 상세 정보 가져오기
+const GET_STORE_LIST = 'productList/GET_STORE_LIST'; // 매장 목록 가져오기 (deprecated)
+const GET_COMPANY_LIST = 'productList/GET_COMPANY_LIST'; // 회사 목록 가져오기
+const GET_PRODUCTS = 'productList/GET_PRODUCTS'; // 품목 가져오기
 
 export const getStoreList = createAction(GET_STORE_LIST, productList.getStoreList);
 export const getCompanyList = createAction(GET_COMPANY_LIST, productList.getCompanyList);
+export const getProducts = createAction(GET_PRODUCTS, productList.getProducts);
 
 // 초기값 설정
 const initialState = Map({
@@ -34,7 +34,7 @@ const initialState = Map({
         error: null,
         store: [],
         company: [],
-        list: []
+        products: []
     }),
     result: Map({})
 });
@@ -49,6 +49,11 @@ export default handleActions(
             type: GET_COMPANY_LIST,
             onSuccess: (state, action) =>
                 state.setIn(['productList', 'company'], action.payload.data)
+        }),
+        ...pender({
+            type: GET_PRODUCTS,
+            onSuccess: (state, action) =>
+                state.setIn(['productList', 'products'], action.payload.data)
         })
     },
     initialState

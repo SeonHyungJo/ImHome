@@ -8,12 +8,12 @@ router.use('/product', function timeLog(req, res, next) {
     next();
 });
 
-router.get('/product', function(req, res) {
-    Products.find(function(err, productList) {
+router.get('/products', function(req, res) {
+    Products.find(function(err, products) {
         if (err) {
             return res.status(500).send({ error: 'database failure' });
         }
-        res.json(productList);
+        res.json(products);
     });
 });
 
@@ -48,8 +48,8 @@ router.put('/product', (req, res) => {
         .catch(err => res.status(500).send(err));
 });
 
-router.delete('/product/:companyCode', (req, res) => {
-    Products.deleteByCompanyCode(req.params.companyCode)
+router.delete('/product/:productId', (req, res) => {
+    Products.deleteById(req.params.productId)
         .then(() => res.sendStatus(200))
         .catch(err => res.status(500).send(err));
 });
