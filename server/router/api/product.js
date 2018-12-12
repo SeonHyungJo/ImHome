@@ -19,33 +19,12 @@ router.get('/products', function(req, res) {
     });
 });
 
-router.post('/product', (req, res) => {
-    Products.findByCompanyCode(req.body.companyCode)
-        .then(product => {
-            if (product.length === 0) {
-                Products.create(req.body)
-                    .then(result => res.send(result))
-                    .catch(err => res.status(500).send(err));
-            } else {
-                res.status(404).send({ err: 'already exit' });
-            }
-        })
-        .catch(err => res.status(500).send(err));
-});
-
 router.get('/product/:companyCode', function(req, res) {
     Products.findByCompanyCode(req.params.companyCode)
         .then(product => {
             if (!product) return res.status(404).send({ err: 'product not found' });
             res.json(product);
         })
-        .catch(err => res.status(500).send(err));
-});
-
-router.put('/product', (req, res) => {
-    console.log('test');
-    Products.findOneAndUpdateNew(req.body.companyCode, req.body)
-        .then(product => res.send(product))
         .catch(err => res.status(500).send(err));
 });
 
@@ -58,37 +37,82 @@ router.delete('/product/:productId', (req, res) => {
 /**
  * @author jinseong
  * @summary product 생성
- * @param companyCode: 회사코드
- * @param body: 품목정보 { productName, productDesc }
+ * @param body: 품목정보 { companyCode, companyName }
  */
-router.post('/product/:companyCode', function(req, res) {
-    Companys.findCompanyByCompanyCode(req.params.companyCode)
-        .then(company => {
-            const productInfo = {
-                companyCode: company.companyCode,
-                companyName: company.companyName,
-                ...req.body
-            };
-            Products.create(productInfo)
-                .then(product => res.status(200).send({ success: '0000' }))
-                .catch(err => {
-                    console.log(err);
-                    reponseError(res, 'CREATE_PRODUCT_ERROR');
-                });
-        })
+router.post('/product', function(req, res) {
+    Products.create(req.body)
+        .then(product => res.status(200).send({ success: '0000' }))
         .catch(err => {
             console.log(err);
-            reponseError(res, 'CANT_FIND_COMPANY');
+            reponseError(res, 'CREATE_PRODUCT_ERROR');
         });
 });
 
-// Products.findById(req.params.companyCode).then(() =>
-//     create(req.body)
-//         .then(company => {
-//             res.status(200).send({ success: '0000' });
-//         })
-//         .catch(err => {
-//             console.log(err);
-//             reponseError(res, 'CREATE_ODER_ERROR');
-//         })
-// );
+/**
+ * @author jinseong
+ * @summary item 생성
+ * @param companyCode
+ * @param body: {
+                itemName: 이름,
+                itemCount: 수량,
+                itemCost: 가격,
+                itemVolume: 단위,
+                itemDepth: depth: 0 || 1,
+                parentId: 카테고리(부모뎁스),
+                itemDesc: 카테고리 설명
+            }
+ */
+router.post('/product/:companyCode/item', function(req, res) {
+    // req.body.parentId가 0이 아닌지에 따라 카테고리인지 분기
+    if (req.body.parentId === '0') {
+        // category를 만든다.
+        Products.findOneAndUpdateNew(req.params.companyCode, req.body)
+            .then(product => {
+                if (!product) {
+                    reponseError(res, 'CANT_FIND_PRODUCT');
+                }
+                res.json(product);
+            })
+            .catch(err => {
+                console.log(err);
+                reponseError(res, 'UPDATE_ITEM_ERROR');
+            });
+    } else {
+        // item을 만든다
+        // paentId처리를 어떻게 할것인지 추후 결정
+        Products.findOneAndUpdateNew(req.params.companyCode, req.body)
+            .then(product => {
+                if (!product) {
+                    reponseError(res, 'CANT_FIND_PRODUCT');
+                }
+                res.json(product);
+            })
+            .catch(err => {
+                console.log(err);
+                reponseError(res, 'UPDATE_ITEM_ERROR');
+            });
+    }
+});
+
+/**
+ * @author jinseong
+ * @summary item 제거
+ * @param companyCode
+ * @param body: {
+                _id : item id
+            }
+ */
+router.delete('/product/:companyCode/item', function(req, res) {
+    // req.body.parentId가 0이 아닌지에 따라 카테고리인지 분기
+    Products.findOneAndUpdateDelete(req.params.companyCode, req.body)
+        .then(product => {
+            if (!product) {
+                reponseError(res, 'CANT_FIND_PRODUCT');
+            }
+            res.json(product);
+        })
+        .catch(err => {
+            console.log(err);
+            reponseError(res, 'UPDATE_ITEM_ERROR');
+        });
+});
