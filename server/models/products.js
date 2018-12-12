@@ -20,6 +20,8 @@ const productsSchema = new Schema(
     {
         companyName: { type: String, required: true },
         companyCode: { type: String, required: true, unique: true },
+        productName: { type: String, required: true },
+        productDesc: { type: String, required: true },
         items: [itemsSchema]
     },
     {
@@ -27,20 +29,21 @@ const productsSchema = new Schema(
     }
 );
 
-productsSchema.statics.create = function(payload) {
-    const product = new this(payload);
-    return product.save();
-};
+// 이건뭐지
+// productsSchema.statics.create = function(payload) {
+//     const product = new this(payload);
+//     return product.save();
+// };
 
 productsSchema.statics.findAll = function() {
     return this.find({});
 };
 
-productsSchema.statics.findOneByCompanyCode = function(companyCode) {
+productsSchema.statics.findByCompanyCode = function(companyCode) {
     return this.find({ companyCode });
 };
 
-productsSchema.statics.findOneById = function(id, payload) {
+productsSchema.statics.findOneUpdateById = function(id, payload) {
     return this.findOneAndUpdate({ id }, payload, { new: true });
 };
 
@@ -50,6 +53,20 @@ productsSchema.statics.findOneAndUpdateNew = function(companyCode, productInfo) 
 
 productsSchema.statics.deleteById = function(productId) {
     return this.deleteOne({ _id: productId });
+};
+
+/**
+ * @author jinseong
+ * @summary 새로운 품목 등록 (*주의* item과는 다른 개념임 )
+ * @private
+ * @memberof Admin
+ * @param newProduct : 새 품목에 대한 json형식 정보
+ * @see None
+ * @returns product.save()
+ */
+productsSchema.statics.create = function(newProduct) {
+    const product = new this(newProduct);
+    return product.save();
 };
 
 module.exports = mongoose.model('products', productsSchema);

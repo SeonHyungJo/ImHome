@@ -44,6 +44,12 @@ const reponseErrorType = (res, type) => {
         case 'AREADY_COMPLETE':
             res.status(200).send({ fail: '3010' });
             break;
+        case 'CANT_FIND_COMPANY':
+            res.status(200).send({ fail: '3011' });
+            break;
+        case 'CREATE_PRODUCT_ERROR':
+            res.status(200).send({ fail: '3012' });
+            break;
         //------------------------------------------------------
         default:
             res.status(200).send({ fail: '9999' });
