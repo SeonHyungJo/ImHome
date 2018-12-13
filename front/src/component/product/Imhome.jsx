@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import classNames from 'classnames';
 import { Button } from '../common';
-import { TableWithScroll } from '../table';
 
 const ContentWrapper = styled.div`
     display: flex;
@@ -80,8 +79,8 @@ const ProductFormContainer = styled.div`
 `;
 
 class Imhome extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         const headerData = [
             {
                 id: 'p_name',
@@ -116,7 +115,7 @@ class Imhome extends Component {
             }
         ];
         this.state = {
-            clickedCate: -1,
+            clickedCate: { index: -1, _id: -1, itemName: '-' },
             headerData: headerData,
             data: [
                 {
@@ -130,60 +129,60 @@ class Imhome extends Component {
                     p_unit: 'box 3kg',
                     p_cost: '32,500',
                     p_quan: '1'
-                },
-                {
-                    p_name: '코코넛 아이스크림',
-                    p_unit: 'box 3kg',
-                    p_cost: '27,500',
-                    p_quan: '2'
-                },
-                {
-                    p_name: '레몬 아이스크림',
-                    p_unit: 'box 3kg',
-                    p_cost: '31,500',
-                    p_quan: '3'
                 }
             ],
-            tableTitle: '아이스크림'
+            tableTitle: '아이스크림',
+            categories: props.categories
         };
     }
 
-    _clickCategory = index =>
-        this.setState({ clickedCate: index, tableTitle: this.props.lists[index].productName });
+    _clickCategory = (index, _id, itemName) =>
+        this.setState({ clickedCate: { index: index, _id: _id, itemName: itemName } });
 
     _deleteCate = () => {
-        this.state.clickedCate === -1
+        this.state.clickedCate.index === -1
             ? alert('메뉴를 선택해주세요')
             : window.confirm('정말 삭제하시겠습니까?');
     };
 
     render() {
+        const items = this.props.product.items;
+        const { clickedCate } = this.state;
+
         return (
             <ContentWrapper>
                 <MainContainer>
-                    {this.props.lists.map((product, index) => (
-                        <div
-                            className={
-                                this.state.clickedCate === index
-                                    ? classNames('category', 'clicked')
-                                    : classNames('category')
-                            }
-                            key={index}
-                        >
-                            <div className={'categoryDesc'}>
-                                <div className={'categoryMain'}>
-                                    <div className={'name'}>{product.productName}</div>
-                                    <div className={'desc'}>{product.productDesc}</div>
-                                </div>
-                                <div
-                                    className={'categorySub'}
-                                    onClick={() => this._clickCategory(index)}
-                                >
-                                    <span>{this.state.clickedCate === index ? '>' : '<'}</span>
+                    {!!this.props.categories ? (
+                        this.props.categories.map((item, index) => (
+                            <div
+                                className={
+                                    this.state.clickedCate.index === index
+                                        ? classNames('category', 'clicked')
+                                        : classNames('category')
+                                }
+                                key={index}
+                            >
+                                <div className={'categoryDesc'}>
+                                    <div className={'categoryMain'}>
+                                        <div className={'name'}>{item.itemName}</div>
+                                        <div className={'desc'}>{item.itemDesc}</div>
+                                    </div>
+                                    <div
+                                        className={'categorySub'}
+                                        onClick={() =>
+                                            this._clickCategory(index, item._id, item.itemName)
+                                        }
+                                    >
+                                        <span>
+                                            {this.state.clickedCate.index === index ? '>' : '<'}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <div />
+                    )}
                     <hr />
                     <div className={'footerContainer'}>
                         <Button>메뉴추가</Button>
@@ -191,11 +190,26 @@ class Imhome extends Component {
                     </div>
                 </MainContainer>
                 <ProductFormContainer>
-                    <TableWithScroll
+                    {/* <TableWithScroll
                         headerData={this.state.headerData}
                         data={this.state.data}
                         gridTitle={this.state.tableTitle + ' 상세'}
-                    />
+                    /> */}
+                    <div>{this.state.clickedCate.itemName}</div>
+                    <div>
+                        {/* {this.props.product.items.filter(item => item.parentId===this.state)} */}
+                        {items
+                            .filter(item => item.parentId === clickedCate._id)
+                            .map(child => (
+                                <div key={child._id}>
+                                    {child.itemName +
+                                        ' | ' +
+                                        child.itemVolume +
+                                        ' | ' +
+                                        child.itemCost}
+                                </div>
+                            ))}
+                    </div>
                     <hr />
                     <div className={'footerContainer'}>
                         <Button>품목추가</Button>

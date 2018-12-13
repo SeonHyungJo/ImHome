@@ -10,54 +10,53 @@ class AdminProduct extends Component {
         super();
 
         this.state = {
-            companyCode: '001'
+            companyCode: '0'
         };
     }
 
     async componentDidMount() {
         const { ProductListActions } = this.props;
 
-        await ProductListActions.getCompanyList();
-        await ProductListActions.getProducts('001');
+        await ProductListActions.getProducts();
+        await this.getCompanyList();
     }
 
-    // componentWillUnmount() {
-    //     const { ProductListActions } = this.props;
-    //     ProductListActions.initializeForm('productList');
-    // }
+    getCompanyList = async () => {
+        const { ProductListActions, lists } = this.props;
+        try {
+            if (lists) {
+                await ProductListActions.getProductData('001');
+                this.setState({ companyCode: '001' });
+                // await ProductListActions.changeInput({
+                //     form: 'productList',
+                //     value: lists[0].companyCode,
+                //     name: 'companyCode'
+                // });
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
 
     getNavData = async id => {
-        // const { ProductListActions, form } = this.props;
-
-        // let storeId = id ? id : form.toJS().branchCode;
-
-        // this.setState({ storeId: storeId });
-
-        // try {
-        //     await ProductListActions.getUserList(storeId);
-        //     await ProductListActions.changeInput({
-        //         form: 'user',
-        //         value: this.props.list.length > 0 ? this.props.list[0]._id : '0',
-        //         name: '_id'
-        //     });
-        //     await this.getRowData();
-        // } catch (e) {
-        //     console.log(e);
-        // }
-
         const { ProductListActions } = this.props;
 
-        await ProductListActions.getProducts(id);
+        try {
+            await ProductListActions.getProductData(id);
+        } catch (e) {
+            console.log(e);
+        }
 
         //setstate
         this.setState({ companyCode: id });
     };
 
     render() {
-        const { companys, lists } = this.props;
+        const { form, lists } = this.props;
+
         return (
-            <PageTemplate navData={companys} id={this.state.companyCode} clickNav={this.getNavData}>
-                <Product lists={lists} companyCode={this.state.companyCode} />
+            <PageTemplate navData={lists} id={this.state.companyCode} clickNav={this.getNavData}>
+                <Product product={form.toJS()} companyCode={this.state.companyCode} />
             </PageTemplate>
         );
     }

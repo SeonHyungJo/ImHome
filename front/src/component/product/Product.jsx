@@ -13,14 +13,17 @@ const Header = styled.div`
 
 class Product extends Component {
     render() {
-        console.log(this.props);
-        const content =
-            this.props.companyCode === '001' ? (
-                <Imhome lists={this.props.lists} />
-            ) : (
-                <StoreProduct product={this.props.lists[0]} />
-            );
-
+        const { product } = this.props;
+        let content, categories;
+        if (this.props.companyCode === '001') {
+            categories = product.items.filter(item => item.itemDepth === 0);
+            content = <Imhome product={product} categories={categories} />;
+        } else if (this.props.companyCode === '0') {
+            categories = [];
+            content = <Imhome product={product} categories={categories} />;
+        } else {
+            content = <StoreProduct product={product} />;
+        }
         return (
             <div>
                 <Header>Food Menu</Header>

@@ -28,7 +28,7 @@ productsSchema.statics.findAll = function() {
 };
 
 productsSchema.statics.findByCompanyCode = function(companyCode) {
-    return this.find({ companyCode });
+    return this.findOne({ companyCode });
 };
 
 productsSchema.statics.findOneUpdateById = function(id, payload) {

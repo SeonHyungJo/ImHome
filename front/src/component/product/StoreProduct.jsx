@@ -112,8 +112,6 @@ class StoreProduct extends Component {
     }
 
     render() {
-        const { lists } = this.props;
-        console.log(this.props);
         return (
             <ContentWrapper>
                 <MainContainer>
