@@ -69,15 +69,16 @@ const Wrapper = styled.div`
 `;
 
 const DefaultRadio = ({ children, onClick, style, name, value, checked }) => (
-    <Wrapper style={style ? style : {}} onClick={onClick}>
+    <Wrapper style={style ? style : {}}>
         <input
             id={`${name}_${children}`}
             type="radio"
             name={name}
             value={value}
-            checked={checked}
+            onClick={onClick}
+            defaultChecked={checked}
         />
-        <label for={`${name}_${children}`}>
+        <label htmlFor={`${name}_${children}`}>
             <span>{children}</span>
         </label>
     </Wrapper>
