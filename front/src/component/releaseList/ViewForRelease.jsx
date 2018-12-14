@@ -3,11 +3,24 @@ import React, { Component } from 'react';
 import { ViewWrapper, ViewWithContent } from '../view';
 import { WhiteBtn, DefaultRadio, MonthPicker } from '../../component/common';
 
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
 class ViewForUser extends Component {
     render() {
+        const {
+            viewTitle,
+            viewSubTitle,
+            type,
+            searchingData,
+            radioBtnSetting,
+            radioClick,
+            children
+        } = this.props;
+
         return (
-            <ViewWrapper title={this.props.viewTitle} subTitle={this.props.viewSubTitle}>
-                {(this.props.type === '' || this.props.type === 'normal') && (
+            <ViewWrapper title={viewTitle} subTitle={viewSubTitle}>
+                {(type === '' || type === 'normal') && (
                     <ViewWithContent>
                         <tr>
                             <th>거래합계(건수)</th>
@@ -16,19 +29,23 @@ class ViewForUser extends Component {
                         </tr>
                     </ViewWithContent>
                 )}
-                {this.props.type === 'date' && (
+                {type === 'date' && (
                     <ViewWithContent>
                         <tr>
                             <th>조회기간</th>
                             <td>
                                 <div>
+                                    {/* https://reactdatepicker.com/ */}
+                                    <DatePicker dateFormat="yyyy.MM.dd" selected={new Date()} />
+                                    <input type="date" />
                                     <WhiteBtn>1주일</WhiteBtn>
                                     <WhiteBtn>15일</WhiteBtn>
                                     <WhiteBtn>1개월</WhiteBtn>
                                     <WhiteBtn>3개월</WhiteBtn>
                                 </div>
                                 <div>
-                                    <MonthPicker />
+                                    <MonthPicker type={'year'} />
+                                    <MonthPicker type={'month'} />
                                     <WhiteBtn>월별선택</WhiteBtn>
                                 </div>
                                 <div>
@@ -39,23 +56,24 @@ class ViewForUser extends Component {
                         <tr>
                             <th>조회내용</th>
                             <td>
-                                <DefaultRadio name="searchType" value="all">
-                                    전체선택
-                                </DefaultRadio>
-                                <DefaultRadio name="searchType" value="any">
-                                    선택내역
-                                </DefaultRadio>
-                                <DefaultRadio name="searchType" value="bill">
-                                    세금계산서
-                                </DefaultRadio>
-                                <DefaultRadio name="searchType" value="bill2">
-                                    거래명세서
-                                </DefaultRadio>
+                                {radioBtnSetting.value.map((value, index) => {
+                                    return (
+                                        <DefaultRadio
+                                            key={index}
+                                            name={radioBtnSetting.name}
+                                            value={value}
+                                            onClick={radioClick}
+                                            checked={searchingData.term == value}
+                                        >
+                                            {radioBtnSetting.text[index]}
+                                        </DefaultRadio>
+                                    );
+                                })}
                             </td>
                         </tr>
                         <tr>
                             <th colSpan="2" style={{ textAlign: 'center' }}>
-                                {this.props.children}
+                                {children}
                             </th>
                         </tr>
                     </ViewWithContent>
