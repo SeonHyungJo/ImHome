@@ -13,3 +13,5 @@ export const getProductData = companyCode => ApiService.get('/api/product/', com
 
 export const createCategory = (companyCode, data) =>
     axios.post(`/api/product/${companyCode}/item`, data, axiosConfig);
+export const deleteCategory = (companyCode, data) =>
+    axios.put(`/api/product/${companyCode}/item`, data, axiosConfig);

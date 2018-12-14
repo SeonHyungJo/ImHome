@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import classNames from 'classnames';
-import { Button } from '../common';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -64,6 +63,14 @@ const ContentWrapper = styled.div`
         font-size: 50px;
         // border: solid 1px black;
     }
+
+    .categorySubButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 30%;
+    }
 `;
 
 const MainContainer = styled.div`
@@ -84,11 +91,11 @@ const ProductFormContainer = styled.div`
 
 const Label = styled.div`
     text-align: left;
-    font-size: 0.7rem;
+    font-size: 1rem;
     font-weight: bold;
     color: #000000;
     margin-bottom: 0.25rem;
-    margin-right: 4rem;
+    margin-right: 2rem;
     display: inline-block;
     width: 20%;
 `;
@@ -100,50 +107,52 @@ const Input = styled.input`
     border-radius: 3px;
     height: 2em;
     font-size: 0.7rem;
-    padding-left: 0.5rem;
-    padding-right: 0.01rem;
+    // padding-left: 0.5rem;
+    // padding-right: 0.01rem;
     ::placeholder {
         font-size: 0.7rem;
         color: #7d7d7d;
     }
 `;
 
+const SmallButton = styled.button`
+    margin-top: 0.5rem;
+    // padding-top: 0.5rem;
+    // padding-bottom: 0.5rem;
+    border: 2px solid #fe4c8d;
+    border-radius: 3px;
+    background: white;
+    color: #fe4c8d;
+
+    text-align: center;
+    font-size: 0.6rem;
+    width: 3rem;
+    height: 2rem;
+    cursor: pointer;
+    // font-weight: bold;
+`;
+
+const Button = styled.button`
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+
+    border: 2px solid #fe4c8d;
+    border-radius: 3px;
+    background: white;
+    color: #fe4c8d;
+
+    text-align: center;
+    font-size: 0.8rem;
+    width: 8rem;
+    cursor: pointer;
+    font-weight: bold;
+`;
+
 class Imhome extends Component {
     constructor(props) {
         super(props);
-        // const headerData = [
-        //     {
-        //         id: 'p_name',
-        //         numeric: false,
-        //         disablePadding: true,
-        //         label: '품목'
-        //     },
-        //     {
-        //         id: 'p_unit',
-        //         numeric: false,
-        //         disablePadding: true,
-        //         label: '단위'
-        //     },
-        //     {
-        //         id: 'p_cost',
-        //         numeric: true,
-        //         disablePadding: true,
-        //         label: '가격'
-        //     },
-        //     {
-        //         // 추가함
-        //         id: 'p_quan',
-        //         numeric: true,
-        //         disablePadding: true,
-        //         label: '수량'
-        //     },
-        //     {
-        //         id: 'p_edit',
-        //         numeric: false,
-        //         disablePadding: true,
-        //         label: '수정'
-        //     }
-        // ];
         this.state = {
             clickedCate: { index: -1, _id: -1, itemName: '-' },
             newCategory: { state: false, newName: '', newDesc: '' },
@@ -154,10 +163,37 @@ class Imhome extends Component {
     _clickCategory = (index, _id, itemName) =>
         this.setState({ clickedCate: { index: index, _id: _id, itemName: itemName } });
 
-    _deleteCate = () => {
-        this.state.clickedCate.index === -1
-            ? alert('메뉴를 선택해주세요')
-            : window.confirm('정말 삭제하시겠습니까?');
+    /**
+     * @desc 카테고리를 삭제하는 멧드
+     * @param
+     * companyCode : 회사 코드
+     * body : item id {
+     *   _id : item id
+     * }
+     */
+    _deleteCate = async () => {
+        const { clickedCate } = this.state;
+
+        if (clickedCate.index === -1) {
+            // 클릭한 카테고리가 없다면
+            alert('메뉴를 선택해주세요');
+        } else {
+            if (window.confirm('정말 선택하신 카테고리를 삭제하시겠습니까?')) {
+                // 클릭한 카테고리가 있다면
+                const { ProductListActions, form } = this.props;
+
+                // 현재 폼에서 companyCode 조회
+                const companyCode = form.toJS().companyCode;
+
+                // 카테고리 삭제
+                await ProductListActions.deleteCategory(companyCode, {
+                    _id: clickedCate._id
+                });
+
+                // 클릭 state 초기화
+                this.setState({ clickedCate: { index: -1, _id: -1, itemName: '' } });
+            }
+        }
     };
 
     // 새로운 카테고리 폼 생성
@@ -196,6 +232,10 @@ class Imhome extends Component {
         });
 
         // 관련 state 초기화
+        this.setState({ newCategory: { state: false, newName: '', newDesc: '' } });
+    };
+
+    _cancelCategory = () => {
         this.setState({ newCategory: { state: false, newName: '', newDesc: '' } });
     };
 
@@ -267,8 +307,14 @@ class Imhome extends Component {
                                             />
                                         </div>
                                     </div>
-                                    <div className={'categorySub'}>
-                                        <button onClick={() => this._createCategory()}>확인</button>
+                                    <div className={'categorySubButton'}>
+                                        <SmallButton onClick={() => this._createCategory()}>
+                                            확인
+                                        </SmallButton>
+                                        <SmallButton onClick={() => this._cancelCategory()}>
+                                            취소
+                                        </SmallButton>
+                                        {/* <button onClick={() => this._createCategory()}></button> */}
                                     </div>
                                 </div>
                             </div>

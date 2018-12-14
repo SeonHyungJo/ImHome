@@ -52,11 +52,7 @@ productsSchema.statics.findOneAndUpdateNew = function(companyCode, itemInfo) {
  * @returns product
  */
 productsSchema.statics.findOneAndUpdateDelete = function(companyCode, itemInfo) {
-    return this.findOneAndUpdate(
-        { companyCode },
-        { $pull: { items: { _id: itemInfo._id } } },
-        { new: true }
-    );
+    return this.findOneAndUpdate({ companyCode }, { $pull: { items: itemInfo } }, { new: true });
 };
 
 productsSchema.statics.deleteById = function(productId) {

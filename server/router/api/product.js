@@ -102,7 +102,7 @@ router.post('/product/:companyCode/item', function(req, res) {
                 _id : item id
             }
  */
-router.delete('/product/:companyCode/item', function(req, res) {
+router.put('/product/:companyCode/item', function(req, res) {
     // req.body.parentId가 0이 아닌지에 따라 카테고리인지 분기
     Products.findOneAndUpdateDelete(req.params.companyCode, req.body)
         .then(product => {
