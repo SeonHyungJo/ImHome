@@ -66,7 +66,6 @@ export default connect(
     state => ({
         form: state.productList.getIn(['productList', 'form']),
         lists: state.productList.getIn(['productList', 'lists']),
-        companys: state.productList.getIn(['productList', 'companys']),
         error: state.productList.getIn(['productList', 'error']),
         result: state.productList.get('result')
     }),

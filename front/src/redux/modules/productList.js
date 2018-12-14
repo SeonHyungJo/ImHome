@@ -8,6 +8,7 @@ const INITIALIZE_FORM = 'productList/INITIALIZE_FORM'; //form 초기화
 const GET_COMPANY_LIST = 'productList/GET_COMPANY_LIST'; // 회사 목록 가져오기
 const GET_PRODUCTS = 'productList/GET_PRODUCTS'; // 품목 가져오기
 const GET_PRODUCT_DATA = 'productList/GET_PRODUCT_DATA'; // 품목의 상세 정보 가져오기
+const CREATE_CATEGORY = 'productList/CREATE_CATEGORY';
 
 export const changeInput = createAction(CHANGE_INPUT); // {form, name, value}
 export const initializeForm = createAction(INITIALIZE_FORM); // form
@@ -15,6 +16,7 @@ export const initializeForm = createAction(INITIALIZE_FORM); // form
 export const getCompanyList = createAction(GET_COMPANY_LIST, productList.getCompanyList);
 export const getProducts = createAction(GET_PRODUCTS, productList.getProducts);
 export const getProductData = createAction(GET_PRODUCT_DATA, productList.getProductData);
+export const createCategory = createAction(CREATE_CATEGORY, productList.createCategory);
 
 // 초기값 설정
 const initialState = Map({
@@ -37,7 +39,6 @@ const initialState = Map({
             updatedAt: ''
         }),
         error: null,
-        companys: [],
         lists: []
     }),
     result: Map({})
@@ -64,6 +65,11 @@ export default handleActions(
         }),
         ...pender({
             type: GET_PRODUCT_DATA,
+            onSuccess: (state, action) =>
+                state.setIn(['productList', 'form'], Map(action.payload.data))
+        }),
+        ...pender({
+            type: CREATE_CATEGORY,
             onSuccess: (state, action) =>
                 state.setIn(['productList', 'form'], Map(action.payload.data))
         })

@@ -3,6 +3,10 @@ import styled from 'styled-components';
 import classNames from 'classnames';
 import { Button } from '../common';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ProductListActions from '../../redux/modules/productList';
+
 const ContentWrapper = styled.div`
     display: flex;
     flex-direction: row;
@@ -78,60 +82,71 @@ const ProductFormContainer = styled.div`
     overflow: auto;z
 `;
 
+const Label = styled.div`
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 0.25rem;
+    margin-right: 4rem;
+    display: inline-block;
+    width: 20%;
+`;
+
+const Input = styled.input`
+    width: 50%;
+    border: 1px solid #c2c2c2;
+    outline: none;
+    border-radius: 3px;
+    height: 2em;
+    font-size: 0.7rem;
+    padding-left: 0.5rem;
+    padding-right: 0.01rem;
+    ::placeholder {
+        font-size: 0.7rem;
+        color: #7d7d7d;
+    }
+`;
+
 class Imhome extends Component {
     constructor(props) {
         super(props);
-        const headerData = [
-            {
-                id: 'p_name',
-                numeric: false,
-                disablePadding: true,
-                label: '품목'
-            },
-            {
-                id: 'p_unit',
-                numeric: false,
-                disablePadding: true,
-                label: '단위'
-            },
-            {
-                id: 'p_cost',
-                numeric: true,
-                disablePadding: true,
-                label: '가격'
-            },
-            {
-                // 추가함
-                id: 'p_quan',
-                numeric: true,
-                disablePadding: true,
-                label: '수량'
-            },
-            {
-                id: 'p_edit',
-                numeric: false,
-                disablePadding: true,
-                label: '수정'
-            }
-        ];
+        // const headerData = [
+        //     {
+        //         id: 'p_name',
+        //         numeric: false,
+        //         disablePadding: true,
+        //         label: '품목'
+        //     },
+        //     {
+        //         id: 'p_unit',
+        //         numeric: false,
+        //         disablePadding: true,
+        //         label: '단위'
+        //     },
+        //     {
+        //         id: 'p_cost',
+        //         numeric: true,
+        //         disablePadding: true,
+        //         label: '가격'
+        //     },
+        //     {
+        //         // 추가함
+        //         id: 'p_quan',
+        //         numeric: true,
+        //         disablePadding: true,
+        //         label: '수량'
+        //     },
+        //     {
+        //         id: 'p_edit',
+        //         numeric: false,
+        //         disablePadding: true,
+        //         label: '수정'
+        //     }
+        // ];
         this.state = {
             clickedCate: { index: -1, _id: -1, itemName: '-' },
-            headerData: headerData,
-            data: [
-                {
-                    p_name: '밀크 아이스크림',
-                    p_unit: 'box 3kg',
-                    p_cost: '32,500',
-                    p_quan: '1'
-                },
-                {
-                    p_name: '말차 아이스크림',
-                    p_unit: 'box 3kg',
-                    p_cost: '32,500',
-                    p_quan: '1'
-                }
-            ],
-            tableTitle: '아이스크림',
+            newCategory: { state: false, newName: '', newDesc: '' },
             categories: props.categories
         };
     }
@@ -145,49 +160,131 @@ class Imhome extends Component {
             : window.confirm('정말 삭제하시겠습니까?');
     };
 
+    // 새로운 카테고리 폼 생성
+    _newCategory = () => {
+        const { newCategory } = this.state;
+        if (!newCategory.state) {
+            this.setState({ newCategory: { ...newCategory, state: true } });
+        } else {
+        }
+    };
+
+    /**
+     * @desc 카테고리를 생성하는 메서드
+     * @param
+     * companyCode : 회사 코드
+     * body : 카테고리 정보 {
+     *   itemName: 이름,
+     *   itemDepth: 0,
+     *   parentId: 0,
+     *   itemDesc: 설명
+     *   }
+     */
+    _createCategory = async () => {
+        const { ProductListActions, form } = this.props;
+        const { newCategory } = this.state;
+
+        // 현재 폼에서 companyCode 조회
+        const companyCode = form.toJS().companyCode;
+
+        // 카테고리 생성
+        await ProductListActions.createCategory(companyCode, {
+            itemName: newCategory.newName,
+            itemDepth: 0,
+            parentId: 0,
+            itemDesc: newCategory.newDesc
+        });
+
+        // 관련 state 초기화
+        this.setState({ newCategory: { state: false, newName: '', newDesc: '' } });
+    };
+
+    _handleChange = e => {
+        const { newCategory } = this.state;
+        this.setState({ newCategory: { ...newCategory, [e.target.name]: e.target.value } });
+    };
+
     render() {
         const items = this.props.product.items;
-        const { clickedCate } = this.state;
-
+        const { clickedCate, newCategory } = this.state;
         return (
             <ContentWrapper>
                 <MainContainer>
-                    {!!this.props.categories ? (
-                        this.props.categories.map((item, index) => (
-                            <div
-                                className={
-                                    this.state.clickedCate.index === index
-                                        ? classNames('category', 'clicked')
-                                        : classNames('category')
-                                }
-                                key={index}
-                            >
+                    <div className={'productComponent'} id={'productComponent'}>
+                        {!!this.props.categories.length > 0 ? (
+                            this.props.categories.map((item, index) => (
+                                <div
+                                    className={
+                                        this.state.clickedCate.index === index
+                                            ? classNames('category', 'clicked')
+                                            : classNames('category')
+                                    }
+                                    key={index}
+                                >
+                                    <div className={'categoryDesc'}>
+                                        <div className={'categoryMain'}>
+                                            <div className={'name'}>{item.itemName}</div>
+                                            <div className={'desc'}>{item.itemDesc}</div>
+                                        </div>
+                                        <div
+                                            className={'categorySub'}
+                                            onClick={() =>
+                                                this._clickCategory(index, item._id, item.itemName)
+                                            }
+                                        >
+                                            <span>
+                                                {this.state.clickedCate.index === index ? '>' : '<'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <div>로딩중입니다...</div>
+                        )}
+                        {newCategory.state === true ? (
+                            <div className={classNames('category')}>
                                 <div className={'categoryDesc'}>
                                     <div className={'categoryMain'}>
-                                        <div className={'name'}>{item.itemName}</div>
-                                        <div className={'desc'}>{item.itemDesc}</div>
+                                        <div className={'name'}>
+                                            <Label>이름</Label>
+                                            <Input
+                                                type="text"
+                                                name="newName"
+                                                placeholder="이름"
+                                                onChange={this._handleChange}
+                                                value={newCategory.newName}
+                                            />
+                                        </div>
+                                        <div className={'desc'}>
+                                            <Label>설명</Label>
+                                            <Input
+                                                type="text"
+                                                name="newDesc"
+                                                placeholder="설명"
+                                                onChange={this._handleChange}
+                                                value={newCategory.newDesc}
+                                            />
+                                        </div>
                                     </div>
-                                    <div
-                                        className={'categorySub'}
-                                        onClick={() =>
-                                            this._clickCategory(index, item._id, item.itemName)
-                                        }
-                                    >
-                                        <span>
-                                            {this.state.clickedCate.index === index ? '>' : '<'}
-                                        </span>
+                                    <div className={'categorySub'}>
+                                        <button onClick={() => this._createCategory()}>확인</button>
                                     </div>
                                 </div>
                             </div>
-                        ))
+                        ) : (
+                            <div />
+                        )}
+                    </div>
+                    <hr />
+                    {!!this.props.categories.length > 0 ? (
+                        <div className={'footerContainer'}>
+                            <Button onClick={() => this._newCategory()}>메뉴추가</Button>
+                            <Button onClick={this._deleteCate}>메뉴삭제</Button>
+                        </div>
                     ) : (
                         <div />
                     )}
-                    <hr />
-                    <div className={'footerContainer'}>
-                        <Button>메뉴추가</Button>
-                        <Button onClick={this._deleteCate}>메뉴삭제</Button>
-                    </div>
                 </MainContainer>
                 <ProductFormContainer>
                     {/* <TableWithScroll
@@ -222,4 +319,14 @@ class Imhome extends Component {
     }
 }
 
-export default Imhome;
+export default connect(
+    state => ({
+        form: state.productList.getIn(['productList', 'form']),
+        lists: state.productList.getIn(['productList', 'lists']),
+        error: state.productList.getIn(['productList', 'error']),
+        result: state.productList.get('result')
+    }),
+    dispatch => ({
+        ProductListActions: bindActionCreators(ProductListActions, dispatch)
+    })
+)(Imhome);
