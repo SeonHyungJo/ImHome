@@ -1,6 +1,5 @@
 import express from 'express';
 const Products = require('../../models/products');
-const Companys = require('../../models/companys');
 const reponseError = require('../common/responseError');
 
 export let router = express.Router();
@@ -102,9 +101,30 @@ router.post('/product/:companyCode/item', function(req, res) {
                 _id : item id
             }
  */
-router.put('/product/:companyCode/item', function(req, res) {
-    // req.body.parentId가 0이 아닌지에 따라 카테고리인지 분기
+router.delete('/product/:companyCode/item', function(req, res) {
     Products.findOneAndUpdateDelete(req.params.companyCode, req.body)
+        .then(product => {
+            if (!product) {
+                reponseError(res, 'CANT_FIND_PRODUCT');
+            }
+            res.json(product);
+        })
+        .catch(err => {
+            console.log(err);
+            reponseError(res, 'UPDATE_ITEM_ERROR');
+        });
+});
+
+/**
+ * @author jinseong
+ * @summary item 변경
+ * @param companyCode
+ * @param body: {
+                _id : item id
+            }
+ */
+router.put('/product/:companyCode/item', function(req, res) {
+    Products.findOneAndUpdateItem(req.params.companyCode, req.body)
         .then(product => {
             if (!product) {
                 reponseError(res, 'CANT_FIND_PRODUCT');

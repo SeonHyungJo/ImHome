@@ -35,6 +35,10 @@ productsSchema.statics.findOneUpdateById = function(id, payload) {
     return this.findOneAndUpdate({ id }, payload, { new: true });
 };
 
+productsSchema.statics.deleteById = function(productId) {
+    return this.deleteOne({ _id: productId });
+};
+
 /**
  * @author jinseong
  * @summary 새로운 item 등록
@@ -47,16 +51,32 @@ productsSchema.statics.findOneAndUpdateNew = function(companyCode, itemInfo) {
 
 /**
  * @author jinseong
+ * @summary item 변경
+ * @param companyCode: 부모 컴퍼니의 코드, iteminfo: 변경 품목에 대한 json형식 정보
+ * @returns product
+ */
+productsSchema.statics.findOneAndUpdateItem = function(companyCode, itemInfo) {
+    return this.findOneAndUpdate(
+        { companyCode: companyCode, 'items._id': itemInfo._id },
+        {
+            'items.$.itemName': itemInfo.itemName,
+            'items.$.itemCount': itemInfo.itemCount,
+            'items.$.itemCost': itemInfo.itemCost,
+            'items.$.itemVolume': itemInfo.itemVolume,
+            'items.$.parentId': itemInfo.parentId
+        },
+        { new: true }
+    );
+};
+
+/**
+ * @author jinseong
  * @summary item 삭제
  * @param companyCode: 부모 컴퍼니의 코드, iteminfo: 삭제 item id
  * @returns product
  */
 productsSchema.statics.findOneAndUpdateDelete = function(companyCode, itemInfo) {
     return this.findOneAndUpdate({ companyCode }, { $pull: { items: itemInfo } }, { new: true });
-};
-
-productsSchema.statics.deleteById = function(productId) {
-    return this.deleteOne({ _id: productId });
 };
 
 /**
