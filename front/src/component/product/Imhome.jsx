@@ -200,6 +200,7 @@ class Imhome extends Component {
             clickedItem: {},
             newCategory: { state: false, newName: '', newDesc: '' },
             newItem: { state: false, newName: '', newVolume: '', newCost: '' },
+            editItem: { state: false, _id: -1 },
             categories: props.categories
         };
     }
@@ -213,6 +214,8 @@ class Imhome extends Component {
             this.setState({ clickedItem: {} });
         } else if (stateName === 'clickedCate') {
             this.setState({ clickedCate: { index: -1, _id: -1, itemName: '' } });
+        } else if (stateName === 'editItem') {
+            this.setState({ editItem: { state: false, _id: -1 } });
         }
     };
 
@@ -255,7 +258,7 @@ class Imhome extends Component {
      *   parentId: 카테고리 아이디
      *   }
      */
-    _createCategory = async stateName => {
+    _createItem = async stateName => {
         const { ProductListActions, form } = this.props;
 
         // 현재 폼에서 companyCode 조회
@@ -288,7 +291,7 @@ class Imhome extends Component {
     };
 
     /**
-     * @desc 카테고리를 삭제하는 멧드
+     * @desc 아이템을 삭제하는 메서드
      * @param
      * companyCode : 회사 코드
      * body : item id {
@@ -347,6 +350,51 @@ class Imhome extends Component {
         }
     };
 
+    /**
+     * @desc 아이템 업데이트 메서드
+     * @param
+     * companyCode : 회사 코드
+     * body : item 정보
+     * {
+     *      "_id": "5c1539ac23a9f3217007735d",
+            "itemName": 이름,
+            "itemCount": 수량,
+            "itemCost": 가격,
+            "itemVolume": 단위,
+     * }
+     * updateItem
+     */
+    _updateItem = async () => {
+        const { ProductListActions, form } = this.props;
+        const { editItem } = this.state;
+
+        // 현재 폼에서 companyCode 조회
+        const companyCode = form.toJS().companyCode;
+
+        // item 변경
+        await ProductListActions.updateItem(companyCode, {
+            _id: editItem._id,
+            itemName: editItem.itemName,
+            itemCount: 1, // 여기 추후 수정해야함
+            itemCost: editItem.itemCost,
+            itemVolume: editItem.itemVolume
+        });
+
+        this._initNew('editItem');
+    };
+
+    _editItem = child => {
+        this.setState({
+            editItem: {
+                state: true,
+                _id: child._id,
+                itemName: child.itemName,
+                itemCost: child.itemCost,
+                itemVolume: child.itemVolume
+            }
+        });
+    };
+
     _handleChange = (stateName, e) =>
         this.setState({
             [stateName]: { ...this.state[stateName], [e.target.name]: e.target.value }
@@ -372,7 +420,7 @@ class Imhome extends Component {
 
     render() {
         const items = this.props.product.items;
-        const { clickedCate, newCategory, newItem } = this.state;
+        const { clickedCate, newCategory, newItem, editItem } = this.state;
         const detailItem = items.filter(item => item.parentId === clickedCate._id);
         const defaultTable = [0, 1, 2, 3, 4];
         return (
@@ -433,9 +481,7 @@ class Imhome extends Component {
                                     </div>
                                 </div>
                                 <div className={'categorySubButton'}>
-                                    <SmallButton
-                                        onClick={() => this._createCategory('newCategory')}
-                                    >
+                                    <SmallButton onClick={() => this._createItem('newCategory')}>
                                         확인
                                     </SmallButton>
                                     <SmallButton onClick={() => this._cancelItem('newCategory')}>
@@ -469,31 +515,93 @@ class Imhome extends Component {
                                     <th>가격</th>
                                     <th>수정</th>
                                 </tr>
-                                {!!detailItem.length > 0
-                                    ? detailItem.map(child => (
-                                          <tr key={child._id}>
-                                              <td
-                                                  className={classNames(
-                                                      'checkboxTd',
-                                                      'tableAlignCenter'
-                                                  )}
-                                              >
-                                                  <input
-                                                      type="checkbox"
-                                                      onClick={e =>
-                                                          this._boxCheck(child._id, detailItem)
-                                                      }
+                                {detailItem.length > 0
+                                    ? detailItem.map(child =>
+                                          editItem.state === true && editItem._id === child._id ? (
+                                              <tr key={child._id}>
+                                                  <td
+                                                      className={classNames(
+                                                          'checkboxTd',
+                                                          'tableAlignCenter'
+                                                      )}
                                                   />
-                                              </td>
-                                              <td>{child.itemName}</td>
-                                              <td>{child.itemVolume}</td>
-                                              <td>{child.itemCost}</td>
-                                              <td className={classNames('tableAlignCenter')}>
-                                                  <TableButton>수정</TableButton>
-                                              </td>
-                                          </tr>
-                                      ))
-                                    : defaultTable.map((i, index) => (
+                                                  <td>
+                                                      <Input
+                                                          type="text"
+                                                          name="itemName"
+                                                          placeholder="이름"
+                                                          onChange={e =>
+                                                              this._handleChange('editItem', e)
+                                                          }
+                                                          value={editItem.itemName}
+                                                      />
+                                                  </td>
+                                                  <td>
+                                                      <Input
+                                                          type="text"
+                                                          name="itemVolume"
+                                                          placeholder="단위"
+                                                          onChange={e =>
+                                                              this._handleChange('editItem', e)
+                                                          }
+                                                          value={editItem.itemVolume}
+                                                      />
+                                                  </td>
+                                                  <td>
+                                                      <Input
+                                                          type="text"
+                                                          name="itemCost"
+                                                          placeholder="가격"
+                                                          onChange={e =>
+                                                              this._handleChange('editItem', e)
+                                                          }
+                                                          value={editItem.itemCost}
+                                                      />
+                                                  </td>
+                                                  <td className={classNames('tableAlignCenter')}>
+                                                      <TableButton
+                                                          onClick={() => this._updateItem()}
+                                                      >
+                                                          확인
+                                                      </TableButton>
+                                                      <TableButton
+                                                          onClick={() =>
+                                                              this._cancelItem('editItem')
+                                                          }
+                                                      >
+                                                          취소
+                                                      </TableButton>
+                                                  </td>
+                                              </tr>
+                                          ) : (
+                                              <tr key={child._id}>
+                                                  <td
+                                                      className={classNames(
+                                                          'checkboxTd',
+                                                          'tableAlignCenter'
+                                                      )}
+                                                  >
+                                                      <input
+                                                          type="checkbox"
+                                                          onClick={() =>
+                                                              this._boxCheck(child._id, detailItem)
+                                                          }
+                                                      />
+                                                  </td>
+                                                  <td>{child.itemName}</td>
+                                                  <td>{child.itemVolume}</td>
+                                                  <td>{child.itemCost}</td>
+                                                  <td className={classNames('tableAlignCenter')}>
+                                                      <TableButton
+                                                          onClick={() => this._editItem(child)}
+                                                      >
+                                                          수정
+                                                      </TableButton>
+                                                  </td>
+                                              </tr>
+                                          )
+                                      )
+                                    : defaultTable.map((iy, index) => (
                                           <tr key={index}>
                                               <td className={classNames('checkboxTd')} />
                                               <td>-</td>
@@ -534,7 +642,7 @@ class Imhome extends Component {
                                         </td>
                                         <td className={classNames('tableAlignCenter')}>
                                             <TableButton
-                                                onClick={() => this._createCategory('newItem')}
+                                                onClick={() => this._createItem('newItem')}
                                             >
                                                 확인
                                             </TableButton>
@@ -556,7 +664,6 @@ class Imhome extends Component {
                         <div className={'footerContainer'}>
                             <Button onClick={() => this._newItem('newItem')}>품목추가</Button>
                             <Button onClick={() => this._deleteItem('item')}>품목삭제</Button>
-                            <Button>변경사항 저장</Button>
                         </div>
                     ) : (
                         <div />

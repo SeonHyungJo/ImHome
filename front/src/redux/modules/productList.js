@@ -10,8 +10,9 @@ const GET_COMPANY_LIST = 'productList/GET_COMPANY_LIST'; // 회사 목록 가져
 const GET_PRODUCTS = 'productList/GET_PRODUCTS'; // 품목 가져오기
 const GET_PRODUCT_DATA = 'productList/GET_PRODUCT_DATA'; // 품목의 상세 정보 가져오기
 
-const CREATE_ITEM = 'productList/CREATE_ITEM'; // 카테고리 생성
-const DELETE_ITEM = 'productList/DELETE_ITEM'; // 카테고리 삭제
+const CREATE_ITEM = 'productList/CREATE_ITEM'; // 아이템 생성
+const DELETE_ITEM = 'productList/DELETE_ITEM'; // 아이템 삭제
+const UPDATE_ITEM = 'productList/UPDATE_ITEM'; // 아이템 삭제
 
 export const changeInput = createAction(CHANGE_INPUT); // {form, name, value}
 export const initializeForm = createAction(INITIALIZE_FORM); // form
@@ -22,6 +23,7 @@ export const getProductData = createAction(GET_PRODUCT_DATA, productList.getProd
 
 export const createItem = createAction(CREATE_ITEM, productList.createItem);
 export const deleteItem = createAction(DELETE_ITEM, productList.deleteItem);
+export const updateItem = createAction(UPDATE_ITEM, productList.updateItem);
 
 // 초기값 설정
 const initialState = Map({
@@ -80,6 +82,11 @@ export default handleActions(
         }),
         ...pender({
             type: CREATE_ITEM,
+            onSuccess: (state, action) =>
+                state.setIn(['productList', 'form'], Map(action.payload.data))
+        }),
+        ...pender({
+            type: UPDATE_ITEM,
             onSuccess: (state, action) =>
                 state.setIn(['productList', 'form'], Map(action.payload.data))
         })
