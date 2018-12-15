@@ -62,8 +62,7 @@ productsSchema.statics.findOneAndUpdateItem = function(companyCode, itemInfo) {
             'items.$.itemName': itemInfo.itemName,
             'items.$.itemCount': itemInfo.itemCount,
             'items.$.itemCost': itemInfo.itemCost,
-            'items.$.itemVolume': itemInfo.itemVolume,
-            'items.$.parentId': itemInfo.parentId
+            'items.$.itemVolume': itemInfo.itemVolume
         },
         { new: true }
     );
