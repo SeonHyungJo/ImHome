@@ -4,48 +4,43 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
     display: inline-block;
     color: #000;
-    padding: 0.3rem;
-    height: 17px;
-
-    vertical-align: -20%;
-
+    padding: 5px;
     border: 1.5px solid rgba(100, 100, 100, 0.3);
     border-radius: 2px;
 
     div {
         display: inline-block;
-        height: 100%;
     }
 
-    .leftArrow {
-        border: 1px solid #fe4c8d;
-        width: 2rem;
-    }
-
-    .rightArrow {
-        border: 1px solid #fe4c8d;
-        width: 2rem;
+    .sideArrow {
+        padding: 0px 10px;
+        font-size: 1rem;
+        cursor: pointer;
     }
 
     .middleLine {
-        border: 1px solid #fe4c8d;
-        width: 1px;
+        font-size: 1rem;
     }
 
     .monthText {
-        border: 1px solid #fe4c8d;
+        padding: 0px 10px;
         text-align: center;
-        width: 5rem;
+        font-size: 0.8rem;
+        width: 4rem;
     }
 `;
 
-const MonthPicker = ({ children, onClick, style, name, value, checked }) => (
+const MonthPicker = ({ type, children, onClick, style, name, value, checked }) => (
     <Wrapper style={style ? style : {}} onClick={onClick}>
-        <div className="leftArrow">&lt;</div>
-        <div className="middleLine" />
-        <input type="number" className="monthText" max="12" contentEditable="true" />
-        <div className="middleLine" />
-        <div className="rightArrow">&gt;</div>
+        <div className="sideArrow">&lt;</div>
+        <div className="middleLine">|</div>
+        {type === 'year' ? (
+            <div className="monthText">2018년</div>
+        ) : (
+            <div className="monthText">1월</div>
+        )}
+        <div className="middleLine">|</div>
+        <div className="sideArrow">&gt;</div>
     </Wrapper>
 );
 
