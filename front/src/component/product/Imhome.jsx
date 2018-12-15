@@ -197,6 +197,7 @@ class Imhome extends Component {
         super(props);
         this.state = {
             clickedCate: { index: -1, _id: -1, itemName: '-' },
+            clickedItem: {},
             newCategory: { state: false, newName: '', newDesc: '' },
             newItem: { state: false, newName: '', newVolume: '', newCost: '' },
             categories: props.categories
@@ -208,11 +209,16 @@ class Imhome extends Component {
             this.setState({ newCategory: { state: false, newName: '', newDesc: '' } });
         } else if (stateName === 'newItem') {
             this.setState({ newItem: { state: false, newName: '', newVolume: '', newCost: '' } });
+        } else if (stateName === 'clickedItem') {
+            this.setState({ clickedItem: {} });
+        } else if (stateName === 'clickedCate') {
+            this.setState({ clickedCate: { index: -1, _id: -1, itemName: '' } });
         }
     };
 
     _clickCategory = (index, _id, itemName) => {
         this._initNew('newItem');
+        this._initNew('clickedItem');
         this.setState({ clickedCate: { index: index, _id: _id, itemName: itemName } });
     };
 
@@ -225,9 +231,7 @@ class Imhome extends Component {
     };
 
     // 새로운 폼 취소
-    _cancelItem = stateName => {
-        this._initNew(stateName);
-    };
+    _cancelItem = stateName => this._initNew(stateName);
 
     /**
      * @desc 아이템을 생성하는 메서드
@@ -291,27 +295,54 @@ class Imhome extends Component {
      *   _id : item id
      * }
      */
-    _deleteCate = async () => {
+    _deleteItem = async type => {
         const { clickedCate } = this.state;
+        if (type === 'category') {
+            if (clickedCate.index === -1) {
+                // 클릭한 카테고리가 없다면
+                alert('메뉴를 선택해주세요');
+            } else {
+                if (window.confirm('정말 선택하신 카테고리를 삭제하시겠습니까?')) {
+                    // 클릭한 카테고리가 있다면
+                    const { ProductListActions, form } = this.props;
 
-        if (clickedCate.index === -1) {
-            // 클릭한 카테고리가 없다면
-            alert('메뉴를 선택해주세요');
-        } else {
-            if (window.confirm('정말 선택하신 카테고리를 삭제하시겠습니까?')) {
-                // 클릭한 카테고리가 있다면
-                const { ProductListActions, form } = this.props;
+                    // 현재 폼에서 companyCode 조회
+                    const companyCode = form.toJS().companyCode;
 
-                // 현재 폼에서 companyCode 조회
-                const companyCode = form.toJS().companyCode;
+                    // 카테고리 삭제
+                    await ProductListActions.deleteItem(companyCode, {
+                        _id: clickedCate._id
+                    });
 
-                // 카테고리 삭제
-                await ProductListActions.deleteItem(companyCode, {
-                    _id: clickedCate._id
-                });
+                    // 클릭 state 초기화
+                    this._initNew('clickedCate');
+                }
+            }
+        } else if (type === 'item') {
+            const { clickedItem } = this.state;
+            const keys = Object.keys(clickedItem);
 
-                // 클릭 state 초기화
-                this.setState({ clickedCate: { index: -1, _id: -1, itemName: '' } });
+            if (keys.length === 0) {
+                // 클릭한 Item이 없다면
+                alert('Item을 선택해주세요');
+            } else {
+                if (window.confirm('정말 선택하신 Item들을 삭제하시겠습니까?')) {
+                    // 클릭한 Item이 있다면
+                    const { ProductListActions, form } = this.props;
+
+                    // 현재 폼에서 companyCode 조회
+                    const companyCode = form.toJS().companyCode;
+
+                    keys.map(async key => {
+                        // Item 삭제
+                        await ProductListActions.deleteItem(companyCode, {
+                            _id: clickedItem[key]._id
+                        });
+                    });
+
+                    // 클릭 Item 초기화
+                    this._initNew('clickedItem');
+                }
             }
         }
     };
@@ -320,6 +351,24 @@ class Imhome extends Component {
         this.setState({
             [stateName]: { ...this.state[stateName], [e.target.name]: e.target.value }
         });
+
+    // item 박스 클릭 시 메서드
+    _boxCheck = async (boxId, detailItem) => {
+        // filter로 이미 걸러진 detailItem에서 ID로 조회
+        const clickedItem = detailItem.filter(item => item._id === boxId)[0];
+
+        if (!this.state.clickedItem.hasOwnProperty(boxId)) {
+            // 클릭했던 것이 아니라면 state에 저장
+            await this.setState({
+                clickedItem: { ...this.state.clickedItem, [clickedItem._id]: clickedItem }
+            });
+        } else {
+            // 클릭했었던 것이라면 state에서 delete
+            let newState = this.state.clickedItem;
+            delete newState[boxId];
+            await this.setState({ clickedItem: newState });
+        }
+    };
 
     render() {
         const items = this.props.product.items;
@@ -402,7 +451,7 @@ class Imhome extends Component {
                     {!!this.props.categories.length > 0 ? (
                         <div className={'footerContainer'}>
                             <Button onClick={() => this._newItem('newCategory')}>메뉴추가</Button>
-                            <Button onClick={this._deleteCate}>메뉴삭제</Button>
+                            <Button onClick={() => this._deleteItem('category')}>메뉴삭제</Button>
                         </div>
                     ) : (
                         <div />
@@ -429,7 +478,12 @@ class Imhome extends Component {
                                                       'tableAlignCenter'
                                                   )}
                                               >
-                                                  <input type="checkbox" id={child._id} />
+                                                  <input
+                                                      type="checkbox"
+                                                      onClick={e =>
+                                                          this._boxCheck(child._id, detailItem)
+                                                      }
+                                                  />
                                               </td>
                                               <td>{child.itemName}</td>
                                               <td>{child.itemVolume}</td>
@@ -441,14 +495,7 @@ class Imhome extends Component {
                                       ))
                                     : defaultTable.map((i, index) => (
                                           <tr key={index}>
-                                              <td
-                                                  className={classNames(
-                                                      'checkboxTd',
-                                                      'tableAlignCenter'
-                                                  )}
-                                              >
-                                                  <input type="checkbox" id={i} />
-                                              </td>
+                                              <td className={classNames('checkboxTd')} />
                                               <td>-</td>
                                               <td>-</td>
                                               <td>-</td>
@@ -508,7 +555,7 @@ class Imhome extends Component {
                     {clickedCate._id !== -1 ? (
                         <div className={'footerContainer'}>
                             <Button onClick={() => this._newItem('newItem')}>품목추가</Button>
-                            <Button>품목삭제</Button>
+                            <Button onClick={() => this._deleteItem('item')}>품목삭제</Button>
                             <Button>변경사항 저장</Button>
                         </div>
                     ) : (
