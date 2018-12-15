@@ -10,8 +10,8 @@ const GET_COMPANY_LIST = 'productList/GET_COMPANY_LIST'; // 회사 목록 가져
 const GET_PRODUCTS = 'productList/GET_PRODUCTS'; // 품목 가져오기
 const GET_PRODUCT_DATA = 'productList/GET_PRODUCT_DATA'; // 품목의 상세 정보 가져오기
 
-const CREATE_CATEGORY = 'productList/CREATE_CATEGORY'; // 카테고리 생성
-const DELETE_CATEGORY = 'productList/DELETE_CATEGORY'; // 카테고리 삭제
+const CREATE_ITEM = 'productList/CREATE_ITEM'; // 카테고리 생성
+const DELETE_ITEM = 'productList/DELETE_ITEM'; // 카테고리 삭제
 
 export const changeInput = createAction(CHANGE_INPUT); // {form, name, value}
 export const initializeForm = createAction(INITIALIZE_FORM); // form
@@ -20,8 +20,8 @@ export const getCompanyList = createAction(GET_COMPANY_LIST, productList.getComp
 export const getProducts = createAction(GET_PRODUCTS, productList.getProducts);
 export const getProductData = createAction(GET_PRODUCT_DATA, productList.getProductData);
 
-export const createCategory = createAction(CREATE_CATEGORY, productList.createCategory);
-export const deleteCategory = createAction(DELETE_CATEGORY, productList.deleteCategory);
+export const createItem = createAction(CREATE_ITEM, productList.createItem);
+export const deleteItem = createAction(DELETE_ITEM, productList.deleteItem);
 
 // 초기값 설정
 const initialState = Map({
@@ -74,12 +74,12 @@ export default handleActions(
                 state.setIn(['productList', 'form'], Map(action.payload.data))
         }),
         ...pender({
-            type: DELETE_CATEGORY,
+            type: DELETE_ITEM,
             onSuccess: (state, action) =>
                 state.setIn(['productList', 'form'], Map(action.payload.data))
         }),
         ...pender({
-            type: CREATE_CATEGORY,
+            type: CREATE_ITEM,
             onSuccess: (state, action) =>
                 state.setIn(['productList', 'form'], Map(action.payload.data))
         })

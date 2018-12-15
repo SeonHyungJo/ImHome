@@ -89,11 +89,12 @@ const Label = styled.div`
     margin-bottom: 0.25rem;
     margin-right: 2rem;
     display: inline-block;
-    width: 20%;
+    width: 10%;
 `;
 
 const Input = styled.input`
-    width: 50%;
+    display: inline-block;
+    width: 70%;
     border: 1px solid #c2c2c2;
     outline: none;
     border-radius: 3px;
@@ -120,7 +121,7 @@ const SmallButton = styled.button`
 `;
 
 const TableButton = styled.button`
-    // margin-top: 0.5rem;
+    margin-right: 0.25rem;
     border: 2px solid #c2c2c2;
     border-radius: 3px;
     background: white;
@@ -202,8 +203,85 @@ class Imhome extends Component {
         };
     }
 
-    _clickCategory = (index, _id, itemName) =>
+    _initNew = stateName => {
+        if (stateName === 'newCategory') {
+            this.setState({ newCategory: { state: false, newName: '', newDesc: '' } });
+        } else if (stateName === 'newItem') {
+            this.setState({ newItem: { state: false, newName: '', newVolume: '', newCost: '' } });
+        }
+    };
+
+    _clickCategory = (index, _id, itemName) => {
+        this._initNew('newItem');
         this.setState({ clickedCate: { index: index, _id: _id, itemName: itemName } });
+    };
+
+    // 새로운 폼 생성
+    _newItem = stateName => {
+        const newContent = this.state[stateName];
+        if (!newContent.state) {
+            this.setState({ [stateName]: { ...this.state[stateName], state: true } });
+        }
+    };
+
+    // 새로운 폼 취소
+    _cancelItem = stateName => {
+        this._initNew(stateName);
+    };
+
+    /**
+     * @desc 아이템을 생성하는 메서드
+     * @param
+     * @parma1 companyCode : 회사 코드
+     * @param2 body정보. (category와 item이 필요한 정보가 다름)
+     * @param2_1
+     *   { caategory
+     *   itemName: 이름,
+     *   itemDepth: 0,
+     *   parentId: 0,
+     *   itemDesc: 설명
+     *   }
+     * @param2_2
+     *   { item
+     *   itemName: 이름,
+     *   itemCount: 1,
+     *   itemCost: 가격,
+     *   itemVolume: 단위,
+     *   itemDepth: 1,
+     *   parentId: 카테고리 아이디
+     *   }
+     */
+    _createCategory = async stateName => {
+        const { ProductListActions, form } = this.props;
+
+        // 현재 폼에서 companyCode 조회
+        const companyCode = form.toJS().companyCode;
+
+        if (stateName === 'newCategory') {
+            const { newCategory } = this.state;
+
+            // 카테고리 생성
+            await ProductListActions.createItem(companyCode, {
+                itemName: newCategory.newName,
+                itemDepth: 0,
+                parentId: 0,
+                itemDesc: newCategory.newDesc
+            });
+        } else if (stateName === 'newItem') {
+            const { newItem, clickedCate } = this.state;
+
+            // item 생성
+            await ProductListActions.createItem(companyCode, {
+                itemName: newItem.newName,
+                itemCount: 1, // 여기 추후 수정해야함
+                itemCost: newItem.newCost,
+                itemVolume: newItem.newVolume,
+                itemDepth: 1,
+                parentId: clickedCate._id
+            });
+        }
+        this._initNew(stateName);
+    };
 
     /**
      * @desc 카테고리를 삭제하는 멧드
@@ -228,7 +306,7 @@ class Imhome extends Component {
                 const companyCode = form.toJS().companyCode;
 
                 // 카테고리 삭제
-                await ProductListActions.deleteCategory(companyCode, {
+                await ProductListActions.deleteItem(companyCode, {
                     _id: clickedCate._id
                 });
 
@@ -238,57 +316,14 @@ class Imhome extends Component {
         }
     };
 
-    // 새로운 카테고리 폼 생성
-    _newCategory = () => {
-        const { newCategory } = this.state;
-        if (!newCategory.state) {
-            this.setState({ newCategory: { ...newCategory, state: true } });
-        } else {
-        }
-    };
-
-    /**
-     * @desc 카테고리를 생성하는 메서드
-     * @param
-     * companyCode : 회사 코드
-     * body : 카테고리 정보 {
-     *   itemName: 이름,
-     *   itemDepth: 0,
-     *   parentId: 0,
-     *   itemDesc: 설명
-     *   }
-     */
-    _createCategory = async () => {
-        const { ProductListActions, form } = this.props;
-        const { newCategory } = this.state;
-
-        // 현재 폼에서 companyCode 조회
-        const companyCode = form.toJS().companyCode;
-
-        // 카테고리 생성
-        await ProductListActions.createCategory(companyCode, {
-            itemName: newCategory.newName,
-            itemDepth: 0,
-            parentId: 0,
-            itemDesc: newCategory.newDesc
+    _handleChange = (stateName, e) =>
+        this.setState({
+            [stateName]: { ...this.state[stateName], [e.target.name]: e.target.value }
         });
-
-        // 관련 state 초기화
-        this.setState({ newCategory: { state: false, newName: '', newDesc: '' } });
-    };
-
-    _cancelCategory = () => {
-        this.setState({ newCategory: { state: false, newName: '', newDesc: '' } });
-    };
-
-    _handleChange = e => {
-        const { newCategory } = this.state;
-        this.setState({ newCategory: { ...newCategory, [e.target.name]: e.target.value } });
-    };
 
     render() {
         const items = this.props.product.items;
-        const { clickedCate, newCategory } = this.state;
+        const { clickedCate, newCategory, newItem } = this.state;
         const detailItem = items.filter(item => item.parentId === clickedCate._id);
         const defaultTable = [0, 1, 2, 3, 4];
         return (
@@ -333,7 +368,7 @@ class Imhome extends Component {
                                             type="text"
                                             name="newName"
                                             placeholder="이름"
-                                            onChange={this._handleChange}
+                                            onChange={e => this._handleChange('newCategory', e)}
                                             value={newCategory.newName}
                                         />
                                     </div>
@@ -343,19 +378,20 @@ class Imhome extends Component {
                                             type="text"
                                             name="newDesc"
                                             placeholder="설명"
-                                            onChange={this._handleChange}
+                                            onChange={e => this._handleChange('newCategory', e)}
                                             value={newCategory.newDesc}
                                         />
                                     </div>
                                 </div>
                                 <div className={'categorySubButton'}>
-                                    <SmallButton onClick={() => this._createCategory()}>
+                                    <SmallButton
+                                        onClick={() => this._createCategory('newCategory')}
+                                    >
                                         확인
                                     </SmallButton>
-                                    <SmallButton onClick={() => this._cancelCategory()}>
+                                    <SmallButton onClick={() => this._cancelItem('newCategory')}>
                                         취소
                                     </SmallButton>
-                                    {/* <button onClick={() => this._createCategory()}></button> */}
                                 </div>
                             </div>
                         ) : (
@@ -365,7 +401,7 @@ class Imhome extends Component {
                     <hr />
                     {!!this.props.categories.length > 0 ? (
                         <div className={'footerContainer'}>
-                            <Button onClick={() => this._newCategory()}>메뉴추가</Button>
+                            <Button onClick={() => this._newItem('newCategory')}>메뉴추가</Button>
                             <Button onClick={this._deleteCate}>메뉴삭제</Button>
                         </div>
                     ) : (
@@ -419,15 +455,65 @@ class Imhome extends Component {
                                               <td>-</td>
                                           </tr>
                                       ))}
+                                {newItem.state === true ? (
+                                    <tr>
+                                        <td />
+                                        <td>
+                                            <Input
+                                                type="text"
+                                                name="newName"
+                                                placeholder="이름"
+                                                onChange={e => this._handleChange('newItem', e)}
+                                                value={newItem.newName}
+                                            />
+                                        </td>
+                                        <td>
+                                            <Input
+                                                type="text"
+                                                name="newVolume"
+                                                placeholder="단위"
+                                                onChange={e => this._handleChange('newItem', e)}
+                                                value={newItem.newVolume}
+                                            />
+                                        </td>
+                                        <td>
+                                            <Input
+                                                type="text"
+                                                name="newCost"
+                                                placeholder="가격"
+                                                onChange={e => this._handleChange('newItem', e)}
+                                                value={newItem.newCost}
+                                            />
+                                        </td>
+                                        <td className={classNames('tableAlignCenter')}>
+                                            <TableButton
+                                                onClick={() => this._createCategory('newItem')}
+                                            >
+                                                확인
+                                            </TableButton>
+                                            <TableButton
+                                                onClick={() => this._cancelItem('newItem')}
+                                            >
+                                                취소
+                                            </TableButton>
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    <tr />
+                                )}
                             </tbody>
                         </Table>
                     </div>
                     <hr />
-                    <div className={'footerContainer'}>
-                        <Button>품목추가</Button>
-                        <Button>품목삭제</Button>
-                        <Button>변경사항 저장</Button>
-                    </div>
+                    {clickedCate._id !== -1 ? (
+                        <div className={'footerContainer'}>
+                            <Button onClick={() => this._newItem('newItem')}>품목추가</Button>
+                            <Button>품목삭제</Button>
+                            <Button>변경사항 저장</Button>
+                        </div>
+                    ) : (
+                        <div />
+                    )}
                 </ProductFormContainer>
             </ContentWrapper>
         );
