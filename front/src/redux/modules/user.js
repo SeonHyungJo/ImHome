@@ -39,6 +39,7 @@ const initialState = Map({
             bAddress: '',
             email: '',
             pNumber: '',
+            bPhoneNumber: ''
         }),
         updateForm: Map({
             _id: '',

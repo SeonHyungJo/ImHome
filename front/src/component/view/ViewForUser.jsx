@@ -8,7 +8,7 @@ import * as UserActions from '../../redux/modules/user';
 
 class ViewForUser extends Component {
     render() {
-        const { branchName, name, id, cName, bNumber, bAddress, email, pNumber } = this.props.form.toJS();
+        const { branchName, name, id, cName, bNumber, bAddress, email, pNumber, bPhoneNumber } = this.props.form.toJS();
 
         return (
             <ViewWrapper title={this.props.viewTitle}>
@@ -41,7 +41,7 @@ class ViewForUser extends Component {
                         <th>사업장 연락처</th>
                         <td>{pNumber ? pNumber : '-'}</td>
                         <th>사업주 연락처</th>
-                        <td>{pNumber ? pNumber : '-'}</td>
+                        <td>{bPhoneNumber ? bPhoneNumber : '-'}</td>
                     </tr>
                 </ViewWithContent>
             </ViewWrapper>
