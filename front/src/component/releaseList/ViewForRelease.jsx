@@ -20,7 +20,7 @@ class ViewForUser extends Component {
 
         return (
             <ViewWrapper title={viewTitle} subTitle={viewSubTitle}>
-                {(type === '' || type === 'normal') && (
+                {(type == '' || type == 'normal') && (
                     <ViewWithContent>
                         <tr>
                             <th>거래합계(건수)</th>
@@ -29,7 +29,7 @@ class ViewForUser extends Component {
                         </tr>
                     </ViewWithContent>
                 )}
-                {type === 'date' && (
+                {type == 'date' && (
                     <ViewWithContent>
                         <tr>
                             <th>조회기간</th>
