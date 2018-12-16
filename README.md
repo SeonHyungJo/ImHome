@@ -113,3 +113,34 @@ dev : 각자 작업한 소스를 여기에 바로 커밋
 3. 작업이 끝나면 dev브랜치로 다시 이동
 4. git rebase 자신의 브랜치
 5. git push origin dev
+
+
+## Issue 등록하기
+
+1. github내에 있는 issue에 등록 진행
+2. 형식에 맞게 작성하고 등록하기 
+3. 우측에 위치한 할당자, 라벨 같이 등록하기
+
+## Issue 처리하기
+
+이슈처리 브랜치 형식 :point_right: 예시 `YH-01`
+
+1. 이슈에 있는 번호에 맞는 브랜치를 만든다
+
+```cmd
+git checkout -b YH-Number
+```
+
+2. 이슈 처리하기
+3. 커밋하기
+4. dev에 머지 시키기
+   
+```cmd
+git checkout dev
+git merge YH-Number --no-ff 
+git push origin dev
+```
+
+머지를 하되 브랜치 구분을 위해서 `--no-ff` 옵션추가
+
+
