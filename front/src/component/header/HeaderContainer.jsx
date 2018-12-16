@@ -51,7 +51,19 @@ const MenuWrapper = styled.ul`
     };
     li .on {
         color:#fe4c8d;
+    };
+    li button {
+        background-color: transparent;
+        font-size:1rem;
+        color:#000000;
+        font-weight:bold;
+        text-decoration:none;
+        border : 0px;
+    };
+    li button:hover {
+        color:#fe4c8d;
     }
+
 `;
 
 const HeaderContainer = ({ children }) => (
