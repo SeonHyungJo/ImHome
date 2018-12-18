@@ -79,11 +79,17 @@ export default handleActions(
         }),
         ...pender({
             type: GET_USER_LIST,
-            onSuccess: (state, action) => state.setIn(['user', 'list'], action.payload.data)
+            onSuccess: (state, action) => {
+                console.log('Get User List');
+                return state.setIn(['user', 'list'], action.payload.data);
+            }
         }),
         ...pender({
             type: GET_USER_DATA,
-            onSuccess: (state, action) => state.setIn(['user', 'form'], Map(action.payload.data))
+            onSuccess: (state, action) => {
+                console.log('Get User Data');
+                return state.setIn(['user', 'form'], Map(action.payload.data));
+            }
         }),
         ...pender({
             type: GET_USER_UPDATE_DATA,

@@ -69,7 +69,6 @@ export default handleActions(
         ...pender({
             type: GET_STORE_LIST,
             onSuccess: (state, action) => {
-                console.log(action.payload.data);
                 return state.setIn(['releaseList', 'store'], action.payload.data);
             }
         }),

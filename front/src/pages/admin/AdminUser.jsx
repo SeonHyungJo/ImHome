@@ -40,7 +40,7 @@ class AdminUser extends Component {
     async componentDidMount() {
         const { UserActions } = this.props;
 
-        await UserActions.getStoreList();
+        //await UserActions.getStoreList();
         await this.getStoreList();
         await this.getNavData();
         //await this.getRowData();
@@ -53,15 +53,15 @@ class AdminUser extends Component {
 
     //최초 로드시 매장 정보를 가져와 redux form에 store 정보 저장
     getStoreList = async () => {
-        const { UserActions, store } = this.props;
+        const { UserActions } = this.props;
         try {
-            if (store) {
-                await UserActions.changeInput({
-                    form: 'user',
-                    value: store[0].branchCode,
-                    name: 'branchCode'
-                });
-            }
+            // if (store) {
+            //     await UserActions.changeInput({
+            //         form: 'user',
+            //         value: store[0].branchCode,
+            //         name: 'branchCode'
+            //     });
+            // }
         } catch (e) {
             console.log(e);
         }
