@@ -1,4 +1,4 @@
-import axios from 'axios';
+import * as ApiService from './ApiService';
 
 /**
  *  @summary 출고가 되지 않은 내역이 있는 지점 리스트 가져오기
@@ -10,7 +10,7 @@ import axios from 'axios';
         "updatedAt": 최근 수정 시간
     }]
  */
-export const getStoreList = () => axios.get('/api/order/branch/incomplete/');
+export const getStoreList = () => ApiService.get('/api/order/branch/incomplete/');
 
 /**
  * @summary 해당 지점에 맞는 주문 정보 가져오기
@@ -30,11 +30,11 @@ export const getStoreList = () => axios.get('/api/order/branch/incomplete/');
         "updatedAt": 최근 수정 시간
     }]
  */
-export const getOrderData = branchCode => axios.get('/api/order/' + branchCode);
+export const getOrderData = branchCode => ApiService.get('/api/order/' + branchCode);
 
 /**
  * @summary 출고 완료 처리하기
  * @param branchCode : 출고처리할 지점 코드
  * @returns returnCode
  */
-export const updateComplete = branchCode => axios.put('/api/order/complete/' + branchCode);
+export const updateComplete = branchCode => ApiService.put('/api/order/complete/' + branchCode);
