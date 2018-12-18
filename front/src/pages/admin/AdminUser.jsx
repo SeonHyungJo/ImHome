@@ -15,15 +15,19 @@ class AdminUser extends Component {
         super();
         const headerData = [
             {
-                id: "createdAt", numeric: false, disablePadding: true, label: '등록일자', formatter: function (data) {
+                id: 'createdAt',
+                numeric: false,
+                disablePadding: true,
+                label: '등록일자',
+                formatter: function(data) {
                     return CommonUtil.setDate(data);
                 }
             },
-            { id: "branchName", numeric: false, disablePadding: true, label: '지점명' },
-            { id: "name", numeric: false, disablePadding: true, label: '대표자' },
-            { id: "id", numeric: false, disablePadding: true, label: '아이디' },
-            { id: "bNumber", numeric: false, disablePadding: true, label: '사업자번호' },
-            { id: "__v", numeric: true, disablePadding: true, label: '총 거래금액(원)' }
+            { id: 'branchName', numeric: false, disablePadding: true, label: '지점명' },
+            { id: 'name', numeric: false, disablePadding: true, label: '대표자' },
+            { id: 'id', numeric: false, disablePadding: true, label: '아이디' },
+            { id: 'bNumber', numeric: false, disablePadding: true, label: '사업자번호' },
+            { id: '__v', numeric: true, disablePadding: true, label: '총 거래금액(원)' }
         ];
         this.state = {
             storeId: 1,
@@ -40,7 +44,7 @@ class AdminUser extends Component {
         await this.getStoreList();
         await this.getNavData();
         //await this.getRowData();
-    };
+    }
 
     componentWillUnmount() {
         const { UserActions } = this.props;
@@ -58,13 +62,12 @@ class AdminUser extends Component {
                     name: 'branchCode'
                 });
             }
-
         } catch (e) {
             console.log(e);
         }
-    }
+    };
 
-    getNavData = async (id) => {
+    getNavData = async id => {
         const { UserActions, form } = this.props;
 
         let storeId = id ? id : form.toJS().branchCode;
@@ -82,9 +85,9 @@ class AdminUser extends Component {
         } catch (e) {
             console.log(e);
         }
-    }
+    };
 
-    getRowData = async (id) => {
+    getRowData = async id => {
         const { UserActions, form } = this.props;
 
         let custNo = id ? id : form.toJS()._id;
@@ -96,12 +99,10 @@ class AdminUser extends Component {
                 await UserActions.getUserData(custNo);
                 await UserActions.getUserUpdateData(custNo);
             }
-
         } catch (e) {
             console.log(e);
         }
-
-    }
+    };
 
     deleteData = async () => {
         const { UserActions, form } = this.props;
@@ -116,22 +117,21 @@ class AdminUser extends Component {
                 this.getNavData(this.state.storeId);
                 alert('회원 정보가 삭제되었습니다.');
             }
-
         } catch (e) {
             console.log(e);
         }
-    }
+    };
 
     popUpdateForm = () => {
-        this.setState({ displayPop: true })
-    }
+        this.setState({ displayPop: true });
+    };
 
     closePop = () => {
         const { UserActions } = this.props;
 
-        this.setState({ displayPop: false })
+        this.setState({ displayPop: false });
         UserActions.getUserUpdateData(this.state.custNo);
-    }
+    };
 
     render() {
         const { store, list } = this.props;
@@ -142,16 +142,22 @@ class AdminUser extends Component {
                 {_id && _id !== '0' ? (
                     <div style={{ textAlign: 'right', marginRight: '1rem' }}>
                         <FormBtn onClick={this.popUpdateForm}>회원정보수정</FormBtn>
-                    </div>) :
+                    </div>
+                ) : (
                     <div />
-                }
+                )}
                 <TableWithScroll
                     headerData={this.state.headerData}
                     data={list}
                     gridTitle="회원목록 및 정보"
                     clickRow={this.getRowData}
                     id={this.state.custNo}
-                    button={_id && _id !== '0' ? <TableBtn onClick={this.deleteData}>회원삭제</TableBtn> : null} />
+                    button={
+                        _id && _id !== '0' ? (
+                            <TableBtn onClick={this.deleteData}>회원삭제</TableBtn>
+                        ) : null
+                    }
+                />
                 <PopUserInfo displayPop={this.state.displayPop} closePop={this.closePop} />
             </PageTemplate>
         );
@@ -159,14 +165,14 @@ class AdminUser extends Component {
 }
 
 export default connect(
-    (state) => ({
+    state => ({
         form: state.user.getIn(['user', 'form']),
         list: state.user.getIn(['user', 'list']),
         store: state.user.getIn(['user', 'store']),
         error: state.user.getIn(['user', 'error']),
         result: state.user.get('result')
     }),
-    (dispatch) => ({
-        UserActions: bindActionCreators(UserActions, dispatch),
+    dispatch => ({
+        UserActions: bindActionCreators(UserActions, dispatch)
     })
 )(AdminUser);

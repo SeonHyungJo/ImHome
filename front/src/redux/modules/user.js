@@ -24,7 +24,6 @@ export const getUserUpdateData = createAction(GET_USER_UPDATE_DATA, userAPI.getU
 export const updateUserData = createAction(UPDATE_USER_DATA, userAPI.updateUserData);
 export const deleteUserData = createAction(DELETE_USER_DATA, userAPI.deleteUserData);
 
-
 // 초기값 설정
 const initialState = Map({
     user: Map({
@@ -51,7 +50,7 @@ const initialState = Map({
             bNumber: '',
             bAddress: '',
             email: '',
-            pNumber: '',
+            pNumber: ''
         }),
         error: null,
         store: [],
@@ -60,41 +59,45 @@ const initialState = Map({
     result: Map({})
 });
 
-export default handleActions({
-    [CHANGE_INPUT]: (state, action) => {
-        const { form, name, value, targetForm } = action.payload;
-        return state.setIn([form, targetForm ? targetForm : 'form', name], value);
+export default handleActions(
+    {
+        [CHANGE_INPUT]: (state, action) => {
+            const { form, name, value, targetForm } = action.payload;
+            return state.setIn([form, targetForm ? targetForm : 'form', name], value);
+        },
+        [INITIALIZE_FORM]: (state, action) => {
+            const initialForm = initialState.get(action.payload);
+            return state.set(action.payload, initialForm);
+        },
+        [SET_ERROR]: (state, action) => {
+            const { form, message } = action.payload;
+            return state.setIn([form, 'error'], message);
+        },
+        ...pender({
+            type: GET_STORE_LIST,
+            onSuccess: (state, action) => state.setIn(['user', 'store'], action.payload.data)
+        }),
+        ...pender({
+            type: GET_USER_LIST,
+            onSuccess: (state, action) => state.setIn(['user', 'list'], action.payload.data)
+        }),
+        ...pender({
+            type: GET_USER_DATA,
+            onSuccess: (state, action) => state.setIn(['user', 'form'], Map(action.payload.data))
+        }),
+        ...pender({
+            type: GET_USER_UPDATE_DATA,
+            onSuccess: (state, action) =>
+                state.setIn(['user', 'updateForm'], Map(action.payload.data))
+        }),
+        ...pender({
+            type: UPDATE_USER_DATA,
+            onSuccess: (state, action) => state.set('result', Map(action.payload.data))
+        }),
+        ...pender({
+            type: DELETE_USER_DATA,
+            onSuccess: (state, action) => state.set('result', Map(action.payload.data))
+        })
     },
-    [INITIALIZE_FORM]: (state, action) => {
-        const initialForm = initialState.get(action.payload);
-        return state.set(action.payload, initialForm);
-    },
-    [SET_ERROR]: (state, action) => {
-        const { form, message } = action.payload;
-        return state.setIn([form, 'error'], message);
-    },
-    ...pender({
-        type: GET_STORE_LIST,
-        onSuccess: (state, action) => state.setIn(['user', 'store'], action.payload.data)
-    }),
-    ...pender({
-        type: GET_USER_LIST,
-        onSuccess: (state, action) => state.setIn(['user', 'list'], action.payload.data)
-    }),
-    ...pender({
-        type: GET_USER_DATA,
-        onSuccess: (state, action) => state.setIn(['user', 'form'], Map(action.payload.data))
-    }),
-    ...pender({
-        type: GET_USER_UPDATE_DATA,
-        onSuccess: (state, action) => state.setIn(['user', 'updateForm'], Map(action.payload.data))
-    }),
-    ...pender({
-        type: UPDATE_USER_DATA,
-        onSuccess: (state, action) => state.set('result', Map(action.payload.data))
-    }),
-    ...pender({
-        type: DELETE_USER_DATA,
-        onSuccess: (state, action) => state.set('result', Map(action.payload.data))
-    }),
-}, initialState);
+    initialState
+);
