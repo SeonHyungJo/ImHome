@@ -436,17 +436,15 @@ class Imhome extends Component {
                                             : classNames('category')
                                     }
                                     key={index}
+                                    onClick={() =>
+                                        this._clickCategory(index, item._id, item.itemName)
+                                    }
                                 >
                                     <div className={'categoryMain'}>
                                         <div className={'name'}>{item.itemName}</div>
                                         <div className={'desc'}>{item.itemDesc}</div>
                                     </div>
-                                    <div
-                                        className={'categorySub'}
-                                        onClick={() =>
-                                            this._clickCategory(index, item._id, item.itemName)
-                                        }
-                                    >
+                                    <div className={'categorySub'}>
                                         <span>
                                             {this.state.clickedCate.index === index ? '>' : '<'}
                                         </span>
