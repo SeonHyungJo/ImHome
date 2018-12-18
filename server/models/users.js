@@ -57,7 +57,7 @@ usersSchema.statics.findAll = function() {
         pNumber: 1, // 전화번호
         branchName: 1, // 지점명
         branchCode: 1, // 지점코드
-        updatedAt: 1 // 수정일자
+        createdAt: 1 // 등록일자
     });
 };
 
@@ -83,7 +83,7 @@ usersSchema.statics.findOneById = function(_id) {
             pNumber: 1, // 전화번호
             branchName: 1, // 지점명
             branchCode: 1, // 지점코드
-            updatedAt: 1 // 수정일자
+            createdAt: 1 // 등록일자
         })
         .catch(err => {
             console.log(err);
@@ -101,7 +101,7 @@ usersSchema.statics.findOneById = function(_id) {
                 branchName: null, // 지점명
                 branchCode: null, // 지점코드
                 checkUser: null,
-                checkAdmin: null
+                createdAt: null
             });
         });
 };
@@ -128,7 +128,7 @@ usersSchema.statics.findOneByUserId = function(id) {
         pNumber: 1, // 전화번호
         branchName: 1, // 지점명
         branchCode: 1, // 지점코드
-        updatedAt: 1 // 수정일자
+        createdAt: 1 // 등록일자
     });
 };
 
@@ -153,7 +153,7 @@ usersSchema.statics.findOneByBranchCode = function(branchCode) {
         pNumber: 1, // 전화번호
         branchName: 1, // 지점명
         branchCode: 1, // 지점코드
-        updatedAt: 1 // 수정일자
+        createdAt: 1 // 등록일자
     });
 };
 
