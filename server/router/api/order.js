@@ -10,7 +10,7 @@ export let router = express.Router();
 //     console.log('Time: ', Date.now());
 //     next();
 // });
-router.use('/order', authMiddleware);
+//router.use('/order', authMiddleware);
 
 /**
  * GET /api/order
