@@ -44,8 +44,8 @@ class AdminUser extends Component {
     // await UserActions.getStoreList();
     await NavActions.getAllList()
     console.log('componentDidMount : ', storeId)
-    await UserActions.getUserList(storeId)
-    await UserActions.getUserData(storeId)
+    UserActions.getUserList(storeId)
+    UserActions.getUserData(storeId)
     // await this.getStoreList()
     // await this.getNavData()
     // await this.getRowData();
@@ -80,6 +80,7 @@ class AdminUser extends Component {
     // this.setState({ storeId: storeId })
 
     try {
+      console.log('getUserList')
       await UserActions.getUserList(id)
 
       // await UserActions.changeInput({
@@ -87,7 +88,7 @@ class AdminUser extends Component {
       //   value: this.props.list.length > 0 ? this.props.list[0]._id : '0',
       //   name: '_id'
       // })
-      await this.getRowData()
+      this.getRowData()
     } catch (e) {
       console.log(e)
     }
@@ -96,15 +97,8 @@ class AdminUser extends Component {
   getRowData = async id => {
     const { UserActions, form, custNo } = this.props
 
-    // let custNo = id || form.toJS()._id
-
-    // this.setState({ custNo: custNo })
-    console.log(custNo)
     try {
-      if (custNo) {
-        await UserActions.getUserData(custNo)
-        // await UserActions.getUserUpdateData(custNo)
-      }
+      await UserActions.getUserData(id || custNo)
     } catch (e) {
       console.log(e)
     }

@@ -13,20 +13,19 @@ class NavTemplate extends Component {
     // NavAction.getAllList();
   }
 
-  clickNavItem (companyCode) {
+  async clickNavItem (companyCode) {
     const { clickNav, NavAction } = this.props
 
     console.log('Click Nav!!!')
     // Nav 컴포넌트 내부적으로 위치 설정 하기
-    NavAction.changeCurrentNav({ currentNav: companyCode })
+    await NavAction.changeCurrentNav({ currentNav: companyCode })
     // 상위에서 받은 이벤트 처리도 해주기
     clickNav(companyCode)
   }
 
   render () {
     const { currentNav, navList } = this.props
-    const isCompany =
-      !!(navList && navList[0] && navList[0].hasOwnProperty('companyCode'))
+    const isCompany = !!(navList && navList[0] && navList[0].hasOwnProperty('companyCode'))
     console.log('NavList render')
     return (
       <>
