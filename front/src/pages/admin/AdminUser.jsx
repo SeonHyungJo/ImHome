@@ -174,7 +174,6 @@ class AdminUser extends Component {
 export default connect(
   state => ({
     custNo: state.user.getIn(['user', 'custNo']),
-    store: state.user.getIn(['user', 'store']),
     error: state.user.getIn(['user', 'error']),
     storeId: state.nav.get('currentNav'),
     result: state.user.get('result')

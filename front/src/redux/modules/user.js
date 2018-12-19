@@ -90,9 +90,7 @@ export default handleActions(
       type: GET_USER_DATA,
       onSuccess: (state, action) => {
         console.log('Get User Data')
-        return state
-          .setIn(['user', 'form'], Map(action.payload.data))
-          .setIn(['user', 'custNo'], action.payload.data._id)
+        return state.setIn(['user', 'form'], Map(action.payload.data))
       }
     }),
     ...pender({
