@@ -39,16 +39,11 @@ class AdminUser extends Component {
   }
 
   async componentDidMount () {
-    const { UserActions, NavActions, storeId } = this.props
+    const { NavActions } = this.props
 
-    // await UserActions.getStoreList();
     await NavActions.getAllList()
-    console.log('componentDidMount : ', storeId)
-    UserActions.getUserList(storeId)
-    UserActions.getUserData(storeId)
-    // await this.getStoreList()
-    // await this.getNavData()
-    // await this.getRowData();
+    this.getNavData()
+    // this.getRowData()
   }
 
   componentWillUnmount () {

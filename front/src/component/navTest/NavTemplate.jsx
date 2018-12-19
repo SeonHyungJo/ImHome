@@ -8,9 +8,9 @@ import * as NavAction from '../../redux/modules/nav'
 
 class NavTemplate extends Component {
   async componentDidMount () {
-    const { NavAction } = this.props
+    const { NavAction, currentNav } = this.props
     console.log('nav mount')
-    // NavAction.getAllList();
+    // await NavAction.getAllList()
   }
 
   async clickNavItem (companyCode) {
