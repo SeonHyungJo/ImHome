@@ -15,7 +15,9 @@ class ViewForUser extends Component {
             searchingData,
             radioBtnSetting,
             radioClick,
-            children
+            children,
+            totalList,
+            totalCost
         } = this.props;
 
         return (
@@ -24,8 +26,11 @@ class ViewForUser extends Component {
                     <ViewWithContent>
                         <tr>
                             <th>거래합계(건수)</th>
-                            <td />
-                            <td colSpan="2" style={{ textAlign: 'right' }} />
+                            <td
+                                colSpan="2"
+                                style={{ textAlign: 'right', color: '#fe4c8d' }}
+                            >{`${totalCost} 원(${totalList}건)`}</td>
+                            <td colSpan="3" style={{ textAlign: 'right' }} />
                         </tr>
                     </ViewWithContent>
                 )}
@@ -34,10 +39,9 @@ class ViewForUser extends Component {
                         <tr>
                             <th>조회기간</th>
                             <td>
-                                <div>
+                                <div style={{ margin: '1.5px 0px' }}>
                                     {/* https://reactdatepicker.com/ */}
                                     <DatePicker dateFormat="yyyy.MM.dd" selected={new Date()} />
-                                    <input type="date" />
                                     <WhiteBtn>1주일</WhiteBtn>
                                     <WhiteBtn>15일</WhiteBtn>
                                     <WhiteBtn>1개월</WhiteBtn>
@@ -49,7 +53,9 @@ class ViewForUser extends Component {
                                     <WhiteBtn>월별선택</WhiteBtn>
                                 </div>
                                 <div>
-                                    ※조회내역은 본 시스템을 사용한 시점부터 조회가 가능합니다.
+                                    <p style={{ margin: '1.5px 0px', color: 'orange' }}>
+                                        ※조회내역은 본 시스템을 사용한 시점부터 조회가 가능합니다.
+                                    </p>
                                 </div>
                             </td>
                         </tr>

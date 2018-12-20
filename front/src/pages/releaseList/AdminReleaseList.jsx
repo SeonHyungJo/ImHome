@@ -49,7 +49,6 @@ class AdminReleaseList extends Component {
         };
 
         this.state = {
-            storeId: 1,
             custNo: 1,
             headerData,
             searchingData,
@@ -61,6 +60,7 @@ class AdminReleaseList extends Component {
         const { ReleaseActions } = this.props;
 
         await ReleaseActions.getStoreList();
+        await this.getNavData();
     }
 
     // 리스트 클릭시 주문내역 리스트 가져오기
@@ -84,31 +84,21 @@ class AdminReleaseList extends Component {
     // 리스트 클릭시 주문내역 리스트 가져오기
     getNavData = async id => {
         try {
-            const { ReleaseActions, currentOrder } = this.props;
-            const storeId = id ? id : currentOrder.toJS().branchCode;
-            this.setState({ storeId });
+            const { ReleaseActions, currentId } = this.props;
 
             // 선택한 지점 주문내역 불러오기
-            await ReleaseActions.getOrderList(storeId);
+            await ReleaseActions.getOrderList(id || currentId);
+            await ReleaseActions.updateCurrentId(id || currentId);
         } catch (e) {
             console.log(e);
         }
     };
 
-    getRowData = async id => {
-        const { ReleaseActions, form } = this.props;
+    getRowData = async changeNo => {
+        const { ReleaseActions } = this.props;
 
-        let custNo = id ? id : form.toJS()._id;
-
-        this.setState({ custNo: custNo });
-
-        try {
-            if (custNo) {
-                await ReleaseActions.getOrderData(custNo);
-            }
-        } catch (e) {
-            console.log(e);
-        }
+        await ReleaseActions.updateCustNo(changeNo);
+        //await ReleaseActions.getOrderData(changeNo);
     };
 
     getTotalCost = list => {
@@ -127,11 +117,11 @@ class AdminReleaseList extends Component {
     };
 
     render() {
-        const { storeId, searchingData, radioBtnSetting } = this.state;
-        const { store, list } = this.props;
+        const { searchingData, radioBtnSetting } = this.state;
+        const { store, list, currentId, custNo } = this.props;
 
         return (
-            <PageTemplate navData={store} id={storeId} clickNav={this.getNavData}>
+            <PageTemplate navData={store} id={currentId} clickNav={this.getNavData}>
                 <ViewForRelease
                     type="date"
                     viewTitle="출고내역 및 세금게산서 발행내역 조회"
@@ -145,7 +135,11 @@ class AdminReleaseList extends Component {
                 <ViewForRelease
                     type="normal"
                     viewTitle="거래내용"
-                    viewSubTitle=" | 최근거래내역[총 10건]"
+                    viewSubTitle={` | 최근거래내역[총 ${
+                        list.length === undefined ? 0 : list.length
+                    }건]`}
+                    totalCost={this.getTotalCost(list)}
+                    totalList={list.length === undefined ? 0 : list.length}
                 >
                     <FormBtn>조회</FormBtn>
                 </ViewForRelease>
@@ -155,7 +149,7 @@ class AdminReleaseList extends Component {
                     data={list}
                     gridTitle="조회내용"
                     clickRow={this.getRowData}
-                    id={this.state.custNo}
+                    id={custNo}
                     bottom={['Total', '', '', '총 발행건수', this.getTotalCost(list)]}
                 />
             </PageTemplate>
@@ -168,6 +162,8 @@ export default connect(
         form: state.releaseList.getIn(['releaseList', 'form']),
         list: state.releaseList.getIn(['releaseList', 'list']),
         store: state.releaseList.getIn(['releaseList', 'store']),
+        currentId: state.releaseList.getIn(['releaseList', 'currentId']),
+        custNo: state.releaseList.getIn(['releaseList', 'custNo']),
         error: state.releaseList.getIn(['releaseList', 'error']),
         result: state.releaseList.get('result')
     }),
