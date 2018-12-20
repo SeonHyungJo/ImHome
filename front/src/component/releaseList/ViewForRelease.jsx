@@ -4,7 +4,7 @@ import { ViewWrapper, ViewWithContent } from '../view';
 import { WhiteBtn, DefaultRadio, MonthPicker } from '../../component/common';
 
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import './react-datepicker.css';
 
 class ViewForUser extends Component {
     render() {
@@ -17,7 +17,11 @@ class ViewForUser extends Component {
             radioClick,
             children,
             totalList,
-            totalCost
+            totalCost,
+            handleChangeStartDate,
+            handleChangeEndDate,
+            startDate,
+            endDate
         } = this.props;
 
         return (
@@ -41,7 +45,17 @@ class ViewForUser extends Component {
                             <td>
                                 <div style={{ margin: '1.5px 0px' }}>
                                     {/* https://reactdatepicker.com/ */}
-                                    <DatePicker dateFormat="yyyy.MM.dd" selected={new Date()} />
+                                    <DatePicker
+                                        dateFormat="yyyy.MM.dd"
+                                        selected={startDate}
+                                        onChange={handleChangeStartDate}
+                                    />
+                                    ~
+                                    <DatePicker
+                                        dateFormat="yyyy.MM.dd"
+                                        selected={endDate}
+                                        onChange={handleChangeEndDate}
+                                    />
                                     <WhiteBtn>1주일</WhiteBtn>
                                     <WhiteBtn>15일</WhiteBtn>
                                     <WhiteBtn>1개월</WhiteBtn>

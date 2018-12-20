@@ -116,18 +116,34 @@ class AdminReleaseList extends Component {
         }, 0);
     };
 
+    handleChangeStartDate = newDate => {
+        const { ReleaseActions } = this.props;
+
+        ReleaseActions.updateStartDate(newDate);
+    };
+
+    handleChangeEndDate = newDate => {
+        const { ReleaseActions } = this.props;
+
+        ReleaseActions.updateEndDate(newDate);
+    };
+
     render() {
         const { searchingData, radioBtnSetting } = this.state;
-        const { store, list, currentId, custNo } = this.props;
+        const { store, list, currentId, custNo, startDate, endDate } = this.props;
 
         return (
             <PageTemplate navData={store} id={currentId} clickNav={this.getNavData}>
                 <ViewForRelease
                     type="date"
-                    viewTitle="출고내역 및 세금게산서 발행내역 조회"
+                    viewTitle="출고내역 및 세금계산서 발행내역 조회"
                     searchingData={searchingData}
                     radioBtnSetting={radioBtnSetting}
                     radioClick={this.changeSearchTerm}
+                    startDate={startDate}
+                    endDate={endDate}
+                    handleChangeStartDate={this.handleChangeStartDate}
+                    handleChangeEndDate={this.handleChangeEndDate}
                 >
                     <FormBtn style={{ width: '80px', margin: '0' }}>조회</FormBtn>
                 </ViewForRelease>
@@ -162,6 +178,8 @@ export default connect(
         form: state.releaseList.getIn(['releaseList', 'form']),
         list: state.releaseList.getIn(['releaseList', 'list']),
         store: state.releaseList.getIn(['releaseList', 'store']),
+        startDate: state.releaseList.getIn(['releaseList', 'startDate']),
+        endDate: state.releaseList.getIn(['releaseList', 'endDate']),
         currentId: state.releaseList.getIn(['releaseList', 'currentId']),
         custNo: state.releaseList.getIn(['releaseList', 'custNo']),
         error: state.releaseList.getIn(['releaseList', 'error']),

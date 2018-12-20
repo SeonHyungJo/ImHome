@@ -3,7 +3,8 @@ import styled from 'styled-components';
 
 const TableContentWrapper = styled.div`
     overflow-y: auto;
-    max-height: 20vh;
+    min-height: 17vh;
+    max-height: 17vh;
     padding: 0;
 `;
 

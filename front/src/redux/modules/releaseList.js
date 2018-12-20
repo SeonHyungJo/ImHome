@@ -4,7 +4,9 @@ import * as releaseAPI from '../../lib/api/releaseList';
 import { Map, List } from 'immutable';
 
 const CHANGE_CURRENTID = 'orderList/CHANGE_CURRENTID'; //Nav 위치 변경
-const CHANGE_CUSTNO = 'orderList/CHANGE_CURRENTNO'; //Nav 위치 변경
+const CHANGE_CUSTNO = 'orderList/CHANGE_CURRENTNO'; //RELEAST 리스트 위치변경
+const CHANGE_STARTDATE = 'orderList/CHANGE_STARTDATE'; //STARTDATE 변경
+const CHANGE_ENDDATE = 'orderList/CHANGE_ENDDATE'; //ENDDATE 변경
 
 const GET_STORE_LIST = 'release/GET_STORE_LIST'; // 매장 목록 가져오기
 const GET_ORDER_LIST = 'release/GET_ORDER_LIST'; // 해당 매장의 전체 주문 목록 가져오기
@@ -13,6 +15,8 @@ const DELETE_ORDER_DATA = 'release/DELETE_ORDER_DATA';
 
 export const updateCurrentId = createAction(CHANGE_CURRENTID);
 export const updateCustNo = createAction(CHANGE_CUSTNO);
+export const updateStartDate = createAction(CHANGE_STARTDATE);
+export const updateEndDate = createAction(CHANGE_ENDDATE);
 
 export const getStoreList = createAction(GET_STORE_LIST, releaseAPI.getStoreList);
 export const getOrderList = createAction(GET_ORDER_LIST, releaseAPI.getOrderList);
@@ -50,6 +54,8 @@ const initialState = Map({
         store: [],
         currentId: '',
         custNo: '',
+        startDate: new Date(),
+        endDate: new Date(),
         list: List([
             Map({
                 _id: '',
@@ -79,6 +85,12 @@ export default handleActions(
         },
         [CHANGE_CUSTNO]: (state, action) => {
             return state.setIn(['releaseList', 'custNo'], action.payload);
+        },
+        [CHANGE_STARTDATE]: (state, action) => {
+            return state.setIn(['releaseList', 'startDate'], action.payload);
+        },
+        [CHANGE_ENDDATE]: (state, action) => {
+            return state.setIn(['releaseList', 'endDate'], action.payload);
         },
         ...pender({
             type: GET_STORE_LIST,
