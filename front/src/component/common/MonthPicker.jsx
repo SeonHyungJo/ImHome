@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
     display: inline-block;
     color: #000;
-    padding: 5px;
+    padding: 1.5px;
     border: 1.5px solid rgba(100, 100, 100, 0.3);
     border-radius: 2px;
 
@@ -13,7 +13,7 @@ const Wrapper = styled.div`
     }
 
     .sideArrow {
-        padding: 0px 10px;
+        padding: 0px 7px;
         font-size: 1rem;
         cursor: pointer;
     }
@@ -23,7 +23,7 @@ const Wrapper = styled.div`
     }
 
     .monthText {
-        padding: 0px 10px;
+        padding: 0px 5px;
         text-align: center;
         font-size: 0.8rem;
         width: 4rem;
