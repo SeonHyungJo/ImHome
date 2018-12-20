@@ -3,9 +3,13 @@ import { pender } from 'redux-pender';
 import * as orderListAPI from '../../lib/api/orderList';
 import { Map, List } from 'immutable';
 
+const CHANGE_CURRENTID = 'orderList/CHANGE_CURRENTID'; //Nav 위치 변경
+
 const GET_STORE_LIST = 'orderList/GET_STORE_LIST'; // 매장 목록 가져오기
 const GET_ORDER_DATA = 'orderList/GET_ORDER_DATA'; //해당 회원의 상세 정보 가져오기
 const UPDATE_ORDER_COMPLETE = 'orderList/UPDATE_ORDER_COMPLETE'; //해당 회원의 상세 정보 가져오기
+
+export const updateCurrentId = createAction(CHANGE_CURRENTID);
 
 export const getStoreList = createAction(GET_STORE_LIST, orderListAPI.getStoreList);
 export const getOrderData = createAction(GET_ORDER_DATA, orderListAPI.getOrderData);
@@ -40,6 +44,7 @@ const initialState = Map({
         }),
         error: null,
         store: [],
+        currentId: [],
         list: []
     }),
     result: Map({})
@@ -47,9 +52,15 @@ const initialState = Map({
 
 export default handleActions(
     {
+        [CHANGE_CURRENTID]: (state, action) => {
+            return state.setIn(['orderList', 'currentId'], action.payload);
+        },
         ...pender({
             type: GET_STORE_LIST,
-            onSuccess: (state, action) => state.setIn(['orderList', 'store'], action.payload.data)
+            onSuccess: (state, action) =>
+                state
+                    .setIn(['orderList', 'store'], action.payload.data)
+                    .setIn(['orderList', 'currentId'], action.payload.data[0].branchCode)
         }),
         ...pender({
             type: GET_ORDER_DATA,

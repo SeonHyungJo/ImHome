@@ -12,13 +12,8 @@ import * as CommonUtil from '../../util/commonUtil';
 class AdminOrderList extends Component {
     constructor() {
         super();
-        const orders = [
-            { name: '아이스크림', count: 2, cost: 3000 },
-            { name: '아메리카노', count: 1, cost: 4000 },
-            { name: '카페라떼', count: 100, cost: 5000 },
-            { name: '곡물라떼', count: 20, cost: 7000 }
-        ];
 
+        // 버튼 Setting
         const buttons = [
             { name: '주문저장', event: 'SAVE_ORDER' },
             { name: '배송처리', event: 'DELIVER_OK' },
@@ -26,33 +21,27 @@ class AdminOrderList extends Component {
         ];
 
         this.state = {
-            orders,
-            buttons,
-            modifiedDate: '2018.11.21 15시 35분'
+            buttons
         };
     }
 
     async componentDidMount() {
-        const { OrderListActions } = this.props;
+        const { OrderListActions, currentId, store } = this.props;
 
-        // 주문내역 브랜치 리스트 가져오기
-        await OrderListActions.getStoreList();
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        //return this.state.currentOrder != nextState.currentOrder ? true : false;
-        return true;
+        if (store.length == 0) {
+            // 주문내역 브랜치 리스트 가져오기
+            await OrderListActions.getStoreList();
+            await this.getNavData();
+        }
     }
 
     // 리스트 클릭시 상세 주문내역 가져오기
-    getNavData = async id => {
+    getNavData = async changeId => {
         try {
-            const { OrderListActions, currentOrder } = this.props;
-            const storeId = id ? id : currentOrder.toJS().branchCode;
-            this.setState({ storeId });
-
+            const { OrderListActions, currentId } = this.props;
+            if (!!changeId) OrderListActions.updateCurrentId(changeId);
             // 선택한 지점 주문내역 불러오기
-            await OrderListActions.getOrderData(storeId);
+            OrderListActions.getOrderData(changeId || currentId);
         } catch (e) {
             console.log(e);
         }
@@ -77,9 +66,9 @@ class AdminOrderList extends Component {
     };
 
     render() {
-        const { store, currentOrder } = this.props;
+        const { store, currentOrder, currentId } = this.props;
         return (
-            <PageTemplate navData={store} id={this.state.storeId} clickNav={this.getNavData}>
+            <PageTemplate navData={store} id={currentId} clickNav={this.getNavData}>
                 <header>주문일자 : {CommonUtil.setDate(currentOrder.updatedAt)}</header>
                 <OrderListTable
                     branchName={currentOrder.branchName}
@@ -101,6 +90,7 @@ export default connect(
     state => ({
         currentOrder: state.orderList.getIn(['orderList', 'currentOrder']),
         list: state.orderList.getIn(['orderList', 'list']),
+        currentId: state.orderList.getIn(['orderList', 'currentId']),
         store: state.orderList.getIn(['orderList', 'store']),
         error: state.orderList.getIn(['orderList', 'error']),
         result: state.orderList.get('result')

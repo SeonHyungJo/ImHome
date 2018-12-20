@@ -160,7 +160,6 @@ const OrderListTable = ({ branchName, orderList, buttonList, clickComplete }) =>
 const calTotalCost = orderList => {
     return orderList instanceof Array
         ? orderList.reduce((total, order) => {
-              console.log('total', total);
               return parseInt(order.itemCount, 10) * parseInt(order.itemCost, 10) + total;
           }, 0)
         : 0;
