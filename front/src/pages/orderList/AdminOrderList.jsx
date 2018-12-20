@@ -26,13 +26,11 @@ class AdminOrderList extends Component {
     }
 
     async componentDidMount() {
-        const { OrderListActions, currentId, store } = this.props;
+        const { OrderListActions } = this.props;
 
-        if (store.length == 0) {
-            // 주문내역 브랜치 리스트 가져오기
-            await OrderListActions.getStoreList();
-            await this.getNavData();
-        }
+        // 주문내역 브랜치 리스트 가져오기
+        await OrderListActions.getStoreList();
+        await this.getNavData();
     }
 
     // 리스트 클릭시 상세 주문내역 가져오기
