@@ -23,7 +23,7 @@ class PopUserInfo extends Component {
 
     updateData = async () => {
         const { UserActions, updateForm } = this.props;
-        const { _id, branchName, name, cName, bNumber, bAddress, email, pNumber } = updateForm.toJS();
+        const { _id, branchName, name, cName, bNumber, bAddress, email, pNumber, branchCode } = updateForm.toJS();
 
         try {
             await UserActions.updateUserData(_id, {
@@ -34,6 +34,7 @@ class PopUserInfo extends Component {
 
             if (loggedInfo.success === '0000') {
                 UserActions.getUserData(_id);
+                UserActions.getUserList(branchCode);
                 alert('회원 정보가 수정되었습니다.');
                 this.props.closePop();
             }
