@@ -13,6 +13,17 @@ class Login extends Component {
         this.state = {};
     }
 
+    handleChange = (e) => {
+        const { AuthActions } = this.props;
+        const { name, value } = e.target;
+
+        AuthActions.changeInput({
+            name,
+            value,
+            form: 'login'
+        });
+    };
+
     login = async () => {
         const { AuthActions } = this.props;
         const { id, password } = this.props.form.toJS(); // form 에서 email 과 password 값을 읽어옴
@@ -34,16 +45,12 @@ class Login extends Component {
         }
     }
 
-    handleChange = (e) => {
-        const { AuthActions } = this.props;
-        const { name, value } = e.target;
+    goRegister = () => {
+        const { history } = this.props;
 
-        AuthActions.changeInput({
-            name,
-            value,
-            form: 'login'
-        });
-    };
+        history.push('/register');
+        return;
+    }
 
 
     render() {
@@ -72,7 +79,7 @@ class Login extends Component {
                         />
                         <LoginBtn onClick={this.login}>log in</LoginBtn>
                     </LoginContent>
-                    <RegisterText>Create an Account</RegisterText>
+                    <RegisterText onClick={this.goRegister}>Create an Account</RegisterText>
                 </LoginWrapper>
             </LoginTemplate>
         );
