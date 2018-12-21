@@ -26,7 +26,7 @@ class PageTemplate extends Component {
                 <HeaderContainer>
                     <li>
                         <button onClick={this.logout}>
-                            로그 아웃
+                            로그아웃
                         </button>
                     </li>
                     <li>
