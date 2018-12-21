@@ -15,7 +15,7 @@ after_success:
     - cd ../server
 deploy:
     provider: heroku
-    api_key: ...
+    api_key: ${HEROKU_AUTH}
 notifications:
     email:
         on_failure: change
