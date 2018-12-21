@@ -17,6 +17,7 @@ import * as AuthActions from './redux/modules/auth';
 class App extends Component {
 
     initializeUserInfo = async () => {
+        const { history } = this.props;
         const loggedInfo = localStorage.getItem('accessToken'); // 로그인 정보를 로컬스토리지에서 가져옵니다.
         if (!loggedInfo) return; // 로그인 정보가 없다면 여기서 멈춥니다.
 
@@ -28,11 +29,11 @@ class App extends Component {
 
             if (loggedInfo.success && loggedInfo.success !== '0000') {
                 localStorage.removeItem('accessToken');
-                window.location.href = '/login';
+                history.push('/login');
             }
         } catch (e) {
             localStorage.removeItem('accessToken');
-            window.location.href = '/login';
+            history.push('/login');
         }
     }
 
