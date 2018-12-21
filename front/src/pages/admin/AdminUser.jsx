@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import { PageTemplate } from '../../component/template';
 import { TableWithScroll } from '../../component/table';
-import { ViewForUser, PopUserInfo } from '../../component/view';
+import { ViewForUser, PopUserInfo, PopDeleteConfirm } from '../../component/view';
 import { TableBtn, FormBtn } from '../../component/common';
 import * as UserActions from '../../redux/modules/user';
 import * as CommonUtil from '../../util/commonUtil';
@@ -29,7 +29,8 @@ class AdminUser extends Component {
             storeId: 1,
             custNo: 1,
             headerData: headerData,
-            displayPop: false
+            displayPop: false,
+            displayDeletePop: false
         };
     }
 
@@ -103,34 +104,23 @@ class AdminUser extends Component {
 
     }
 
-    deleteData = async () => {
-        const { UserActions, form } = this.props;
-        const { _id } = form.toJS();
-
-        try {
-            await UserActions.deleteUserData(_id);
-
-            const loggedInfo = this.props.result.toJS();
-
-            if (loggedInfo.success === '0000') {
-                this.getNavData(this.state.storeId);
-                alert('회원 정보가 삭제되었습니다.');
-            }
-
-        } catch (e) {
-            console.log(e);
-        }
+    popDelete = () => {
+        this.setState({ displayDeletePop: true });
     }
 
     popUpdateForm = () => {
-        this.setState({ displayPop: true })
+        this.setState({ displayPop: true });
     }
 
     closePop = () => {
         const { UserActions } = this.props;
 
-        this.setState({ displayPop: false })
+        this.setState({ displayPop: false });
         UserActions.getUserUpdateData(this.state.custNo);
+    }
+
+    closeDeletePop = () => {
+        this.setState({ displayDeletePop: false });
     }
 
     render() {
@@ -151,8 +141,9 @@ class AdminUser extends Component {
                     gridTitle="회원목록 및 정보"
                     clickRow={this.getRowData}
                     id={this.state.custNo}
-                    button={_id && _id !== '0' ? <TableBtn onClick={this.deleteData}>회원삭제</TableBtn> : null} />
+                    button={_id && _id !== '0' ? <TableBtn onClick={this.popDelete}>회원삭제</TableBtn> : null} />
                 <PopUserInfo displayPop={this.state.displayPop} closePop={this.closePop} />
+                <PopDeleteConfirm displayDeletePop={this.state.displayDeletePop} getNavData={this.getNavData} closeDeletePop={this.closeDeletePop} />
             </PageTemplate>
         );
     }

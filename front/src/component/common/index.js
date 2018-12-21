@@ -8,3 +8,4 @@ export { default as WhiteBtn } from './WhiteBtn';
 export { default as DefaultRadio } from './DefaultRadio';
 export { default as MonthPicker } from './MonthPicker';
 export { default as LoginInputWithLabel } from './LoginInputWithLabel';
+export { default as ConfirmPopup } from './ConfirmPopup';
