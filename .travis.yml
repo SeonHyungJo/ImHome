@@ -4,7 +4,7 @@ node_js:
     - '8'
 branches:
     only:
-        - dev
+        - travis-test
 before_install:
     - npm install -g yarn --cache-min 999999999
 install:
@@ -12,6 +12,10 @@ install:
     - yarn
 after_success:
     - cp -r ./public ../server/public
+    - cd ../server
+deploy:
+    provider: heroku
+    api_key: ...
 notifications:
     email:
         on_failure: change
