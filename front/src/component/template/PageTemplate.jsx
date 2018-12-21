@@ -8,18 +8,18 @@ import ContentTwoDivContainer from '../content/ContentTwoDivContainer';
 class PageTemplate extends Component {
 
     componentDidMount() {
-        const { history } = this.props;
+        //const { history } = this.props;
         const token = localStorage.getItem('accessToken');
         if (!token) {
-            history.push('/login');
+            window.location.href = "/login";
             return;
         }
     }
 
     logout = () => {
-        const { history } = this.props;
+        //const { history } = this.props;
         localStorage.removeItem('accessToken');
-        history.push('/login');
+        window.location.href = "/login";
     }
 
     render() {
