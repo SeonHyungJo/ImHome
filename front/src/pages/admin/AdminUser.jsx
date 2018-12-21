@@ -144,11 +144,7 @@ class AdminUser extends Component {
                     id={this.state.custNo}
                     button={_id && _id !== '0' ? <TableBtn onClick={this.popDelete}>회원삭제</TableBtn> : null} />
                 <PopUserInfo displayPop={this.state.displayPop} closePop={this.closePop} />
-<<<<<<< HEAD
-                {/* <ConfirmPopup></ConfirmPopup> */}
-=======
                 <PopDeleteConfirm displayDeletePop={this.state.displayDeletePop} getNavData={this.getNavData} closeDeletePop={this.closeDeletePop} />
->>>>>>> YH-61
             </PageTemplate>
         );
     }
