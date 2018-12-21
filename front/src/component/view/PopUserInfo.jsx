@@ -148,7 +148,7 @@ class PopUserInfo extends Component {
 
         try {
             await UserActions.updateUserData(_id, {
-                branchName, name, cName, bNumber, bAddress, email, pNumber
+                branchName, name, cName, bNumber, bAddress, email, pNumber, bPhoneNumber
             });
 
             const loggedInfo = this.props.result.toJS();
