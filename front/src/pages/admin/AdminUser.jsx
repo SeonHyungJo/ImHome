@@ -9,6 +9,7 @@ import { ViewForUser, PopUserInfo } from '../../component/view';
 import { TableBtn, FormBtn } from '../../component/common';
 import * as UserActions from '../../redux/modules/user';
 import * as CommonUtil from '../../util/commonUtil';
+//import ConfirmPopup from '../../component/common/ConfirmPopup';
 
 class AdminUser extends Component {
     constructor() {
@@ -153,6 +154,7 @@ class AdminUser extends Component {
                     id={this.state.custNo}
                     button={_id && _id !== '0' ? <TableBtn onClick={this.deleteData}>회원삭제</TableBtn> : null} />
                 <PopUserInfo displayPop={this.state.displayPop} closePop={this.closePop} />
+                {/* <ConfirmPopup></ConfirmPopup> */}
             </PageTemplate>
         );
     }

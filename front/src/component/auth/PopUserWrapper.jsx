@@ -1,14 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
 
+const MaskingWrapper = styled.div`
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    z-index: 1300;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+`
+
 const Wrapper = styled.div`
-    width: 53%;
+    width: 40%;
     text-align: center;
     background-color: white;
     border : 1px solid black;  
     border-top: 6px solid #fe4c8d;
-    top: 45%;
-    left: 40%;
+    top: 51%;
+    left: 49%;
     transform: translate(-50%, -50%);
     position: absolute;
 `;
@@ -39,16 +52,18 @@ const Image = styled.img`
 `
 
 const PopUserWrapper = ({ children, style }) => (
-    <Wrapper style={style ? style : {}}>
-        <TitleWrapper>
-            <LogoWrapper>
-                <Image src='/images/logo.png' />
-            </LogoWrapper>
-        </TitleWrapper>
-        <Contents>
-            {children}
-        </Contents>
-    </Wrapper>
+    <MaskingWrapper style={style ? style : {}}>
+        <Wrapper>
+            <TitleWrapper>
+                <LogoWrapper>
+                    <Image src='/images/logo.png' />
+                </LogoWrapper>
+            </TitleWrapper>
+            <Contents>
+                {children}
+            </Contents>
+        </Wrapper>
+    </MaskingWrapper>
 );
 
 export default PopUserWrapper;
