@@ -1,26 +1,38 @@
 import React, { Component } from 'react';
 import HeaderContainer from '../header/HeaderContainer';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import { NavTemplate } from '../nav';
 import Content from '../content/ContentContainer';
 import ContentTwoDivContainer from '../content/ContentTwoDivContainer';
 
 class PageTemplate extends Component {
 
+    constructor() {
+        super();
+        this.state = {
+            isLogin: true
+        };
+    }
+
     componentDidMount() {
         const token = localStorage.getItem('accessToken');
         if (!token) {
-            window.location.href = "/login";
+            this.setState({ isLogin: false });
             return;
         }
     }
 
     logout = () => {
         localStorage.removeItem('accessToken');
-        window.location.href = "/login";
+        this.setState({ isLogin: false });
     }
 
     render() {
+        if (!this.state.isLogin) {
+            return (
+                <Redirect to="/login" push />
+            );
+        }
         return (
             <div>
                 <HeaderContainer>

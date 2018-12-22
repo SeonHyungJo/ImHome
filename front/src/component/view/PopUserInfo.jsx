@@ -4,11 +4,20 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { PopUserWrapper, PopUserTitle, PopUserContent } from '../../component/auth/';
-import { Button, InputWithLabel } from '../../component/common';
+import { Button, InputWithLabel, AlertPopup } from '../../component/common';
 import { isEmpty, isEmail } from 'validator';
 import * as UserActions from '../../redux/modules/user';
 
 class PopUserInfo extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            displayDeletePop: false,
+            displayAlertPop: false,
+            message: ''
+        };
+    }
 
     handleChange = (e) => {
         const { UserActions } = this.props;
@@ -21,6 +30,10 @@ class PopUserInfo extends Component {
             targetForm: 'updateForm'
         });
     };
+
+    closeAlertPop = () => {
+        this.setState({ displayAlertPop: false });
+    }
 
     setError = (message) => {
         const { UserActions } = this.props;
@@ -142,7 +155,7 @@ class PopUserInfo extends Component {
             || !validate['bPhoneNumber'](bPhoneNumber)
             || !validate['pNumber'](pNumber)) {
 
-            alert(error);
+            this.setState({ displayAlertPop: true, message: error });
             return;
         }
 
@@ -156,7 +169,7 @@ class PopUserInfo extends Component {
             if (loggedInfo.success === '0000') {
                 UserActions.getUserData(_id);
                 UserActions.getUserList(branchCode);
-                alert('회원 정보가 수정되었습니다.');
+                this.setState({ displayAlertPop: true, message: '회원 정보가 수정되었습니다.' });
                 this.props.closePop();
             }
 
@@ -169,6 +182,7 @@ class PopUserInfo extends Component {
         const { handleChange } = this;
         const { branchName, name, cName, bNumber, bAddress, email, pNumber, bPhoneNumber } = this.props.updateForm.toJS();
         return (
+            <div>
             <PopUserWrapper style={{ display: this.props.displayPop ? 'block' : 'none' }}>
                 <PopUserTitle title="회원정보수정">
                     회원 및 가입정보를 입력하세요.
@@ -234,6 +248,8 @@ class PopUserInfo extends Component {
                 <Button style={{ marginRight: '1rem', width: '6rem' }} onClick={this.updateData}>수정하기</Button>
                 <Button style={{ width: '6rem' }} onClick={this.props.closePop}>닫기</Button>
             </PopUserWrapper>
+            <AlertPopup title={this.state.message} clickEvent={this.closeAlertPop} buttonName='확인' displayAlertPop={this.state.displayAlertPop} />
+            </div>
         );
     }
 }
