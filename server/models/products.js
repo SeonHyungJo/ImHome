@@ -16,6 +16,7 @@ const productsSchema = new Schema(
     {
         companyName: { type: String, required: true },
         companyCode: { type: String, required: true, unique: true },
+        order: { type: Number, required: true },
         items: [itemsSchema]
     },
     {
@@ -24,7 +25,7 @@ const productsSchema = new Schema(
 );
 
 productsSchema.statics.findAll = function() {
-    return this.find({});
+    return this.find({}).sort({ order: 1 });
 };
 
 productsSchema.statics.findByCompanyCode = function(companyCode) {

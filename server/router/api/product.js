@@ -10,12 +10,14 @@ router.use('/product', function timeLog(req, res, next) {
 });
 
 router.get('/products', function(req, res) {
-    Products.find(function(err, products) {
-        if (err) {
-            return res.status(500).send({ error: 'database failure' });
-        }
-        res.json(products);
-    });
+    Products.findAll()
+        .then(products => {
+            res.json(products);
+        })
+        .catch(err => {
+            console.log(err);
+            reponseError(res, 'CANT_FIND_PRODUCT');
+        });
 });
 
 router.get('/product/:companyCode', function(req, res) {
@@ -36,7 +38,7 @@ router.delete('/product/:productId', (req, res) => {
 /**
  * @author jinseong
  * @summary product 생성
- * @param body: 품목정보 { companyCode, companyName }
+ * @param body: 품목정보 { companyCode, companyName, order }
  */
 router.post('/product', function(req, res) {
     Products.create(req.body)
