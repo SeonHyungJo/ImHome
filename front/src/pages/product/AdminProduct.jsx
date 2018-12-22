@@ -52,11 +52,11 @@ class AdminProduct extends Component {
     };
 
     render() {
-        const { form, lists } = this.props;
+        const { lists } = this.props;
 
         return (
             <PageTemplate navData={lists} id={this.state.companyCode} clickNav={this.getNavData}>
-                <Product product={form.toJS()} companyCode={this.state.companyCode} />
+                <Product />
             </PageTemplate>
         );
     }
