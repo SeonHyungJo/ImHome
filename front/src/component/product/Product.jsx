@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Imhome from './Imhome';
 import StoreProduct from './StoreProduct';
+import * as ProductListActions from '../../redux/modules/productList';
 
 const Header = styled.div`
     color: black;
@@ -13,12 +16,15 @@ const Header = styled.div`
 
 class Product extends Component {
     render() {
-        const { product } = this.props;
+        const { form } = this.props;
+        const product = form.toJS();
+        const companyCode = product.companyCode;
         let content, categories;
-        if (this.props.companyCode === '001') {
+
+        if (companyCode === '001') {
             categories = product.items.filter(item => item.itemDepth === 0);
             content = <Imhome product={product} categories={categories} />;
-        } else if (this.props.companyCode === '0') {
+        } else if (companyCode === '') {
             categories = [];
             content = <Imhome product={product} categories={categories} />;
         } else {
@@ -26,11 +32,21 @@ class Product extends Component {
         }
         return (
             <div>
-                <Header>Food Menu</Header>
+                <Header>{form.toJS().companyName}</Header>
                 {content}
             </div>
         );
     }
 }
 
-export default Product;
+export default connect(
+    state => ({
+        form: state.productList.getIn(['productList', 'form']),
+        lists: state.productList.getIn(['productList', 'lists']),
+        error: state.productList.getIn(['productList', 'error']),
+        result: state.productList.get('result')
+    }),
+    dispatch => ({
+        ProductListActions: bindActionCreators(ProductListActions, dispatch)
+    })
+)(Product);
