@@ -30,7 +30,7 @@ const ContentWrapper = styled.div`
                 font-weight: bold;
             }
             .desc {
-                color: #808080;
+                color: #7e8387;
             }
         }
         .categorySub {
@@ -50,7 +50,7 @@ const ContentWrapper = styled.div`
     }
 
     .clicked {
-        background-color: #000000;
+        background-color: #363636;
         color: #ffffff;
     }
 
