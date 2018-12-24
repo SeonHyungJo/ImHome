@@ -102,7 +102,7 @@ const Table = styled.table`
 
 const Input = styled.input`
     display: inline-block;
-    width: 70%;
+    width: 85%;
     border: 1px solid #c2c2c2;
     outline: none;
     border-radius: 3px;
