@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ProductListActions from '../../redux/modules/productList';
+import { AlertPopup } from '../../component/common';
 
 const ContentWrapper = styled.div`
     display: flex;
@@ -197,7 +198,8 @@ class Imhome extends Component {
             newCategory: { state: false, newName: '', newDesc: '' },
             newItem: { state: false, newName: '', newVolume: '', newCost: '' },
             editItem: { state: false, _id: -1 },
-            categories: props.categories
+            categories: props.categories,
+            displayAlertPop: { state: false, message: '' }
         };
     }
 
@@ -299,7 +301,7 @@ class Imhome extends Component {
         if (type === 'category') {
             if (clickedCate.index === -1) {
                 // 클릭한 카테고리가 없다면
-                alert('메뉴를 선택해주세요');
+                this.setState({ displayAlertPop: { state: true, message: '메뉴를 선택해주세요' } });
             } else {
                 if (window.confirm('정말 선택하신 카테고리를 삭제하시겠습니까?')) {
                     // 클릭한 카테고리가 있다면
@@ -323,7 +325,9 @@ class Imhome extends Component {
 
             if (keys.length === 0) {
                 // 클릭한 Item이 없다면
-                alert('Item을 선택해주세요');
+                this.setState({
+                    displayAlertPop: { state: true, message: '아이템을 선택해주세요' }
+                });
             } else {
                 if (window.confirm('정말 선택하신 Item들을 삭제하시겠습니까?')) {
                     // 클릭한 Item이 있다면
@@ -413,6 +417,10 @@ class Imhome extends Component {
             delete newState[boxId];
             await this.setState({ clickedItem: newState });
         }
+    };
+
+    _closeAlertPop = () => {
+        this.setState({ displayAlertPop: { state: false, message: '' } });
     };
 
     render() {
@@ -641,6 +649,12 @@ class Imhome extends Component {
                         <div />
                     )}
                 </ProductFormContainer>
+                <AlertPopup
+                    title={this.state.displayAlertPop.message}
+                    clickEvent={this._closeAlertPop}
+                    buttonName="확인"
+                    displayAlertPop={this.state.displayAlertPop.state}
+                />
             </ContentWrapper>
         );
     }

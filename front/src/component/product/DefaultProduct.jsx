@@ -6,6 +6,7 @@ import { Button } from '../common';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ProductListActions from '../../redux/modules/productList';
+import { AlertPopup } from '../../component/common';
 
 const ContentWrapper = styled.div`
     display: flex;
@@ -121,7 +122,8 @@ class DefaultProduct extends Component {
         this.state = {
             clickedItem: {},
             newItem: { state: false, newName: '', newVolume: '', newCost: '' },
-            editItem: { state: false, _id: -1 }
+            editItem: { state: false, _id: -1 },
+            displayAlertPop: { state: false, message: '' }
         };
     }
     _initNew = stateName => {
@@ -194,7 +196,7 @@ class DefaultProduct extends Component {
 
         if (keys.length === 0) {
             // 클릭한 Item이 없다면
-            alert('Item을 선택해주세요');
+            this.setState({ displayAlertPop: { state: true, message: '아이템을 선택해주세요' } });
         } else {
             if (window.confirm('정말 선택하신 Item들을 삭제하시겠습니까?')) {
                 // 클릭한 Item이 있다면
@@ -284,6 +286,10 @@ class DefaultProduct extends Component {
             delete newState[boxId];
             await this.setState({ clickedItem: newState });
         }
+    };
+
+    _closeAlertPop = () => {
+        this.setState({ displayAlertPop: { state: false, message: '' } });
     };
 
     render() {
@@ -427,6 +433,12 @@ class DefaultProduct extends Component {
                     </div>
                 </MainContainer>
                 <ProductFormContainer />
+                <AlertPopup
+                    title={this.state.displayAlertPop.message}
+                    clickEvent={this._closeAlertPop}
+                    buttonName="확인"
+                    displayAlertPop={this.state.displayAlertPop.state}
+                />
             </ContentWrapper>
         );
     }
