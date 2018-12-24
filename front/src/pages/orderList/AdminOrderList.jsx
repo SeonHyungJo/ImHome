@@ -6,6 +6,8 @@ import { bindActionCreators } from 'redux';
 import { PageTemplate } from '../../component/template';
 import { OrderListTable } from '../../component/orderList';
 import { SpecificationTable } from '../../component/specificationTable';
+import { AlertPopup } from '../../component/common';
+
 import * as OrderListActions from '../../redux/modules/orderList';
 import * as CommonUtil from '../../util/commonUtil';
 
@@ -21,7 +23,9 @@ class AdminOrderList extends Component {
         ];
 
         this.state = {
-            buttons
+            buttons,
+            displayAlert: false,
+            alertMessage: '출고완료 처리 되었습니다.'
         };
     }
 
@@ -56,11 +60,15 @@ class AdminOrderList extends Component {
                 // 주문내역 브랜치 리스트 가져오기
                 const storeList = await OrderListActions.getStoreList();
                 await this.getNavData(storeList.data[0].branchCode);
-                alert('출고처리가 되었습니다.');
             }
+            this.setState({ displayAlert: true });
         } catch (e) {
             console.log(e);
         }
+    };
+
+    completeRelease = () => {
+        this.setState({ displayAlert: false });
     };
 
     render() {
@@ -73,6 +81,12 @@ class AdminOrderList extends Component {
                         !currentOrder.updatedAt ? new Date() : currentOrder.updatedAt
                     )}
                 </header>
+                <AlertPopup
+                    title={this.state.alertMessage}
+                    buttonName="확인"
+                    displayAlertPop={this.state.displayAlert}
+                    clickEvent={this.completeRelease}
+                />
                 <OrderListTable
                     branchName={currentOrder.branchName}
                     orderList={currentOrder.items}
