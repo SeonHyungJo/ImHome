@@ -67,7 +67,9 @@ class AdminOrderList extends Component {
         const { store, currentOrder, currentId } = this.props;
         return (
             <PageTemplate navData={store} id={currentId} clickNav={this.getNavData}>
-                <header>주문일자 : {CommonUtil.setDate(currentOrder.updatedAt)}</header>
+                <header>
+                    주문일자 : {CommonUtil.setDate(currentOrder.updatedAt || new Date())}
+                </header>
                 <OrderListTable
                     branchName={currentOrder.branchName}
                     orderList={currentOrder.items}
