@@ -24,7 +24,7 @@ const initialState = Map({
             branchCode: '',
             branchName: '',
             items: '',
-            updateAt: ''
+            updatedAt: ''
         }),
         currentOrder: Map({
             _id: '',
@@ -40,7 +40,7 @@ const initialState = Map({
                     itemDepth: ''
                 })
             ]),
-            updateAt: ''
+            updatedAt: ''
         }),
         error: null,
         store: [],

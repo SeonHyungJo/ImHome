@@ -68,7 +68,10 @@ class AdminOrderList extends Component {
         return (
             <PageTemplate navData={store} id={currentId} clickNav={this.getNavData}>
                 <header>
-                    주문일자 : {CommonUtil.setDate(currentOrder.updatedAt || new Date())}
+                    주문일자 :
+                    {CommonUtil.setDate(
+                        currentOrder.updatedAt === '' ? new Date() : currentOrder.updatedAt
+                    )}
                 </header>
                 <OrderListTable
                     branchName={currentOrder.branchName}
