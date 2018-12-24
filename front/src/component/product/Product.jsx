@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Imhome from './Imhome';
-import StoreProduct from './StoreProduct';
+import DefaultProduct from './DefaultProduct';
 import * as ProductListActions from '../../redux/modules/productList';
 
 const Header = styled.div`
@@ -28,7 +28,7 @@ class Product extends Component {
             categories = [];
             content = <Imhome product={product} categories={categories} />;
         } else {
-            content = <StoreProduct product={product} />;
+            content = <DefaultProduct />;
         }
         return (
             <div>
