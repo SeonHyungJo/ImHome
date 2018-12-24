@@ -185,6 +185,12 @@ const Table = styled.table`
         box-sizing: border-box;
         letter-spacing: -0.04em;
     }
+    .itemOn {
+        background-color: #fe4c8d;
+    }
+    .itemOn > td {
+        color: #ffffff;
+    }
     .checkboxTd {
         width: 7%;
     }
@@ -336,9 +342,9 @@ class Imhome extends Component {
                     // 현재 폼에서 companyCode 조회
                     const companyCode = form.toJS().companyCode;
 
-                    keys.map(async key => {
+                    await keys.map(key => {
                         // Item 삭제
-                        await ProductListActions.deleteItem(companyCode, {
+                        ProductListActions.deleteItem(companyCode, {
                             _id: clickedItem[key]._id
                         });
                     });
@@ -507,7 +513,6 @@ class Imhome extends Component {
                         <Table>
                             <tbody>
                                 <tr>
-                                    <th className={classNames('checkboxTd', 'tableAlignCenter')} />
                                     <th>품목</th>
                                     <th>단위</th>
                                     <th>가격</th>
@@ -517,12 +522,6 @@ class Imhome extends Component {
                                     ? detailItem.map(child =>
                                           editItem.state === true && editItem._id === child._id ? (
                                               <tr key={child._id}>
-                                                  <td
-                                                      className={classNames(
-                                                          'checkboxTd',
-                                                          'tableAlignCenter'
-                                                      )}
-                                                  />
                                                   <td>
                                                       <Input
                                                           type="text"
@@ -572,20 +571,19 @@ class Imhome extends Component {
                                                   </td>
                                               </tr>
                                           ) : (
-                                              <tr key={child._id}>
-                                                  <td
-                                                      className={classNames(
-                                                          'checkboxTd',
-                                                          'tableAlignCenter'
-                                                      )}
-                                                  >
-                                                      <input
-                                                          type="checkbox"
-                                                          onClick={() =>
-                                                              this._boxCheck(child._id, detailItem)
-                                                          }
-                                                      />
-                                                  </td>
+                                              <tr
+                                                  key={child._id}
+                                                  onClick={() =>
+                                                      this._boxCheck(child._id, detailItem)
+                                                  }
+                                                  className={
+                                                      this.state.clickedItem.hasOwnProperty(
+                                                          child._id
+                                                      )
+                                                          ? classNames('itemOn')
+                                                          : classNames('')
+                                                  }
+                                              >
                                                   <td>{child.itemName}</td>
                                                   <td>{child.itemVolume}</td>
                                                   <td>{child.itemCost}</td>
@@ -601,7 +599,6 @@ class Imhome extends Component {
                                       )
                                     : defaultTable.map((iy, index) => (
                                           <tr key={index}>
-                                              <td className={classNames('checkboxTd')} />
                                               <td>-</td>
                                               <td>-</td>
                                               <td>-</td>
@@ -610,7 +607,6 @@ class Imhome extends Component {
                                       ))}
                                 {newItem.state === true ? (
                                     <tr>
-                                        <td />
                                         <td>
                                             <Input
                                                 type="text"
