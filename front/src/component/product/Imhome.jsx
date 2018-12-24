@@ -324,7 +324,7 @@ class Imhome extends Component {
                     });
 
                     // 클릭 state 초기화
-                    this._initNew('clickedCate');
+                    await this._initNew('clickedCate');
                 }
             }
         } else if (type === 'item') {
@@ -347,6 +347,7 @@ class Imhome extends Component {
                         ProductListActions.deleteItem(companyCode, {
                             _id: clickedItem[key]._id
                         });
+                        return 1;
                     });
 
                     // 클릭 Item 초기화
@@ -425,7 +426,8 @@ class Imhome extends Component {
     };
 
     render() {
-        const items = this.props.product.items;
+        const { form } = this.props;
+        const items = form.toJS().items;
         const { clickedCate, newCategory, newItem, editItem } = this.state;
         const detailItem = items.filter(item => item.parentId === clickedCate._id);
         const defaultTable = [0, 1, 2, 3, 4];
