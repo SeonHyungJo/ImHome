@@ -78,7 +78,8 @@ router.get('/user/list/:branchCode', function(req, res) {
             if (!user) {
                 throw new Error("Can't find users");
             }
-            res.status(200).send(user);
+            var firstUser = user[0];
+            res.status(200).send({ user, firstUser });
         })
         .catch(err => {
             console.log(err);
