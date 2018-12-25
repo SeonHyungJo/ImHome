@@ -5,7 +5,8 @@ class NavTemplate extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         let returnVal = true;
-        if (nextProps.navData === this.props.navData && nextProps.id === this.props.id)
+
+        if (nextProps.navData === this.props.navData && nextProps.id === this.props.id && !nextProps.id)
             returnVal = false;
 
         return returnVal;
