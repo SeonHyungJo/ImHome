@@ -17,7 +17,7 @@ class AdminUser extends Component {
         const headerData = [
             {
                 id: "createdAt", numeric: false, disablePadding: true, label: '등록일자', formatter: function (data) {
-                    return CommonUtil.setDate(data);
+                    return CommonUtil.setTotalDate(data);
                 }
             },
             { id: "branchName", numeric: false, disablePadding: true, label: '지점명' },
