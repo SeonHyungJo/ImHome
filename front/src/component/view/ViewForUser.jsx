@@ -7,7 +7,9 @@ import { ViewWrapper, ViewWithContent } from './';
 import * as UserActions from '../../redux/modules/user';
 
 class ViewForUser extends Component {
+
     render() {
+        console.log('render View');
         const { branchName, name, id, cName, bNumber, bAddress, email, pNumber, bPhoneNumber } = this.props.form.toJS();
 
         return (

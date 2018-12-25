@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.scss';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -13,14 +13,20 @@ import { Product } from './pages/product';
 import { Login } from './pages/common';
 import * as AuthActions from './redux/modules/auth';
 
-
 class App extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            isLogin: true
+        };
+    }
 
     initializeUserInfo = async () => {
         const loggedInfo = localStorage.getItem('accessToken'); // 로그인 정보를 로컬스토리지에서 가져옵니다.
         if (!loggedInfo) return; // 로그인 정보가 없다면 여기서 멈춥니다.
 
-        const { AuthActions, history } = this.props;
+        const { AuthActions } = this.props;
 
         try {
             await AuthActions.checkStatus();
@@ -28,11 +34,11 @@ class App extends Component {
 
             if (loggedInfo.success && loggedInfo.success !== '0000') {
                 localStorage.removeItem('accessToken');
-                history.push('/login');
+                this.setState({ isLogin: false });
             }
         } catch (e) {
             localStorage.removeItem('accessToken');
-            history.push('/login');
+            this.setState({ isLogin: false });
         }
     }
 
@@ -44,6 +50,13 @@ class App extends Component {
         const PATH = '/admin';
         const { store } = this.props;
 
+        if (!this.state.isLogin) {
+            return (
+                <BrowserRouter>
+                    <Redirect to="/login" push />
+                </BrowserRouter>
+            );
+        }
         return (
             <Provider store={store}>
                 <div>

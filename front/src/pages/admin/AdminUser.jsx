@@ -40,7 +40,7 @@ class AdminUser extends Component {
 
         await UserActions.getStoreList();
         await UserActions.getFirstList();
-        await this.getFirstData();
+        await this.getNavData();
     };
 
     componentWillUnmount() {
@@ -65,28 +65,34 @@ class AdminUser extends Component {
     //     }
     // }
 
-    getFirstData = () => {
-        const { firstList } = this.props;
-        let getNavData = this.getNavData;
-        let getRowData = this.getRowData;
-
-        Promise.all([getNavData(firstList.storeId), getRowData(firstList.userId)]);
-    }
-
     getNavData = async (id) => {
         const { UserActions, firstList } = this.props;
 
         let storeId = id ? id : firstList.storeId;
-        console.log(storeId);
         try {
             await UserActions.getUserList(storeId);
             const loggedInfo = this.props.result.toJS();
+            let custNo = loggedInfo.firstUser ? loggedInfo.firstUser._id : '0'
 
-            console.log(loggedInfo);
+            UserActions.setResultData({
+                form: 'user',
+                target: 'currentStoreId',
+                result: storeId
+            });
+            UserActions.setResultData({
+                form: 'user',
+                target: 'currentCustNo',
+                result: custNo
+            });
             UserActions.setResultData({
                 form: 'user',
                 target: 'list',
                 result: loggedInfo.user
+            });
+            UserActions.setResultData({
+                form: 'user',
+                target: 'currentStoreId',
+                result: storeId
             });
             UserActions.setFormData({
                 form: 'form',
@@ -97,11 +103,6 @@ class AdminUser extends Component {
                 result: loggedInfo.firstUser
             });
 
-            this.setState({
-                storeId: storeId,
-                custNo: loggedInfo.firstUser ? loggedInfo.firstUser._id : '0'
-            });
-
         } catch (e) {
             console.log(e);
         }
@@ -109,17 +110,19 @@ class AdminUser extends Component {
     }
 
     getRowData = async (id) => {
-        console.log(id);
         const { UserActions, firstList } = this.props;
         let firstUserId = firstList.userId ? firstList.userId : '0';
         let custNo = id ? id : firstUserId;
-
-        this.setState({ custNo: custNo });
 
         try {
             if (custNo) {
                 Promise.all([UserActions.getUserData(custNo), UserActions.getUserUpdateData(custNo)]);
             }
+            UserActions.setResultData({
+                form: 'user',
+                target: 'currentCustNo',
+                result: custNo
+            });
         } catch (e) {
             console.log(e);
         }
@@ -135,10 +138,10 @@ class AdminUser extends Component {
     }
 
     closePop = () => {
-        const { UserActions } = this.props;
+        const { UserActions, currentCustNo } = this.props;
 
         this.setState({ displayPop: false });
-        UserActions.getUserUpdateData(this.state.custNo);
+        UserActions.getUserUpdateData(currentCustNo);
     }
 
     closeDeletePop = () => {
@@ -146,12 +149,11 @@ class AdminUser extends Component {
     }
 
     render() {
-        const { store, list } = this.props;
-        const { _id } = this.props.form.toJS();
+        const { store, list, currentStoreId, currentCustNo } = this.props;
         return (
-            <PageTemplate navData={store} id={this.state.storeId} clickNav={this.getNavData}>
+            <PageTemplate navData={store} id={currentStoreId} clickNav={this.getNavData}>
                 <ViewForUser viewTitle="회원정보 조회" />
-                {_id && _id !== '0' ? (
+                {currentCustNo && currentCustNo !== '0' ? (
                     <div style={{ textAlign: 'right', marginRight: '1rem' }}>
                         <FormBtn onClick={this.popUpdateForm}>회원정보수정</FormBtn>
                     </div>) :
@@ -162,8 +164,8 @@ class AdminUser extends Component {
                     data={list}
                     gridTitle="회원목록 및 정보"
                     clickRow={this.getRowData}
-                    id={this.state.custNo}
-                    button={_id && _id !== '0' ? <TableBtn onClick={this.popDelete}>회원삭제</TableBtn> : null} />
+                    id={currentCustNo}
+                    button={currentCustNo && currentCustNo !== '0' ? <TableBtn onClick={this.popDelete}>회원삭제</TableBtn> : null} />
                 <PopUserInfo displayPop={this.state.displayPop} closePop={this.closePop} />
                 <PopDeleteConfirm displayDeletePop={this.state.displayDeletePop} getNavData={this.getNavData} closeDeletePop={this.closeDeletePop} />
             </PageTemplate>
@@ -178,7 +180,9 @@ export default connect(
         list: state.user.getIn(['user', 'list']),
         store: state.user.getIn(['user', 'store']),
         error: state.user.getIn(['user', 'error']),
-        result: state.user.get('result')
+        result: state.user.get('result'),
+        currentCustNo: state.user.getIn(['user', 'currentCustNo']),
+        currentStoreId: state.user.getIn(['user', 'currentStoreId']),
     }),
     (dispatch) => ({
         UserActions: bindActionCreators(UserActions, dispatch),

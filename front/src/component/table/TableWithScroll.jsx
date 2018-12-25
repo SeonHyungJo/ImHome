@@ -3,6 +3,14 @@ import { TableWrapper, TableWithContent, TableWithTitle } from './';
 
 class TableWithScroll extends React.Component {
 
+    shouldComponentUpdate(nextProps, nextState) {
+        let returnVal = true;
+        if (nextProps.data === this.props.data && nextProps.id === this.props.id)
+            returnVal = false;
+
+        return returnVal;
+    }
+
     render() {
         return (
             <TableWrapper title={this.props.gridTitle}>
@@ -16,7 +24,7 @@ class TableWithScroll extends React.Component {
                     </tr>
                 </TableWithTitle>
                 <TableWithContent>
-                    {this.props.data.length > 0 ?
+                    {this.props.data && this.props.data.length > 0 ?
                         this.props.data.map((n, index) => {
                             return this.props.id && n._id === this.props.id ? (
                                 <tr className="on" key={index} onClick={() => this.props.clickRow(n._id)}>
@@ -78,6 +86,7 @@ class TableWithScroll extends React.Component {
                 {this.props.button ?
                     (
                         <TableWithContent>
+                            {console.log(this.props.button)}
                             <tr>
                                 <th colSpan={Object.keys(this.props.headerData).length} style={{ textAlign: 'right', padding: '0.5rem', lineHeight: '1.5rem', height: '2rem' }}>
                                     {this.props.button}

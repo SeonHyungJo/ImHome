@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 import { NavContainer } from './';
 
 class NavTemplate extends Component {
+
+    shouldComponentUpdate(nextProps, nextState) {
+        let returnVal = true;
+        if (nextProps.navData === this.props.navData && nextProps.id === this.props.id)
+            returnVal = false;
+
+        return returnVal;
+    }
+
     render() {
         // 2018-12-11
         // jinseong 공통수정
@@ -16,64 +25,64 @@ class NavTemplate extends Component {
             navData && navData[0] && navData[0].hasOwnProperty('companyCode') ? true : false;
         return (
             <>
-                <NavContainer>
-                    {/* 1-2 */}
-                    {isCompany
-                        ? this.props.navData &&
-                          this.props.navData.map((data, index) => {
-                              return data.companyCode === this.props.id ? (
-                                  <li
-                                      className="on"
-                                      key={index}
-                                      id={data.companyCode}
-                                      onClick={() =>
-                                          this.props.clickNav &&
-                                          this.props.clickNav(data.companyCode)
-                                      }
-                                  >
-                                      {data.companyName}
-                                  </li>
-                              ) : (
-                                  <li
-                                      key={index}
-                                      id={data.id}
-                                      onClick={() =>
-                                          this.props.clickNav &&
-                                          this.props.clickNav(data.companyCode)
-                                      }
-                                  >
-                                      {data.companyName}
-                                  </li>
-                              );
-                          })
-                        : this.props.navData &&
-                          this.props.navData.map((data, index) => {
-                              return data.branchCode === this.props.id ? (
-                                  <li
-                                      className="on"
-                                      key={index}
-                                      id={data.branchCode}
-                                      onClick={() =>
-                                          this.props.clickNav &&
-                                          this.props.clickNav(data.branchCode)
-                                      }
-                                  >
-                                      {data.branchName}
-                                  </li>
-                              ) : (
-                                  <li
-                                      key={index}
-                                      id={data.id}
-                                      onClick={() =>
-                                          this.props.clickNav &&
-                                          this.props.clickNav(data.branchCode)
-                                      }
-                                  >
-                                      {data.branchName}
-                                  </li>
-                              );
-                          })}
-                </NavContainer>
+            <NavContainer>
+                {/* 1-2 */}
+                {isCompany
+                    ? this.props.navData &&
+                    this.props.navData.map((data, index) => {
+                        return data.companyCode === this.props.id ? (
+                            <li
+                                className="on"
+                                key={index}
+                                id={data.companyCode}
+                                onClick={() =>
+                                    this.props.clickNav &&
+                                    this.props.clickNav(data.companyCode)
+                                }
+                            >
+                                {data.companyName}
+                            </li>
+                        ) : (
+                                <li
+                                    key={index}
+                                    id={data.id}
+                                    onClick={() =>
+                                        this.props.clickNav &&
+                                        this.props.clickNav(data.companyCode)
+                                    }
+                                >
+                                    {data.companyName}
+                                </li>
+                            );
+                    })
+                    : this.props.navData &&
+                    this.props.navData.map((data, index) => {
+                        return data.branchCode === this.props.id ? (
+                            <li
+                                className="on"
+                                key={index}
+                                id={data.branchCode}
+                                onClick={() =>
+                                    this.props.clickNav &&
+                                    this.props.clickNav(data.branchCode)
+                                }
+                            >
+                                {data.branchName}
+                            </li>
+                        ) : (
+                                <li
+                                    key={index}
+                                    id={data.id}
+                                    onClick={() =>
+                                        this.props.clickNav &&
+                                        this.props.clickNav(data.branchCode)
+                                    }
+                                >
+                                    {data.branchName}
+                                </li>
+                            );
+                    })}
+            </NavContainer>
             </>
         );
     }
