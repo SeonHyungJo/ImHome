@@ -55,8 +55,7 @@ router.get('/store/first', function(req, res) {
                     res.status(200).send({ storeId: store[0].branchCode, userId: users[0]._id });
                 })
                 .catch(err => {
-                    console.log(err);
-                    reponseError(res, 'NOT_FIND_ODER');
+                    res.status(200).send({ storeId: store[0].branchCode, userId: '' });
                 });
         })
         .catch(err => {
