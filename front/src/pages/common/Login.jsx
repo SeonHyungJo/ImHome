@@ -16,6 +16,12 @@ class Login extends Component {
         };
     }
 
+    componentWillMount() {
+        const { AuthActions } = this.props;
+
+        AuthActions.initializeForm('login');
+    }
+
     handleChange = (e) => {
         const { AuthActions } = this.props;
         const { name, value } = e.target;
