@@ -1,6 +1,6 @@
 import * as ApiService from './ApiService'
 
-
+export const getFirstList = () => ApiService.get('/api/store/first/');
 export const getStoreList = () => ApiService.get('/api/store/list/');
 export const getUserList = (storeId) => ApiService.get('/api/user/list/', storeId);
 export const getUserData = (custNo) => ApiService.get('/api/user/', custNo);

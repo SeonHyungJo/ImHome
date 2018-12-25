@@ -6,6 +6,10 @@ import { Map } from 'immutable';
 const CHANGE_INPUT = 'user/CHANGE_INPUT'; //input 값 변경
 const INITIALIZE_FORM = 'user/INITIALIZE_FORM'; //form 초기화
 const SET_ERROR = 'user/SET_ERROR'; // 오류 설정
+const SET_RESULT_DATA = 'user/SET_RESULT_DATA'; // resultData form에 설정
+const SET_FORM_DATA = 'user/SET_FORM_DATA'; // resultData form에 설정
+
+const GET_FIRST_LIST = 'user/GET_FIRST_LIST'; //첫번째 항목의 storeId와 userId를 가져옴
 const GET_STORE_LIST = 'user/GET_STORE_LIST'; // 매장 목록 가져오기
 const GET_USER_LIST = 'user/GET_USER_LIST'; //해당 매장의 회원 목록 가져오기
 const GET_USER_DATA = 'user/GET_USER_DATA'; //해당 회원의 상세 정보 가져오기
@@ -13,10 +17,14 @@ const GET_USER_UPDATE_DATA = 'user/GET_USER_UPDATE_DATA'; //해당 회원의 상
 const UPDATE_USER_DATA = 'user/UPDATE_USER_DATA'; //해당 회원의 정보 수정
 const DELETE_USER_DATA = 'user/DELETE_USER_DATA';
 
+
 export const changeInput = createAction(CHANGE_INPUT); // {form, name, value}
 export const initializeForm = createAction(INITIALIZE_FORM); // form
 export const setError = createAction(SET_ERROR); // { form, message }
+export const setResultData = createAction(SET_RESULT_DATA); // { form, data }
+export const setFormData = createAction(SET_FORM_DATA); // { form, data }
 
+export const getFirstList = createAction(GET_FIRST_LIST, userAPI.getFirstList);
 export const getStoreList = createAction(GET_STORE_LIST, userAPI.getStoreList);
 export const getUserList = createAction(GET_USER_LIST, userAPI.getUserList);
 export const getUserData = createAction(GET_USER_DATA, userAPI.getUserData);
@@ -28,6 +36,7 @@ export const deleteUserData = createAction(DELETE_USER_DATA, userAPI.deleteUserD
 // 초기값 설정
 const initialState = Map({
     user: Map({
+        firstList: '',
         form: Map({
             _id: '',
             branchCode: '',
@@ -55,7 +64,7 @@ const initialState = Map({
         }),
         error: null,
         store: [],
-        list: []
+        list: ''
     }),
     result: Map({})
 });
@@ -73,13 +82,25 @@ export default handleActions({
         const { form, message } = action.payload;
         return state.setIn([form, 'error'], message);
     },
+    [SET_RESULT_DATA]: (state, action) => {
+        const { form, result, target } = action.payload;
+        return state.setIn([form, target], result);
+    },
+    [SET_FORM_DATA]: (state, action) => {
+        const { form, result } = action.payload;
+        return state.setIn(['user', form], Map(result));
+    },
+    ...pender({
+        type: GET_FIRST_LIST,
+        onSuccess: (state, action) => state.setIn(['user', 'firstList'], action.payload.data)
+    }),
     ...pender({
         type: GET_STORE_LIST,
         onSuccess: (state, action) => state.setIn(['user', 'store'], action.payload.data)
     }),
     ...pender({
         type: GET_USER_LIST,
-        onSuccess: (state, action) => state.setIn(['user', 'list'], action.payload.data)
+        onSuccess: (state, action) => state.set('result', Map(action.payload.data))
     }),
     ...pender({
         type: GET_USER_DATA,

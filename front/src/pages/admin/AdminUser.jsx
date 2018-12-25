@@ -39,9 +39,8 @@ class AdminUser extends Component {
         const { UserActions } = this.props;
 
         await UserActions.getStoreList();
-        await this.getStoreList();
-        await this.getNavData();
-        //await this.getRowData();
+        await UserActions.getFirstList();
+        await this.getFirstData();
     };
 
     componentWillUnmount() {
@@ -50,55 +49,77 @@ class AdminUser extends Component {
     }
 
     //최초 로드시 매장 정보를 가져와 redux form에 store 정보 저장
-    getStoreList = async () => {
-        const { UserActions, store } = this.props;
-        try {
-            if (store) {
-                await UserActions.changeInput({
-                    form: 'user',
-                    value: store[0].branchCode,
-                    name: 'branchCode'
-                });
-            }
+    // getStoreList = async () => {
+    //     const { UserActions, store } = this.props;
+    //     try {
+    //         if (store) {
+    //             await UserActions.changeInput({
+    //                 form: 'user',
+    //                 value: store[0].branchCode,
+    //                 name: 'branchCode'
+    //             });
+    //         }
 
-        } catch (e) {
-            console.log(e);
-        }
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
+
+    getFirstData = () => {
+        const { firstList } = this.props;
+        let getNavData = this.getNavData;
+        let getRowData = this.getRowData;
+
+        Promise.all([getNavData(firstList.storeId), getRowData(firstList.userId)]);
     }
 
     getNavData = async (id) => {
-        const { UserActions, form } = this.props;
+        const { UserActions, firstList } = this.props;
 
-        let storeId = id ? id : form.toJS().branchCode;
-
-        this.setState({ storeId: storeId });
-
+        let storeId = id ? id : firstList.storeId;
+        console.log(storeId);
         try {
             await UserActions.getUserList(storeId);
-            await UserActions.changeInput({
+            const loggedInfo = this.props.result.toJS();
+
+            console.log(loggedInfo);
+            UserActions.setResultData({
                 form: 'user',
-                value: this.props.list.length > 0 ? this.props.list[0]._id : '0',
-                name: '_id'
+                target: 'list',
+                result: loggedInfo.user
             });
-            await this.getRowData();
+            UserActions.setFormData({
+                form: 'form',
+                result: loggedInfo.firstUser
+            });
+            UserActions.setFormData({
+                form: 'updateForm',
+                result: loggedInfo.firstUser
+            });
+
+            this.setState({
+                storeId: storeId,
+                custNo: loggedInfo.firstUser ? loggedInfo.firstUser._id : '0'
+            });
+
         } catch (e) {
             console.log(e);
         }
+
     }
 
     getRowData = async (id) => {
-        const { UserActions, form } = this.props;
-
-        let custNo = id ? id : form.toJS()._id;
+        console.log(id);
+        const { UserActions, firstList } = this.props;
+        let firstUserId = firstList.userId ? firstList.userId : '0';
+        let custNo = id ? id : firstUserId;
 
         this.setState({ custNo: custNo });
 
         try {
             if (custNo) {
-                await UserActions.getUserData(custNo);
-                await UserActions.getUserUpdateData(custNo);
+                Promise.all([UserActions.getUserData(custNo), UserActions.getUserUpdateData(custNo)]);
             }
-
         } catch (e) {
             console.log(e);
         }
@@ -153,6 +174,7 @@ class AdminUser extends Component {
 export default connect(
     (state) => ({
         form: state.user.getIn(['user', 'form']),
+        firstList: state.user.getIn(['user', 'firstList']),
         list: state.user.getIn(['user', 'list']),
         store: state.user.getIn(['user', 'store']),
         error: state.user.getIn(['user', 'error']),
