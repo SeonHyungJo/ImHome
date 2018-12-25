@@ -5,7 +5,7 @@ import { Map } from 'immutable';
 
 const CHANGE_INPUT = 'user/CHANGE_INPUT'; //input 값 변경
 const INITIALIZE_FORM = 'user/INITIALIZE_FORM'; //form 초기화
-const SET_ERROR = 'user/SET_ERROR'; // 오류 설정
+const SET_MESSAGE = 'user/SET_MESSAGE'; // 오류 설정
 const SET_RESULT_DATA = 'user/SET_RESULT_DATA'; // resultData form에 설정
 const SET_FORM_DATA = 'user/SET_FORM_DATA'; // resultData form에 설정
 
@@ -20,7 +20,7 @@ const DELETE_USER_DATA = 'user/DELETE_USER_DATA';
 
 export const changeInput = createAction(CHANGE_INPUT); // {form, name, value}
 export const initializeForm = createAction(INITIALIZE_FORM); // form
-export const setError = createAction(SET_ERROR); // { form, message }
+export const setMessage = createAction(SET_MESSAGE); // { form, message }
 export const setResultData = createAction(SET_RESULT_DATA); // { form, data }
 export const setFormData = createAction(SET_FORM_DATA); // { form, data }
 
@@ -62,7 +62,7 @@ const initialState = Map({
             email: '',
             pNumber: '',
         }),
-        error: null,
+        message: null,
         store: [],
         list: '',
         currentStoreId: '',
@@ -80,9 +80,9 @@ export default handleActions({
         const initialForm = initialState.get(action.payload);
         return state.set(action.payload, initialForm);
     },
-    [SET_ERROR]: (state, action) => {
+    [SET_MESSAGE]: (state, action) => {
         const { form, message } = action.payload;
-        return state.setIn([form, 'error'], message);
+        return state.setIn([form, 'message'], message);
     },
     [SET_RESULT_DATA]: (state, action) => {
         const { form, result, target } = action.payload;
