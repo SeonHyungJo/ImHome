@@ -8,7 +8,7 @@ const INITIALIZE_FORM = 'auth/INITIALIZE_FORM'; //form 초기화
 const USER_REGISTER = 'auth/USER_REGISTER'; // 이메일 가입
 const USER_LOGIN = 'auth/USER_LOGIN'; // 이메일 로그인
 const LOGOUT = 'auth/LOGOUT'; // 로그아웃
-const SET_ERROR = 'auth/SET_ERROR'; // 오류 설정
+const SET_MESSAGE = 'auth/SET_MESSAGE'; // 오류 설정
 const CHECK_STATUS = 'auth/CHECK_STATUS';
 
 export const changeInput = createAction(CHANGE_INPUT); // {form, name, value}
@@ -16,7 +16,7 @@ export const initializeForm = createAction(INITIALIZE_FORM); // form
 export const userRegister = createAction(USER_REGISTER, AuthAPI.userRegister); // { email, password }
 export const userLogin = createAction(USER_LOGIN, AuthAPI.userLogin); // { email, password }
 export const logout = createAction(LOGOUT, AuthAPI.logout);
-export const setError = createAction(SET_ERROR); // { form, message }
+export const setMessage = createAction(SET_MESSAGE); // { form, message }
 export const checkStatus = createAction(CHECK_STATUS, AuthAPI.checkStatus);
 
 // 초기값 설정 @TODO 필드 추가 필요
@@ -34,7 +34,7 @@ const initialState = Map({
             id: '',
             password: '',
         }),
-        error: null
+        message: null
     }),
     result: Map({})
 });
@@ -48,9 +48,9 @@ export default handleActions({
         const initialForm = initialState.get(action.payload);
         return state.set(action.payload, initialForm);
     },
-    [SET_ERROR]: (state, action) => {
+    [SET_MESSAGE]: (state, action) => {
         const { form, message } = action.payload;
-        return state.setIn([form, 'error'], message);
+        return state.setIn([form, 'message'], message);
     },
     ...pender({
         type: USER_LOGIN,
