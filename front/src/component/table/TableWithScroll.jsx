@@ -6,9 +6,13 @@ class TableWithScroll extends React.Component {
     shouldComponentUpdate(nextProps, nextState) {
         let returnVal = true;
 
-        if (nextProps.data === this.props.data && nextProps.id === this.props.id && !nextProps.data)
+        console.log(nextProps);
+        if (!nextProps.data)
             returnVal = false;
 
+        if (nextProps.data === this.props.data && nextProps.id === this.props.id) {
+            returnVal = false;
+        }
 
         return returnVal;
     }

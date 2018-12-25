@@ -27,8 +27,6 @@ class AdminUser extends Component {
             { id: "__v", numeric: true, disablePadding: true, label: '총 거래금액(원)' }
         ];
         this.state = {
-            storeId: 1,
-            custNo: 1,
             headerData: headerData,
             displayPop: false,
             displayDeletePop: false

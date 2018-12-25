@@ -8,6 +8,15 @@ import * as UserActions from '../../redux/modules/user';
 
 class ViewForUser extends Component {
 
+    shouldComponentUpdate(nextProps, nextState) {
+        let returnVal = true;
+
+        if (nextProps.form === this.props.form)
+            returnVal = false;
+
+        return returnVal;
+    }
+
     render() {
         const { branchName, name, id, cName, bNumber, bAddress, email, pNumber, bPhoneNumber } = this.props.form.toJS();
 
