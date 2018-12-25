@@ -6,13 +6,15 @@ import * as AuthActions from '../../redux/modules/auth';
 import { LoginWrapper, LoginContent } from '../../component/auth';
 import { LoginInputWithLabel, LoginBtn, RegisterText, AlertPopup } from '../../component/common';
 import { LoginTemplate } from '../../component/template';
+import { isEmpty } from 'validator';
 
 class Login extends Component {
     constructor() {
         super();
         this.state = {
             displayAlertPop: false,
-            message: ''
+            message: '',
+            resultCode: ''
         };
     }
 
@@ -33,9 +35,44 @@ class Login extends Component {
         });
     };
 
+    setMessage = (message) => {
+        const { AuthActions } = this.props;
+        AuthActions.setMessage({
+            form: 'login',
+            message
+        });
+        return false;
+    };
+
+    validate = {
+        id: (value) => {
+            if (isEmpty(value)) {
+                this.setMessage('ID를 입력해주세요.');
+                return false;
+            }
+            this.setMessage(null);
+            return true;
+        },
+        password: (value) => {
+            if (isEmpty(value)) {
+                this.setMessage('비밀번호를 입력해주세요.');
+                return false;
+            }
+            this.setMessage(null);
+            return true;
+        }
+    };
+
     login = async () => {
         const { AuthActions } = this.props;
         const { id, password } = this.props.form.toJS(); // form 에서 email 과 password 값을 읽어옴
+        const { validate } = this;
+
+        if (!validate['id'](id)
+            || !validate['password'](password)) {
+            this.setState({ displayAlertPop: true });
+            return;
+        }
 
         await AuthActions.userLogin({
             id: id,
@@ -44,12 +81,13 @@ class Login extends Component {
 
         const loggedInfo = this.props.result.toJS();
 
-        localStorage.setItem('accessToken', loggedInfo.imhomeToken);
-
         if (loggedInfo.success === '0000') {
-            this.setState({ displayAlertPop: true, message: '성공적으로 로그인 하였습니다.' });
+            localStorage.setItem('accessToken', loggedInfo.imhomeToken);
+            this.setMessage('성공적으로 로그인 하였습니다.');
+            this.setState({ displayAlertPop: true, resultCode: loggedInfo.success });
         } else {
-            this.setState({ displayAlertPop: true, message: '로그인에 실패하였습니다. 다시 시도해주세요.' });
+            this.setMessage('로그인에 실패하였습니다. 다시 시도해주세요.');
+            this.setState({ displayAlertPop: true });
         }
     }
 
@@ -61,13 +99,19 @@ class Login extends Component {
     }
 
     closeAlertPop = () => {
-        const { history } = this.props;
+        const { history, AuthActions } = this.props;
 
         this.setState({ displayAlertPop: false });
-        history.push('/admin/product');
+
+        if (localStorage.getItem('accessToken') && this.state.resultCode === '0000') {
+            history.push('/admin/product');
+        } else {
+            AuthActions.initializeForm('login');
+        }
     }
 
     render() {
+        const { message } = this.props;
         const { id, password } = this.props.form.toJS(); // form 에서 email 과 password 값을 읽어옴
 
         return (
@@ -95,7 +139,7 @@ class Login extends Component {
                     </LoginContent>
                     <RegisterText onClick={this.goRegister}>Create an Account</RegisterText>
                 </LoginWrapper>
-                <AlertPopup title={this.state.message} clickEvent={this.closeAlertPop} buttonName='확인' displayAlertPop={this.state.displayAlertPop} />
+                <AlertPopup title={message} clickEvent={this.closeAlertPop} buttonName='확인' displayAlertPop={this.state.displayAlertPop} />
             </LoginTemplate>
         );
     }
@@ -104,7 +148,7 @@ class Login extends Component {
 export default connect(
     (state) => ({
         form: state.auth.getIn(['login', 'form']),
-        error: state.auth.getIn(['login', 'error']),
+        message: state.auth.getIn(['login', 'message']),
         result: state.auth.get('result')
     }),
     (dispatch) => ({
