@@ -43,6 +43,8 @@ const LogoWrapper = styled.div`
     color : #fe4c8d;
     font-weight: bold;
     font-size : 0.9rem;
+    padding-left : 5%;
+    padding-right: 5%;
 `
 
 const AlertPopup = ({ title, clickEvent, buttonName, displayAlertPop }) => (
