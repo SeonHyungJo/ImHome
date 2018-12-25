@@ -1,5 +1,6 @@
 import express from 'express';
 const Stores = require('../../models/stores');
+const Users = require('../../models/users');
 const reponseError = require('../common/responseError');
 const authMiddleware = require('../../middlewares/auth');
 
@@ -27,6 +28,36 @@ router.get('/store/list', function(req, res) {
         .then(store => {
             if (!store) throw new Error("Can't find stores");
             res.status(200).send(store);
+        })
+        .catch(err => {
+            console.log(err);
+            reponseError(res, 'NOT_FIND_ODER');
+        });
+});
+
+/**
+ * GET /api/store/first
+ *
+ * @author seonhyungjo
+ * @summary 첫번째 storeId, userId를 뽑아서 넘겨주기
+ * @private
+ * @memberof Admin
+ * @param
+ * @see None
+ * @returns {storeId, userId}
+ */
+router.get('/store/first', function(req, res) {
+    Stores.findAll()
+        .then(store => {
+            if (!store) throw new Error("Can't find stores");
+            Users.findOneByBranchCode(store[0].branchCode)
+                .then(users => {
+                    res.status(200).send({ storeId: store[0].branchCode, userId: users[0]._id });
+                })
+                .catch(err => {
+                    console.log(err);
+                    reponseError(res, 'NOT_FIND_ODER');
+                });
         })
         .catch(err => {
             console.log(err);
