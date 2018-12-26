@@ -78,7 +78,7 @@ class AdminOrderList extends Component {
                 <header>
                     주문일자 :
                     {CommonUtil.setDate(
-                        !currentOrder.updatedAt ? new Date() : currentOrder.updatedAt
+                        currentOrder.updatedAt === undefined ? new Date() : currentOrder.updatedAt
                     )}
                 </header>
                 <AlertPopup
