@@ -11,3 +11,8 @@ export function setTotalDate(str) {
 export function setTotalTime(str) {
     return moment(str).format('HH:mm:ss');
 }
+
+export function setCostFormat(num) {
+    let cost = num;
+    return cost.toLocaleString();
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import styled from 'styled-components';
+import * as CommonUtil from '../../util/commonUtil';
 
 const TableList = styled.div`
     overflow: auto;
@@ -28,7 +29,9 @@ const OrderListTableList = ({ orderList }) => (
                 <div key={order.itemCode} className={'tbodyTr'}>
                     <div className={classNames('tbodyTd')}>{order.itemName}</div>
                     <div className={classNames('tbodyTd', 'text-center')}>{order.itemCount}</div>
-                    <div className={classNames('tbodyTd')}>{`: $ ${order.itemCost}`}</div>
+                    <div className={classNames('tbodyTd')}>{`: $ ${CommonUtil.setCostFormat(
+                        order.itemCost
+                    )}`}</div>
                 </div>
             ))}
     </TableList>
