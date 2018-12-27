@@ -77,8 +77,8 @@ class AdminOrderList extends Component {
             <PageTemplate navData={store} id={currentId} clickNav={this.getNavData}>
                 <header>
                     주문일자 :
-                    {CommonUtil.setDate(
-                        !currentOrder.updatedAt ? new Date() : currentOrder.updatedAt
+                    {CommonUtil.setHangleDateTime(
+                        currentOrder.updatedAt === undefined ? new Date() : currentOrder.updatedAt
                     )}
                 </header>
                 <AlertPopup

@@ -1,6 +1,7 @@
 import React from 'react';
 import { TableWrapper, TableWithTitle } from '../table';
 import { TableWithContent } from './';
+import * as CommonUtil from '../../util/commonUtil';
 
 class TableWithScroll extends React.Component {
     render() {
@@ -46,19 +47,24 @@ class TableWithScroll extends React.Component {
                                                         style={{ textAlign: textAlign }}
                                                     >
                                                         {data.id === 'totalDealCost'
-                                                            ? n['items'].reduce((total, order) => {
-                                                                  return (
-                                                                      parseInt(
-                                                                          order.itemCount,
-                                                                          10
-                                                                      ) *
-                                                                          parseInt(
-                                                                              order.itemCost,
-                                                                              10
-                                                                          ) +
-                                                                      total
-                                                                  );
-                                                              }, 0)
+                                                            ? CommonUtil.setCostFormat(
+                                                                  n['items'].reduce(
+                                                                      (total, order) => {
+                                                                          return (
+                                                                              parseInt(
+                                                                                  order.itemCount,
+                                                                                  10
+                                                                              ) *
+                                                                                  parseInt(
+                                                                                      order.itemCost,
+                                                                                      10
+                                                                                  ) +
+                                                                              total
+                                                                          );
+                                                                      },
+                                                                      0
+                                                                  )
+                                                              )
                                                             : n[data.id] == null
                                                             ? '-'
                                                             : n[data.id]}
@@ -93,19 +99,24 @@ class TableWithScroll extends React.Component {
                                                         style={{ textAlign: textAlign }}
                                                     >
                                                         {data.id === 'totalDealCost'
-                                                            ? n['items'].reduce((total, order) => {
-                                                                  return (
-                                                                      parseInt(
-                                                                          order.itemCount,
-                                                                          10
-                                                                      ) *
-                                                                          parseInt(
-                                                                              order.itemCost,
-                                                                              10
-                                                                          ) +
-                                                                      total
-                                                                  );
-                                                              }, 0)
+                                                            ? CommonUtil.setCostFormat(
+                                                                  n['items'].reduce(
+                                                                      (total, order) => {
+                                                                          return (
+                                                                              parseInt(
+                                                                                  order.itemCount,
+                                                                                  10
+                                                                              ) *
+                                                                                  parseInt(
+                                                                                      order.itemCost,
+                                                                                      10
+                                                                                  ) +
+                                                                              total
+                                                                          );
+                                                                      },
+                                                                      0
+                                                                  )
+                                                              )
                                                             : n[data.id] == null
                                                             ? '-'
                                                             : n[data.id]}
@@ -132,7 +143,7 @@ class TableWithScroll extends React.Component {
                         {this.props.bottom.map((context, index) => {
                             return this.props.bottom.length === index + 1 ? (
                                 <th key={index} style={{ border: '0px', textAlign: 'right' }}>
-                                    {context}
+                                    {CommonUtil.setCostFormat(context)}
                                 </th>
                             ) : (
                                 <th key={index} style={{ border: '0px' }}>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { ViewWrapper, ViewWithContent } from '../view';
 import { WhiteBtn, DefaultRadio, MonthPicker } from '../../component/common';
+import * as CommonUtil from '../../util/commonUtil';
 
 import DatePicker from 'react-datepicker';
 import './react-datepicker.css';
@@ -33,7 +34,7 @@ class ViewForUser extends Component {
                             <td
                                 colSpan="2"
                                 style={{ textAlign: 'right', color: '#fe4c8d' }}
-                            >{`${totalCost} 원(${totalList}건)`}</td>
+                            >{`${CommonUtil.setCostFormat(totalCost)} 원(${totalList}건)`}</td>
                             <td colSpan="3" style={{ textAlign: 'right' }} />
                         </tr>
                     </ViewWithContent>
