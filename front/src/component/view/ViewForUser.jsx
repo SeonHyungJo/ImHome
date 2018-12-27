@@ -31,9 +31,9 @@ class ViewForUser extends Component {
                     </tr>
                     <tr>
                         <th>대표자</th>
-                        <td>{name ? name : '-'}</td>
+                        <th>{name ? name : '-'}</th>
                         <th>아이디</th>
-                        <td>{id ? id : '-'}</td>
+                        <th>{id ? id : '-'}</th>
                     </tr>
                     <tr>
                         <th>회사명</th>
@@ -43,9 +43,9 @@ class ViewForUser extends Component {
                     </tr>
                     <tr>
                         <th>사업장 주소</th>
-                        <td>{bAddress ? bAddress : '-'}</td>
+                        <th>{bAddress ? bAddress : '-'}</th>
                         <th>이메일 주소</th>
-                        <td>{email ? email : '-'}</td>
+                        <th>{email ? email : '-'}</th>
                     </tr>
                     <tr>
                         <th>사업장 연락처</th>
