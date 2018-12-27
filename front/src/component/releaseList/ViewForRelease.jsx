@@ -34,8 +34,10 @@ class ViewForUser extends Component {
                             <td
                                 colSpan="2"
                                 style={{ textAlign: 'right', color: '#fe4c8d' }}
-                            >{`${CommonUtil.setCostFormat(totalCost)} 원(${totalList}건)`}</td>
-                            <td colSpan="3" style={{ textAlign: 'right' }} />
+                            >{`${totalCost} 원(${totalList}건)`}</td>
+                            <td colSpan="3" style={{ textAlign: 'right' }}>
+                                {children}
+                            </td>
                         </tr>
                     </ViewWithContent>
                 )}

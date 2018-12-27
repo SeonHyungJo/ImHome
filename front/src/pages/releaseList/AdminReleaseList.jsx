@@ -8,6 +8,7 @@ import { ViewForRelease, TableWithScroll } from '../../component/releaseList';
 import { FormBtn } from '../../component/common';
 import * as ReleaseActions from '../../redux/modules/releaseList';
 import * as CommonUtil from '../../util/commonUtil';
+import { ReactToPrint } from '../../component/print';
 
 class AdminReleaseList extends Component {
     constructor() {
@@ -157,7 +158,10 @@ class AdminReleaseList extends Component {
                     totalCost={this.getTotalCost(list)}
                     totalList={list.length === undefined ? 0 : list.length}
                 >
-                    <FormBtn>조회</FormBtn>
+                    <ReactToPrint
+                        trigger={() => <FormBtn style={{ margin: '0' }}>거래내역출력</FormBtn>}
+                        content={() => this.componentRef}
+                    />
                 </ViewForRelease>
 
                 <TableWithScroll
@@ -167,6 +171,7 @@ class AdminReleaseList extends Component {
                     clickRow={this.getRowData}
                     id={custNo}
                     bottom={['Total', '', '', '총 발행건수', this.getTotalCost(list)]}
+                    ref={el => (this.componentRef = el)}
                 />
             </PageTemplate>
         );
