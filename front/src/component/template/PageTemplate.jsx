@@ -35,7 +35,7 @@ class PageTemplate extends Component {
         }
         return (
             <div>
-                <HeaderContainer>
+                <HeaderContainer caption="admin">
                     <li>
                         <button onClick={this.logout}>
                             로그아웃
