@@ -83,10 +83,25 @@ const ProductFormContainer = styled.div`
     height: 75vh;
     background-color: white;
     padding: 10px;
-    overflow: auto;
+    overflow: hidden;
     .tableTitle {
         font-size: 1.3rem;
         margin-bottom: 1rem;
+    }
+
+    .itemFooterContainer {
+        padding: 0px 0px 10px 0px;
+        width: 100%;
+        display: flex;
+        // border: solid 1px black;
+        position: static;
+        bottom: 0;
+        height: 10%;
+    }
+
+    .itemContainer {
+        overflow-y: auto;
+        height: 77%;
     }
 `;
 
@@ -522,7 +537,7 @@ class Imhome extends Component {
                 </MainContainer>
                 <ProductFormContainer>
                     <div className={'tableTitle'}>{this.state.clickedCate.itemName}</div>
-                    <div>
+                    <div className={'itemContainer'}>
                         <Table>
                             <tbody>
                                 <tr>
@@ -658,7 +673,7 @@ class Imhome extends Component {
                     </div>
                     <hr />
                     {clickedCate._id !== -1 ? (
-                        <div className={'footerContainer'}>
+                        <div className={'itemFooterContainer'}>
                             <Button onClick={() => this._newItem('newItem')}>품목추가</Button>
                             <Button onClick={() => this._deleteItem('item')}>품목삭제</Button>
                         </div>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import classNames from 'classnames';
-import { Button } from '../common';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -15,21 +14,28 @@ const ContentWrapper = styled.div`
     height: 75vh;
     background-color: white;
     padding: 10px;
-
-    .footerContainer {
-        padding: 0px 0px 10px 0px;
-        width: 100%;
-        display: flex;
-        // border: solid 1px black;
-    }
 `;
 
 const MainContainer = styled.div`
     padding: 10px 0px 0px 10px;
     width: 40vw;
     height: 75vh;
-    overflow: auto;
-    // border: solid 1px black;
+    overflow: hidden;
+
+    .itemFooterContainer {
+        padding: 0px 0px 10px 0px;
+        width: 100%;
+        display: flex;
+        // border: solid 1px black;
+        position: static;
+        bottom: 0;
+        height: 10%;
+    }
+
+    .itemContainer {
+        overflow-y: auto;
+        height: 85%;
+    }
 `;
 
 const ProductFormContainer = styled.div`
@@ -37,7 +43,7 @@ const ProductFormContainer = styled.div`
     height: 75vh;
     background-color: white;
     padding: 10px;
-    overflow: auto;z
+    overflow: hidden;
 `;
 
 const TableButton = styled.button`
@@ -113,6 +119,24 @@ const Input = styled.input`
         font-size: 0.7rem;
         color: #7d7d7d;
     }
+`;
+
+const Button = styled.button`
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+
+    border: 2px solid #fe4c8d;
+    border-radius: 3px;
+    background: white;
+    color: #fe4c8d;
+
+    text-align: center;
+    font-size: 0.8rem;
+    width: 8rem;
+    cursor: pointer;
+    font-weight: bold;
 `;
 
 class DefaultProduct extends Component {
@@ -299,7 +323,7 @@ class DefaultProduct extends Component {
         return (
             <ContentWrapper>
                 <MainContainer>
-                    <div>
+                    <div className={'itemContainer'}>
                         <Table>
                             <tbody>
                                 <tr>
@@ -427,7 +451,7 @@ class DefaultProduct extends Component {
                         </Table>
                     </div>
                     <hr />
-                    <div className={'footerContainer'}>
+                    <div className={'itemFooterContainer'}>
                         <Button onClick={() => this._newItem('newItem')}>품목추가</Button>
                         <Button onClick={() => this._deleteItem('item')}>품목삭제</Button>
                     </div>
