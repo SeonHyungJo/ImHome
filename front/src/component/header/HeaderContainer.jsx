@@ -29,6 +29,20 @@ const Image = styled.img`
     padding-left: 3.5rem;
 `
 
+const CaptionWrapper = styled.div`
+    border: 1px solid #fe4c8d;
+    text-align: left;
+    float: left;
+    background-color: #fe4c8d;
+    color: white;
+    font-weight: bold;
+    border-radius: 0.2rem;
+    padding: 0 0.6rem;
+    margin-left: 6.8rem;
+    margin-top: 1.3rem;
+    font-size: 0.75rem;
+`
+
 const MenuWrapper = styled.ul`
     width:50rem;
     background:white;
@@ -66,11 +80,14 @@ const MenuWrapper = styled.ul`
 
 `;
 
-const HeaderContainer = ({ children }) => (
+const HeaderContainer = ({ caption, children }) => (
     <Wrapper>
         <LogoWrapper>
             <Image src='/images/m_logo.png' />
         </LogoWrapper>
+        <CaptionWrapper>
+            {caption}
+        </CaptionWrapper>
         <MenuWrapper>
             {children}
         </MenuWrapper>
