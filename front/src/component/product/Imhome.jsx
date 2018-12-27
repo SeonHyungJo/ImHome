@@ -566,9 +566,7 @@ class Imhome extends Component {
                                         ) : (
                                             <tr
                                                 key={child._id}
-                                                onClick={() =>
-                                                    this._boxCheck(child._id, detailItem)
-                                                }
+                                                onClick={e => this._boxCheck(child._id, detailItem)}
                                                 className={
                                                     this.state.clickedItem.hasOwnProperty(child._id)
                                                         ? classNames('itemOn')
@@ -578,7 +576,10 @@ class Imhome extends Component {
                                                 <td>{child.itemName}</td>
                                                 <td>{child.itemVolume}</td>
                                                 <td>{child.itemCost}</td>
-                                                <td className={classNames('tableAlignCenter')}>
+                                                <td
+                                                    className={classNames('tableAlignCenter')}
+                                                    onClick={e => e.stopPropagation()}
+                                                >
                                                     <TableButton
                                                         onClick={() => this._editItem(child)}
                                                     >
