@@ -19,14 +19,18 @@ class Product extends Component {
         const { form } = this.props;
         const product = form.toJS();
         const companyCode = product.companyCode;
-        let content, categories;
+        let content, categories, clickedCate;
 
         if (companyCode === '001') {
             categories = product.items.filter(item => item.itemDepth === 0);
-            content = <Imhome product={product} categories={categories} />;
+
+            const first = categories[0];
+            clickedCate = { index: 0, _id: first._id, itemName: first.itemName };
+
+            content = <Imhome categories={categories} clickedCate={clickedCate} />;
         } else if (companyCode === '') {
             categories = [];
-            content = <Imhome product={product} categories={categories} />;
+            content = <Imhome categories={categories} clickedCate={{ index: -1 }} />;
         } else {
             content = <DefaultProduct />;
         }

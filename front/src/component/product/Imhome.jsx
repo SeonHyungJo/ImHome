@@ -198,9 +198,18 @@ class Imhome extends Component {
             newCategory: { state: false, newName: '', newDesc: '' },
             newItem: { state: false, newName: '', newVolume: '', newCost: '' },
             editItem: { state: false, _id: -1 },
-            categories: props.categories,
             displayAlertPop: { state: false, message: '' }
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        // clickedCate 초기설정
+        if (nextProps.clickedCate.index !== -1) {
+            this.setState({ clickedCate: nextProps.clickedCate });
+            return true;
+        } else {
+            return false;
+        }
     }
 
     _initNew = stateName => {
