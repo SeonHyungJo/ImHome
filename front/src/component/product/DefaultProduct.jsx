@@ -394,7 +394,10 @@ class DefaultProduct extends Component {
                                             <td>{child.itemName}</td>
                                             <td>{child.itemVolume}</td>
                                             <td>{child.itemCost}</td>
-                                            <td className={classNames('tableAlignCenter')}>
+                                            <td
+                                                className={classNames('tableAlignCenter')}
+                                                onClick={e => e.stopPropagation()}
+                                            >
                                                 <TableButton onClick={() => this._editItem(child)}>
                                                     수정
                                                 </TableButton>
