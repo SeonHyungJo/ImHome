@@ -597,7 +597,9 @@ class Imhome extends Component {
                                         ) : (
                                             <tr
                                                 key={child._id}
-                                                onClick={e => this._boxCheck(child._id, detailItem)}
+                                                onClick={() =>
+                                                    this._boxCheck(child._id, detailItem)
+                                                }
                                                 className={
                                                     this.state.clickedItem.hasOwnProperty(child._id)
                                                         ? classNames('itemOn')
