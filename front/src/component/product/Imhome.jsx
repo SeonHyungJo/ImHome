@@ -26,7 +26,6 @@ const ContentWrapper = styled.div`
             flex-direction: column;
             justify-content: center;
             width: 70%;
-
             .name {
                 font-weight: bold;
                 margin-bottom: 0.5rem;
@@ -55,20 +54,28 @@ const ContentWrapper = styled.div`
         background-color: #363636;
         color: #ffffff;
     }
-
-    .footerContainer {
-        padding: 0px 0px 10px 0px;
-        width: 100%;
-        display: flex;
-        // border: solid 1px black;
-    }
 `;
 
 const MainContainer = styled.div`
     padding: 10px 0px 0px 10px;
     width: 32.5vw;
     height: 75vh;
-    overflow: auto;
+    overflow: hidden;
+
+    .footerContainer {
+        padding: 0px 0px 10px 0px;
+        width: 100%;
+        display: flex;
+        // border: solid 1px black;
+        position: static;
+        bottom: 0;
+        height: 10%;
+    }
+
+    .productComponent {
+        overflow-y: auto;
+        height: 85%;
+    }
 `;
 
 const ProductFormContainer = styled.div`
