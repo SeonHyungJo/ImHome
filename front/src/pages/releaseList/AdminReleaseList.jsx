@@ -8,7 +8,7 @@ import { ViewForRelease, TableWithScroll } from '../../component/releaseList';
 import { FormBtn } from '../../component/common';
 import * as ReleaseActions from '../../redux/modules/releaseList';
 import * as CommonUtil from '../../util/commonUtil';
-import { ReactToPrint } from '../../component/print';
+import { ReactToPrint, ReactToExcel } from '../../component/external';
 
 class AdminReleaseList extends Component {
     constructor() {
@@ -132,7 +132,7 @@ class AdminReleaseList extends Component {
     render() {
         const { searchingData, radioBtnSetting } = this.state;
         const { store, list, currentId, custNo, startDate, endDate } = this.props;
-
+        console.log(list);
         return (
             <PageTemplate navData={store} id={currentId} clickNav={this.getNavData}>
                 <ViewForRelease
@@ -161,6 +161,12 @@ class AdminReleaseList extends Component {
                     <ReactToPrint
                         trigger={() => <FormBtn style={{ margin: '0' }}>거래내역출력</FormBtn>}
                         content={() => this.componentRef}
+                    />
+                    <ReactToExcel
+                        exportData={list}
+                        trigger={
+                            <FormBtn style={{ margin: '0', marginLeft: '10px' }}>파일저장</FormBtn>
+                        }
                     />
                 </ViewForRelease>
 

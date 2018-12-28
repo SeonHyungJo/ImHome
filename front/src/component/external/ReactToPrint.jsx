@@ -112,7 +112,6 @@ class ReactToPrint extends React.Component {
 
             // iframe내부 Dom을 가져옴
             const domDoc = printWindow.contentDocument || printWindow.contentWindow.document;
-            const srcCanvasEls = [...contentNodes.querySelectorAll('canvas')];
 
             domDoc.open();
             // ref 참조한 것을 그림
