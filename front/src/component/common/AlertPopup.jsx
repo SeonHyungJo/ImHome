@@ -19,7 +19,7 @@ const Wrapper = styled.div`
     text-align: center;
     background-color: white;
     top: 50%;
-    left: 53%;
+    left: 50%;
     transform: translate(-50%, -50%);
     position: absolute;
     border-radius: 5px;
