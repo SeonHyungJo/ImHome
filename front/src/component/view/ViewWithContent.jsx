@@ -33,6 +33,7 @@ const Table = styled.table`
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
+        text-overflow:ellipsis; overflow:hidden; white-space:nowrap;
     };
     td {
         border-right: 1px solid #e0e0e0;
