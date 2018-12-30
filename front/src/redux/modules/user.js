@@ -61,6 +61,7 @@ const initialState = Map({
             bAddress: '',
             email: '',
             pNumber: '',
+            bPhoneNumber: ''
         }),
         message: null,
         store: [],
@@ -89,8 +90,11 @@ export default handleActions({
         return state.setIn([form, target], result);
     },
     [SET_FORM_DATA]: (state, action) => {
-        const { form, result } = action.payload;
-        return state.setIn(['user', form], Map(result));
+        const { result } = action.payload;
+        return state
+            .setIn(['user', 'form'], Map(result))
+            .setIn(['user', 'updateForm'], Map(result));
+
     },
     ...pender({
         type: GET_FIRST_LIST,

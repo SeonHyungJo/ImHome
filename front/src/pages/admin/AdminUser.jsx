@@ -93,11 +93,6 @@ class AdminUser extends Component {
                 result: storeId
             });
             UserActions.setFormData({
-                form: 'form',
-                result: loggedInfo.firstUser
-            });
-            UserActions.setFormData({
-                form: 'updateForm',
                 result: loggedInfo.firstUser
             });
 
