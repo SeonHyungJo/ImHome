@@ -106,7 +106,11 @@ export default handleActions({
     }),
     ...pender({
         type: GET_USER_DATA,
-        onSuccess: (state, action) => state.setIn(['user', 'form'], Map(action.payload.data))
+        onSuccess: (state, action) => {
+            return state
+                .setIn(['user', 'form'], Map(action.payload.data))
+                .setIn(['user', 'updateForm'], Map(action.payload.data));
+        }
     }),
     ...pender({
         type: GET_USER_UPDATE_DATA,

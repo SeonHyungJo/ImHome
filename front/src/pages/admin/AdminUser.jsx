@@ -114,7 +114,7 @@ class AdminUser extends Component {
 
         try {
             if (custNo) {
-                Promise.all([UserActions.getUserData(custNo), UserActions.getUserUpdateData(custNo)]);
+                UserActions.getUserData(custNo);
             }
             UserActions.setResultData({
                 form: 'user',

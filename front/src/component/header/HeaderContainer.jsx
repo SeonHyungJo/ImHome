@@ -53,6 +53,7 @@ const MenuWrapper = styled.ul`
     li{
         float: right;
         margin-right:2.5rem;
+        cursor : pointer;
     };
     li a {
         font-size:1rem;
@@ -73,6 +74,7 @@ const MenuWrapper = styled.ul`
         font-weight:bold;
         text-decoration:none;
         border : 0px;
+        cursor : pointer;
     };
     li button:hover {
         color:#fe4c8d;
