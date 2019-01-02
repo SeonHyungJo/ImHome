@@ -8,9 +8,9 @@ import * as ProductListActions from '../../redux/modules/productList';
 
 const Header = styled.div`
     color: black;
-    padding: 10px;
-    margin: 0px;
-    font-size: 35px;
+    padding: 10px 10px 0px 10px;
+    margin: 10px 0px 0px 10px;
+    font-size: 1.5rem;
     font-wight: bold;
 `;
 

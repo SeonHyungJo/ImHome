@@ -26,12 +26,19 @@ const ContentWrapper = styled.div`
             flex-direction: column;
             justify-content: center;
             width: 70%;
+            margin-left: 0.5rem;
             .name {
                 font-weight: bold;
                 margin-bottom: 0.5rem;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
             }
             .desc {
                 color: #7e8387;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
             }
         }
         .categorySub {
