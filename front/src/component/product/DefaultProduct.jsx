@@ -10,7 +10,7 @@ import { AlertPopup } from '../../component/common';
 const ContentWrapper = styled.div`
     display: flex;
     flex-direction: row;
-    width: 80vw;
+    width: 75vw;
     height: 75vh;
     background-color: white;
     padding: 10px;
@@ -18,7 +18,7 @@ const ContentWrapper = styled.div`
 
 const MainContainer = styled.div`
     padding: 10px 0px 0px 10px;
-    width: 40vw;
+    width: 32.5vw;
     height: 75vh;
     overflow: hidden;
 
@@ -39,7 +39,7 @@ const MainContainer = styled.div`
 `;
 
 const ProductFormContainer = styled.div`
-    width: 40vw;
+    width: 42.5vw;
     height: 75vh;
     background-color: white;
     padding: 10px;
