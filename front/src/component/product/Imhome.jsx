@@ -47,7 +47,9 @@ const ContentWrapper = styled.div`
             align-items: center;
             width: 30%;
             font-size: 50px;
+            cursor: pointer;
         }
+
         .categorySubButton {
             display: flex;
             justify-content: center;
