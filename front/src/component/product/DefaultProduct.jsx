@@ -105,6 +105,9 @@ const Table = styled.table`
     .tableAlignCenter {
         text-align: center;
     }
+    .tableAlignRight {
+        text-align: right;
+    }
 `;
 
 const Input = styled.input`
@@ -391,9 +394,15 @@ class DefaultProduct extends Component {
                                                     : classNames('')
                                             }
                                         >
-                                            <td>{child.itemName}</td>
-                                            <td>{child.itemVolume}</td>
-                                            <td>{child.itemCost}</td>
+                                            <td className={classNames('tableAlignCenter')}>
+                                                {child.itemName}
+                                            </td>
+                                            <td className={classNames('tableAlignCenter')}>
+                                                {child.itemVolume}
+                                            </td>
+                                            <td className={classNames('tableAlignRight')}>
+                                                {child.itemCost}
+                                            </td>
                                             <td
                                                 className={classNames('tableAlignCenter')}
                                                 onClick={e => e.stopPropagation()}
