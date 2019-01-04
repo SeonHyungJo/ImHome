@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ProductListActions from '../../redux/modules/productList';
 import { AlertPopup } from '../../component/common';
+import PopDeleteConfirm from './PopDeleteConfirm';
 
 const ContentWrapper = styled.div`
     display: flex;
@@ -233,7 +234,8 @@ class Imhome extends Component {
             newCategory: { state: false, newName: '', newDesc: '' },
             newItem: { state: false, newName: '', newVolume: '', newCost: '' },
             editItem: { state: false, _id: -1 },
-            displayAlertPop: { state: false, message: '' }
+            displayAlertPop: { state: false, message: '' },
+            displayDeletePop: { state: false, type: '' }
         };
     }
 
@@ -347,21 +349,7 @@ class Imhome extends Component {
                 // 클릭한 카테고리가 없다면
                 this.setState({ displayAlertPop: { state: true, message: '메뉴를 선택해주세요' } });
             } else {
-                if (window.confirm('정말 선택하신 카테고리를 삭제하시겠습니까?')) {
-                    // 클릭한 카테고리가 있다면
-                    const { ProductListActions, form } = this.props;
-
-                    // 현재 폼에서 companyCode 조회
-                    const companyCode = form.toJS().companyCode;
-
-                    // 카테고리 삭제
-                    await ProductListActions.deleteItem(companyCode, {
-                        _id: clickedCate._id
-                    });
-
-                    // 클릭 state 초기화
-                    await this._initNew('clickedCate');
-                }
+                this.setState({ displayDeletePop: { state: true, type: type } });
             }
         } else if (type === 'item') {
             const { clickedItem } = this.state;
@@ -373,24 +361,7 @@ class Imhome extends Component {
                     displayAlertPop: { state: true, message: '아이템을 선택해주세요' }
                 });
             } else {
-                if (window.confirm('정말 선택하신 Item들을 삭제하시겠습니까?')) {
-                    // 클릭한 Item이 있다면
-                    const { ProductListActions, form } = this.props;
-
-                    // 현재 폼에서 companyCode 조회
-                    const companyCode = form.toJS().companyCode;
-
-                    await keys.map(key => {
-                        // Item 삭제
-                        ProductListActions.deleteItem(companyCode, {
-                            _id: clickedItem[key]._id
-                        });
-                        return 1;
-                    });
-
-                    // 클릭 Item 초기화
-                    this._initNew('clickedItem');
-                }
+                this.setState({ displayDeletePop: { state: true, type: type } });
             }
         }
     };
@@ -465,6 +436,14 @@ class Imhome extends Component {
 
     _closeAlertPop = () => {
         this.setState({ displayAlertPop: { state: false, message: '' } });
+    };
+
+    _popDelete = type => {
+        this.setState({ displayDeletePop: { state: true, type: type } });
+    };
+
+    _closeDeletePop = () => {
+        this.setState({ displayDeletePop: { state: false, type: '' } });
     };
 
     render() {
@@ -707,6 +686,12 @@ class Imhome extends Component {
                     clickEvent={this._closeAlertPop}
                     buttonName="확인"
                     displayAlertPop={this.state.displayAlertPop.state}
+                />
+                <PopDeleteConfirm
+                    displayDeletePop={this.state.displayDeletePop}
+                    category={clickedCate}
+                    items={this.state.clickedItem}
+                    closeDeletePop={this._closeDeletePop}
                 />
             </ContentWrapper>
         );
