@@ -5,10 +5,10 @@ import { bindActionCreators } from 'redux';
 
 import { PageTemplate } from '../../component/template';
 import { ViewForRelease, TableWithScroll } from '../../component/releaseList';
-import { FormBtn } from '../../component/common';
+import { FormBtn, Button } from '../../component/common';
 import * as ReleaseActions from '../../redux/modules/releaseList';
 import * as CommonUtil from '../../util/commonUtil';
-import { ReactToPrint, ReactToExcel } from '../../component/external';
+import { ReactToPrint } from '../../component/external';
 
 class AdminReleaseList extends Component {
     constructor() {
@@ -162,12 +162,13 @@ class AdminReleaseList extends Component {
                         trigger={() => <FormBtn style={{ margin: '0' }}>거래내역출력</FormBtn>}
                         content={() => this.componentRef}
                     />
-                    <ReactToExcel
+                    {/* 파일저장용 */}
+                    {/* <Button
                         exportData={list}
                         trigger={
                             <FormBtn style={{ margin: '0', marginLeft: '10px' }}>파일저장</FormBtn>
                         }
-                    />
+                    /> */}
                 </ViewForRelease>
 
                 <TableWithScroll

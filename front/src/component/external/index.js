@@ -1,2 +1,1 @@
-export { default as ReactToPrint } from './ReactToPrint'
-export { default as ReactToExcel } from './ReactToExcel'
+export { default as ReactToPrint } from './ReactToPrint';

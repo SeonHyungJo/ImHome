@@ -6,16 +6,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { UserRegister } from './pages/user';
-import { AdminMain, AdminUser } from './pages/admin';
-import { OrderList } from './pages/orderList';
-import { ReleaseList } from './pages/releaseList';
+import { AdminMain, AdminUser, AdminOrderList, AdminReleaseList } from './pages/admin';
 import { Product } from './pages/product';
 import { Login } from './pages/common';
 import * as AuthActions from './redux/modules/auth';
 
-
 class App extends Component {
-
     initializeUserInfo = async () => {
         const { history } = this.props;
         const loggedInfo = localStorage.getItem('accessToken'); // 로그인 정보를 로컬스토리지에서 가져옵니다.
@@ -36,7 +32,7 @@ class App extends Component {
             console.log(e);
             //history.push('/login');
         }
-    }
+    };
 
     componentDidMount() {
         this.initializeUserInfo();
@@ -54,10 +50,14 @@ class App extends Component {
                             {/* Admin router : 관리자 라우터*/}
                             <Route exact={true} component={AdminMain} path={PATH} />
                             <Route exact={true} component={AdminUser} path={PATH + '/users'} />
-                            <Route exact={true} component={OrderList} path={PATH + '/orderlist'} />
                             <Route
                                 exact={true}
-                                component={ReleaseList}
+                                component={AdminOrderList}
+                                path={PATH + '/orderlist'}
+                            />
+                            <Route
+                                exact={true}
+                                component={AdminReleaseList}
                                 path={PATH + '/releaselist'}
                             />
                             <Route exact={true} component={Product} path={PATH + '/product'} />
@@ -75,10 +75,10 @@ class App extends Component {
 }
 
 export default connect(
-    (state) => ({
+    state => ({
         result: state.user.get('result')
     }),
-    (dispatch) => ({
-        AuthActions: bindActionCreators(AuthActions, dispatch),
+    dispatch => ({
+        AuthActions: bindActionCreators(AuthActions, dispatch)
     })
 )(App);
