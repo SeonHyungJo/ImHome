@@ -23,9 +23,17 @@ export const checkStatus = createAction(CHECK_STATUS, AuthAPI.checkStatus);
 const initialState = Map({
     register: Map({
         form: Map({
-            custId: '',
-            custPasswd: '',
-            custPasswdConfirm: '',
+            id: '',
+            password: '',
+            passwordConfirm: '',
+            name: '',
+            bNumber: '',
+            bAddress: '',
+            cName: '',
+            email: '',
+            bPhoneNumber: '',
+            branchCode: '',
+            branchName: ''
         }),
         error: null
     }),
