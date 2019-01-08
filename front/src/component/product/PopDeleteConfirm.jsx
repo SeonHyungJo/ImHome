@@ -24,17 +24,25 @@ class PopDeleteConfirm extends Component {
 
         if (type === 'category') {
             // 카테고리 삭제
-            await ProductListActions.deleteItem(companyCode, {
-                _id: category._id
-            });
+            await ProductListActions.deleteItem(
+                companyCode,
+                {
+                    _id: category._id
+                },
+                true
+            );
         } else if (type === 'item') {
             const keys = Object.keys(items);
 
             await keys.map(key => {
                 // Item 삭제
-                ProductListActions.deleteItem(companyCode, {
-                    _id: items[key]._id
-                });
+                ProductListActions.deleteItem(
+                    companyCode,
+                    {
+                        _id: items[key]._id
+                    },
+                    false
+                );
                 return 1;
             });
         }

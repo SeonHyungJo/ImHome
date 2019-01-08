@@ -17,20 +17,13 @@ const Header = styled.div`
 class Product extends Component {
     render() {
         const { form } = this.props;
-        const product = form.toJS();
-        const companyCode = product.companyCode;
-        let content, categories, clickedCate;
+        const companyCode = form.toJS().companyCode;
+        let content;
 
         if (companyCode === '001') {
-            categories = product.items.filter(item => item.itemDepth === 0);
-
-            const first = categories[0];
-            clickedCate = { index: 0, _id: first._id, itemName: first.itemName };
-
-            content = <Imhome categories={categories} clickedCate={clickedCate} />;
+            content = <Imhome />;
         } else if (companyCode === '') {
-            categories = [];
-            content = <Imhome categories={categories} clickedCate={{ index: -1 }} />;
+            content = <Imhome />;
         } else {
             content = <DefaultProduct />;
         }

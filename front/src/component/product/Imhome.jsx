@@ -229,7 +229,6 @@ class Imhome extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            clickedCate: { index: -1, _id: -1, itemName: '-' },
             clickedItem: {},
             newCategory: { state: false, newName: '', newDesc: '' },
             newItem: { state: false, newName: '', newVolume: '', newCost: '' },
@@ -239,17 +238,19 @@ class Imhome extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        // clickedCate 초기설정
-        if (nextProps.clickedCate.index !== -1) {
-            this.setState({ clickedCate: nextProps.clickedCate });
-            return true;
-        } else {
-            return false;
-        }
-    }
+    // componentWillReceiveProps(nextProps) {
+    //     // clickedCate 초기설정
+    //     if (nextProps.clickedCate.index !== -1) {
+    //         this.setState({ clickedCate: nextProps.clickedCate });
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
     _initNew = stateName => {
+        const { form } = this.props;
+
         if (stateName === 'newCategory') {
             this.setState({ newCategory: { state: false, newName: '', newDesc: '' } });
         } else if (stateName === 'newItem') {
@@ -257,16 +258,20 @@ class Imhome extends Component {
         } else if (stateName === 'clickedItem') {
             this.setState({ clickedItem: {} });
         } else if (stateName === 'clickedCate') {
-            this.setState({ clickedCate: { index: -1, _id: -1, itemName: '' } });
+            // this.setState({ clickedCate: { index: -1, _id: -1, itemName: '' } });
         } else if (stateName === 'editItem') {
             this.setState({ editItem: { state: false, _id: -1 } });
         }
     };
 
     _clickCategory = (index, _id, itemName) => {
+        const { ProductListActions } = this.props;
         this._initNew('newItem');
-        this._initNew('clickedItem');
-        this.setState({ clickedCate: { index: index, _id: _id, itemName: itemName } });
+        ProductListActions.changeCate({
+            index,
+            _id,
+            itemName
+        });
     };
 
     // 새로운 폼 생성
@@ -319,7 +324,9 @@ class Imhome extends Component {
                 itemDesc: newCategory.newDesc
             });
         } else if (stateName === 'newItem') {
-            const { newItem, clickedCate } = this.state;
+            const { form } = this.props;
+            const { clickedCate } = form.toJS();
+            const { newItem } = this.state;
 
             // item 생성
             await ProductListActions.createItem(companyCode, {
@@ -343,7 +350,9 @@ class Imhome extends Component {
      * }
      */
     _deleteItem = async type => {
-        const { clickedCate } = this.state;
+        const { form } = this.props;
+        const { clickedCate } = form.toJS();
+
         if (type === 'category') {
             if (clickedCate.index === -1) {
                 // 클릭한 카테고리가 없다면
@@ -448,18 +457,18 @@ class Imhome extends Component {
 
     render() {
         const { form } = this.props;
-        const items = form.toJS().items;
-        const { clickedCate, newCategory, newItem, editItem } = this.state;
+        const { categories, clickedCate, items } = form.toJS();
+        const { newCategory, newItem, editItem } = this.state;
         const detailItem = items.filter(item => item.parentId === clickedCate._id);
         return (
             <ContentWrapper>
                 <MainContainer>
                     <div className={'productComponent'}>
-                        {!!this.props.categories.length > 0 ? (
-                            this.props.categories.map((item, index) => (
+                        {!!categories.length > 0 ? (
+                            categories.map((item, index) => (
                                 <div
                                     className={
-                                        this.state.clickedCate.index === index
+                                        clickedCate.index === index
                                             ? classNames('category', 'clicked')
                                             : classNames('category')
                                     }
@@ -473,9 +482,7 @@ class Imhome extends Component {
                                         <div className={'desc'}>{item.itemDesc}</div>
                                     </div>
                                     <div className={'categorySub'}>
-                                        <span>
-                                            {this.state.clickedCate.index === index ? '>' : '<'}
-                                        </span>
+                                        <span>{clickedCate.index === index ? '>' : '<'}</span>
                                     </div>
                                 </div>
                             ))
@@ -518,7 +525,7 @@ class Imhome extends Component {
                         )}
                     </div>
                     <hr />
-                    {!!this.props.categories.length > 0 ? (
+                    {!!categories.length > 0 ? (
                         <div className={'footerContainer'}>
                             <Button onClick={() => this._newItem('newCategory')}>메뉴추가</Button>
                             <Button onClick={() => this._deleteItem('category')}>메뉴삭제</Button>
@@ -528,7 +535,7 @@ class Imhome extends Component {
                     )}
                 </MainContainer>
                 <ProductFormContainer>
-                    <div className={'tableTitle'}>{this.state.clickedCate.itemName}</div>
+                    <div className={'tableTitle'}>{clickedCate.itemName}</div>
                     <div className={'itemContainer'}>
                         <Table>
                             <tbody>
