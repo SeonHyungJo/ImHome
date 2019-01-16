@@ -7,6 +7,7 @@ const CHANGE_INPUT = 'productList/CHANGE_INPUT'; //input 값 변경
 const INITIALIZE_FORM = 'productList/INITIALIZE_FORM'; //form 초기화
 const GET_COMPANY_LIST = 'productList/GET_COMPANY_LIST'; // 회사 목록 가져오기 => deprecated
 const CHANGE_CATE = 'productList/CHANGE_CATE'; // 카테고리 변경
+const SET_MESSAGE = 'user/SET_MESSAGE';
 
 const GET_PRODUCTS = 'productList/GET_PRODUCTS'; // 품목 가져오기
 const GET_PRODUCT_DATA = 'productList/GET_PRODUCT_DATA'; // 품목의 상세 정보 가져오기
@@ -19,6 +20,7 @@ export const changeInput = createAction(CHANGE_INPUT); // {form, name, value}
 export const initializeForm = createAction(INITIALIZE_FORM); // form
 export const changeCate = createAction(CHANGE_CATE);
 export const getCompanyList = createAction(GET_COMPANY_LIST, productList.getCompanyList);
+export const setMessage = createAction(SET_MESSAGE); // { form, message }
 
 export const getProducts = createAction(GET_PRODUCTS, productList.getProducts);
 export const getProductData = createAction(GET_PRODUCT_DATA, productList.getProductData);
@@ -79,6 +81,7 @@ const initialState = Map({
             createdAt: '',
             updatedAt: ''
         }),
+        message: null,
         error: null,
         lists: []
     }),
@@ -98,6 +101,10 @@ export default handleActions(
         [CHANGE_CATE]: (state, action) => {
             const { index, _id, itemName } = action.payload;
             return state.setIn(['productList', 'form', 'clickedCate'], { index, _id, itemName });
+        },
+        [SET_MESSAGE]: (state, action) => {
+            const { form, message } = action.payload;
+            return state.setIn([form, 'message'], message);
         },
         ...pender({
             type: GET_COMPANY_LIST,
