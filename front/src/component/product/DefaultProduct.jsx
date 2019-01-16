@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ProductListActions from '../../redux/modules/productList';
 import { AlertPopup } from '../../component/common';
+import { isEmpty, isInt } from 'validator';
 
 const ContentWrapper = styled.div`
     display: flex;
@@ -150,7 +151,7 @@ class DefaultProduct extends Component {
             clickedItem: {},
             newItem: { state: false, newName: '', newVolume: '', newCost: '' },
             editItem: { state: false, _id: -1 },
-            displayAlertPop: { state: false, message: '' }
+            displayAlertPop: false
         };
     }
     _initNew = stateName => {
@@ -191,10 +192,20 @@ class DefaultProduct extends Component {
      */
     _createItem = async stateName => {
         const { ProductListActions, form } = this.props;
+        const { validate } = this;
 
         // 현재 폼에서 companyCode 조회
         const companyCode = form.toJS().companyCode;
         const { newItem } = this.state;
+
+        if (
+            !validate['itemName'](newItem.newName) ||
+            !validate['itemVolume'](newItem.newVolume) ||
+            !validate['itemCost'](newItem.newCost)
+        ) {
+            this.setState({ displayAlertPop: true });
+            return;
+        }
 
         // item 생성
         await ProductListActions.createItem(companyCode, {
@@ -223,7 +234,8 @@ class DefaultProduct extends Component {
 
         if (keys.length === 0) {
             // 클릭한 Item이 없다면
-            this.setState({ displayAlertPop: { state: true, message: '아이템을 선택해주세요' } });
+            this.setMessage('메뉴를 선택해주세요.');
+            this.setState({ displayAlertPop: true });
         } else {
             if (window.confirm('정말 선택하신 Item들을 삭제하시겠습니까?')) {
                 // 클릭한 Item이 있다면
@@ -263,9 +275,19 @@ class DefaultProduct extends Component {
     _updateItem = async () => {
         const { ProductListActions, form } = this.props;
         const { editItem } = this.state;
+        const { validate } = this;
 
         // 현재 폼에서 companyCode 조회
         const companyCode = form.toJS().companyCode;
+
+        if (
+            !validate['itemName'](editItem.itemName) ||
+            !validate['itemVolume'](editItem.itemVolume) ||
+            !validate['itemCost'](editItem.itemCost)
+        ) {
+            this.setState({ displayAlertPop: true });
+            return;
+        }
 
         // item 변경
         await ProductListActions.updateItem(companyCode, {
@@ -316,11 +338,50 @@ class DefaultProduct extends Component {
     };
 
     _closeAlertPop = () => {
-        this.setState({ displayAlertPop: { state: false, message: '' } });
+        this.setState({ displayAlertPop: false });
+    };
+
+    setMessage = message => {
+        const { ProductListActions } = this.props;
+        ProductListActions.setMessage({
+            form: 'productList',
+            message
+        });
+        return false;
+    };
+
+    validate = {
+        itemName: value => {
+            if (isEmpty(value)) {
+                this.setMessage('아이템 이름은 필수 입력사항입니다.');
+                return false;
+            }
+            this.setMessage(null);
+            return true;
+        },
+        itemVolume: value => {
+            if (isEmpty(value)) {
+                this.setMessage('아이템 단위는 필수 입력사항입니다.');
+                return false;
+            }
+            this.setMessage(null);
+            return true;
+        },
+        itemCost: value => {
+            if (isEmpty(value)) {
+                this.setMessage('아이템 가격은 필수 입력사항입니다.');
+                return false;
+            } else if (!isInt(value, { min: 0 })) {
+                this.setMessage('입력하신 아이템 가격을 확인해주십시오.');
+                return false;
+            }
+            this.setMessage(null);
+            return true;
+        }
     };
 
     render() {
-        const { form } = this.props;
+        const { form, message } = this.props;
         const items = form.toJS().items;
         const { newItem, editItem } = this.state;
         return (
@@ -470,10 +531,10 @@ class DefaultProduct extends Component {
                 </MainContainer>
                 <ProductFormContainer />
                 <AlertPopup
-                    title={this.state.displayAlertPop.message}
+                    title={message}
                     clickEvent={this._closeAlertPop}
                     buttonName="확인"
-                    displayAlertPop={this.state.displayAlertPop.state}
+                    displayAlertPop={this.state.displayAlertPop}
                 />
             </ContentWrapper>
         );
@@ -485,6 +546,7 @@ export default connect(
         form: state.productList.getIn(['productList', 'form']),
         lists: state.productList.getIn(['productList', 'lists']),
         error: state.productList.getIn(['productList', 'error']),
+        message: state.productList.getIn(['productList', 'message']),
         result: state.productList.get('result')
     }),
     dispatch => ({
