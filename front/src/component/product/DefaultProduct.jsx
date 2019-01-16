@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ProductListActions from '../../redux/modules/productList';
 import { AlertPopup } from '../../component/common';
+import PopDeleteConfirm from './PopDeleteConfirm';
 import { isEmpty, isInt } from 'validator';
 
 const ContentWrapper = styled.div`
@@ -151,7 +152,8 @@ class DefaultProduct extends Component {
             clickedItem: {},
             newItem: { state: false, newName: '', newVolume: '', newCost: '' },
             editItem: { state: false, _id: -1 },
-            displayAlertPop: false
+            displayAlertPop: false,
+            displayDeletePop: { state: false, type: '' }
         };
     }
     _initNew = stateName => {
@@ -237,26 +239,12 @@ class DefaultProduct extends Component {
             this.setMessage('메뉴를 선택해주세요.');
             this.setState({ displayAlertPop: true });
         } else {
-            if (window.confirm('정말 선택하신 Item들을 삭제하시겠습니까?')) {
-                // 클릭한 Item이 있다면
-                const { ProductListActions, form } = this.props;
-
-                // 현재 폼에서 companyCode 조회
-                const companyCode = form.toJS().companyCode;
-
-                await keys.map(key => {
-                    // Item 삭제
-                    ProductListActions.deleteItem(companyCode, {
-                        _id: clickedItem[key]._id
-                    });
-
-                    return 1;
-                });
-
-                // 클릭 Item 초기화
-                await this._initNew('clickedItem');
-            }
+            await this.setState({ displayDeletePop: { state: true, type: 'item' } });
         }
+    };
+
+    _closeDeletePop = () => {
+        this.setState({ displayDeletePop: { state: false, type: '' } });
     };
 
     /**
@@ -535,6 +523,11 @@ class DefaultProduct extends Component {
                     clickEvent={this._closeAlertPop}
                     buttonName="확인"
                     displayAlertPop={this.state.displayAlertPop}
+                />
+                <PopDeleteConfirm
+                    displayDeletePop={this.state.displayDeletePop}
+                    items={this.state.clickedItem}
+                    closeDeletePop={this._closeDeletePop}
                 />
             </ContentWrapper>
         );

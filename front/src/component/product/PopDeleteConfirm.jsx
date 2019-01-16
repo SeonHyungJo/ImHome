@@ -31,12 +31,19 @@ class PopDeleteConfirm extends Component {
                 },
                 true
             );
+
+            this.setState({
+                displayAlertPop: true,
+                message: '성공적으로 삭제되었습니다.'
+            });
+
+            this.props.closeDeletePop();
         } else if (type === 'item') {
             const keys = Object.keys(items);
 
-            await keys.map(key => {
+            await keys.map(async key => {
                 // Item 삭제
-                ProductListActions.deleteItem(
+                await ProductListActions.deleteItem(
                     companyCode,
                     {
                         _id: items[key]._id
@@ -45,14 +52,14 @@ class PopDeleteConfirm extends Component {
                 );
                 return 1;
             });
+
+            this.setState({
+                displayAlertPop: true,
+                message: '성공적으로 삭제되었습니다.'
+            });
+
+            this.props.closeDeletePop();
         }
-
-        this.setState({
-            displayAlertPop: true,
-            message: '성공적으로 삭제되었습니다.'
-        });
-
-        this.props.closeDeletePop();
 
         // 현재 try catch 미적용으로 sync 맞지않음. 곧 수정하겠음
         // try {

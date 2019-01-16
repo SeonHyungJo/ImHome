@@ -473,10 +473,6 @@ class Imhome extends Component {
         this.setState({ displayAlertPop: false });
     };
 
-    _popDelete = type => {
-        this.setState({ displayDeletePop: { state: true, type: type } });
-    };
-
     _closeDeletePop = () => {
         this.setState({ displayDeletePop: { state: false, type: '' } });
     };
