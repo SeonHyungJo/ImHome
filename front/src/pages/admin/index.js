@@ -10,3 +10,8 @@ export { default as AdminOrderList } from './AdminOrderList';
  * Add ReleaseList Page
  */
 export { default as AdminReleaseList } from './AdminReleaseList';
+
+/**
+ * Add ReleaseList Page
+ */
+export { default as AdminProduct } from './AdminProduct';

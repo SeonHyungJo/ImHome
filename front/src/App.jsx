@@ -6,8 +6,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { UserRegister } from './pages/user';
-import { AdminMain, AdminUser, AdminOrderList, AdminReleaseList } from './pages/admin';
-import { Product } from './pages/product';
+import {
+    AdminMain,
+    AdminUser,
+    AdminOrderList,
+    AdminReleaseList,
+    AdminProduct
+} from './pages/admin';
 import { Login } from './pages/common';
 import * as AuthActions from './redux/modules/auth';
 
@@ -60,7 +65,7 @@ class App extends Component {
                                 component={AdminReleaseList}
                                 path={PATH + '/releaselist'}
                             />
-                            <Route exact={true} component={Product} path={PATH + '/product'} />
+                            <Route exact={true} component={AdminProduct} path={PATH + '/product'} />
                             {/* User router : 사용자 라우터*/}
                             <Route exact={true} component={Login} path="/" />
                             <Route exact={true} component={UserRegister} path="/register" />
