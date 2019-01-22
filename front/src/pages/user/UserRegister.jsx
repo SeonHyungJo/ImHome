@@ -24,20 +24,8 @@ class UserRegister extends Component {
 
     handleChange = (e) => {
         const { AuthActions } = this.props;
-        const { store } = this.props;
         const { name, value } = e.target;
         this.validate[name](value);
-        if (name === 'branchCode') {
-            store.map((item, index) => {
-                if (item.branchCode === value) {
-                    AuthActions.changeInput({
-                        name: 'branchName',
-                        value: item.branchName,
-                        form: 'register'
-                    });
-                }
-            });
-        }
         AuthActions.changeInput({
             name,
             value,
@@ -207,7 +195,7 @@ class UserRegister extends Component {
 
     goRegister = async () => {
         const { AuthActions } = this.props;
-        const { id, password, passwordConfirm, name, bNumber, bAddress, cName, email, bPhoneNumber, branchCode, branchName } = this.props.form.toJS();
+        const { id, password, passwordConfirm, name, bNumber, bAddress, cName, email, bPhoneNumber, branchCode } = this.props.form.toJS();
         const { validate } = this;
 
         if (!validate['id'](id)
@@ -227,7 +215,7 @@ class UserRegister extends Component {
 
         try {
             await AuthActions.userRegister({
-                id, password, passwordConfirm, name, bNumber, bAddress, cName, email, bPhoneNumber, branchCode, branchName
+                id, password, passwordConfirm, name, bNumber, bAddress, cName, email, bPhoneNumber, branchCode,
             });
 
             const loggedInfo = this.props.result.toJS();
