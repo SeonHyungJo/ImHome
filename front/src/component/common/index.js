@@ -10,3 +10,4 @@ export { default as MonthPicker } from './MonthPicker';
 export { default as LoginInputWithLabel } from './LoginInputWithLabel';
 export { default as ConfirmPopup } from './ConfirmPopup';
 export { default as AlertPopup } from './AlertPopup';
+export { default as SelectboxWithLabel } from './SelectboxWithLabel';
