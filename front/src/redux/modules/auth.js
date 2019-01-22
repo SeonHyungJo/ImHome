@@ -10,16 +10,17 @@ const USER_LOGIN = 'auth/USER_LOGIN'; // 이메일 로그인
 const LOGOUT = 'auth/LOGOUT'; // 로그아웃
 const SET_MESSAGE = 'auth/SET_MESSAGE'; // 오류 설정
 const CHECK_STATUS = 'auth/CHECK_STATUS';
+const GET_STORE_LIST = 'auth/GET_STORE_LIST'; // 매장 목록 가져오기
 
 export const changeInput = createAction(CHANGE_INPUT); // {form, name, value}
 export const initializeForm = createAction(INITIALIZE_FORM); // form
-export const userRegister = createAction(USER_REGISTER, AuthAPI.userRegister); // { email, password }
+export const userRegister = createAction(USER_REGISTER, AuthAPI.userRegister);
 export const userLogin = createAction(USER_LOGIN, AuthAPI.userLogin); // { email, password }
 export const logout = createAction(LOGOUT, AuthAPI.logout);
 export const setMessage = createAction(SET_MESSAGE); // { form, message }
 export const checkStatus = createAction(CHECK_STATUS, AuthAPI.checkStatus);
+export const getStoreList = createAction(GET_STORE_LIST, AuthAPI.getStoreList);
 
-// 초기값 설정 @TODO 필드 추가 필요
 const initialState = Map({
     register: Map({
         form: Map({
@@ -35,7 +36,8 @@ const initialState = Map({
             branchCode: '',
             branchName: ''
         }),
-        error: null
+        store: [],
+        message: null
     }),
     login: Map({
         form: Map({
@@ -60,6 +62,10 @@ export default handleActions({
         const { form, message } = action.payload;
         return state.setIn([form, 'message'], message);
     },
+    ...pender({
+        type: GET_STORE_LIST,
+        onSuccess: (state, action) => state.setIn(['register', 'store'], action.payload.data)
+    }),
     ...pender({
         type: USER_LOGIN,
         onSuccess: (state, action) => state.set('result', Map(action.payload.data))
