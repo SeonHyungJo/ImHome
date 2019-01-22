@@ -1,22 +1,43 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { isEmpty, isEmail, isLength } from 'validator';
 
 import * as AuthActions from '../../redux/modules/auth';
 import { RegisterTemplate } from '../../component/template';
 import { RegisterWrapper, RegisterTitle, RegisterContent } from '../../component/auth/';
-import { Button, InputWithLabel } from '../../component/common';
+import { Button, InputWithLabel, AlertPopup, SelectboxWithLabel } from '../../component/common';
 
 class UserRegister extends Component {
     constructor() {
         super();
-        this.state = {};
+        this.state = {
+            displayAlertPop: false,
+            displaySuccessAlertPop: false
+        };
+    }
+
+    componentDidMount() {
+        const { AuthActions } = this.props;
+        AuthActions.getStoreList();
     }
 
     handleChange = (e) => {
         const { AuthActions } = this.props;
+        const { store } = this.props;
         const { name, value } = e.target;
-
+        this.validate[name](value);
+        if (name === 'branchCode') {
+            store.map((item, index) => {
+                if (item.branchCode === value) {
+                    AuthActions.changeInput({
+                        name: 'branchName',
+                        value: item.branchName,
+                        form: 'register'
+                    });
+                }
+            });
+        }
         AuthActions.changeInput({
             name,
             value,
@@ -30,13 +51,205 @@ class UserRegister extends Component {
         history.push('login');
     }
 
-    goResiter = () => {
+    closeAlertPop = () => {
+        this.setState({ displayAlertPop: false });
+    }
 
+    closeSuccessAlertPop = () => {
+        const { history } = this.props;
+
+        this.setState({ displaySuccessAlertPop: false });
+        history.push('login');
+    }
+
+    setMessage = (message) => {
+        const { AuthActions } = this.props;
+        AuthActions.setMessage({
+            form: 'register',
+            message
+        });
+        return false;
+    };
+
+    checkPhoneNumber = (value) => {
+        const regExp = /^\d{2,3}\d{3,4}\d{4}$/;;
+        let returnVal = false;
+
+        !regExp.test(value) ? returnVal = false : returnVal = true;
+
+        return returnVal;
+    };
+
+    checkMobileNumber = (value) => {
+        const regExp = /^\d{3}\d{3,4}\d{4}$/;
+        let returnVal = false;
+
+        !regExp.test(value) ? returnVal = false : returnVal = true;
+
+        return returnVal;
+    };
+
+    isValidPwd(pwd) {
+        let regx = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,55}$/;
+        return regx.test(pwd);// 유효하면 true
+    }
+
+    validate = {
+        id: (value) => {
+            if (isEmpty(value)) {
+                this.setMessage('ID는 필수 입력사항입니다.');
+                return false;
+            }
+            this.setMessage(null);
+            return true;
+        },
+        password: (value) => {
+            if (isEmpty(value)) {
+                this.setMessage('비밀번호는 필수 입력사항입니다.');
+                return false;
+            }
+            if (!isLength(value, { min: 8 })) {
+                this.setMessage('비밀번호는 최소 8자 이상이어야합니다.');
+                return false;
+            }
+            if (!this.isValidPwd(value)) {
+                this.setMessage('비밀번호는 영문, 숫자, 특수문자가 포함되어야합니다.');
+                return false;
+            }
+            if (this.props.form.get('passwordConfirm') !== value) {
+                this.setMessage('비밀번호가 일치하지 않습니다.');
+                return false;
+            }
+            this.setMessage(null);
+            return true;
+        },
+        passwordConfirm: (value) => {
+            if (isEmpty(value)) {
+                this.setMessage('비밀번호 확인은 필수 입력사항입니다.');
+                return false;
+            }
+            if (!this.isValidPwd(value)) {
+                this.setMessage('비밀번호는 영문, 숫자, 특수문자가 포함되어야합니다.');
+                return false;
+            }
+            if (this.props.form.get('password') !== value) {
+                this.setMessage('비밀번호가 일치하지 않습니다.');
+                return false;
+            }
+            this.setMessage(null);
+            return true;
+        },
+        branchCode: (value) => {
+            if (!value) {
+                this.setMessage('지점명을 선택해주세요.');
+                return false;
+            }
+            this.setMessage(null);
+            return true;
+        },
+        name: (value) => {
+            if (isEmpty(value)) {
+                this.setMessage('대표 성함은 필수 입력사항입니다.');
+                return false;
+            }
+            this.setMessage(null);
+            return true;
+        },
+        bNumber: (value) => {
+            if (isEmpty(value)) {
+                this.setMessage('사업자 번호는 필수 입력사항입니다.');
+                return false;
+            }
+            this.setMessage(null);
+            return true;
+        },
+        cName: (value) => {
+            if (isEmpty(value)) {
+                this.setMessage('회사명은 필수 입력사항입니다.');
+                return false;
+            }
+            this.setMessage(null);
+            return true;
+        },
+        bAddress: (value) => {
+            if (isEmpty(value)) {
+                this.setMessage('사업장 주소는 필수 입력사항입니다.');
+                return false;
+            }
+            this.setMessage(null);
+            return true;
+        },
+        email: (value) => {
+            if (isEmpty(value)) {
+                this.setMessage('이메일은 필수 입력사항입니다.');
+                return false;
+            }
+            if (!isEmail(value)) {
+                this.setMessage('이메일 형식을 확인해주세요.');
+                return false;
+            }
+            this.setMessage(null);
+            return true;
+        },
+        bPhoneNumber: (value) => {
+            if (isEmpty(value)) {
+                this.setMessage('휴대폰 번호는 필수 입력사항입니다.');
+                return false;
+            }
+            if (!this.checkMobileNumber(value)) {
+                this.setMessage('휴대폰 번호 형식을 확인해주세요.');
+                return false;
+            }
+            this.setMessage(null);
+            return true;
+        },
+    };
+
+    goRegister = async () => {
+        const { AuthActions } = this.props;
+        const { id, password, passwordConfirm, name, bNumber, bAddress, cName, email, bPhoneNumber, branchCode, branchName } = this.props.form.toJS();
+        const { validate } = this;
+
+        if (!validate['id'](id)
+            || !validate['password'](password)
+            || !validate['passwordConfirm'](passwordConfirm)
+            || !validate['name'](name)
+            || !validate['bNumber'](bNumber)
+            || !validate['bAddress'](bAddress)
+            || !validate['cName'](cName)
+            || !validate['email'](email)
+            || !validate['bPhoneNumber'](bPhoneNumber)
+            || !validate['branchCode'](branchCode)) {
+
+            this.setState({ displayAlertPop: true });
+            return;
+        }
+
+        try {
+            await AuthActions.userRegister({
+                id, password, passwordConfirm, name, bNumber, bAddress, cName, email, bPhoneNumber, branchCode, branchName
+            });
+
+            const loggedInfo = this.props.result.toJS();
+
+            if (loggedInfo.success === '0000') {
+                this.setMessage('회원가입에 성공했습니다');
+                this.setState({ displaySuccessAlertPop: true });
+                //this.closeAlertPop();
+            } else {
+                this.setMessage('회원가입에 실패했습니다.');
+                this.setState({ displayAlertPop: true });
+            }
+
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     render() {
-        const { id, password, passwordConfirm, name, bNumber, bAddress, cName, email, bPhoneNumber, branchName } = this.props.form.toJS();
-
+        const { id, password, passwordConfirm, name, bNumber, bAddress, cName, email, bPhoneNumber, branchCode } = this.props.form.toJS();
+        const { store } = this.props;
+        const { message } = this.props;
         return (
             <RegisterTemplate>
                 <RegisterWrapper>
@@ -52,13 +265,13 @@ class UserRegister extends Component {
                             placeholder="아이디"
                             autoFocus />
                         <InputWithLabel label="비밀번호"
-                            type="text"
+                            type="password"
                             name="password"
                             value={password}
                             onChange={this.handleChange}
                             placeholder="비밀번호(8자 이상)" />
                         <InputWithLabel label="비밀번호 재확인"
-                            type="text"
+                            type="password"
                             name="passwordConfirm"
                             value={passwordConfirm}
                             onChange={this.handleChange}
@@ -107,17 +320,28 @@ class UserRegister extends Component {
                             onChange={this.handleChange}
                             placeholder="휴대폰 번호"
                         />
-                        <InputWithLabel label="지점명"
+                        <SelectboxWithLabel label="지점명" name="branchCode"
+                            value={branchCode} onChange={this.handleChange}>
+                            <option value="">- 선택하세요 -</option>
+                            {
+                                store.length > 0 && store.map((item, index) => {
+                                    return <option key={index} value={item.branchCode}>{item.branchName}</option>;
+                                })
+                            }
+                        </SelectboxWithLabel>
+                        {/* <InputWithLabel label="지점명"
                             type="text"
                             name="branchName"
                             value={branchName}
                             onChange={this.handleChange}
                             placeholder="지점명"
-                        />
+                        /> */}
                     </RegisterContent>
                     <Button style={{ marginRight: '10px' }} onClick={this.goLogin}>취소</Button>
-                    <Button onClick={this.register}>가입하기</Button>
+                    <Button onClick={this.goRegister}>가입하기</Button>
                 </RegisterWrapper>
+                <AlertPopup title={message} clickEvent={this.closeAlertPop} buttonName='확인' displayAlertPop={this.state.displayAlertPop} />
+                <AlertPopup title={message} clickEvent={this.closeSuccessAlertPop} buttonName='확인' displaySuccessAlertPop={this.state.displaySuccessAlertPop} />
             </RegisterTemplate>
         );
     }
@@ -127,7 +351,8 @@ export default connect(
     (state) => ({
         form: state.auth.getIn(['register', 'form']),
         message: state.auth.getIn(['register', 'message']),
-        result: state.auth.get('result')
+        result: state.auth.get('result'),
+        store: state.auth.getIn(['register', 'store']),
     }),
     (dispatch) => ({
         AuthActions: bindActionCreators(AuthActions, dispatch),
