@@ -22,6 +22,10 @@ class UserRegister extends Component {
         AuthActions.getStoreList();
     }
 
+    componentWillUnmount() {
+        const { AuthActions } = this.props;
+        AuthActions.initializeForm('register');
+    }
     handleChange = (e) => {
         const { AuthActions } = this.props;
         const { name, value } = e.target;
@@ -329,7 +333,7 @@ class UserRegister extends Component {
                     <Button onClick={this.goRegister}>가입하기</Button>
                 </RegisterWrapper>
                 <AlertPopup title={message} clickEvent={this.closeAlertPop} buttonName='확인' displayAlertPop={this.state.displayAlertPop} />
-                <AlertPopup title={message} clickEvent={this.closeSuccessAlertPop} buttonName='확인' displaySuccessAlertPop={this.state.displaySuccessAlertPop} />
+                <AlertPopup title={message} clickEvent={this.closeSuccessAlertPop} buttonName='확인' displayAlertPop={this.state.displaySuccessAlertPop} />
             </RegisterTemplate>
         );
     }
