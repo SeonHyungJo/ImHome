@@ -1,5 +1,6 @@
 const Users = require('../../models/users');
 const Store = require('../../models/stores');
+const crypto = require('../common/crypto');
 const reponseError = require('../common/responseError');
 const reponseSuccess = require('../common/responseSuccess');
 const jwt = require('jsonwebtoken');
@@ -27,6 +28,19 @@ const jwt = require('jsonwebtoken');
 
 exports.register = (req, res) => {
     const userInfo = req.body;
+
+    /* 
+     * 비밀번호 암호화
+     * @param : userInfo
+     * @return : object - {hashPwd : ..., slat : ...}
+    */
+    console.log(req)
+    const result = crypto.cryptoPassword(userInfo);
+    if (!result || !result.hashPwd || !result.salt)
+        return reject(new Error('cryptoPassword Failed.'))
+
+    userInfo.password = result.hashPwd;
+    userInfo.salt = result.salt;
 
     /*
         아이디가 존재한다면 ERROR처리 
