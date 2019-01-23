@@ -1,6 +1,6 @@
 const Users = require('../../models/users');
 const Store = require('../../models/stores');
-const crypto = require('../common/crypto');
+const crypto = require('../common/cryptoModule');
 const reponseError = require('../common/responseError');
 const reponseSuccess = require('../common/responseSuccess');
 const jwt = require('jsonwebtoken');
@@ -20,10 +20,11 @@ const jwt = require('jsonwebtoken');
  *     bAddress : BUSINESS_ADDRESS,
  *     cName : COMPANY_NAME,
  *     email : EMAIL,
- *     pNumber : PHONE_NUMBER,
+ *     bPhoneNumber : PHONE_NUMBER,
  *     branchName : BRANCH_NAME,
  *     branchCode : BRANCH_CODE
  * }
+ * 190123 수정 - 비밀번호 암호화 추가 - @author BKJang
  */
 
 exports.register = (req, res) => {
