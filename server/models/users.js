@@ -12,11 +12,12 @@ const usersSchema = new Schema(
         bPhoneNumber: { type: String, required: true },
         cName: { type: String, required: true },
         email: { type: String, required: true },
-        pNumber: { type: String, required: true },
+        pNumber: { type: String, required: false },
         branchName: { type: String, required: true },
         branchCode: { type: String, required: true },
         checkUser: { type: Boolean, default: false },
-        checkAdmin: { type: Boolean, default: false }
+        checkAdmin: { type: Boolean, default: false },
+        salt: { type: String, required: true }
     },
     {
         timestamps: true
@@ -31,7 +32,7 @@ const usersSchema = new Schema(
  * @see None
  * @returns user.save()
  */
-usersSchema.statics.create = function(newUser) {
+usersSchema.statics.create = function (newUser) {
     const user = new this(newUser);
     return user.save();
 };
@@ -44,7 +45,7 @@ usersSchema.statics.create = function(newUser) {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.findAll = function() {
+usersSchema.statics.findAll = function () {
     return this.find().select({
         _id: 1, // 시퀀스
         id: 1, // 아이디
@@ -69,7 +70,7 @@ usersSchema.statics.findAll = function() {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.findOneById = function(_id) {
+usersSchema.statics.findOneById = function (_id) {
     return this.findOne({ _id })
         .select({
             _id: 1, // 시퀀스
@@ -114,7 +115,7 @@ usersSchema.statics.findOneById = function(_id) {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.findOneByUserId = function(id) {
+usersSchema.statics.findOneByUserId = function (id) {
     return this.findOne({ id }).select({
         _id: 1, // 시퀀스
         id: 1, // 아이디
@@ -140,7 +141,7 @@ usersSchema.statics.findOneByUserId = function(id) {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.findOneByBranchCode = function(branchCode) {
+usersSchema.statics.findOneByBranchCode = function (branchCode) {
     return this.find({ branchCode }).select({
         _id: 1, // 시퀀스
         id: 1, // 아이디
@@ -166,7 +167,7 @@ usersSchema.statics.findOneByBranchCode = function(branchCode) {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.updateById = function(_id, userInfo) {
+usersSchema.statics.updateById = function (_id, userInfo) {
     return this.findOneAndUpdate({ _id }, userInfo, { new: true });
 };
 
@@ -178,7 +179,7 @@ usersSchema.statics.updateById = function(_id, userInfo) {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.deleteById = function(_id) {
+usersSchema.statics.deleteById = function (_id) {
     return this.remove({ _id });
 };
 
@@ -193,7 +194,7 @@ usersSchema.statics.deleteById = function(_id) {
  * @see None
  * @returns «Query»
  */
-usersSchema.methods.verify = function(password) {
+usersSchema.methods.verify = function (password) {
     console.log('password : ' + password);
     console.log('this.password : ' + this.password);
     return this.password === password;
@@ -208,7 +209,7 @@ usersSchema.methods.verify = function(password) {
  * @see None
  * @returns «Query»
  */
-usersSchema.methods.checkingAdmin = function() {
+usersSchema.methods.checkingAdmin = function () {
     return usersSchema.statics.findOneByUserId.checkAdmin || false;
 };
 
