@@ -167,8 +167,16 @@ class PopUserInfo extends Component {
             const loggedInfo = this.props.result.toJS();
 
             if (loggedInfo.success === '0000') {
-                UserActions.getUserData(_id);
-                UserActions.getUserList(branchCode);
+                await UserActions.getUserData(_id);
+                await UserActions.getUserList(branchCode);
+
+                const result = this.props.result.toJS();
+                await UserActions.setResultData({
+                    form: 'user',
+                    target: 'list',
+                    result: result.user
+                });
+
                 this.setState({ displayAlertPop: true });
                 this.setMessage('회원 정보가 수정되었습니다.');
                 this.props.closePop();
