@@ -18,10 +18,26 @@ class Login extends Component {
         };
     }
 
-    componentWillMount() {
+    async componentWillMount() {
         const { AuthActions } = this.props;
+        const { history } = this.props;
 
-        AuthActions.initializeForm('login');
+        await AuthActions.initializeForm('login');
+
+        try {
+            await AuthActions.checkStatus();
+            const loggedInfo = this.props.result.toJS();
+            console.log(loggedInfo);
+            if (loggedInfo.success && loggedInfo.success === '0000') {
+                history.push('/admin/product');
+                return;
+            } else {
+                return;
+            }
+        } catch (error) {
+            console.log(error);
+            return;
+        }
     }
 
     handleChange = (e) => {

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const crypto = require('../router/common/cryptoModule');
 
 // usersSchema
 const usersSchema = new Schema(
@@ -58,7 +59,8 @@ usersSchema.statics.findAll = function () {
         pNumber: 1, // 전화번호
         branchName: 1, // 지점명
         branchCode: 1, // 지점코드
-        createdAt: 1 // 등록일자
+        createdAt: 1, // 등록일자
+        salt: 1
     });
 };
 
@@ -84,7 +86,8 @@ usersSchema.statics.findOneById = function (_id) {
             pNumber: 1, // 전화번호
             branchName: 1, // 지점명
             branchCode: 1, // 지점코드
-            createdAt: 1 // 등록일자
+            createdAt: 1, // 등록일자
+            salt: 1
         })
         .catch(err => {
             console.log(err);
@@ -102,7 +105,8 @@ usersSchema.statics.findOneById = function (_id) {
                 branchName: null, // 지점명
                 branchCode: null, // 지점코드
                 checkUser: null,
-                createdAt: null
+                createdAt: null,
+                salt: null
             });
         });
 };
@@ -155,7 +159,8 @@ usersSchema.statics.findOneByBranchCode = function (branchCode) {
         pNumber: 1, // 전화번호
         branchName: 1, // 지점명
         branchCode: 1, // 지점코드
-        createdAt: 1 // 등록일자
+        createdAt: 1, // 등록일자
+        salt: 1
     });
 };
 
@@ -198,7 +203,14 @@ usersSchema.statics.deleteById = function (_id) {
 usersSchema.methods.verify = function (password) {
     console.log('password : ' + password);
     console.log('this.password : ' + this.password);
-    return this.password === password;
+    let userInfo = {};
+    userInfo.password = password;
+    userInfo.salt = this.salt;
+
+    console.log(userInfo);
+    userInfo = crypto.cryptoPassword(userInfo);
+
+    return this.password === userInfo.password;
 };
 
 /**

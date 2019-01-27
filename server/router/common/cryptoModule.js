@@ -26,12 +26,12 @@ const cryptoModule = {
      * @param : userInfo
      * @return : object(userInfo)
      */
-    cryptoPassword(userInfo, salt) {
+    cryptoPassword(userInfo) {
         if (!userInfo || !userInfo.password)
             throw new Error('password param is not set.');
 
         let inputPassword = userInfo.password;
-        salt = salt ? salt : Math.round((new Date().valueOf() * Math.random())) + "";
+        let salt = userInfo.salt ? userInfo.salt : Math.round((new Date().valueOf() * Math.random())) + "";
         let hashPassword = crypto.createHash("sha512").update(inputPassword + salt).digest("hex");
 
         userInfo.password = hashPassword;
