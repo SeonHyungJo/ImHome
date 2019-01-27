@@ -2,6 +2,7 @@ import express from 'express';
 const Users = require('../../models/users');
 const reponseError = require('../common/responseError');
 const authMiddleware = require('../../middlewares/auth');
+const crypto = require('../common/cryptoModule');
 
 export let router = express.Router();
 
@@ -22,12 +23,16 @@ export let router = express.Router();
  * @see None
  * @returns userList
  */
-router.get('/user', function(req, res) {
+router.get('/user', function (req, res) {
     Users.findAll()
         .then(user => {
             if (!user) {
                 throw new Error("Can't find users");
             }
+            user.map((item, index) => {
+                const userInfo = crypto.decryptoUserInfo(item);
+                user[index] = userInfo;
+            });
             res.status(200).send(user);
         })
         .catch(err => {
@@ -47,12 +52,13 @@ router.get('/user', function(req, res) {
  * @see None
  * @returns user
  */
-router.get('/user/:_id', function(req, res) {
+router.get('/user/:_id', function (req, res) {
     Users.findOneById(req.params._id)
         .then(user => {
             if (!user) {
                 throw new Error("Can't find user");
             }
+            user = crypto.decryptoUserInfo(user);
             res.status(200).send(user);
         })
         .catch(err => {
@@ -72,12 +78,16 @@ router.get('/user/:_id', function(req, res) {
  * @see None
  * @returns userList
  */
-router.get('/user/list/:branchCode', function(req, res) {
+router.get('/user/list/:branchCode', function (req, res) {
     Users.findOneByBranchCode(req.params.branchCode)
         .then(user => {
             if (!user) {
                 throw new Error("Can't find users");
             }
+            user.map((item, index) => {
+                const userInfo = crypto.decryptoUserInfo(item);
+                user[index] = userInfo;
+            });
             var firstUser = user[0];
             res.status(200).send({ user, firstUser });
         })
@@ -100,7 +110,8 @@ router.get('/user/list/:branchCode', function(req, res) {
  * @returns
  */
 router.put('/user/:_id', (req, res) => {
-    Users.updateById(req.params._id, req.body)
+    const userInfo = crypto.cryptoUserInfo(req.body);
+    Users.updateById(req.params._id, userInfo)
         .then(user => {
             if (!user) throw new Error("Can't find _id");
             res.status(200).send({ success: '0000' });

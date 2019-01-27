@@ -129,7 +129,8 @@ usersSchema.statics.findOneByUserId = function (id) {
         pNumber: 1, // 전화번호
         branchName: 1, // 지점명
         branchCode: 1, // 지점코드
-        createdAt: 1 // 등록일자
+        createdAt: 1, // 등록일자
+        salt: 1
     });
 };
 
