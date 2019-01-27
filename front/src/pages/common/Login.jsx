@@ -22,13 +22,10 @@ class Login extends Component {
         const { AuthActions } = this.props;
         const { history } = this.props;
 
-        await AuthActions.initializeForm('login');
-
         try {
             await AuthActions.checkStatus();
             const loggedInfo = this.props.result.toJS();
-            console.log(loggedInfo);
-            if (loggedInfo.success && loggedInfo.success === '0000') {
+            if (loggedInfo.success && loggedInfo.success === '0000' && localStorage.getItem('accessToken')) {
                 history.push('/admin/product');
                 return;
             } else {
@@ -38,6 +35,8 @@ class Login extends Component {
             console.log(error);
             return;
         }
+
+        await AuthActions.initializeForm('login');
     }
 
     handleChange = (e) => {
