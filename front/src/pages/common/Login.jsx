@@ -101,7 +101,7 @@ class Login extends Component {
             this.setMessage('성공적으로 로그인 하였습니다.');
             this.setState({ displayAlertPop: true, resultCode: loggedInfo.success });
         } else {
-            this.setMessage('로그인에 실패하였습니다. 다시 시도해주세요.');
+            this.setMessage('ID나 비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
             this.setState({ displayAlertPop: true });
         }
     }
