@@ -17,9 +17,24 @@ class UserRegister extends Component {
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         const { AuthActions } = this.props;
-        AuthActions.getStoreList();
+        const { history } = this.props;
+
+        await AuthActions.getStoreList();
+
+        try {
+            await AuthActions.checkStatus();
+            const loggedInfo = this.props.result.toJS();
+
+            if (loggedInfo.success && loggedInfo.success === '0000') {
+                history.push('/admin/product');
+                return;
+            }
+        } catch (error) {
+            console.log(error);
+            return;
+        }
     }
 
     componentWillUnmount() {

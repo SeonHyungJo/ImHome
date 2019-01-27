@@ -90,23 +90,8 @@ exports.login = (req, res) => {
     let userInfo = req.body;
     const secret = req.app.get('jwt-secret');
 
-    //1. salt 정보를 DB에서 가져온다.
-    Users.findOneByUserId(id)
-        .then(user => {
-            if (!user) {
-                throw new Error("Can't find users");
-            }
-            //2. salt정보와 param으로 받은 비밀번호 데이터로 암호화한다.
-            userInfo = crypto.cryptoPassword(userInfo, user.salt);
-        })
-        .catch(err => {
-            console.log(err);
-            reponseError(res, 'NOT_FIND_USER');
-        });
-
     const check = user => {
-        //3. 암호화한 데이터와 DB의 비밀번호 데이터를 비교한다.(이하는 기존과 같음)
-        const checkPassword = user.verify(userInfo.password);
+        const checkPassword = user.verify(password);
         const checkAdmin = user.checkingAdmin();
 
         if (checkPassword) {
