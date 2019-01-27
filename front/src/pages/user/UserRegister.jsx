@@ -27,7 +27,7 @@ class UserRegister extends Component {
             await AuthActions.checkStatus();
             const loggedInfo = this.props.result.toJS();
 
-            if (loggedInfo.success && loggedInfo.success === '0000') {
+            if (loggedInfo.success && loggedInfo.success === '0000' && localStorage.getItem('accessToken')) {
                 history.push('/admin/product');
                 return;
             }
