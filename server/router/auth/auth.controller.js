@@ -28,20 +28,14 @@ const jwt = require('jsonwebtoken');
  */
 
 exports.register = (req, res) => {
-    const userInfo = req.body;
+    let userInfo = req.body;
 
     /* 
      * 비밀번호 암호화
      * @param : userInfo
      * @return : object - {hashPwd : ..., slat : ...}
     */
-    console.log(req)
-    const result = crypto.cryptoPassword(userInfo);
-    if (!result || !result.hashPwd || !result.salt)
-        return reject(new Error('cryptoPassword Failed.'))
-
-    userInfo.password = result.hashPwd;
-    userInfo.salt = result.salt;
+    userInfo = crypto.cryptoUserInfo(userInfo);
 
     /*
         아이디가 존재한다면 ERROR처리 
@@ -93,10 +87,26 @@ exports.register = (req, res) => {
  */
 exports.login = (req, res) => {
     const { id, password } = req.body;
+    let userInfo = req.body;
     const secret = req.app.get('jwt-secret');
 
+    //1. salt 정보를 DB에서 가져온다.
+    Users.findOneByUserId(id)
+        .then(user => {
+            if (!user) {
+                throw new Error("Can't find users");
+            }
+            //2. salt정보와 param으로 받은 비밀번호 데이터로 암호화한다.
+            userInfo = crypto.cryptoPassword(userInfo, user.salt);
+        })
+        .catch(err => {
+            console.log(err);
+            reponseError(res, 'NOT_FIND_USER');
+        });
+
     const check = user => {
-        const checkPassword = user.verify(password);
+        //3. 암호화한 데이터와 DB의 비밀번호 데이터를 비교한다.(이하는 기존과 같음)
+        const checkPassword = user.verify(userInfo.password);
         const checkAdmin = user.checkingAdmin();
 
         if (checkPassword) {
