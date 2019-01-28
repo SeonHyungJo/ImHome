@@ -63,9 +63,7 @@ const cryptoModule = {
     decryptoUserInfo(userInfo) {
         for (const key of Object.keys(userInfo.toObject())) {
             if (key === 'name' || key === 'bNumber' || key === 'email' || key === 'bPhoneNumber') {
-                console.log(key, userInfo[key]);
                 userInfo[key] = decryptoCipher(userInfo[key], key);
-                console.log(userInfo[key]);
             }
         }
         return userInfo;
