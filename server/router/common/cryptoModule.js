@@ -9,14 +9,12 @@ const cryptoCipher = (value, key) => {
 }
 
 const decryptoCipher = (value, key) => {
-    if (value.length == 0) {
+    if (value.length === 0) {
         return value;
     }
     let decipher = crypto.createDecipher('aes256', key);
     let s = decipher.update(value, 'hex', 'utf8');
-    console.log(decipher);
     let deciphered = s + decipher.final('utf8');
-    console.log(deciphered)
     return deciphered;
 }
 
