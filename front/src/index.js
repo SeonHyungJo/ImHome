@@ -6,4 +6,4 @@ import configureStore from './redux/configureStore';
 
 const store = configureStore();
 
-ReactDOM.render(<App store={store}/>, document.getElementById('root'));
+ReactDOM.render(<App store={store} />, document.getElementById('root'));
