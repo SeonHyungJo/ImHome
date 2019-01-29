@@ -71,7 +71,7 @@ const initialState = Map({
             itemDepth: '',
           }),
         ]),
-        updateAt: '',
+        updateAt: new Date(),
       }),
     ]),
   }),
