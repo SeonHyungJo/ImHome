@@ -9,7 +9,7 @@ class UserMain extends Component {
 
   render() {
     return (
-      <PageTemplate>
+      <PageTemplate role="user">
         <div className="App">
           <header className="App-header">
             <p>UserMain</p>
