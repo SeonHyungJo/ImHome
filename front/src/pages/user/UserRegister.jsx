@@ -242,14 +242,19 @@ class UserRegister extends Component {
             if (loggedInfo.success === '0000') {
                 this.setMessage('회원가입에 성공했습니다');
                 this.setState({ displaySuccessAlertPop: true });
+                return;
                 //this.closeAlertPop();
+            } else if (loggedInfo.fail === '0003') {
+                this.setMessage('이미 존재하는 ID 입니다.');
             } else {
-                this.setMessage('회원가입에 실패했습니다.');
-                this.setState({ displayAlertPop: true });
+                this.setMessage('회원가입에 실패했습니다. 나중에 다시 시도해주세요.');
             }
 
+            this.setState({ displayAlertPop: true });
         } catch (e) {
             console.log(e);
+            this.setMessage('회원가입에 실패했습니다. 나중에 다시 시도해주세요.');
+            this.setState({ displayAlertPop: true });
         }
     }
 

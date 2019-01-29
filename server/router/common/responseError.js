@@ -6,6 +6,9 @@ const reponseErrorType = (res, type) => {
         case 'REGISTER_FAIL':
             res.status(200).send({ fail: '0002' });
             break;
+        case 'REGISTER_FAIL_ID':
+            res.status(200).send({ fail: '0003' });
+            break;
         case 'NOT_LOGIN':
             res.status(200).send({ fail: '1009' });
             break;

@@ -29,11 +29,8 @@ const jwt = require('jsonwebtoken');
 
 exports.register = (req, res) => {
     let userInfo = req.body;
-
     /* 
      * 비밀번호 암호화
-     * @param : userInfo
-     * @return : object - {hashPwd : ..., slat : ...}
     */
     userInfo = crypto.cryptoUserInfo(userInfo);
 
@@ -41,10 +38,24 @@ exports.register = (req, res) => {
         아이디가 존재한다면 ERROR처리 
         없다면 새로 생성
     */
-    const create = user => {
+    const checkId = user => {
+        const userId = userInfo.id;
+        return new Promise((resolve, reject) => {
+            let result = true;
+            if (user && userId === user.id)
+                result = false;
+
+            return resolve(result);
+        });
+    }
+
+    const create = checkIdResult => {
         const branchCode = userInfo.branchCode;
 
         return new Promise((resolve, reject) => {
+            if (!checkIdResult) {
+                return resolve('REGISTER_FAIL_ID');
+            }
             Store.checkBranch(branchCode).then(result => {
                 if (result != null) {
                     userInfo.branchName = result.branchName;
@@ -56,18 +67,23 @@ exports.register = (req, res) => {
         });
     };
 
-    const respond = () => {
+    const respond = (resultKey) => {
+        if (resultKey === 'REGISTER_FAIL_ID') {
+            reponseError(res, resultKey);
+            return;
+        }
         reponseSuccess(res);
     };
 
     // run when there is an error (username exists)
-    const onError = error => {
+    const onError = (error) => {
         console.log(error.message);
         reponseError(res, 'REGISTER_FAIL');
     };
 
     // 해당 아이디 복수 확인
     Users.findOneByUserId(userInfo.id)
+        .then(checkId)
         .then(create)
         .then(respond)
         .catch(onError);
