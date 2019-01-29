@@ -22,10 +22,7 @@ export const userRegister = ({
   bPhoneNumber,
   branchCode,
 });
-export const userLogin = ({ id, password }) => {
-  console.log({ id, password });
-  return axios.post('/api/login', { id, password });
-};
+export const userLogin = ({ id, password }) => axios.post('/api/login', { id, password });
 export const logout = () => axios.post('/api/logout');
 export const checkStatus = () => ApiService.get('/api/check/');
 export const getStoreList = () => ApiService.get('/api/store/list/');
