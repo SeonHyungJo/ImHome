@@ -4,25 +4,25 @@ const crypto = require('../router/common/cryptoModule');
 
 // usersSchema
 const usersSchema = new Schema(
-    {
-        id: { type: String, required: true, unique: true },
-        password: { type: String, required: true },
-        name: { type: String, required: true },
-        bNumber: { type: String, required: true },
-        bAddress: { type: String, required: true },
-        bPhoneNumber: { type: String, required: true },
-        cName: { type: String, required: true },
-        email: { type: String, required: true },
-        pNumber: { type: String, required: false },
-        branchName: { type: String, required: true },
-        branchCode: { type: String, required: true },
-        checkUser: { type: Boolean, default: false },
-        checkAdmin: { type: Boolean, default: false },
-        salt: { type: String, required: true }
-    },
-    {
-        timestamps: true
-    }
+  {
+    id: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    name: { type: String, required: true },
+    bNumber: { type: String, required: true },
+    bAddress: { type: String, required: true },
+    bPhoneNumber: { type: String, required: true },
+    cName: { type: String, required: true },
+    email: { type: String, required: true },
+    pNumber: { type: String, required: false },
+    branchName: { type: String, required: true },
+    branchCode: { type: String, required: true },
+    checkUser: { type: Boolean, default: false },
+    checkAdmin: { type: Boolean, default: false },
+    salt: { type: String, required: true }
+  },
+  {
+    timestamps: true
+  }
 );
 
 /**
@@ -33,9 +33,9 @@ const usersSchema = new Schema(
  * @see None
  * @returns user.save()
  */
-usersSchema.statics.create = function (newUser) {
-    const user = new this(newUser);
-    return user.save();
+usersSchema.statics.create = function(newUser) {
+  const user = new this(newUser);
+  return user.save();
 };
 
 /**
@@ -46,23 +46,23 @@ usersSchema.statics.create = function (newUser) {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.findAll = function () {
-    return this.find().select({
-        _id: 1, // 시퀀스
-        id: 1, // 아이디
-        name: 1, //일단은 대표자 이름으로 설정
-        bNumber: 1, // 사업자 번호
-        bAddress: 1, // 사업장 주소
-        bPhoneNumber: 1, // 대표 전화번호
-        cName: 1, // 회사명
-        email: 1, // 이메일
-        pNumber: 1, // 전화번호
-        branchName: 1, // 지점명
-        branchCode: 1, // 지점코드
-        createdAt: 1, // 등록일자
-        salt: 1,
-        checkAdmin: 1
-    });
+usersSchema.statics.findAll = function() {
+  return this.find().select({
+    _id: 1, // 시퀀스
+    id: 1, // 아이디
+    name: 1, //일단은 대표자 이름으로 설정
+    bNumber: 1, // 사업자 번호
+    bAddress: 1, // 사업장 주소
+    bPhoneNumber: 1, // 대표 전화번호
+    cName: 1, // 회사명
+    email: 1, // 이메일
+    pNumber: 1, // 전화번호
+    branchName: 1, // 지점명
+    branchCode: 1, // 지점코드
+    createdAt: 1, // 등록일자
+    salt: 1,
+    checkAdmin: 1
+  });
 };
 
 /**
@@ -73,44 +73,44 @@ usersSchema.statics.findAll = function () {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.findOneById = function (_id) {
-    return this.findOne({ _id })
-        .select({
-            _id: 1, // 시퀀스
-            id: 1, // 아이디,
-            name: 1, //일단은 대표자 이름으로 설정
-            bNumber: 1, // 사업자 번호
-            bAddress: 1, // 사업장 주소
-            bPhoneNumber: 1, // 대표 전화번호
-            cName: 1, // 회사명
-            email: 1, // 이메일
-            pNumber: 1, // 전화번호
-            branchName: 1, // 지점명
-            branchCode: 1, // 지점코드
-            createdAt: 1, // 등록일자
-            salt: 1,
-            checkAdmin: 1
-        })
-        .catch(err => {
-            console.log(err);
-            return new this({
-                _id: null, // 아이디
-                id: null, // 아이디
-                password: null,
-                name: null, //일단은 대표자 이름으로 설정
-                bNumber: null, // 사업자 번호
-                bAddress: null, // 사업장 주소
-                bPhoneNumber: null, // 대표 전화번호
-                cName: null, // 회사명
-                email: null, // 이메일
-                pNumber: null, // 전화번호
-                branchName: null, // 지점명
-                branchCode: null, // 지점코드
-                checkUser: null,
-                createdAt: null,
-                salt: null
-            });
-        });
+usersSchema.statics.findOneById = function(_id) {
+  return this.findOne({ _id })
+    .select({
+      _id: 1, // 시퀀스
+      id: 1, // 아이디,
+      name: 1, //일단은 대표자 이름으로 설정
+      bNumber: 1, // 사업자 번호
+      bAddress: 1, // 사업장 주소
+      bPhoneNumber: 1, // 대표 전화번호
+      cName: 1, // 회사명
+      email: 1, // 이메일
+      pNumber: 1, // 전화번호
+      branchName: 1, // 지점명
+      branchCode: 1, // 지점코드
+      createdAt: 1, // 등록일자
+      salt: 1,
+      checkAdmin: 1
+    })
+    .catch(err => {
+      console.log(err);
+      return new this({
+        _id: null, // 아이디
+        id: null, // 아이디
+        password: null,
+        name: null, //일단은 대표자 이름으로 설정
+        bNumber: null, // 사업자 번호
+        bAddress: null, // 사업장 주소
+        bPhoneNumber: null, // 대표 전화번호
+        cName: null, // 회사명
+        email: null, // 이메일
+        pNumber: null, // 전화번호
+        branchName: null, // 지점명
+        branchCode: null, // 지점코드
+        checkUser: null,
+        createdAt: null,
+        salt: null
+      });
+    });
 };
 
 /**
@@ -121,24 +121,24 @@ usersSchema.statics.findOneById = function (_id) {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.findOneByUserId = function (id) {
-    return this.findOne({ id }).select({
-        _id: 1, // 시퀀스
-        id: 1, // 아이디
-        password: 1,
-        name: 1, //일단은 대표자 이름으로 설정
-        bNumber: 1, // 사업자 번호
-        bAddress: 1, // 사업장 주소
-        bPhoneNumber: 1, // 대표 전화번호
-        cName: 1, // 회사명
-        email: 1, // 이메일
-        pNumber: 1, // 전화번호
-        branchName: 1, // 지점명
-        branchCode: 1, // 지점코드
-        createdAt: 1, // 등록일자
-        salt: 1,
-        checkAdmin: 1
-    });
+usersSchema.statics.findOneByUserId = function(id) {
+  return this.findOne({ id }).select({
+    _id: 1, // 시퀀스
+    id: 1, // 아이디
+    password: 1,
+    name: 1, //일단은 대표자 이름으로 설정
+    bNumber: 1, // 사업자 번호
+    bAddress: 1, // 사업장 주소
+    bPhoneNumber: 1, // 대표 전화번호
+    cName: 1, // 회사명
+    email: 1, // 이메일
+    pNumber: 1, // 전화번호
+    branchName: 1, // 지점명
+    branchCode: 1, // 지점코드
+    createdAt: 1, // 등록일자
+    salt: 1,
+    checkAdmin: 1
+  });
 };
 
 /**
@@ -149,23 +149,23 @@ usersSchema.statics.findOneByUserId = function (id) {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.findOneByBranchCode = function (branchCode) {
-    return this.find({ branchCode }).select({
-        _id: 1, // 시퀀스
-        id: 1, // 아이디
-        name: 1, //일단은 대표자 이름으로 설정
-        bNumber: 1, // 사업자 번호
-        bAddress: 1, // 사업장 주소
-        bPhoneNumber: 1, // 대표 전화번호
-        cName: 1, // 회사명
-        email: 1, // 이메일
-        pNumber: 1, // 전화번호
-        branchName: 1, // 지점명
-        branchCode: 1, // 지점코드
-        createdAt: 1, // 등록일자
-        salt: 1,
-        checkAdmin: 1
-    });
+usersSchema.statics.findOneByBranchCode = function(branchCode) {
+  return this.find({ branchCode }).select({
+    _id: 1, // 시퀀스
+    id: 1, // 아이디
+    name: 1, //일단은 대표자 이름으로 설정
+    bNumber: 1, // 사업자 번호
+    bAddress: 1, // 사업장 주소
+    bPhoneNumber: 1, // 대표 전화번호
+    cName: 1, // 회사명
+    email: 1, // 이메일
+    pNumber: 1, // 전화번호
+    branchName: 1, // 지점명
+    branchCode: 1, // 지점코드
+    createdAt: 1, // 등록일자
+    salt: 1,
+    checkAdmin: 1
+  });
 };
 
 /**
@@ -177,8 +177,8 @@ usersSchema.statics.findOneByBranchCode = function (branchCode) {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.updateById = function (_id, userInfo) {
-    return this.findOneAndUpdate({ _id }, userInfo, { new: true });
+usersSchema.statics.updateById = function(_id, userInfo) {
+  return this.findOneAndUpdate({ _id }, userInfo, { new: true });
 };
 
 /**
@@ -189,8 +189,8 @@ usersSchema.statics.updateById = function (_id, userInfo) {
  * @see None
  * @returns «Query»
  */
-usersSchema.statics.deleteById = function (_id) {
-    return this.remove({ _id });
+usersSchema.statics.deleteById = function(_id) {
+  return this.remove({ _id });
 };
 
 //------------------------------------------------------------------------------
@@ -204,17 +204,17 @@ usersSchema.statics.deleteById = function (_id) {
  * @see None
  * @returns «Query»
  */
-usersSchema.methods.verify = function (password) {
-    console.log('password : ' + password);
-    console.log('this.password : ' + this.password);
-    let userInfo = {};
-    userInfo.password = password;
-    userInfo.salt = this.salt;
+usersSchema.methods.verify = function(password) {
+  console.log('password : ' + password);
+  console.log('this.password : ' + this.password);
+  let userInfo = {};
+  userInfo.password = password;
+  userInfo.salt = this.salt;
 
-    console.log(userInfo);
-    userInfo = crypto.cryptoPassword(userInfo);
+  console.log(userInfo);
+  userInfo = crypto.cryptoPassword(userInfo);
 
-    return this.password === userInfo.password;
+  return this.password === userInfo.password;
 };
 
 /**
@@ -226,8 +226,23 @@ usersSchema.methods.verify = function (password) {
  * @see None
  * @returns «Query»
  */
-usersSchema.methods.checkingAdmin = function () {
-    return usersSchema.statics.findOneByUserId.checkAdmin || false;
+usersSchema.methods.checkingAdmin = function() {
+  return usersSchema.statics.findOneByUserId.checkAdmin || false;
+};
+
+/**
+ * @author seonhyungjo
+ * @summary 브랜치코드 확인용
+ * @private
+ * @memberof Admin
+ * @param
+ * @see None
+ * @returns «Query»
+ */
+usersSchema.statics.checkingBranchCode = function(id) {
+  return this.findOne({ id }).select({
+    branchCode: 1 // 지점코드
+  });
 };
 
 module.exports = mongoose.model('users', usersSchema);
