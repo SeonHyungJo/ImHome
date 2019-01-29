@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import { PageTemplate } from '../../component/template';
 import { ViewForRelease, TableWithScroll } from '../../component/releaseList';
-import { FormBtn, Button } from '../../component/common';
+import { FormBtn } from '../../component/common';
 import * as ReleaseActions from '../../redux/modules/releaseList';
 import * as CommonUtil from '../../util/commonUtil';
 import { ReactToPrint } from '../../component/external';
