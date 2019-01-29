@@ -134,7 +134,7 @@ class AdminReleaseList extends Component {
     } = this.props;
     console.log(list);
     return (
-      <PageTemplate navData={store} id={currentId} clickNav={this.getNavData}>
+      <PageTemplate role="user" navData={store} id={currentId} clickNav={this.getNavData}>
         <ViewForRelease
           type="date"
           viewTitle="출고내역 및 세금계산서 발행내역 조회"

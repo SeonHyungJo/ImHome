@@ -74,7 +74,7 @@ class AdminOrderList extends Component {
   render() {
     const { store, currentOrder, currentId } = this.props;
     return (
-      <PageTemplate navData={store} id={currentId} clickNav={this.getNavData}>
+      <PageTemplate role="user" navData={store} id={currentId} clickNav={this.getNavData}>
         <header>
           주문일자 :
           {CommonUtil.setHangleDateTime(
