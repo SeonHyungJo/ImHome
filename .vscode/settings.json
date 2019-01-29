@@ -1,6 +1,6 @@
 {
-  "prettier.singleQuote": true,
-  "prettier.eslintIntegration": true,
-  "editor.formatOnSave": true,
-  "prettier.tabWidth": 2
+    "prettier.singleQuote": true,
+    "prettier.eslintIntegration": true,
+    "editor.formatOnSave": true,
+    "prettier.tabWidth": 2
 }

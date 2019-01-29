@@ -8,10 +8,10 @@ import releaseList from './releaseList';
 import productList from './productList';
 
 export default combineReducers({
-    auth,
-    user,
-    orderList,
-    productList,
-    releaseList,
-    pender: penderReducer
+  auth,
+  user,
+  orderList,
+  productList,
+  releaseList,
+  pender: penderReducer,
 });

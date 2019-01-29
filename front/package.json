@@ -1,57 +1,57 @@
 {
-    "name": "front",
-    "version": "0.1.0",
-    "private": true,
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "yarn build",
-        "eject": "react-scripts eject"
-    },
-    "dependencies": {
-        "axios": "^0.18.0",
-        "immutable": "^3.8.2",
-        "moment": "^2.22.2",
-        "node-sass": "^4.9.4",
-        "react": "^16.5.2",
-        "react-datepicker": "^2.0.0",
-        "react-dom": "^16.5.2",
-        "react-icons-kit": "^1.2.1",
-        "react-redux": "^5.0.7",
-        "react-router-dom": "^4.3.1",
-        "react-scripts": "2.0.5",
-        "redux": "^4.0.1",
-        "redux-actions": "^2.6.1",
-        "redux-pender": "^1.2.1",
-        "styled-components": "^4.0.2",
-        "validator": "^10.9.0"
-    },
-    "devDependencies": {
-        "classnames": "^2.2.6",
-        "eslint-config-airbnb": "^17.1.0",
-        "eslint-loader": "^2.1.1",
-        "eslint-plugin-import": "^2.14.0",
-        "eslint-plugin-jsx-a11y": "^6.1.2",
-        "eslint-plugin-react": "^7.11.1",
-        "prettier-eslint": "^8.8.2"
-    },
-    "eslintConfig": {
-        "parser": "babel-eslint",
-        "extends": "airbnb",
-        "plugins": [
-            "react",
-            "jsx-a11y",
-            "import"
-        ],
-        "rules": {
-            "react/jsx-filename-extension": 0
-        }
-    },
-    "browserslist": [
-        ">0.2%",
-        "not dead",
-        "not ie <= 11",
-        "not op_mini all"
+  "name": "front",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "yarn build",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "immutable": "^3.8.2",
+    "moment": "^2.22.2",
+    "node-sass": "^4.9.4",
+    "react": "^16.5.2",
+    "react-datepicker": "^2.0.0",
+    "react-dom": "^16.5.2",
+    "react-icons-kit": "^1.2.1",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.0.5",
+    "redux": "^4.0.1",
+    "redux-actions": "^2.6.1",
+    "redux-pender": "^1.2.1",
+    "styled-components": "^4.0.2",
+    "validator": "^10.9.0"
+  },
+  "devDependencies": {
+    "classnames": "^2.2.6",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-loader": "^2.1.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
+    "prettier-eslint": "^8.8.2"
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "extends": "airbnb",
+    "plugins": [
+      "react",
+      "jsx-a11y",
+      "import"
     ],
-    "proxy": "http://localhost:3100"
+    "rules": {
+      "react/jsx-filename-extension": 0
+    }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "proxy": "http://localhost:3100"
 }

@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 const ViewContentWrapper = styled.div`
-    overflow: auto;
-    padding: 0;
-    border-right: none;
-`
+  overflow: auto;
+  padding: 0;
+  border-right: none;
+`;
 
 const Table = styled.table`
     border-top: 2px solid #fe4c8d;
@@ -49,16 +49,14 @@ const Table = styled.table`
         letter-spacing: -0.04em;
         text-overflow:ellipsis; overflow:hidden; white-space:nowrap;
     };
-`
+`;
 
 const ViewWithContent = ({ title, children }) => (
-    <ViewContentWrapper>
-        <Table>
-            <tbody>
-                {children}
-            </tbody>
-        </Table>
-    </ViewContentWrapper>
+  <ViewContentWrapper>
+    <Table>
+      <tbody>{children}</tbody>
+    </Table>
+  </ViewContentWrapper>
 );
 
 export default ViewWithContent;
