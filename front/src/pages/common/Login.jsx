@@ -27,7 +27,12 @@ class Login extends Component {
             await AuthActions.checkStatus();
             const loggedInfo = this.props.result.toJS();
             if (loggedInfo.success && loggedInfo.success === '0000' && localStorage.getItem('accessToken')) {
-                history.push('/admin/product');
+                if (localStorage.getItem('checkAdmin') === 'true' || localStorage.getItem('checkAdmin') === true) {
+                    history.push('/admin/product');
+                    return;
+                }
+
+                history.push('/usermain');
                 return;
             } else {
                 return;
@@ -97,6 +102,8 @@ class Login extends Component {
 
         if (loggedInfo.success === '0000') {
             localStorage.setItem('accessToken', loggedInfo.imhomeToken);
+            localStorage.setItem('checkAdmin', loggedInfo.checkAdmin);
+
             this.setMessage('성공적으로 로그인 하였습니다.');
             this.setState({ displayAlertPop: true, resultCode: loggedInfo.success });
         } else {
@@ -118,7 +125,13 @@ class Login extends Component {
         this.setState({ displayAlertPop: false });
 
         if (localStorage.getItem('accessToken') && this.state.resultCode === '0000') {
-            history.push('/admin/product');
+            if (localStorage.getItem('checkAdmin') === 'true' || localStorage.getItem('checkAdmin') === true) {
+                history.push('/admin/product');
+                return;
+            }
+
+            history.push('/usermain');
+
         } else {
             AuthActions.initializeForm('login');
         }

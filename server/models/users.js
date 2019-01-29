@@ -60,7 +60,8 @@ usersSchema.statics.findAll = function () {
         branchName: 1, // 지점명
         branchCode: 1, // 지점코드
         createdAt: 1, // 등록일자
-        salt: 1
+        salt: 1,
+        checkAdmin: 1
     });
 };
 
@@ -87,7 +88,8 @@ usersSchema.statics.findOneById = function (_id) {
             branchName: 1, // 지점명
             branchCode: 1, // 지점코드
             createdAt: 1, // 등록일자
-            salt: 1
+            salt: 1,
+            checkAdmin: 1
         })
         .catch(err => {
             console.log(err);
@@ -134,7 +136,8 @@ usersSchema.statics.findOneByUserId = function (id) {
         branchName: 1, // 지점명
         branchCode: 1, // 지점코드
         createdAt: 1, // 등록일자
-        salt: 1
+        salt: 1,
+        checkAdmin: 1
     });
 };
 
@@ -160,7 +163,8 @@ usersSchema.statics.findOneByBranchCode = function (branchCode) {
         branchName: 1, // 지점명
         branchCode: 1, // 지점코드
         createdAt: 1, // 등록일자
-        salt: 1
+        salt: 1,
+        checkAdmin: 1
     });
 };
 
