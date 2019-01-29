@@ -55,7 +55,12 @@ class AdminProduct extends Component {
     const { lists } = this.props;
 
     return (
-      <PageTemplate navData={lists} id={this.state.companyCode} clickNav={this.getNavData}>
+      <PageTemplate
+        role="admin"
+        navData={lists}
+        id={this.state.companyCode}
+        clickNav={this.getNavData}
+      >
         <Product />
       </PageTemplate>
     );
