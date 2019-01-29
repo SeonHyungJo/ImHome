@@ -9,7 +9,7 @@ class AdminMain extends Component {
 
   render() {
     return (
-      <PageTemplate>
+      <PageTemplate role="admin">
         <div className="App">
           <header className="App-header">
             <p>AdminMain</p>
