@@ -64,7 +64,7 @@ class PopUserInfo extends Component {
 
     validate = {
         branchName: (value) => {
-            if (isEmpty(value)) {
+            if (!value || isEmpty(value)) {
                 this.setMessage('지점명은 필수 입력사항입니다.');
                 return false;
             }
@@ -72,7 +72,7 @@ class PopUserInfo extends Component {
             return true;
         },
         name: (value) => {
-            if (isEmpty(value)) {
+            if (!value || isEmpty(value)) {
                 this.setMessage('대표 성함은 필수 입력사항입니다.');
                 return false;
             }
@@ -80,7 +80,7 @@ class PopUserInfo extends Component {
             return true;
         },
         bNumber: (value) => {
-            if (isEmpty(value)) {
+            if (!value || isEmpty(value)) {
                 this.setMessage('사업자 번호는 필수 입력사항입니다.');
                 return false;
             }
@@ -88,7 +88,7 @@ class PopUserInfo extends Component {
             return true;
         },
         cName: (value) => {
-            if (isEmpty(value)) {
+            if (!value || isEmpty(value)) {
                 this.setMessage('회사명은 필수 입력사항입니다.');
                 return false;
             }
@@ -96,7 +96,7 @@ class PopUserInfo extends Component {
             return true;
         },
         bAddress: (value) => {
-            if (isEmpty(value)) {
+            if (!value || isEmpty(value)) {
                 this.setMessage('사업장 주소는 필수 입력사항입니다.');
                 return false;
             }
@@ -104,7 +104,7 @@ class PopUserInfo extends Component {
             return true;
         },
         email: (value) => {
-            if (isEmpty(value)) {
+            if (!value || isEmpty(value)) {
                 this.setMessage('이메일은 필수 입력사항입니다.');
                 return false;
             }
@@ -116,11 +116,11 @@ class PopUserInfo extends Component {
             return true;
         },
         pNumber: (value) => {
-            if (isEmpty(value)) {
-                this.setMessage('매장 전화번호는 필수 입력사항입니다.');
-                return false;
-            }
-            if (!this.checkPhoneNumber(value) && !this.checkMobileNumber(value)) { //매장 전화번호에 핸드폰 번호를 입력할 수도 있으므로
+            // if (!value || isEmpty(value)) {
+            //     this.setMessage('매장 전화번호는 필수 입력사항입니다.');
+            //     return false;
+            // }
+            if (value && !this.checkPhoneNumber(value) && !this.checkMobileNumber(value)) { //매장 전화번호에 핸드폰 번호를 입력할 수도 있으므로
                 this.setMessage('전화번호 형식을 확인해주세요.');
                 return false;
             }
@@ -128,7 +128,7 @@ class PopUserInfo extends Component {
             return true;
         },
         bPhoneNumber: (value) => {
-            if (isEmpty(value)) {
+            if (!value || isEmpty(value)) {
                 this.setMessage('휴대폰 번호는 필수 입력사항입니다.');
                 return false;
             }
