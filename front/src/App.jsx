@@ -61,7 +61,6 @@ class App extends PureComponent {
     render() {
         const PATH = '/admin';
         const { store } = this.props;
-        const { result } = this.props;
 
         return (
             <Provider store={store}>
