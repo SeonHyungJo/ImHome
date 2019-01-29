@@ -23,33 +23,8 @@ router.use('/order', authMiddleware);
  * @see None
  * @returns «Query»
  */
-router.get('/order', function(req, res) {
-  Orders.findAllOrder()
-    .then(orderList => {
-      if (!orderList) throw new Error('order not found');
-      res.status(200).send(orderList);
-    })
-    .catch(err => {
-      console.log(err);
-      reponseError(res, 'NOT_FIND_ODER');
-    });
-});
-
-/**
- * GET /api/order/list
- *
- * @author seonhyungjo
- * @summary 사용자 주문내역 조회
- * @private
- * @memberof User
- * @param
- * @see None
- * @returns «Query»
- */
-// router.get('/order/list', function(req, res) {
-//   const branchCode = req.decoded.branchCode;
-
-//   Orders.findOrderList(branchCode)
+// router.get('/order', function(req, res) {
+//   Orders.findAllOrder()
 //     .then(orderList => {
 //       if (!orderList) throw new Error('order not found');
 //       res.status(200).send(orderList);
@@ -66,7 +41,7 @@ router.get('/order', function(req, res) {
  * @author seonhyungjo
  * @summary 모든 주문내역 조회
  * @private
- * @memberof Admin
+ * @memberof Admin, User
  * @param
  * @see None
  * @returns «Query»
@@ -146,15 +121,20 @@ router.get('/order/branch/complete', function(req, res) {
  * @see None
  * @returns «Query»
  */
-router.get('/order/:branchCode', function(req, res) {
-  console.log(req.decoded);
-  Stores.find({ branchCode: req.params.branchCode })
+router.get('/order/:branchCode?', function(req, res) {
+  const branchCode = req.decoded.admin
+    ? req.params.branchCode
+    : req.decoded.branchCode;
+  console.log(branchCode);
+
+  Stores.find({ branchCode })
     .then(store => {
+      console.log(store);
       if (store.length == 0) {
         throw new Error('Dont exit branchCode');
       }
 
-      return Orders.findInCompleteOrderByBranchcode(req.params.branchCode);
+      return Orders.findInCompleteOrderByBranchcode(branchCode);
     })
     .then(order => {
       if (!order) throw new Error('order not found');
