@@ -88,13 +88,13 @@ class AdminOrderList extends Component {
           clickEvent={this.completeRelease}
         />
         <OrderListTable
-          branchName={currentOrder.branchName}
+          headerName={currentOrder.branchName}
           orderList={currentOrder.items}
           buttonList={this.state.buttons}
           clickComplete={this.setComplete}
         />
         <SpecificationTable
-          branchName={this.state.storeId}
+          branchName={`${this.state.storeId} 주문내역`}
           orderList={this.state.orders}
           buttonList={this.state.buttons}
         />

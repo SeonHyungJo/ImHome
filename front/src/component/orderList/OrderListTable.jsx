@@ -138,16 +138,12 @@ const Button = styled.button`
 `;
 
 const OrderListTable = ({
-  branchName, orderList, buttonList, clickComplete,
+  headerName, orderList, buttonList = [], clickComplete,
 }) => (
   <ContentWrapper>
     <div className="dashedContainer">
       <div className="mainContainer">
-        <Header>
-          {branchName}
-          {' '}
-주문내역
-        </Header>
+        <Header>{headerName}</Header>
         <OrderTable>
           <Thead />
           <OrderListTableList orderList={orderList} />
