@@ -8,7 +8,7 @@ const usersSchema = new Schema(
         id: { type: String, required: true, unique: true },
         password: { type: String, required: true },
         name: { type: String, required: true },
-        bNumber: { type: String, required: true, unique: true },
+        bNumber: { type: String, required: true },
         bAddress: { type: String, required: true },
         bPhoneNumber: { type: String, required: true },
         cName: { type: String, required: true },
