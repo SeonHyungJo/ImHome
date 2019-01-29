@@ -155,19 +155,7 @@ class AdminReleaseList extends Component {
           viewSubTitle={` | 최근거래내역[총 ${list.length === undefined ? 0 : list.length}건]`}
           totalCost={this.getTotalCost(list)}
           totalList={list.length === undefined ? 0 : list.length}
-        >
-          <ReactToPrint
-            trigger={() => <FormBtn style={{ margin: '0' }}>거래내역출력</FormBtn>}
-            content={() => this.componentRef}
-          />
-          {/* 파일저장용 */}
-          {/* <Button
-                        exportData={list}
-                        trigger={
-                            <FormBtn style={{ margin: '0', marginLeft: '10px' }}>파일저장</FormBtn>
-                        }
-                    /> */}
-        </ViewForRelease>
+        />
 
         <TableWithScroll
           headerData={this.state.headerData}

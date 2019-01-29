@@ -27,11 +27,6 @@ class AdminProduct extends Component {
       if (lists) {
         await ProductListActions.getProductData('001');
         this.setState({ companyCode: '001' });
-        // await ProductListActions.changeInput({
-        //     form: 'productList',
-        //     value: lists[0].companyCode,
-        //     name: 'companyCode'
-        // });
       }
     } catch (e) {
       console.log(e);
@@ -69,10 +64,7 @@ class AdminProduct extends Component {
 
 export default connect(
   state => ({
-    form: state.productList.getIn(['productList', 'form']),
     lists: state.productList.getIn(['productList', 'lists']),
-    error: state.productList.getIn(['productList', 'error']),
-    result: state.productList.get('result'),
   }),
   dispatch => ({
     ProductListActions: bindActionCreators(ProductListActions, dispatch),
