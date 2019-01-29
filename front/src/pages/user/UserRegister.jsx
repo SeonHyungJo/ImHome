@@ -28,7 +28,12 @@ class UserRegister extends Component {
             const loggedInfo = this.props.result.toJS();
 
             if (loggedInfo.success && loggedInfo.success === '0000' && localStorage.getItem('accessToken')) {
-                history.push('/admin/product');
+                if (localStorage.getItem('checkAdmin') === 'true' || localStorage.getItem('checkAdmin') === true) {
+                    history.push('/admin/product');
+                    return;
+                }
+
+                history.push('/usermain');
                 return;
             }
         } catch (error) {

@@ -24,6 +24,8 @@ class PageTemplate extends Component {
 
     logout = () => {
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('checkAdmin');
+
         this.setState({ isLogin: false });
     }
 

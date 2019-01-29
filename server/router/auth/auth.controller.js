@@ -105,11 +105,12 @@ exports.login = (req, res) => {
     const { id, password } = req.body;
     let userInfo = req.body;
     const secret = req.app.get('jwt-secret');
+    let checkAdmin = false;
 
     const check = user => {
         const checkPassword = user.verify(password);
-        const checkAdmin = user.checkingAdmin();
-
+        checkAdmin = user.checkAdmin;
+        console.log(user);
         if (checkPassword) {
             return new Promise((resolve, reject) => {
                 jwt.sign(
@@ -140,7 +141,8 @@ exports.login = (req, res) => {
     const respond = token => {
         res.send({
             success: '0000',
-            imhomeToken: token
+            imhomeToken: token,
+            checkAdmin: checkAdmin
         });
     };
 
