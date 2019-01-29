@@ -23,6 +23,7 @@ class Login extends Component {
         const { history } = this.props;
 
         try {
+            await AuthActions.initializeForm('login');
             await AuthActions.checkStatus();
             const loggedInfo = this.props.result.toJS();
             if (loggedInfo.success && loggedInfo.success === '0000' && localStorage.getItem('accessToken')) {
@@ -35,8 +36,6 @@ class Login extends Component {
             console.log(error);
             return;
         }
-
-        await AuthActions.initializeForm('login');
     }
 
     handleChange = (e) => {
