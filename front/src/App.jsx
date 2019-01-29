@@ -5,7 +5,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { UserRegister } from './pages/user';
+import { UserRegister, UserMain } from './pages/user';
 import {
     AdminMain,
     AdminUser,
@@ -28,13 +28,14 @@ class App extends Component {
             await AuthActions.checkStatus();
             const loggedInfo = this.props.result.toJS();
 
-            if (loggedInfo.success && loggedInfo.success !== '0000') {
+            if (loggedInfo.success && loggedInfo.success === false) {
                 localStorage.removeItem('accessToken');
                 history.push('/login');
             }
         } catch (e) {
             localStorage.removeItem('accessToken');
             console.log(e);
+            return;
             //history.push('/login');
         }
     };
@@ -67,7 +68,7 @@ class App extends Component {
                             />
                             <Route exact={true} component={AdminProduct} path={PATH + '/product'} />
                             {/* User router : 사용자 라우터*/}
-                            <Route exact={true} component={Login} path="/" />
+                            <Route exact={true} component={UserMain} path="/" />
                             <Route exact={true} component={UserRegister} path="/register" />
                             {/* Common router : 관리자와 사용자 공통 라우터*/}
                             <Route component={Login} path="/login" />
