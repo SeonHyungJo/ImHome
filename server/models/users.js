@@ -205,12 +205,11 @@ usersSchema.statics.deleteById = function(_id) {
  * @returns «Query»
  */
 usersSchema.methods.verify = function(password) {
+  /* 암호화를 해서 비밀번호를 비교진행 */
   const userInfo = {
     password,
     salt: this.salt
   };
-
-  /* 암호화를 해서 비밀번호를 비교진행 */
   const newUserInfo = crypto.cryptoPassword(userInfo);
 
   return this.password === newUserInfo.password;
