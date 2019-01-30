@@ -73,6 +73,7 @@ class AdminOrderList extends Component {
 
   render() {
     const { store, currentOrder = '', currentId } = this.props;
+    console.log(currentOrder.items);
     const updateAt = currentOrder.updatedAt || new Date();
     return (
       <PageTemplate role="admin" navData={store} id={currentId} clickNav={this.getNavData}>

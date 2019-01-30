@@ -199,22 +199,21 @@ usersSchema.statics.deleteById = function(_id) {
 /**
  * @author seonhyungjo
  * @summary 해당 아이디로 유저 유효성검사
- * @memberof Admin
+ * @memberof Admin, User
  * @param password : 유효성검사를 위한 비밀번호
  * @see None
  * @returns «Query»
  */
 usersSchema.methods.verify = function(password) {
-  console.log('password : ' + password);
-  console.log('this.password : ' + this.password);
-  let userInfo = {};
-  userInfo.password = password;
-  userInfo.salt = this.salt;
+  const userInfo = {
+    password,
+    salt: this.salt
+  };
 
-  console.log(userInfo);
-  userInfo = crypto.cryptoPassword(userInfo);
+  /* 암호화를 해서 비밀번호를 비교진행 */
+  const newUserInfo = crypto.cryptoPassword(userInfo);
 
-  return this.password === userInfo.password;
+  return this.password === newUserInfo.password;
 };
 
 /**
