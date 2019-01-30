@@ -72,14 +72,13 @@ class AdminOrderList extends Component {
   };
 
   render() {
-    const { store, currentOrder, currentId } = this.props;
+    const { store, currentOrder = '', currentId } = this.props;
+    const updateAt = currentOrder.updatedAt || new Date();
     return (
       <PageTemplate role="admin" navData={store} id={currentId} clickNav={this.getNavData}>
         <header>
-          주문일자 :
-          {CommonUtil.setHangleDateTime(
-            currentOrder.updatedAt === undefined ? new Date() : currentOrder.updatedAt,
-          )}
+          {'주문일자 :'}
+          {CommonUtil.setHangleDateTime(updateAt)}
         </header>
         <AlertPopup
           title={this.state.alertMessage}

@@ -156,7 +156,6 @@ class ReactToPrint extends React.Component {
 
       if (copyStyles !== false) {
         const headEls = document.querySelectorAll('style, link[rel="stylesheet"]');
-        console.log(headEls);
 
         [...headEls].forEach((node, index) => {
           if (node.tagName === 'STYLE') {
@@ -196,7 +195,6 @@ class ReactToPrint extends React.Component {
 
               newHeadEl.onload = markLoaded.bind(null, newHeadEl, true);
               newHeadEl.onerror = markLoaded.bind(null, newHeadEl, false);
-              console.log(newHeadEl);
               domDoc.head.appendChild(newHeadEl);
             } else {
               console.warn(

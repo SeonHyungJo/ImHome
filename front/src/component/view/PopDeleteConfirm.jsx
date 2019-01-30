@@ -32,8 +32,6 @@ class PopDeleteConfirm extends Component {
     const { UserActions, form } = this.props;
     const { _id, branchCode } = form.toJS();
 
-    console.log(form);
-
     try {
       await UserActions.deleteUserData(_id);
 
@@ -56,7 +54,6 @@ class PopDeleteConfirm extends Component {
         message: '회원 정보 삭제가 실패했습니다. 다시 시도해주세요.',
       });
       this.props.closeDeletePop();
-      console.log(e);
     }
   };
 

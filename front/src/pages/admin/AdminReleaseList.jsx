@@ -69,7 +69,6 @@ class AdminReleaseList extends Component {
     try {
       // e.preventDefault();
       e.stopPropagation();
-      console.log(e.target.value);
       const newTerm = e.target.value;
       this.setState(prevState => ({
         ...prevState,
@@ -132,7 +131,6 @@ class AdminReleaseList extends Component {
     const {
       store, list, currentId, custNo, startDate, endDate,
     } = this.props;
-    console.log(list);
     return (
       <PageTemplate role="admin" navData={store} id={currentId} clickNav={this.getNavData}>
         <ViewForRelease
