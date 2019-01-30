@@ -178,9 +178,11 @@ const Buttons = ({ buttonList, clickComplete }) => (
   <div className="buttonContainer">
     {buttonList.map(
       (button, index) => (index === 1 ? (
-        <Button key={index} onClick={() => clickComplete()}>{`${button.name}`}</Button>
+        <Button key={`${button.name}_${index}`} onClick={() => clickComplete()}>
+          {`${button.name}`}
+        </Button>
       ) : (
-        <Button key={index}>{`${button.name}`}</Button>
+        <Button key={`${button.name}_${index}`}>{`${button.name}`}</Button>
       )),
     )}
   </div>

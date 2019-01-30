@@ -86,12 +86,9 @@ export default handleActions(
     [CHANGE_ENDDATE]: (state, action) => state.setIn(['releaseList', 'endDate'], action.payload),
     ...pender({
       type: GET_STORE_LIST,
-      onSuccess: (state, action) => {
-        console.log(action.payload.data);
-        return state
-          .setIn(['releaseList', 'store'], action.payload.data)
-          .setIn(['releaseList', 'currentId'], action.payload.data[0].branchCode);
-      },
+      onSuccess: (state, action) => state
+        .setIn(['releaseList', 'store'], action.payload.data)
+        .setIn(['releaseList', 'currentId'], action.payload.data[0].branchCode),
     }),
     ...pender({
       type: GET_ORDER_LIST,

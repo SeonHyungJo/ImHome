@@ -25,14 +25,12 @@ const TableList = styled.div`
 const OrderListTableList = ({ orderList }) => (
   <TableList className={classNames('tbody', 'underLineDash')}>
     {orderList instanceof Array
-      && orderList.map(order => (
-        <div key={order.itemCode} className="tbodyTr">
+      && orderList.map((order, index) => (
+        <div key={`${order.itemCode}_${index}`} className="tbodyTr">
           <div className={classNames('tbodyTd')}>{order.itemName}</div>
           <div className={classNames('tbodyTd', 'text-center')}>{order.itemCount}</div>
           <div className={classNames('tbodyTd')}>
-            {`: $ ${CommonUtil.setCostFormat(
-              order.itemCost,
-            )}`}
+            {`: $ ${CommonUtil.setCostFormat(order.itemCost)}`}
           </div>
         </div>
       ))}
