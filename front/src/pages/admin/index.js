@@ -1,4 +1,6 @@
-export { default as AdminMain } from './AdminMain';
+/**
+ * 회원 관리 화면
+ */
 export { default as AdminUser } from './AdminUser';
 
 /**
@@ -12,6 +14,6 @@ export { default as AdminOrderList } from './AdminOrderList';
 export { default as AdminReleaseList } from './AdminReleaseList';
 
 /**
- * Add ReleaseList Page
+ * Add ReleaseList Page(메인 화면)
  */
 export { default as AdminProduct } from './AdminProduct';

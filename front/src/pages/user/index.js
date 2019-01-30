@@ -4,12 +4,7 @@
 export { default as UserRegister } from './UserRegister';
 
 /**
- * [사용자] 메인화면
- */
-export { default as UserMain } from './UserMain';
-
-/**
- * [사용자] 주문재고 관리
+ * [사용자] 주문재고 관리(메인 화면)
  */
 export { default as UserOrderList } from './UserOrderList';
 

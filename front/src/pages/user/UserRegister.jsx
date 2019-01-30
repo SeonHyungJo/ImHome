@@ -42,7 +42,7 @@ class UserRegister extends Component {
           return;
         }
 
-        history.push('/main');
+        history.push('/product');
         return;
       }
     } catch (error) {
