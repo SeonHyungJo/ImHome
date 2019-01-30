@@ -200,7 +200,7 @@ exports.login = (req, res) => {
 };
 
 /**
- * POST /api/check
+ * GET /api/check
  *
  * @author seonhyungjo
  * @summary 토큰 확인용 API
@@ -215,21 +215,29 @@ exports.login = (req, res) => {
 exports.check = (req, res) => {
   const token = req.headers['x-access-token'] || req.query.token;
 
-  if (!token) {
-    console.log('Dont have Token');
-    reponseError(res, 'DONT_HAVE_TOKEN');
-  }
-
-  const checkToken = new Promise((resolve, reject) => {
-    jwt.verify(token, req.app.get('jwt-secret'), (err, decoded) => {
-      if (err) reject(TOKEN_INCORRECT);
-      resolve(decoded);
+  // token의 여부확인
+  const checkToken = token => {
+    return new Promise((resolve, reject) => {
+      if (!token) {
+        console.log('Dont have Token');
+        reject(new Error('DONT_HAVE_TOKEN'));
+      }
+      resolve(token);
     });
-  });
+  };
+
+  // token 실질적 확인
+  const verifyToken = token => {
+    return new Promise((resolve, reject) => {
+      jwt.verify(token, req.app.get('jwt-secret'), (err, decoded) => {
+        if (err) reject(new Error('TOKEN_INCORRECT'));
+        resolve(decoded);
+      });
+    });
+  };
 
   const respond = token => {
-    res.json({
-      success: '0000',
+    reponseSuccess(res, {
       info: token
     });
   };
@@ -241,5 +249,8 @@ exports.check = (req, res) => {
       : reponseError(res, 'CHECK_FAIL');
   };
 
-  checkToken.then(respond).catch(onError);
+  checkToken(token)
+    .then(verifyToken)
+    .then(respond)
+    .catch(onError);
 };

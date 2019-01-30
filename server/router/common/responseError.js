@@ -64,10 +64,21 @@ const reponseErrorType = (res, type) => {
       break;
 
     //------------------------------------------------------
-    case 'NOT_LOGIN':
-      res.status(200).send({ fail: '1009' });
+
+    /**
+     * api/check 관련 에러코드
+     */
+    case 'CHECK_FAIL':
+      res.status(200).send({ fail: '0900' });
+      break;
+    case 'DONT_HAVE_TOKEN':
+      res.status(200).send({ fail: '0901' });
+      break;
+    case 'TOKEN_INCORRECT':
+      res.status(200).send({ fail: '0902' });
       break;
     //------------------------------------------------------
+
     case 'CREATE_USER_ERROR':
       res.status(200).send({ fail: '1001' });
       break;
