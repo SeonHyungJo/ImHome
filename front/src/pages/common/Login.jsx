@@ -41,7 +41,7 @@ class Login extends Component {
           return;
         }
 
-        history.push('/main');
+        history.push('/product');
         return;
       }
       return;
@@ -138,7 +138,7 @@ class Login extends Component {
         return;
       }
 
-      history.push('/main');
+      history.push('/product');
     } else {
       AuthActions.initializeForm('login');
     }
