@@ -1,6 +1,15 @@
 const reponseErrorType = (res, type) => {
   switch (type) {
+    /**
+     * 로그인관련 에러코드
+     */
     case 'LOGIN_FAIL':
+      res.status(200).send({ fail: '0100' });
+      break;
+    case 'ID_INCORRECT':
+      res.status(200).send({ fail: '0000' });
+      break;
+    case 'PASSWORD_INCORRECT':
       res.status(200).send({ fail: '0001' });
       break;
     //------------------------------------------------------

@@ -21,8 +21,6 @@ import jwt from 'jsonwebtoken';
  *     bPhoneNumber : PHONE_NUMBER,
  *     cName : COMPANY_NAME,
  *     email : EMAIL,
- *     pNumber : ???
- *     branchName : BRANCH_NAME,
  *     branchCode : BRANCH_CODE
  * }
  * 190123 수정 - 비밀번호 암호화 추가 - @update BKJang
@@ -91,6 +89,7 @@ exports.register = (req, res) => {
     });
   };
 
+  // 회원생성
   const create = cryptoInfo => {
     return new Promise(() => {
       Users.create(cryptoInfo)
@@ -102,14 +101,14 @@ exports.register = (req, res) => {
     });
   };
 
-  // run when there is an error (username exists)
+  // Error 처리
   const onError = error => {
     console.log(error.message);
-    //reponseError(res, 'REGISTER_FAIL');
-    reponseError(res, error.message);
+    error.message
+      ? reponseError(res, error.message)
+      : reponseError(res, 'REGISTER_FAIL');
   };
 
-  // 해당 아이디 복수 확인
   blankCheck(userInfo)
     .then(cryptoUserInfo)
     .then(checkUserId)
@@ -131,71 +130,81 @@ exports.register = (req, res) => {
  * }
  */
 exports.login = (req, res) => {
-  const { id, password } = req.body;
-  console.log(id);
-  const secret = req.app.get('jwt-secret');
-  let checkAdmin = false;
+  const loginInfo = req.body;
 
-  const check = user => {
-    const checkPassword = user.verify(password);
-    checkAdmin = user.checkAdmin;
-    if (checkPassword) {
-      return new Promise((resolve, reject) => {
-        jwt.sign(
-          {
-            id: user.id,
-            username: user.username,
-            branchCode: user.branchCode,
-            admin: checkAdmin
-          },
-          secret,
-          {
-            expiresIn: '30m',
-            issuer: 'imhome.com',
-            subject: 'userInfo',
-            algorithm: 'HS512'
-          },
-          (err, token) => {
-            if (err) reject(err);
-            resolve(token);
-          }
-        );
+  // 빈값 체크
+  const blankCheck = userInfo => {
+    return new Promise((resolve, reject) => {
+      Object.keys(userInfo).map(key => {
+        if (!userInfo[key]) reject(new Error(`BLANK_${key.toUpperCase()}`));
       });
-    } else {
-      throw new Error('login failed');
-    }
+
+      resolve(userInfo);
+    });
   };
 
-  const respond = token => {
-    console.log(token);
-    res.send({
-      success: '0000',
-      imhomeToken: token,
-      checkAdmin: checkAdmin
+  const checkPassword = userInfo => {
+    return new Promise((resolve, reject) => {
+      if (!userInfo) {
+        reject(new Error('ID_INCORRECT'));
+      }
+
+      const { id, username, branchCode, checkAdmin = false } = userInfo;
+      const checkPassword = userInfo.verify(loginInfo.password);
+      const secret = req.app.get('jwt-secret');
+
+      checkPassword
+        ? resolve({
+            imhomeToken: jwt.sign(
+              {
+                id,
+                username,
+                branchCode,
+                admin: checkAdmin
+              },
+              secret,
+              {
+                expiresIn: '1d',
+                issuer: 'imhome.com',
+                subject: 'lets_check_imhome_token',
+                algorithm: 'HS512'
+              }
+            ),
+            checkAdmin
+          })
+        : reject(new Error('PASSWORD_INCORRECT'));
+    });
+  };
+
+  const respond = resultObj => {
+    const { imhomeToken, checkAdmin } = resultObj;
+
+    reponseSuccess(res, {
+      imhomeToken,
+      checkAdmin
     });
   };
 
   const onError = error => {
-    console.log(error);
-    reponseError(res, 'LOGIN_FAIL');
+    console.log(error.message);
+    error.message
+      ? reponseError(res, error.message)
+      : reponseError(res, 'LOGIN_FAIL');
   };
 
-  Users.findOneByUserId(id)
-    .then(check)
+  blankCheck(loginInfo)
+    .then(loginInfo => Users.findOneByUserId(loginInfo.id))
+    .then(checkPassword)
     .then(respond)
     .catch(onError);
 };
 
-/*
-    GET /api/check
-*/
-
 /**
- * POST /api/login
+ * POST /api/check
  *
  * @author seonhyungjo
- * @summary 로그인
- * @memberof USER
+ * @summary 토큰 확인용 API
+ * @memberof ALL
  * @param
  * {
  *      id,
@@ -208,12 +217,12 @@ exports.check = (req, res) => {
 
   if (!token) {
     console.log('Dont have Token');
-    reponseError(res, 'NOT_LOGIN');
+    reponseError(res, 'DONT_HAVE_TOKEN');
   }
 
   const checkToken = new Promise((resolve, reject) => {
     jwt.verify(token, req.app.get('jwt-secret'), (err, decoded) => {
-      if (err) reject(err);
+      if (err) reject(TOKEN_INCORRECT);
       resolve(decoded);
     });
   });
@@ -227,7 +236,9 @@ exports.check = (req, res) => {
 
   const onError = error => {
     console.log(error.message);
-    reponseError(res, 'NOT_LOGIN');
+    error.message
+      ? reponseError(res, error.message)
+      : reponseError(res, 'CHECK_FAIL');
   };
 
   checkToken.then(respond).catch(onError);
