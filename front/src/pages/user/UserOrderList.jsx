@@ -12,21 +12,52 @@ import * as OrderListActions from '../../redux/modules/orderList';
 import * as CommonUtil from '../../util/commonUtil';
 
 class AdminOrderList extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    const leftNavList = [
+      {
+        branchCode: '001',
+        branchName: '아임홈',
+      },
+    ];
+
+    this.state = {
+      store: leftNavList,
+      currentId: '001',
+    };
   }
 
-  async componentDidMount() {}
+  async componentDidMount() {
+    await this.getNavData();
+  }
+
+  // 리스트 클릭시 상세 주문내역 가져오기
+  getNavData = async () => {
+    try {
+      const { OrderListActions } = this.props;
+
+      OrderListActions.getOrderData();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   render() {
-    const { store, currentOrder, currentId } = this.props;
+    const { store, currentId } = this.state;
+    const { currentOrder } = this.props;
+
+    console.log(currentOrder);
+    const orderListProps = {
+      headerName: 'Your Order',
+      orderList: currentOrder && currentOrder.items ? currentOrder.items : '',
+    };
+
+    console.log(orderListProps);
+
     return (
       <PageTemplate role="user" navData={store} id={currentId} clickNav={this.getNavData}>
-        <OrderListTable
-          headerName="Your Order"
-          orderList={currentOrder.items}
-          clickComplete={this.setComplete}
-        />
+        <OrderListTable {...orderListProps} />
       </PageTemplate>
     );
   }
