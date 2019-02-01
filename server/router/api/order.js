@@ -125,7 +125,6 @@ router.get('/order/:branchCode?', function(req, res) {
   const branchCode = req.decoded.admin
     ? req.params.branchCode
     : req.decoded.branchCode;
-  console.log(branchCode);
 
   Stores.find({ branchCode })
     .then(store => {
