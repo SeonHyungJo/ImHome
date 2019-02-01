@@ -2,7 +2,7 @@ import express from 'express';
 const Stores = require('../../models/stores');
 const Users = require('../../models/users');
 const reponseError = require('../common/responseError');
-const authMiddleware = require('../../middlewares/auth');
+const authMiddleware = require('../middlewares/auth');
 
 export let router = express.Router();
 
@@ -24,15 +24,15 @@ export let router = express.Router();
  * @returns [{branchCode, branchName}, {branchCode, branchName}]
  */
 router.get('/store/list', function(req, res) {
-    Stores.findAll()
-        .then(store => {
-            if (!store) throw new Error("Can't find stores");
-            res.status(200).send(store);
-        })
-        .catch(err => {
-            console.log(err);
-            reponseError(res, 'NOT_FIND_ODER');
-        });
+  Stores.findAll()
+    .then(store => {
+      if (!store) throw new Error("Can't find stores");
+      res.status(200).send(store);
+    })
+    .catch(err => {
+      console.log(err);
+      reponseError(res, 'NOT_FIND_ODER');
+    });
 });
 
 /**
@@ -47,21 +47,23 @@ router.get('/store/list', function(req, res) {
  * @returns {storeId, userId}
  */
 router.get('/store/first', function(req, res) {
-    Stores.findAll()
-        .then(store => {
-            if (!store) throw new Error("Can't find stores");
-            Users.findOneByBranchCode(store[0].branchCode)
-                .then(users => {
-                    res.status(200).send({ storeId: store[0].branchCode, userId: users[0]._id });
-                })
-                .catch(err => {
-                    res.status(200).send({ storeId: store[0].branchCode, userId: '' });
-                });
+  Stores.findAll()
+    .then(store => {
+      if (!store) throw new Error("Can't find stores");
+      Users.findOneByBranchCode(store[0].branchCode)
+        .then(users => {
+          res
+            .status(200)
+            .send({ storeId: store[0].branchCode, userId: users[0]._id });
         })
         .catch(err => {
-            console.log(err);
-            reponseError(res, 'NOT_FIND_ODER');
+          res.status(200).send({ storeId: store[0].branchCode, userId: '' });
         });
+    })
+    .catch(err => {
+      console.log(err);
+      reponseError(res, 'NOT_FIND_ODER');
+    });
 });
 
 /**
@@ -76,14 +78,14 @@ router.get('/store/first', function(req, res) {
  * @returns «Query»
  */
 router.post('/store', function(req, res) {
-    Stores.create(req.body)
-        .then(store => {
-            res.status(200).send({ success: '0000' });
-        })
-        .catch(err => {
-            console.log(err);
-            reponseError(res, 'UPDATE_ODER_ERROR');
-        });
+  Stores.create(req.body)
+    .then(store => {
+      res.status(200).send({ success: '0000' });
+    })
+    .catch(err => {
+      console.log(err);
+      reponseError(res, 'UPDATE_ODER_ERROR');
+    });
 });
 
 /**
@@ -99,15 +101,15 @@ router.post('/store', function(req, res) {
  * @returns «Query»
  */
 router.put('/store/:branchCode', function(req, res) {
-    Stores.findOneAndUpdateNew(req.params.branchCode, req.body)
-        .then(store => {
-            if (!store) throw new Error("Can't find branchCode");
-            res.status(200).send({ success: '0000' });
-        })
-        .catch(err => {
-            console.log(err);
-            reponseError(res, 'UPDATE_ODER_ERROR');
-        });
+  Stores.findOneAndUpdateNew(req.params.branchCode, req.body)
+    .then(store => {
+      if (!store) throw new Error("Can't find branchCode");
+      res.status(200).send({ success: '0000' });
+    })
+    .catch(err => {
+      console.log(err);
+      reponseError(res, 'UPDATE_ODER_ERROR');
+    });
 });
 
 /**
@@ -122,16 +124,16 @@ router.put('/store/:branchCode', function(req, res) {
  * @returns «Query»
  */
 router.delete('/store/:branchCode', function(req, res) {
-    Stores.findStoreByBranchcode(req.params.branchCode)
-        .then(store => {
-            if (!store) throw new Error("Can't find branchCode");
-            return Stores.deleteByBranchCode(req.params.branchCode);
-        })
-        .then(() => {
-            res.status(200).send({ success: '0000' });
-        })
-        .catch(err => {
-            console.log(err);
-            reponseError(res, 'DELETE_ODER_ERROR');
-        });
+  Stores.findStoreByBranchcode(req.params.branchCode)
+    .then(store => {
+      if (!store) throw new Error("Can't find branchCode");
+      return Stores.deleteByBranchCode(req.params.branchCode);
+    })
+    .then(() => {
+      res.status(200).send({ success: '0000' });
+    })
+    .catch(err => {
+      console.log(err);
+      reponseError(res, 'DELETE_ODER_ERROR');
+    });
 });
