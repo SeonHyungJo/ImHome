@@ -94,8 +94,8 @@ class App extends PureComponent {
   }
 
   componentWillUnmount() {
-    // localStorage.removeItem('accessToken');
-    // localStorage.removeItem('checkAdmin');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('checkAdmin');
   }
 }
 
