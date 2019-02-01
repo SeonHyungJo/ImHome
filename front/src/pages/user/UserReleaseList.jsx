@@ -8,7 +8,6 @@ import { ViewForRelease, TableWithScroll } from '../../component/releaseList';
 import { FormBtn } from '../../component/common';
 import * as ReleaseActions from '../../redux/modules/releaseList';
 import * as CommonUtil from '../../util/commonUtil';
-import { ReactToPrint } from '../../component/external';
 
 class AdminReleaseList extends Component {
   constructor(props) {
