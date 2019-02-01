@@ -11,8 +11,8 @@ import * as CommonUtil from '../../util/commonUtil';
 import { ReactToPrint } from '../../component/external';
 
 class AdminReleaseList extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     const headerData = [
       {
@@ -32,7 +32,7 @@ class AdminReleaseList extends Component {
         },
       },
       { id: 'branchName', numeric: false, label: '거래처' },
-      { id: 'bNumber', numeric: false, label: '거래명세표 발행건수' },
+      { id: 'bNumber', numeric: false, label: '주문건수' },
       { id: 'totalDealCost', numeric: true, label: '거래금액(원)' },
     ];
 
@@ -45,15 +45,23 @@ class AdminReleaseList extends Component {
 
     const radioBtnSetting = {
       name: 'searchType', // 동일한 타입이 들어가고
-      value: ['all', 'part', 'tax', 'trade'], // 4개의 value를 만들고
-      text: ['전체내역', '선택내역', '세금계산서', '거래명세표'], // 4개의 value를 만들고
+      value: ['all'], // 사용자는 일단 1개로 진행 추가될 수 있음
+      text: ['전체내역'], // 사용자는 일단 1개로 진행 추가될 수 있음
     };
+
+    const leftNavList = [
+      {
+        branchCode: '001',
+        branchName: '아임홈',
+      },
+    ];
 
     this.state = {
       custNo: 1,
       headerData,
       searchingData,
       radioBtnSetting,
+      store: leftNavList,
     };
   }
 
@@ -127,15 +135,16 @@ class AdminReleaseList extends Component {
   };
 
   render() {
-    const { searchingData, radioBtnSetting } = this.state;
+    const { store, searchingData, radioBtnSetting } = this.state;
     const {
-      store, list, currentId, custNo, startDate, endDate,
+      list, currentId, custNo, startDate, endDate,
     } = this.props;
+
     return (
-      <PageTemplate role="user" navData={store} id={currentId} clickNav={this.getNavData}>
+      <PageTemplate role="user" navData={store} id={currentId}>
         <ViewForRelease
           type="date"
-          viewTitle="출고내역 및 세금계산서 발행내역 조회"
+          viewTitle="주문내역조회"
           searchingData={searchingData}
           radioBtnSetting={radioBtnSetting}
           radioClick={this.changeSearchTerm}
@@ -161,7 +170,7 @@ class AdminReleaseList extends Component {
           gridTitle="조회내용"
           clickRow={this.getRowData}
           id={custNo}
-          bottom={['Total', '', '', '총 발행건수', this.getTotalCost(list)]}
+          bottom={['Total', '', '', '총 주문건수', this.getTotalCost(list)]}
           ref={el => (this.componentRef = el)}
         />
       </PageTemplate>
