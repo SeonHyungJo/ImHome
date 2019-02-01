@@ -61,13 +61,11 @@ class AdminReleaseList extends Component {
       searchingData,
       radioBtnSetting,
       store: leftNavList,
+      currentId: '001',
     };
   }
 
   async componentDidMount() {
-    const { ReleaseActions } = this.props;
-
-    await ReleaseActions.getStoreList();
     await this.getNavData();
   }
 
@@ -86,24 +84,13 @@ class AdminReleaseList extends Component {
     }
   };
 
-  // 리스트 클릭시 주문내역 리스트 가져오기
-  getNavData = async (id) => {
+  getNavData = async () => {
     try {
-      const { ReleaseActions, currentId } = this.props;
-
-      // 선택한 지점 주문내역 불러오기
-      await ReleaseActions.getOrderList(id || currentId);
-      await ReleaseActions.updateCurrentId(id || currentId);
+      const { ReleaseActions } = this.props;
+      await ReleaseActions.getOrderList();
     } catch (e) {
       console.log(e);
     }
-  };
-
-  getRowData = async (changeNo) => {
-    const { ReleaseActions } = this.props;
-
-    await ReleaseActions.updateCustNo(changeNo);
-    // await ReleaseActions.getOrderData(changeNo);
   };
 
   getTotalCost = (list) => {
@@ -134,9 +121,11 @@ class AdminReleaseList extends Component {
   };
 
   render() {
-    const { store, searchingData, radioBtnSetting } = this.state;
     const {
-      list, currentId, custNo, startDate, endDate,
+      store, currentId, searchingData, radioBtnSetting,
+    } = this.state;
+    const {
+      list, custNo, startDate, endDate,
     } = this.props;
 
     return (
@@ -184,7 +173,6 @@ export default connect(
     store: state.releaseList.getIn(['releaseList', 'store']),
     startDate: state.releaseList.getIn(['releaseList', 'startDate']),
     endDate: state.releaseList.getIn(['releaseList', 'endDate']),
-    currentId: state.releaseList.getIn(['releaseList', 'currentId']),
     custNo: state.releaseList.getIn(['releaseList', 'custNo']),
     error: state.releaseList.getIn(['releaseList', 'error']),
     result: state.releaseList.get('result'),
