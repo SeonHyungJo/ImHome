@@ -2,7 +2,7 @@ import express from 'express';
 const Orders = require('../../models/orders');
 const Stores = require('../../models/stores');
 const reponseError = require('../common/responseError');
-const authMiddleware = require('../../middlewares/auth');
+const authMiddleware = require('../middlewares/auth');
 
 export let router = express.Router();
 

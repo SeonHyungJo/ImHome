@@ -1,13 +1,13 @@
 import express from 'express';
 const Companys = require('../../models/companys');
 const reponseError = require('../common/responseError');
-const authMiddleware = require('../../middlewares/auth');
+const authMiddleware = require('../middlewares/auth');
 
 export let router = express.Router();
 
 router.use('/company', function timeLog(req, res, next) {
-    console.log('Time: ', Date.now());
-    next();
+  console.log('Time: ', Date.now());
+  next();
 });
 //router.use('/', authMiddleware);
 
@@ -23,15 +23,15 @@ router.use('/company', function timeLog(req, res, next) {
  * @returns [{companyCode, companyName}, {companyCode, companyName}]
  */
 router.get('/company/list', function(req, res) {
-    Companys.findAll()
-        .then(company => {
-            if (!company) throw new Error("Can't find companys");
-            res.status(200).send(company);
-        })
-        .catch(err => {
-            console.log(err);
-            reponseError(res, 'NOT_FIND_ODER');
-        });
+  Companys.findAll()
+    .then(company => {
+      if (!company) throw new Error("Can't find companys");
+      res.status(200).send(company);
+    })
+    .catch(err => {
+      console.log(err);
+      reponseError(res, 'NOT_FIND_ODER');
+    });
 });
 
 /**
@@ -46,14 +46,14 @@ router.get('/company/list', function(req, res) {
  * @returns «Query»
  */
 router.post('/company', function(req, res) {
-    Companys.create(req.body)
-        .then(company => {
-            res.status(200).send({ success: '0000' });
-        })
-        .catch(err => {
-            console.log(err);
-            reponseError(res, 'UPDATE_ODER_ERROR');
-        });
+  Companys.create(req.body)
+    .then(company => {
+      res.status(200).send({ success: '0000' });
+    })
+    .catch(err => {
+      console.log(err);
+      reponseError(res, 'UPDATE_ODER_ERROR');
+    });
 });
 
 /**
@@ -69,15 +69,15 @@ router.post('/company', function(req, res) {
  * @returns «Query»
  */
 router.put('/company/:companyCode', function(req, res) {
-    Companys.findOneAndUpdateNew(req.params.companyCode, req.body)
-        .then(company => {
-            if (!company) throw new Error("Can't find companyCode");
-            res.status(200).send({ success: '0000' });
-        })
-        .catch(err => {
-            console.log(err);
-            reponseError(res, 'UPDATE_ODER_ERROR');
-        });
+  Companys.findOneAndUpdateNew(req.params.companyCode, req.body)
+    .then(company => {
+      if (!company) throw new Error("Can't find companyCode");
+      res.status(200).send({ success: '0000' });
+    })
+    .catch(err => {
+      console.log(err);
+      reponseError(res, 'UPDATE_ODER_ERROR');
+    });
 });
 
 /**
@@ -92,16 +92,16 @@ router.put('/company/:companyCode', function(req, res) {
  * @returns «Query»
  */
 router.delete('/company/:companyCode', function(req, res) {
-    Companys.findCompanyByCompanycode(req.params.companyCode)
-        .then(company => {
-            if (!company) throw new Error("Can't find companyCode");
-            return Companys.deleteByCompanyCode(req.params.companyCode);
-        })
-        .then(() => {
-            res.status(200).send({ success: '0000' });
-        })
-        .catch(err => {
-            console.log(err);
-            reponseError(res, 'DELETE_ODER_ERROR');
-        });
+  Companys.findCompanyByCompanycode(req.params.companyCode)
+    .then(company => {
+      if (!company) throw new Error("Can't find companyCode");
+      return Companys.deleteByCompanyCode(req.params.companyCode);
+    })
+    .then(() => {
+      res.status(200).send({ success: '0000' });
+    })
+    .catch(err => {
+      console.log(err);
+      reponseError(res, 'DELETE_ODER_ERROR');
+    });
 });
