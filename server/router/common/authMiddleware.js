@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-import reponseError from '../common/responseError';
+import reponseError from './responseError';
 
 const authMiddleware = (req, res, next) => {
   const token = req.headers['x-access-token'] || req.query.token;

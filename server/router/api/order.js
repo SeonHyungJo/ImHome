@@ -1,20 +1,8 @@
-import express from 'express';
 const Orders = require('../../models/orders');
 const Stores = require('../../models/stores');
 const reponseError = require('../common/responseError');
-const authMiddleware = require('../middlewares/auth');
-
-export let router = express.Router();
-
-router.use('/order', function timeLog(req, res, next) {
-  console.log('Time: ', Date.now());
-  next();
-});
-router.use('/order', authMiddleware);
 
 /**
- * GET /api/order
- *
  * @author seonhyungjo
  * @summary 모든 주문내역 조회
  * @private
@@ -36,8 +24,6 @@ router.use('/order', authMiddleware);
 // });
 
 /**
- * GET /api/order/list/:branchCode
- *
  * @author seonhyungjo
  * @summary 모든 주문내역 조회
  * @private
@@ -46,7 +32,8 @@ router.use('/order', authMiddleware);
  * @see None
  * @returns «Query»
  */
-router.get('/order/list/:branchCode?', function(req, res) {
+
+exports.getAllOrderList = (req, res) => {
   const branchCode = req.decoded.admin
     ? req.params.branchCode
     : req.decoded.branchCode;
@@ -60,7 +47,7 @@ router.get('/order/list/:branchCode?', function(req, res) {
       console.log(err);
       reponseError(res, 'NOT_FIND_ODER');
     });
-});
+};
 
 /**
  * GET /api/order/branch/incomplete
@@ -73,7 +60,7 @@ router.get('/order/list/:branchCode?', function(req, res) {
  * @see None
  * @returns «Query»
  */
-router.get('/order/branch/incomplete', function(req, res) {
+exports.getIncompleteBranchList = (req, res) => {
   Orders.findInCompleteBranches()
     .then(branchList => {
       if (!branchList) throw new Error('branch not found');
@@ -83,7 +70,7 @@ router.get('/order/branch/incomplete', function(req, res) {
       console.log(err);
       reponseError(res, 'NOT_FIND_BRANCH');
     });
-});
+};
 
 /**
  * GET /api/order/branch/complete
@@ -97,7 +84,7 @@ router.get('/order/branch/incomplete', function(req, res) {
  * @returns «Query»
  * @deprecated
  */
-router.get('/order/branch/complete', function(req, res) {
+exports.getCompleteBranchList = (req, res) => {
   // Orders.findCompleteBranches()
   //     .then(branchList => {
   //         if (!branchList) throw new Error('branch not found');
@@ -108,20 +95,20 @@ router.get('/order/branch/complete', function(req, res) {
   //         reponseError(res, 'NOT_FIND_BRANCH');
   //     });
   reponseError(res, 'NOT_FIND_BRANCH');
-});
+};
 
 /**
  * GET /api/order/:branchCode
  *
  * @author seonhyungjo
- * @summary 출고되지 않은 해당 지점 주문내역 조회
+ * @summary 출고되지 않은 지점 주문내역 조회
  * @private
  * @memberof Admin, User
  * @param
  * @see None
  * @returns «Query»
  */
-router.get('/order/:branchCode?', function(req, res) {
+exports.getOrderList = (req, res) => {
   const branchCode = req.decoded.admin
     ? req.params.branchCode
     : req.decoded.branchCode;
@@ -143,7 +130,7 @@ router.get('/order/:branchCode?', function(req, res) {
       console.log(err);
       reponseError(res, 'NOT_FIND_ODER');
     });
-});
+};
 
 /**
  * POST /api/order
@@ -156,7 +143,7 @@ router.get('/order/:branchCode?', function(req, res) {
  * @see None
  * @returns «Query»
  */
-router.post('/order', (req, res) => {
+exports.updateOrderList = (req, res) => {
   Stores.findStoreByBranchcode(req.body.branchCode)
     .then(store => {
       // branchName을 잘못 넣을 것을 대비해서 만듬
@@ -182,7 +169,7 @@ router.post('/order', (req, res) => {
       console.log(err);
       reponseError(res, 'CREATE_ODER_ERROR');
     });
-});
+};
 
 /**
  * PUT /api/order/complete/:branchCode
@@ -195,7 +182,7 @@ router.post('/order', (req, res) => {
  * @see None
  * @returns «Query»
  */
-router.put('/order/complete/:branchCode', (req, res) => {
+exports.setComplete = (req, res) => {
   Orders.findInCompleteOrderByBranchcode(req.params.branchCode)
     .then(order => {
       if (order.length == 0) {
@@ -211,20 +198,20 @@ router.put('/order/complete/:branchCode', (req, res) => {
       console.log(err);
       reponseError(res, 'AREADY_COMPLETE');
     });
-});
+};
 
 /**
  * DELETE /api/order/:_id
  *
  * @author seonhyungjo
- * @summary 지점별 출고완료 처리하기
+ * @summary 해당 주문 삭제
  * @private
  * @memberof Admin
  * @param
  * @see None
  * @returns «Query»
  */
-router.delete('/order/:_id', (req, res) => {
+exports.deleteOrderList = (req, res) => {
   Orders.deleteByBranchCode(req.params._id)
     .then(() => {
       res.status(200).send({ success: '0000' });
@@ -233,4 +220,4 @@ router.delete('/order/:_id', (req, res) => {
       console.log(err);
       reponseError(res, 'DELETE_ODER_ERROR');
     });
-});
+};

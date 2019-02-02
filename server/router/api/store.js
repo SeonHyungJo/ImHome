@@ -1,16 +1,6 @@
-import express from 'express';
 const Stores = require('../../models/stores');
 const Users = require('../../models/users');
 const reponseError = require('../common/responseError');
-const authMiddleware = require('../middlewares/auth');
-
-export let router = express.Router();
-
-// router.use('/store', function timeLog(req, res, next) {
-//     console.log('Time: ', Date.now());
-//     next();
-// });
-//router.use('/', authMiddleware);
 
 /**
  * GET /api/store/list
@@ -23,7 +13,7 @@ export let router = express.Router();
  * @see None
  * @returns [{branchCode, branchName}, {branchCode, branchName}]
  */
-router.get('/store/list', function(req, res) {
+exports.getAllStore = (req, res) => {
   Stores.findAll()
     .then(store => {
       if (!store) throw new Error("Can't find stores");
@@ -33,7 +23,7 @@ router.get('/store/list', function(req, res) {
       console.log(err);
       reponseError(res, 'NOT_FIND_ODER');
     });
-});
+};
 
 /**
  * GET /api/store/first
@@ -46,7 +36,7 @@ router.get('/store/list', function(req, res) {
  * @see None
  * @returns {storeId, userId}
  */
-router.get('/store/first', function(req, res) {
+exports.getFirstStore = (req, res) => {
   Stores.findAll()
     .then(store => {
       if (!store) throw new Error("Can't find stores");
@@ -64,7 +54,7 @@ router.get('/store/first', function(req, res) {
       console.log(err);
       reponseError(res, 'NOT_FIND_ODER');
     });
-});
+};
 
 /**
  * POST /api/store
@@ -77,7 +67,7 @@ router.get('/store/first', function(req, res) {
  * @see None
  * @returns «Query»
  */
-router.post('/store', function(req, res) {
+exports.addStore = (req, res) => {
   Stores.create(req.body)
     .then(store => {
       res.status(200).send({ success: '0000' });
@@ -86,7 +76,7 @@ router.post('/store', function(req, res) {
       console.log(err);
       reponseError(res, 'UPDATE_ODER_ERROR');
     });
-});
+};
 
 /**
  * PUT /api/store/:branchCode
@@ -100,7 +90,7 @@ router.post('/store', function(req, res) {
  * @see None
  * @returns «Query»
  */
-router.put('/store/:branchCode', function(req, res) {
+exports.updateStore = (req, res) => {
   Stores.findOneAndUpdateNew(req.params.branchCode, req.body)
     .then(store => {
       if (!store) throw new Error("Can't find branchCode");
@@ -110,7 +100,7 @@ router.put('/store/:branchCode', function(req, res) {
       console.log(err);
       reponseError(res, 'UPDATE_ODER_ERROR');
     });
-});
+};
 
 /**
  * DELETE /api/store/:branchCode
@@ -123,7 +113,7 @@ router.put('/store/:branchCode', function(req, res) {
  * @see None
  * @returns «Query»
  */
-router.delete('/store/:branchCode', function(req, res) {
+exports.deleteStore = (req, res) => {
   Stores.findStoreByBranchcode(req.params.branchCode)
     .then(store => {
       if (!store) throw new Error("Can't find branchCode");
@@ -136,4 +126,4 @@ router.delete('/store/:branchCode', function(req, res) {
       console.log(err);
       reponseError(res, 'DELETE_ODER_ERROR');
     });
-});
+};
