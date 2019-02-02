@@ -1,7 +1,7 @@
 import express from 'express';
 const Companys = require('../../models/companys');
 const reponseError = require('../common/responseError');
-const authMiddleware = require('../middlewares/auth');
+const authMiddleware = require('../common/authMiddleware');
 
 export let router = express.Router();
 

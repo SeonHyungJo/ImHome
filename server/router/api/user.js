@@ -1,9 +1,6 @@
-import express from 'express';
 const Users = require('../../models/users');
 const reponseError = require('../common/responseError');
 const crypto = require('../common/cryptoModule');
-
-export const router = express.Router();
 
 /**
  * GET /api/user
@@ -16,7 +13,7 @@ export const router = express.Router();
  * @see None
  * @returns userList
  */
-router.get('/user', function(req, res) {
+exports.getAllUser = (req, res) => {
   Users.findAll()
     .then(user => {
       if (!user) throw new Error("Can't find users");
@@ -32,7 +29,7 @@ router.get('/user', function(req, res) {
       console.log(err);
       reponseError(res, 'NOT_FIND_USER');
     });
-});
+};
 
 /**
  * GET /api/user/:_id
@@ -45,7 +42,7 @@ router.get('/user', function(req, res) {
  * @see None
  * @returns user
  */
-router.get('/user/:_id', function(req, res) {
+exports.getUser = (req, res) => {
   Users.findOneById(req.params._id)
     .then(user => {
       if (!user) throw new Error("Can't find user");
@@ -58,7 +55,7 @@ router.get('/user/:_id', function(req, res) {
       console.log(err);
       reponseError(res, 'NOT_FIND_USER');
     });
-});
+};
 
 /**
  * GET /api/user/list/:branchCode
@@ -71,7 +68,7 @@ router.get('/user/:_id', function(req, res) {
  * @see None
  * @returns userList
  */
-router.get('/user/list/:branchCode', function(req, res) {
+exports.getUserInStore = (req, res) => {
   Users.findOneByBranchCode(req.params.branchCode)
     .then(user => {
       if (!user) {
@@ -89,7 +86,7 @@ router.get('/user/list/:branchCode', function(req, res) {
       console.log(err);
       reponseError(res, 'NOT_FIND_USER');
     });
-});
+};
 
 /**
  * PUT /api/user/:_id
@@ -103,7 +100,7 @@ router.get('/user/list/:branchCode', function(req, res) {
  * @see None
  * @returns
  */
-router.put('/user/:_id', (req, res) => {
+exports.updateUser = (req, res) => {
   const userInfo = crypto.cryptoUserInfo(req.body);
   Users.updateById(req.params._id, userInfo)
     .then(user => {
@@ -114,7 +111,7 @@ router.put('/user/:_id', (req, res) => {
       console.log(err);
       reponseError(res, 'UPDATE_USER_ERROR');
     });
-});
+};
 
 /**
  * DELETE /api/user/:_id
@@ -127,7 +124,7 @@ router.put('/user/:_id', (req, res) => {
  * @see None
  * @returns
  */
-router.delete('/user/:_id', (req, res) => {
+exports.deleteUser = (req, res) => {
   Users.deleteById(req.params._id)
     .then(user => {
       if (!user) throw new Error("Can't find _id");
@@ -137,4 +134,4 @@ router.delete('/user/:_id', (req, res) => {
       console.log(err);
       reponseError(res, 'DELETE_USER_ERROR');
     });
-});
+};

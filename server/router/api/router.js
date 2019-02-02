@@ -1,16 +1,10 @@
 let routers = [];
 
 // module을 불러와 routers에 푸쉬한다.
-import { router as user } from './user';
 import { router as product } from './product';
-import { router as order } from './order';
-import { router as store } from './store';
 import { router as company } from './company';
 
-routers.push(user);
 routers.push(product);
-routers.push(order);
-routers.push(store);
 routers.push(company);
 
 // 추후 이런방식으로 가고싶은데 에러남 => Schema hasn't been registered for model "users"가 order.js에서 에러
