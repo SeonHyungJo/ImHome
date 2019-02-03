@@ -108,6 +108,13 @@ class AdminReleaseList extends Component {
     );
   };
 
+  getRowData = async (changeNo) => {
+    const { ReleaseActions } = this.props;
+
+    await ReleaseActions.updateCustNo(changeNo);
+    // await ReleaseActions.getOrderData(changeNo);
+  };
+
   handleChangeStartDate = (newDate) => {
     const { ReleaseActions } = this.props;
 
@@ -158,7 +165,7 @@ class AdminReleaseList extends Component {
           gridTitle="조회내용"
           clickRow={this.getRowData}
           id={custNo}
-          bottom={['Total', '', '', '총 주문건수', this.getTotalCost(list)]}
+          bottom={['Total', '', '', '총 주문건수', this.getTotalCost(list)]} w
           ref={el => (this.componentRef = el)}
         />
       </PageTemplate>
