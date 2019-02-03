@@ -28,7 +28,7 @@ const ContentWrapper = styled.div`
             flex-direction: column;
             justify-content: center;
             width: 70%;
-            margin-left: 0.5rem;
+            margin-left: 1rem;
             .name {
                 font-weight: bold;
                 margin-bottom: 0.5rem;
