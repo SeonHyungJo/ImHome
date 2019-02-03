@@ -11,7 +11,6 @@ import logger from 'morgan';
 import cors from 'cors';
 
 // api uri
-import routers from './router/api/router';
 import apiRouter from './router/api';
 import { Excel } from './router/external';
 
@@ -50,7 +49,6 @@ mongoose
 app.get('/excel', Excel);
 
 // SETTING TO API
-routers.map(router => app.use('/api', router));
 app.use('/api', apiRouter);
 
 app.listen(port, function() {

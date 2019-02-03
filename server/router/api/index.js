@@ -3,6 +3,7 @@ import Auth from './auth';
 import User from './user';
 import Store from './store';
 import Order from './order';
+import Product from './product';
 
 // Import AuthMiddleware
 import AuthMiddleware from '../common/authMiddleware';
@@ -44,5 +45,15 @@ router.get('/order/:branchCode?', Order.getOrderList);
 router.post('/order', Order.updateOrderList);
 router.put('/order/complete/:branchCode', Order.setComplete);
 router.delete('/order/:_id', Order.deleteOrderList);
+
+// Product & Item API
+router.get('/products', Product.getAllProducts);
+router.get('/product/:companyCode', Product.getProduct);
+router.post('/product/:companyCode/item', Product.createItem);
+router.delete('/product/:companyCode/item', Product.deleteItem);
+router.put('/product/:companyCode/item', Product.updateItem);
+// Product API
+router.post('/product', Product.createProduct);
+router.delete('/product/:productId', Product.deleteProduct);
 
 module.exports = router;
