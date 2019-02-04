@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { PageTemplate } from '../../component/template';
-import { Product } from '../../component/product';
+import { OrderProduct } from '../../component/orderProduct';
+import { OrderListTable } from '../../component/orderList';
 import * as ProductListActions from '../../redux/modules/productList';
 
-class AdminProduct extends Component {
+class UserProduct extends Component {
   constructor() {
     super();
 
@@ -56,7 +57,7 @@ class AdminProduct extends Component {
         id={this.state.companyCode}
         clickNav={this.getNavData}
       >
-        <Product />
+        <OrderProduct />
       </PageTemplate>
     );
   }
@@ -69,4 +70,4 @@ export default connect(
   dispatch => ({
     ProductListActions: bindActionCreators(ProductListActions, dispatch),
   }),
-)(AdminProduct);
+)(UserProduct);
