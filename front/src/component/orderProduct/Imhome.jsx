@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ProductListActions from '../../redux/modules/productList';
 import Category from './Category';
+import { OrderListTable } from '../orderList';
 // import { AlertPopup } from '../../component/common';
 // import PopDeleteConfirm from './PopDeleteConfirm';
 
@@ -67,7 +68,7 @@ const ContentWrapper = styled.div`
 
 const MainContainer = styled.div`
   padding: 10px 0px 0px 10px;
-  width: 32.5vw;
+  width: 37.5vw;
   height: 75vh;
   overflow: hidden;
 
@@ -88,7 +89,7 @@ const MainContainer = styled.div`
 `;
 
 const ProductFormContainer = styled.div`
-  width: 42.5vw;
+  width: 37.5vw;
   height: 75vh;
   background-color: white;
   padding: 10px;
@@ -132,56 +133,7 @@ const Button = styled.button`
   font-weight: bold;
 `;
 
-const Table = styled.table`
-  border-top: 2px solid #fe4c8d;
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 1rem;
-  color: #333;
-  table-layout: fixed;
-  border-spacing: 0;
-  th {
-    text-align: center;
-    border-right: 1px solid #e0e0e0;
-    border-bottom: 1px solid #e0e0e0;
-    background: #fafafa;
-    height: 35px;
-    line-height: 18px;
-    color: #666666;
-    font-size: 1rem;
-    padding: 5px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-  }
-  td {
-    border-right: 1px solid #e0e0e0;
-    border-bottom: 1px solid #e0e0e0;
-    padding: 5px;
-    line-height: 22px;
-    color: #666666;
-    font-size: 0.9rem;
-    height: 30px;
-    box-sizing: border-box;
-    letter-spacing: -0.04em;
-  }
-  .itemOn {
-    background-color: #fe4c8d;
-  }
-  .itemOn > td {
-    color: #ffffff;
-  }
-  .checkboxTd {
-    width: 7%;
-  }
-  .tableAlignCenter {
-    text-align: center;
-  }
 
-  .tableAlignRight {
-    text-align: right;
-  }
-`;
 class Imhome extends Component {
   constructor(props) {
     super(props);
@@ -223,7 +175,9 @@ class Imhome extends Component {
             <div />
           )}
         </MainContainer>
-        <ProductFormContainer>1</ProductFormContainer>
+        <ProductFormContainer>
+          <OrderListTable />
+        </ProductFormContainer>
       </ContentWrapper>
     );
   }

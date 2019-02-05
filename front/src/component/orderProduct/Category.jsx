@@ -13,6 +13,7 @@ const ProductComponent = styled.div`
   .category {
     display: flex;
     justify-content: space-between;
+    width: 100%;
     margin: 10px 10px 0px 0px;
     padding: 0px 0px 0px 0px;
     height: 6rem;
