@@ -20,32 +20,36 @@ const ContentWrapper = styled.div`
 
 const MainContainer = styled.div`
     padding: 10px 0px 0px 10px;
-    width: 32.5vw;
+    width: 36vw;
     height: 75vh;
     overflow: hidden;
-
-    .itemFooterContainer {
-        padding: 0px 0px 10px 0px;
-        width: 100%;
-        display: flex;
-        // border: solid 1px black;
-        position: static;
-        bottom: 0;
-        height: 10%;
+    .clicked {
+        background-color: #363636;
+        color: #ffffff;
     }
-
-    .itemContainer {
+    .productComponent {
         overflow-y: auto;
-        height: 85%;
+        min-height: 65vh;
+        max-height: 65vh;
     }
 `;
 
 const ProductFormContainer = styled.div`
-    width: 42.5vw;
+    padding: 10px 0px 0px 10px;
+    width: 39vw;
     height: 75vh;
-    background-color: white;
-    padding: 10px;
     overflow: hidden;
+
+    .tableTitle {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        width: 100%
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
 `;
 
 const TableButton = styled.button`
@@ -72,7 +76,7 @@ const Table = styled.table`
     border-spacing: 0;
     th {
         text-align: center;
-        border-right: 1px solid #e0e0e0;
+        border-right: 0px solid #e0e0e0;
         border-bottom: 1px solid #e0e0e0;
         background: #fafafa;
         height: 35px;
@@ -85,7 +89,7 @@ const Table = styled.table`
         box-sizing: border-box;
     }
     td {
-        border-right: 1px solid #e0e0e0;
+        border-right: 0px solid #e0e0e0;
         border-bottom: 1px solid #e0e0e0;
         padding: 5px;
         line-height: 22px;
@@ -94,6 +98,9 @@ const Table = styled.table`
         height: 30px;
         box-sizing: border-box;
         letter-spacing: -0.04em;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
     .itemOn {
         background-color: #fe4c8d;
@@ -375,7 +382,7 @@ class DefaultProduct extends Component {
         return (
             <ContentWrapper>
                 <MainContainer>
-                    <div className={'itemContainer'}>
+                    <div className={'productComponent'}>
                         <Table>
                             <tbody>
                                 <tr>
@@ -512,7 +519,7 @@ class DefaultProduct extends Component {
                         </Table>
                     </div>
                     <hr />
-                    <div className={'itemFooterContainer'}>
+                    <div className={'footerContainer'}>
                         <Button onClick={() => this._newItem('newItem')}>품목추가</Button>
                         <Button onClick={() => this._deleteItem('item')}>품목삭제</Button>
                     </div>

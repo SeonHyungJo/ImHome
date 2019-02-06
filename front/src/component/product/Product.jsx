@@ -7,43 +7,43 @@ import DefaultProduct from './DefaultProduct';
 import * as ProductListActions from '../../redux/modules/productList';
 
 const Header = styled.div`
-    color: black;
-    padding: 10px 10px 0px 10px;
-    margin: 10px 0px 0px 10px;
-    font-size: 1.5rem;
-    font-wight: bold;
+  color: black;
+  padding: 10px 10px 0px 10px;
+  margin: 10px 0px 0px 10px;
+  font-size: 1.5rem;
+  font-weight: 800;
 `;
 
 class Product extends Component {
-    render() {
-        const { form } = this.props;
-        const companyCode = form.toJS().companyCode;
-        let content;
+  render() {
+    const { form } = this.props;
+    const companyCode = form.toJS().companyCode;
+    let content;
 
-        if (companyCode === '001') {
-            content = <Imhome />;
-        } else if (companyCode === '') {
-            content = <Imhome />;
-        } else {
-            content = <DefaultProduct />;
-        }
-        return (
-            <div>
-                <Header>{form.toJS().companyName}</Header>
-                {content}
-            </div>
-        );
+    if (companyCode === '001') {
+      content = <Imhome />;
+    } else if (companyCode === '') {
+      content = <Imhome />;
+    } else {
+      content = <DefaultProduct />;
     }
+    return (
+      <div>
+        <Header>{form.toJS().companyName}</Header>
+        {content}
+      </div>
+    );
+  }
 }
 
 export default connect(
-    state => ({
-        form: state.productList.getIn(['productList', 'form']),
-        lists: state.productList.getIn(['productList', 'lists']),
-        error: state.productList.getIn(['productList', 'error']),
-        result: state.productList.get('result')
-    }),
-    dispatch => ({
-        ProductListActions: bindActionCreators(ProductListActions, dispatch)
-    })
+  state => ({
+    form: state.productList.getIn(['productList', 'form']),
+    lists: state.productList.getIn(['productList', 'lists']),
+    error: state.productList.getIn(['productList', 'error']),
+    result: state.productList.get('result'),
+  }),
+  dispatch => ({
+    ProductListActions: bindActionCreators(ProductListActions, dispatch),
+  }),
 )(Product);
