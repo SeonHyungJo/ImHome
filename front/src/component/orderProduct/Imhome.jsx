@@ -67,8 +67,8 @@ const ContentWrapper = styled.div`
 `;
 
 const MainContainer = styled.div`
-  padding: 10px 0px 0px 10px;
-  width: 37.5vw;
+  padding: 0px 0px 0px 10px;
+  width: 37vw;
   height: 75vh;
   overflow: hidden;
 
@@ -89,11 +89,11 @@ const MainContainer = styled.div`
 `;
 
 const ProductFormContainer = styled.div`
-  width: 37.5vw;
-  height: 75vh;
+  width: 40vw;
+  height: 85%;
   background-color: white;
-  padding: 10px;
-  overflow: hidden;
+  padding: 10px 10px 0px 10px;
+  overflow-y: scroll;
   .tableTitle {
     font-size: 1.3rem;
     margin-bottom: 1rem;
@@ -133,7 +133,6 @@ const Button = styled.button`
   font-weight: bold;
 `;
 
-
 class Imhome extends Component {
   constructor(props) {
     super(props);
@@ -166,7 +165,6 @@ class Imhome extends Component {
             clickedCate={clickedCate}
             _clickCategory={this._clickCategory}
           />
-          <hr />
           {!!categories.length > 0 ? (
             <div className="footerContainer">
               <Button onClick={() => console.log('h')}>메뉴 전체보기</Button>
@@ -176,7 +174,25 @@ class Imhome extends Component {
           )}
         </MainContainer>
         <ProductFormContainer>
-          <OrderListTable />
+          <OrderListTable
+            headerName="YourOrder"
+            orderList={[
+              {
+                itemCode: '1',
+                itemName: 'test',
+                itemCount: 1,
+                itemCost: 100,
+              },
+              {
+                itemCode: '1',
+                itemName: 'test',
+                itemCount: 1,
+                itemCost: 100,
+              },
+            ]}
+            buttonList={[{ name: '주문저장' }, { name: '주문하기' }]}
+            clickComplete={() => console.log('1')}
+          />
         </ProductFormContainer>
       </ContentWrapper>
     );
