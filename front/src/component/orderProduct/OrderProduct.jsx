@@ -11,7 +11,7 @@ const Header = styled.div`
   padding: 10px 10px 0px 10px;
   margin: 10px 0px 0px 10px;
   font-size: 1.5rem;
-  font-wight: bold;
+  font-weight: 800;
 `;
 
 class OrderProduct extends Component {
@@ -30,7 +30,7 @@ class OrderProduct extends Component {
     }
     return (
       <div>
-        <Header>{form.toJS().companyName}</Header>
+        <Header>{`${form.toJS().companyName} Order`}</Header>
         {content}
       </div>
     );

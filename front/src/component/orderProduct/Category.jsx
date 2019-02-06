@@ -82,7 +82,7 @@ const Category = ({ categories, clickedCate, _clickCategory }) => (
                   </span>
                 </div>
               </div>
-              <ProductTable list={[1, 1, 100, 1]} />
+              <ProductTable />
             </>
           ) : (
             <div

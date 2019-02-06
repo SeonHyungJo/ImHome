@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import classNames from 'classnames';
 
 import IosAdd from 'react-ionicons/lib/IosAdd';
 import IosRemove from 'react-ionicons/lib/IosRemove';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ProductListActions from '../../redux/modules/productList';
 
 const Table = styled.table`
   // border-top: 2px solid #fe4c8d;
@@ -59,7 +63,7 @@ const Table = styled.table`
     text-align: right;
   }
   .tableNameTd {
-    width: 35%;
+    width: 33%;
   }
   .tableOrderTd {
     width: 25%;
@@ -77,30 +81,58 @@ const Table = styled.table`
     -webkit-appearance: none;
   }
 `;
-const ProductTable = ({ list }) => (
-  <Table>
-    <tbody>
-      <tr>
-        <th className={classNames('tableNameTd')}>품 목</th>
-        <th>단 위</th>
-        <th>가 격</th>
-        <th>재고량</th>
-        <th className={classNames('tableOrderTd')}>주 문</th>
-      </tr>
-      <tr>
-        <td className={classNames('tableNameTd', 'tableAlignCenter')}>
-          밀크 아이스크림sfsdadfadfsasafasdfafadfasdfasdfadfasfd
-        </td>
-        <td className={classNames('tableAlignCenter')}>box/3kg</td>
-        <td className={classNames('tableAlignRight')}>32500</td>
-        <td className={classNames('tableAlignCenter')}>5/10</td>
-        <td className={classNames('tableOrderTd', 'tableAlignCenter')}>
-          <IosRemove />
-          <input className={classNames('orderInput')} type="number" value="1" readOnly />
-          <IosAdd />
-        </td>
-      </tr>
-      <tr>
+
+class ProductTable extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    const { form } = this.props;
+    const { clickedCate, items } = form.toJS();
+
+    const detailItem = items.filter(item => item.parentId === clickedCate._id);
+    return (
+      <Table>
+        <tbody>
+          <tr>
+            <th className={classNames('tableNameTd')}>품 목</th>
+            <th>단 위</th>
+            <th>가 격</th>
+            <th>재 고</th>
+            <th className={classNames('tableOrderTd')}>주 문</th>
+          </tr>
+          {detailItem.map((item, index) => (
+            <tr key={item._id}>
+              <td className={classNames('tableNameTd', 'tableAlignCenter')}>{item.itemName}</td>
+              <td className={classNames('tableAlignCenter')}>{item.itemVolume}</td>
+              <td className={classNames('tableAlignRight')}>{item.itemCost}</td>
+              <td className={classNames('tableAlignCenter')}>
+                5/
+                {item.itemCount}
+              </td>
+              <td className={classNames('tableOrderTd', 'tableAlignCenter')}>
+                <IosRemove />
+                <input className={classNames('orderInput')} type="number" value="1" readOnly />
+                <IosAdd />
+              </td>
+            </tr>
+          ))}
+          {/* <tr>
+            <td className={classNames('tableNameTd', 'tableAlignCenter')}>
+              밀크 아이스크림sfsdadfadfsasafasdfafadfasdfasdfadfasfd
+            </td>
+            <td className={classNames('tableAlignCenter')}>box/3kg</td>
+            <td className={classNames('tableAlignRight')}>32500</td>
+            <td className={classNames('tableAlignCenter')}>5/10</td>
+            <td className={classNames('tableOrderTd', 'tableAlignCenter')}>
+              <IosRemove />
+              <input className={classNames('orderInput')} type="number" value="1" readOnly />
+              <IosAdd />
+            </td>
+          </tr> */}
+          {/* <tr>
         <td className={classNames('tableNameTd', 'tableAlignCenter')}>밀크 아이스크림</td>
         <td className={classNames('tableAlignCenter')}>box/3kg</td>
         <td className={classNames('tableAlignRight')}>32500</td>
@@ -110,9 +142,22 @@ const ProductTable = ({ list }) => (
           <input className={classNames('orderInput')} type="number" value="1" readOnly />
           <IosAdd />
         </td>
-      </tr>
-    </tbody>
-  </Table>
-);
+      </tr> */}
+        </tbody>
+      </Table>
+    );
+  }
+}
 
-export default ProductTable;
+export default connect(
+  state => ({
+    form: state.productList.getIn(['productList', 'form']),
+    lists: state.productList.getIn(['productList', 'lists']),
+    message: state.productList.getIn(['productList', 'message']),
+    error: state.productList.getIn(['productList', 'error']),
+    result: state.productList.get('result'),
+  }),
+  dispatch => ({
+    ProductListActions: bindActionCreators(ProductListActions, dispatch),
+  }),
+)(ProductTable);
