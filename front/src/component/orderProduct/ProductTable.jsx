@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import classNames from 'classnames';
 
+import IosAdd from 'react-ionicons/lib/IosAdd';
+import IosRemove from 'react-ionicons/lib/IosRemove';
+
 const Table = styled.table`
   // border-top: 2px solid #fe4c8d;
   width: 100%;
@@ -59,19 +62,30 @@ const Table = styled.table`
     width: 35%;
   }
   .tableOrderTd {
-    width: 20%;
+    width: 25%;
+  }
+
+  input.orderInput {
+    width: 30%;
+    border: 0px;
+    vertical-align: super;
+    text-align: end;
+    margin-left: 3px;
+    margin-right: 3px;
+  }
+  input.orderInput::-webkit-inner-spin-button {
+    -webkit-appearance: none;
   }
 `;
-
 const ProductTable = ({ list }) => (
   <Table>
     <tbody>
       <tr>
-        <th className={classNames('tableNameTd')}>품목</th>
-        <th>단위</th>
-        <th>가격</th>
+        <th className={classNames('tableNameTd')}>품 목</th>
+        <th>단 위</th>
+        <th>가 격</th>
         <th>재고량</th>
-        <th className={classNames('tableOrderTd')}>주문</th>
+        <th className={classNames('tableOrderTd')}>주 문</th>
       </tr>
       <tr>
         <td className={classNames('tableNameTd', 'tableAlignCenter')}>
@@ -80,14 +94,22 @@ const ProductTable = ({ list }) => (
         <td className={classNames('tableAlignCenter')}>box/3kg</td>
         <td className={classNames('tableAlignRight')}>32500</td>
         <td className={classNames('tableAlignCenter')}>5/10</td>
-        <td className={classNames('tableOrderTd', 'tableAlignCenter')}>- | 001 | +</td>
+        <td className={classNames('tableOrderTd', 'tableAlignCenter')}>
+          <IosRemove />
+          <input className={classNames('orderInput')} type="number" value="1" readOnly />
+          <IosAdd />
+        </td>
       </tr>
       <tr>
         <td className={classNames('tableNameTd', 'tableAlignCenter')}>밀크 아이스크림</td>
         <td className={classNames('tableAlignCenter')}>box/3kg</td>
         <td className={classNames('tableAlignRight')}>32500</td>
         <td className={classNames('tableAlignCenter')}>5/10</td>
-        <td className={classNames('tableOrderTd', 'tableAlignCenter')}>- | 001 | +</td>
+        <td className={classNames('tableOrderTd', 'tableAlignCenter')}>
+          <IosRemove />
+          <input className={classNames('orderInput')} type="number" value="1" readOnly />
+          <IosAdd />
+        </td>
       </tr>
     </tbody>
   </Table>
