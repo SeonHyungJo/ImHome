@@ -21,7 +21,7 @@ const ProductComponent = styled.div`
       display: flex;
       flex-direction: column;
       justify-content: center;
-      width: 70%;
+      width: 65%;
       margin-left: 1rem;
       .name {
         font-weight: bold;
@@ -64,12 +64,10 @@ const Category = ({ categories, clickedCate, _clickCategory }) => (
   <ProductComponent>
     {!!categories.length > 0 ? (
       categories.map((item, index) => (
-        <>
-          {clickedCate.index === index ? (
-            <>
+          clickedCate.index === index ? (
+            <div key={index}>
               <div
                 className={classNames('category', 'clicked')}
-                key={index}
                 onClick={() => _clickCategory(index, item._id, item.itemName)}
               >
                 <div className="categoryMain">
@@ -83,7 +81,7 @@ const Category = ({ categories, clickedCate, _clickCategory }) => (
                 </div>
               </div>
               <ProductTable />
-            </>
+            </div>
           ) : (
             <div
               className={classNames('category')}
@@ -100,8 +98,7 @@ const Category = ({ categories, clickedCate, _clickCategory }) => (
                 </span>
               </div>
             </div>
-          )}
-        </>
+          )
       ))
     ) : (
       <div>로딩중입니다...</div>

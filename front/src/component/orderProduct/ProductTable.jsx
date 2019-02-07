@@ -8,6 +8,7 @@ import IosRemove from 'react-ionicons/lib/IosRemove';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ProductListActions from '../../redux/modules/productList';
+import * as AuthActions from '../../redux/modules/auth';
 
 const Table = styled.table`
   // border-top: 2px solid #fe4c8d;
@@ -88,10 +89,41 @@ class ProductTable extends Component {
     this.state = {};
   }
 
-  render() {
-    const { form } = this.props;
-    const { clickedCate, items } = form.toJS();
+  _changeOrder = (type, item) => {
+    const { ProductListActions, productOrder, auth } = this.props;
+    const branchCode = auth.toJS().info.branchCode;
+    const items = productOrder.toJS().items;
 
+    // 1. plus를 눌렀을 때
+    //   1. 이미 있으면(1 이상) +1
+    //   2. 처음 누른거면 1
+    // 2. minus를 눌렀을 때
+    //   1. 이미 있을 때
+    //      **** 이부분 수정 ****
+    //      1. 0이면 0
+    //      2. 0이 아니면 -1
+    //   2. 처음 누른거면 아무것도 안함
+    if (type === 'plus') {
+      items.hasOwnProperty(item._id)
+        ? (items[item._id] = items[item._id] + 1)
+        : (items[item._id] = 1);
+    } else if (type === 'minus') {
+      if (items.hasOwnProperty(item._id)) {
+        items[item._id] < 2 ? delete items[item._id] : (items[item._id] = items[item._id] - 1);
+      }
+    }
+    // console.log(items);
+    ProductListActions.changeOrder({
+      branchCode,
+      items,
+    });
+  };
+
+  render() {
+    const { form, productOrder } = this.props;
+    const { clickedCate, items } = form.toJS();
+    const productOrderList = productOrder.toJS().items;
+    const productOrderKeys = Object.keys(productOrderList);
     const detailItem = items.filter(item => item.parentId === clickedCate._id);
     return (
       <Table>
@@ -109,40 +141,21 @@ class ProductTable extends Component {
               <td className={classNames('tableAlignCenter')}>{item.itemVolume}</td>
               <td className={classNames('tableAlignRight')}>{item.itemCost}</td>
               <td className={classNames('tableAlignCenter')}>
-                5/
                 {item.itemCount}
+                /10
               </td>
               <td className={classNames('tableOrderTd', 'tableAlignCenter')}>
-                <IosRemove />
-                <input className={classNames('orderInput')} type="number" value="1" readOnly />
-                <IosAdd />
+                <IosRemove onClick={() => this._changeOrder('minus', item)} />
+                <input
+                  className={classNames('orderInput')}
+                  type="number"
+                  value={productOrderKeys.includes(item._id) ? productOrderList[item._id] : 0}
+                  readOnly
+                />
+                <IosAdd onClick={() => this._changeOrder('plus', item)} />
               </td>
             </tr>
           ))}
-          {/* <tr>
-            <td className={classNames('tableNameTd', 'tableAlignCenter')}>
-              밀크 아이스크림sfsdadfadfsasafasdfafadfasdfasdfadfasfd
-            </td>
-            <td className={classNames('tableAlignCenter')}>box/3kg</td>
-            <td className={classNames('tableAlignRight')}>32500</td>
-            <td className={classNames('tableAlignCenter')}>5/10</td>
-            <td className={classNames('tableOrderTd', 'tableAlignCenter')}>
-              <IosRemove />
-              <input className={classNames('orderInput')} type="number" value="1" readOnly />
-              <IosAdd />
-            </td>
-          </tr> */}
-          {/* <tr>
-        <td className={classNames('tableNameTd', 'tableAlignCenter')}>밀크 아이스크림</td>
-        <td className={classNames('tableAlignCenter')}>box/3kg</td>
-        <td className={classNames('tableAlignRight')}>32500</td>
-        <td className={classNames('tableAlignCenter')}>5/10</td>
-        <td className={classNames('tableOrderTd', 'tableAlignCenter')}>
-          <IosRemove />
-          <input className={classNames('orderInput')} type="number" value="1" readOnly />
-          <IosAdd />
-        </td>
-      </tr> */}
         </tbody>
       </Table>
     );
@@ -156,8 +169,11 @@ export default connect(
     message: state.productList.getIn(['productList', 'message']),
     error: state.productList.getIn(['productList', 'error']),
     result: state.productList.get('result'),
+    productOrder: state.productList.get('productOrder'),
+    auth: state.auth.get('result'),
   }),
   dispatch => ({
     ProductListActions: bindActionCreators(ProductListActions, dispatch),
+    AuthActions: bindActionCreators(AuthActions, dispatch),
   }),
 )(ProductTable);
