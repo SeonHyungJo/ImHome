@@ -22,8 +22,14 @@ class AdminOrderList extends Component {
       { name: '주문서 취소', event: 'CANCLE_ORDER' },
     ];
 
+    const specificationBtns = [
+      { name: '명세표 저장', event: 'SAVE_SPECIFICATION' },
+      { name: '명세표 출력', event: 'PRINT_SPECIFICATION' },
+    ];
+
     this.state = {
       buttons,
+      specificationBtns,
       displayAlert: false,
       alertMessage: '출고완료 처리 되었습니다.',
     };
@@ -73,31 +79,39 @@ class AdminOrderList extends Component {
 
   render() {
     const { store, currentOrder = '', currentId } = this.props;
+    const {
+      alertMessage, displayAlert, buttons, storeId, orders, specificationBtns,
+    } = this.state;
     const updateAt = currentOrder.updatedAt || new Date();
+
     return (
-      <PageTemplate role="admin" navData={store} id={currentId} clickNav={this.getNavData}>
-        <header>
-          {'주문일자 :'}
-          {CommonUtil.setHangleDateTime(updateAt)}
-        </header>
+      <>
         <AlertPopup
-          title={this.state.alertMessage}
+          title={alertMessage}
           buttonName="확인"
-          displayAlertPop={this.state.displayAlert}
+          displayAlertPop={displayAlert}
           clickEvent={this.completeRelease}
         />
-        <OrderListTable
-          headerName={currentOrder.branchName}
-          orderList={currentOrder.items}
-          buttonList={this.state.buttons}
-          clickComplete={this.setComplete}
-        />
-        <SpecificationTable
-          branchName={`${this.state.storeId} 주문내역`}
-          orderList={this.state.orders}
-          buttonList={this.state.buttons}
-        />
-      </PageTemplate>
+        <PageTemplate role="admin" navData={store} id={currentId} clickNav={this.getNavData}>
+          <header>
+            {'주문일자 :'}
+            {CommonUtil.setHangleDateTime(updateAt)}
+          </header>
+          <OrderListTable
+            headerName={currentOrder.branchName}
+            orderList={currentOrder.items}
+            buttonList={buttons}
+            clickComplete={this.setComplete}
+          />
+          <SpecificationTable
+            headerName={currentOrder.branchName}
+            tradeDate={CommonUtil.setHangleDate(updateAt)}
+            branchName={`${storeId} 주문내역`}
+            orderList={currentOrder.items}
+            buttonList={specificationBtns}
+          />
+        </PageTemplate>
+      </>
     );
   }
 }
