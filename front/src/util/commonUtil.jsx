@@ -1,22 +1,25 @@
 import moment from 'moment';
 
 export function setDate(str) {
-    return moment(str).format('YYYY-MM-DD HH:mm:ss');
+  return moment(str).format('YYYY-MM-DD HH:mm:ss');
 }
 
 export function setTotalDate(str) {
-    return moment(str).format('YYYY-MM-DD');
+  return moment(str).format('YYYY-MM-DD');
 }
 
 export function setTotalTime(str) {
-    return moment(str).format('HH:mm:ss');
+  return moment(str).format('HH:mm:ss');
 }
 
 export function setHangleDateTime(str) {
-    return moment(str).format('YYYY.MM.DD HH시mm분');
+  return moment(str).format('YYYY.MM.DD HH시mm분');
 }
 
+export function setHangleDate(str) {
+  return moment(str).format('YYYY년 MM월 DD일');
+}
 export function setCostFormat(num) {
-    let cost = num;
-    return cost.toLocaleString();
+  const cost = num;
+  return cost.toLocaleString();
 }
