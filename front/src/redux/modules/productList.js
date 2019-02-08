@@ -90,7 +90,7 @@ const initialState = Map({
   result: Map({}),
   productOrder: Map({
     branchCode: '',
-    branchName: '',
+    itemCount: {},
     items: {},
   }),
 });

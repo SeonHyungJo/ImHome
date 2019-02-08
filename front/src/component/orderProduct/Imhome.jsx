@@ -64,7 +64,7 @@ class Imhome extends Component {
     super(props);
     this.state = {};
   }
-  
+
   _clickCategory = (index, _id, itemName) => {
     const { ProductListActions } = this.props;
     ProductListActions.changeCate({
@@ -75,8 +75,17 @@ class Imhome extends Component {
   };
 
   render() {
-    const { form } = this.props;
+    const { form, productOrder } = this.props;
     const { categories, clickedCate } = form.toJS();
+    const { itemCount, items } = productOrder.toJS();
+    const countKeys = Object.keys(itemCount);
+    const productOrderList = countKeys.map((itemId) => {
+      let list = items[itemId];
+      return {
+        ...list,
+        itemCount: `${itemCount[itemId]}`,
+      };
+    });
 
     return (
       <ContentWrapper>
@@ -97,20 +106,7 @@ class Imhome extends Component {
         <OrderContainer>
           <OrderListTable
             headerName="YourOrder"
-            orderList={[
-              {
-                itemCode: '1',
-                itemName: 'test',
-                itemCount: 1,
-                itemCost: 100,
-              },
-              {
-                itemCode: '1',
-                itemName: 'test',
-                itemCount: 1,
-                itemCost: 100,
-              },
-            ]}
+            orderList={productOrderList}
             buttonList={[{ name: '주문저장' }, { name: '주문하기' }]}
             clickComplete={() => console.log('1')}
           />
@@ -127,6 +123,7 @@ export default connect(
     message: state.productList.getIn(['productList', 'message']),
     error: state.productList.getIn(['productList', 'error']),
     result: state.productList.get('result'),
+    productOrder: state.productList.get('productOrder'),
   }),
   dispatch => ({
     ProductListActions: bindActionCreators(ProductListActions, dispatch),

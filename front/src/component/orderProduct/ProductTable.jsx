@@ -91,30 +91,53 @@ class ProductTable extends Component {
 
   _changeOrder = (type, item) => {
     const { ProductListActions, productOrder, auth } = this.props;
-    const branchCode = auth.toJS().info.branchCode;
-    const items = productOrder.toJS().items;
+    // const branchCode = auth.toJS().info.branchCode;
 
+    // itemCount는 {id: 주문할 갯수}
+    // items는 {id: 실제 item 정보}
+    const itemCount = productOrder.toJS().itemCount;
+    let items = productOrder.toJS().items;
+
+    // itemCount을 변경하는 로직
     // 1. plus를 눌렀을 때
     //   1. 이미 있으면(1 이상) +1
     //   2. 처음 누른거면 1
     // 2. minus를 눌렀을 때
     //   1. 이미 있을 때
     //      **** 이부분 수정 ****
-    //      1. 0이면 0
-    //      2. 0이 아니면 -1
+    //      1. 1이라 0이 되는 상황이면 delete
+    //      2. 1 이상이면 -1만 해준다.
     //   2. 처음 누른거면 아무것도 안함
     if (type === 'plus') {
-      items.hasOwnProperty(item._id)
-        ? (items[item._id] = items[item._id] + 1)
-        : (items[item._id] = 1);
+      itemCount.hasOwnProperty(item._id)
+        ? (itemCount[item._id] = itemCount[item._id] + 1)
+        : (itemCount[item._id] = 1);
     } else if (type === 'minus') {
-      if (items.hasOwnProperty(item._id)) {
-        items[item._id] < 2 ? delete items[item._id] : (items[item._id] = items[item._id] - 1);
+      if (itemCount.hasOwnProperty(item._id)) {
+        itemCount[item._id] < 2
+          ? delete itemCount[item._id]
+          : (itemCount[item._id] = itemCount[item._id] - 1);
       }
     }
-    // console.log(items);
+
+    // item을 변경하는 로직
+    // itemCount에 처음 들어가는 경우 item정보를 추가.
+    // itemCount에서 delete되었다면 같이 제거
+    if (itemCount.hasOwnProperty(item._id) && itemCount[item._id] > 0) {
+      if (!items.hasOwnProperty(item._id)) {
+        items = {
+          [item._id]: item,
+          ...items,
+        };
+      }
+    } else if (items.hasOwnProperty(item._id)) {
+      delete items[item._id];
+    }
+
+    console.log(items);
+
     ProductListActions.changeOrder({
-      branchCode,
+      itemCount,
       items,
     });
   };
@@ -122,8 +145,8 @@ class ProductTable extends Component {
   render() {
     const { form, productOrder } = this.props;
     const { clickedCate, items } = form.toJS();
-    const productOrderList = productOrder.toJS().items;
-    const productOrderKeys = Object.keys(productOrderList);
+    const productOrderCount = productOrder.toJS().itemCount;
+    const productOrderKeys = Object.keys(productOrderCount);
     const detailItem = items.filter(item => item.parentId === clickedCate._id);
     return (
       <Table>
@@ -135,7 +158,28 @@ class ProductTable extends Component {
             <th>재 고</th>
             <th className={classNames('tableOrderTd')}>주 문</th>
           </tr>
-          {detailItem.map((item, index) => (
+          {detailItem.map((item) => (
+            productOrderKeys.includes(item._id) ? (
+            <tr key={item._id} className={classNames('itemOn')}>
+              <td className={classNames('tableNameTd', 'tableAlignCenter')}>{item.itemName}</td>
+              <td className={classNames('tableAlignCenter')}>{item.itemVolume}</td>
+              <td className={classNames('tableAlignRight')}>{item.itemCost}</td>
+              <td className={classNames('tableAlignCenter')}>
+                {item.itemCount}
+                /10
+              </td>
+              <td className={classNames('tableOrderTd', 'tableAlignCenter')}>
+                <IosRemove color="#ffffff" onClick={() => this._changeOrder('minus', item)} />
+                <input
+                  className={classNames('orderInput')}
+                  type="number"
+                  value={productOrderCount[item._id]}
+                  readOnly
+                />
+                <IosAdd color="#ffffff" onClick={() => this._changeOrder('plus', item)} />
+              </td>
+            </tr>
+            ) : (
             <tr key={item._id}>
               <td className={classNames('tableNameTd', 'tableAlignCenter')}>{item.itemName}</td>
               <td className={classNames('tableAlignCenter')}>{item.itemVolume}</td>
@@ -149,12 +193,13 @@ class ProductTable extends Component {
                 <input
                   className={classNames('orderInput')}
                   type="number"
-                  value={productOrderKeys.includes(item._id) ? productOrderList[item._id] : 0}
+                  value={0}
                   readOnly
                 />
                 <IosAdd onClick={() => this._changeOrder('plus', item)} />
               </td>
-            </tr>
+            </tr>)
+            
           ))}
         </tbody>
       </Table>
