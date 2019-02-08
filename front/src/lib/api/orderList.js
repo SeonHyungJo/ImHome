@@ -38,3 +38,23 @@ export const getOrderData = branchCode => ApiService.get(`/api/order/${branchCod
  * @returns returnCode
  */
 export const updateComplete = branchCode => ApiService.put(`/api/order/complete/${branchCode || ''}`);
+
+/**
+ * @author jinseong
+ * @summary 주문 생성
+ * @param
+ *  {
+        "complete": 출고처리(false),
+        "branchCode": 지점 코드,
+        "items" [
+            "itemCode" : 물품 코드
+            "itemName" : 물품 이름
+            "itemCount" : 물품 갯수
+            "itemCost" : 물품 비용
+            "itemVolume" : 물품 단위
+            "itemDepth" :
+        ]
+    }
+ * @returns
+ */
+export const createOrder = data => ApiService.post('/api/order', data);

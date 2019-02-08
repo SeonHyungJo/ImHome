@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ProductListActions from '../../redux/modules/productList';
+import * as AuthActions from '../../redux/modules/auth';
+import * as OrderListActions from '../../redux/modules/orderList';
+
 import Category from './Category';
 import { OrderListTable } from '../orderList';
 
@@ -74,18 +77,21 @@ class Imhome extends Component {
     });
   };
 
+  _order = () => {
+    const { orderForm, auth, OrderListActions } = this.props;
+    const branchCode = auth.toJS().info.branchCode;
+    const data = {
+      complete: false,
+      branchCode,
+      ...orderForm,
+    };
+    OrderListActions.createOrder(data);
+  };
+
   render() {
-    const { form, productOrder } = this.props;
+    const { form, orderForm } = this.props;
     const { categories, clickedCate } = form.toJS();
-    const { itemCount, items } = productOrder.toJS();
-    const countKeys = Object.keys(itemCount);
-    const productOrderList = countKeys.map((itemId) => {
-      let list = items[itemId];
-      return {
-        ...list,
-        itemCount: `${itemCount[itemId]}`,
-      };
-    });
+    const items = orderForm.items;
 
     return (
       <ContentWrapper>
@@ -106,9 +112,9 @@ class Imhome extends Component {
         <OrderContainer>
           <OrderListTable
             headerName="YourOrder"
-            orderList={productOrderList}
+            orderList={items}
             buttonList={[{ name: '주문저장' }, { name: '주문하기' }]}
-            clickComplete={() => console.log('1')}
+            clickComplete={this._order}
           />
         </OrderContainer>
       </ContentWrapper>
@@ -123,9 +129,12 @@ export default connect(
     message: state.productList.getIn(['productList', 'message']),
     error: state.productList.getIn(['productList', 'error']),
     result: state.productList.get('result'),
-    productOrder: state.productList.get('productOrder'),
+    orderForm: state.productList.getIn(['productOrder', 'form']),
+    auth: state.auth.get('result'),
   }),
   dispatch => ({
     ProductListActions: bindActionCreators(ProductListActions, dispatch),
+    AuthActions: bindActionCreators(AuthActions, dispatch),
+    OrderListActions: bindActionCreators(OrderListActions, dispatch),
   }),
 )(Imhome);

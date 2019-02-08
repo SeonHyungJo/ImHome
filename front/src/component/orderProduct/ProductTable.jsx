@@ -8,7 +8,6 @@ import IosRemove from 'react-ionicons/lib/IosRemove';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ProductListActions from '../../redux/modules/productList';
-import * as AuthActions from '../../redux/modules/auth';
 
 const Table = styled.table`
   // border-top: 2px solid #fe4c8d;
@@ -90,8 +89,7 @@ class ProductTable extends Component {
   }
 
   _changeOrder = (type, item) => {
-    const { ProductListActions, productOrder, auth } = this.props;
-    // const branchCode = auth.toJS().info.branchCode;
+    const { ProductListActions, productOrder } = this.props;
 
     // itemCount는 {id: 주문할 갯수}
     // items는 {id: 실제 item 정보}
@@ -124,21 +122,24 @@ class ProductTable extends Component {
     // itemCount에 처음 들어가는 경우 item정보를 추가.
     // itemCount에서 delete되었다면 같이 제거
     if (itemCount.hasOwnProperty(item._id) && itemCount[item._id] > 0) {
-      if (!items.hasOwnProperty(item._id)) {
-        items = {
-          [item._id]: item,
-          ...items,
-        };
-      }
-    } else if (items.hasOwnProperty(item._id)) {
+      item = {
+        ...item,
+        itemCount: `${itemCount[item._id]}`,
+      };
+      items = {
+        ...items,
+        [item._id]: item,
+      };
+    } else {
       delete items[item._id];
     }
-
-    console.log(items);
 
     ProductListActions.changeOrder({
       itemCount,
       items,
+      form: {
+        items: [...Object.values(items)],
+      },
     });
   };
 
@@ -158,49 +159,44 @@ class ProductTable extends Component {
             <th>재 고</th>
             <th className={classNames('tableOrderTd')}>주 문</th>
           </tr>
-          {detailItem.map((item) => (
-            productOrderKeys.includes(item._id) ? (
-            <tr key={item._id} className={classNames('itemOn')}>
-              <td className={classNames('tableNameTd', 'tableAlignCenter')}>{item.itemName}</td>
-              <td className={classNames('tableAlignCenter')}>{item.itemVolume}</td>
-              <td className={classNames('tableAlignRight')}>{item.itemCost}</td>
-              <td className={classNames('tableAlignCenter')}>
-                {item.itemCount}
-                /10
-              </td>
-              <td className={classNames('tableOrderTd', 'tableAlignCenter')}>
-                <IosRemove color="#ffffff" onClick={() => this._changeOrder('minus', item)} />
-                <input
-                  className={classNames('orderInput')}
-                  type="number"
-                  value={productOrderCount[item._id]}
-                  readOnly
-                />
-                <IosAdd color="#ffffff" onClick={() => this._changeOrder('plus', item)} />
-              </td>
-            </tr>
+          {detailItem.map(
+            item => (productOrderKeys.includes(item._id) ? (
+              <tr key={item._id} className={classNames('itemOn')}>
+                <td className={classNames('tableNameTd', 'tableAlignCenter')}>{item.itemName}</td>
+                <td className={classNames('tableAlignCenter')}>{item.itemVolume}</td>
+                <td className={classNames('tableAlignRight')}>{item.itemCost}</td>
+                <td className={classNames('tableAlignCenter')}>
+                  {item.itemCount}
+                    /10
+                </td>
+                <td className={classNames('tableOrderTd', 'tableAlignCenter')}>
+                  <IosRemove color="#ffffff" onClick={() => this._changeOrder('minus', item)} />
+                  <input
+                    className={classNames('orderInput')}
+                    type="number"
+                    value={productOrderCount[item._id]}
+                    readOnly
+                  />
+                  <IosAdd color="#ffffff" onClick={() => this._changeOrder('plus', item)} />
+                </td>
+              </tr>
             ) : (
-            <tr key={item._id}>
-              <td className={classNames('tableNameTd', 'tableAlignCenter')}>{item.itemName}</td>
-              <td className={classNames('tableAlignCenter')}>{item.itemVolume}</td>
-              <td className={classNames('tableAlignRight')}>{item.itemCost}</td>
-              <td className={classNames('tableAlignCenter')}>
-                {item.itemCount}
-                /10
-              </td>
-              <td className={classNames('tableOrderTd', 'tableAlignCenter')}>
-                <IosRemove onClick={() => this._changeOrder('minus', item)} />
-                <input
-                  className={classNames('orderInput')}
-                  type="number"
-                  value={0}
-                  readOnly
-                />
-                <IosAdd onClick={() => this._changeOrder('plus', item)} />
-              </td>
-            </tr>)
-            
-          ))}
+              <tr key={item._id}>
+                <td className={classNames('tableNameTd', 'tableAlignCenter')}>{item.itemName}</td>
+                <td className={classNames('tableAlignCenter')}>{item.itemVolume}</td>
+                <td className={classNames('tableAlignRight')}>{item.itemCost}</td>
+                <td className={classNames('tableAlignCenter')}>
+                  {item.itemCount}
+                    /10
+                </td>
+                <td className={classNames('tableOrderTd', 'tableAlignCenter')}>
+                  <IosRemove onClick={() => this._changeOrder('minus', item)} />
+                  <input className={classNames('orderInput')} type="number" value={0} readOnly />
+                  <IosAdd onClick={() => this._changeOrder('plus', item)} />
+                </td>
+              </tr>
+            )),
+          )}
         </tbody>
       </Table>
     );
@@ -215,10 +211,8 @@ export default connect(
     error: state.productList.getIn(['productList', 'error']),
     result: state.productList.get('result'),
     productOrder: state.productList.get('productOrder'),
-    auth: state.auth.get('result'),
   }),
   dispatch => ({
     ProductListActions: bindActionCreators(ProductListActions, dispatch),
-    AuthActions: bindActionCreators(AuthActions, dispatch),
   }),
 )(ProductTable);
