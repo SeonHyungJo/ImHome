@@ -1,1 +1,1 @@
-export { default as ArrowDatePicker } from './arrowDatePicker';
+export { default as ArrowDatePicker } from './ArrowDatePicker';
