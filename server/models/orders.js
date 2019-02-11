@@ -2,32 +2,32 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const itemsSchema = new Schema(
-    {
-        itemCode: { type: String, required: true },
-        itemName: { type: String, required: true },
-        itemCount: { type: String, required: true },
-        itemCost: { type: String, required: true },
-        itemVolume: { type: String, required: true },
-        itemDepth: { type: String, required: true }
-    },
-    {
-        sparse: true,
-        _id: false
-    }
+  {
+    itemCode: { type: String, required: true },
+    itemName: { type: String, required: true },
+    itemCount: { type: String, required: true },
+    itemCost: { type: String, required: true },
+    itemVolume: { type: String, required: true },
+    itemDepth: { type: String, required: true }
+  },
+  {
+    sparse: true,
+    _id: false
+  }
 );
 
 const orderSchema = new Schema(
-    {
-        orderId: { type: String, required: true },
-        branchName: { type: String, required: true },
-        branchCode: { type: String, required: true },
-        items: [itemsSchema],
-        tradeStatementCount: { type: Number, default: 0 },
-        complete: { type: Boolean, default: false }
-    },
-    {
-        timestamps: true
-    }
+  {
+    orderId: { type: String, required: true },
+    branchName: { type: String, required: true },
+    branchCode: { type: String, required: true },
+    items: [itemsSchema],
+    tradeStatementCount: { type: Number, default: 0 },
+    complete: { type: Boolean, default: false }
+  },
+  {
+    timestamps: true
+  }
 );
 
 /**
@@ -40,19 +40,19 @@ const orderSchema = new Schema(
  * @returns «Query»
  */
 orderSchema.statics.create = function(payload) {
-    const product = new this(payload);
-    return product.save();
+  const product = new this(payload);
+  return product.save();
 };
 
 orderSchema.statics.findAllOrder = function(payload) {
-    return this.find().select({
-        _id: 1,
-        branchCode: 1,
-        branchName: 1,
-        items: 1,
-        updatedAt: 1,
-        complete: 1
-    });
+  return this.find().select({
+    _id: 1,
+    branchCode: 1,
+    branchName: 1,
+    items: 1,
+    updatedAt: 1,
+    complete: 1
+  });
 };
 
 /**
@@ -65,13 +65,13 @@ orderSchema.statics.findAllOrder = function(payload) {
  * @returns «Query»
  */
 orderSchema.statics.findOrderList = function(branchCode) {
-    return this.find({ branchCode, complete: true }).select({
-        _id: 1,
-        branchCode: 1,
-        branchName: 1,
-        items: 1,
-        updatedAt: 1
-    });
+  return this.find({ branchCode, complete: true }).select({
+    _id: 1,
+    branchCode: 1,
+    branchName: 1,
+    items: 1,
+    updatedAt: 1
+  });
 };
 
 /**
@@ -84,9 +84,9 @@ orderSchema.statics.findOrderList = function(branchCode) {
  * @returns «Query»
  */
 orderSchema.statics.findInCompleteBranches = function() {
-    return this.find({ complete: false })
-        .select({ _id: 1, branchCode: 1, branchName: 1, updatedAt: 1 })
-        .sort({ updatedAt: -1 });
+  return this.find({ complete: false })
+    .select({ _id: 1, branchCode: 1, branchName: 1, updatedAt: 1 })
+    .sort({ updatedAt: -1 });
 };
 
 /**
@@ -99,7 +99,7 @@ orderSchema.statics.findInCompleteBranches = function() {
  * @returns «Query»
  */
 orderSchema.statics.findInCompleteOrderByBranchcode = function(_id) {
-    return this.find({ _id, complete: false });
+  return this.find({ _id, complete: false });
 };
 
 /**
@@ -112,7 +112,7 @@ orderSchema.statics.findInCompleteOrderByBranchcode = function(_id) {
  * @returns «Query»
  */
 orderSchema.statics.findCompleteOrderByBranchcode = function(branchCode) {
-    return this.find({ branchCode, complete: true });
+  return this.find({ branchCode, complete: true });
 };
 
 /**
@@ -125,13 +125,13 @@ orderSchema.statics.findCompleteOrderByBranchcode = function(branchCode) {
  * @returns «Query»
  */
 orderSchema.statics.findInCompleteOrderByBranchcode = function(branchCode) {
-    return this.find({ branchCode, complete: false }).select({
-        _id: 1,
-        branchCode: 1,
-        branchName: 1,
-        items: 1,
-        updatedAt: 1
-    });
+  return this.find({ branchCode, complete: false }).select({
+    _id: 1,
+    branchCode: 1,
+    branchName: 1,
+    items: 1,
+    updatedAt: 1
+  });
 };
 
 /**
@@ -145,7 +145,9 @@ orderSchema.statics.findInCompleteOrderByBranchcode = function(branchCode) {
  * @returns «Query»
  */
 orderSchema.statics.findOneAndUpdateNew = function(branchCode, productInfo) {
-    return this.findOneAndUpdate({ branchCode, complete: false }, productInfo, { new: true });
+  return this.findOneAndUpdate({ branchCode, complete: false }, productInfo, {
+    new: true
+  });
 };
 
 /**
@@ -158,7 +160,10 @@ orderSchema.statics.findOneAndUpdateNew = function(branchCode, productInfo) {
  * @returns «Query»
  */
 orderSchema.statics.changeCompleteTrue = function(branchCode) {
-    return this.findOneAndUpdate({ branchCode, complete: false }, { complete: true });
+  return this.findOneAndUpdate(
+    { branchCode, complete: false },
+    { complete: true }
+  );
 };
 
 /**
@@ -171,7 +176,7 @@ orderSchema.statics.changeCompleteTrue = function(branchCode) {
  * @returns «Query»
  */
 orderSchema.statics.deleteByBranchCode = function(_id) {
-    return this.remove({ _id });
+  return this.remove({ _id });
 };
 
 module.exports = mongoose.model('orders', orderSchema);

@@ -40,6 +40,13 @@ export const getOrderData = branchCode => ApiService.get(`/api/order/${branchCod
 export const updateComplete = branchCode => ApiService.put(`/api/order/complete/${branchCode || ''}`);
 
 /**
+ * @summary 주문 취소하기
+ * @param branchCode : 주문취소할 브랜치 코드
+ * @returns returnCode
+ */
+export const deleteOrderData = branchCode => ApiService.del(`/api/order/${branchCode || ''}`);
+
+/**
  * @author jinseong
  * @summary 주문 생성
  * @param
