@@ -45,8 +45,15 @@ class AdminReleaseList extends Component {
 
     const radioBtnSetting = {
       name: 'searchType', // 동일한 타입이 들어가고
-      value: ['all', 'part', 'tax', 'trade'], // 4개의 value를 만들고
-      text: ['전체내역', '선택내역', '세금계산서', '거래명세표'], // 4개의 value를 만들고
+      value: ['all', 'part'], // 2개의 value를 만들고
+      text: ['전체내역', '선택내역'], // 2개의 value를 만들고
+    };
+
+    const currentDate = new Date();
+
+    const selectMonthDate = {
+      year: currentDate.getFullYear(),
+      month: currentDate.getMonth() + 1,
     };
 
     this.state = {
@@ -54,6 +61,7 @@ class AdminReleaseList extends Component {
       headerData,
       searchingData,
       radioBtnSetting,
+      selectMonthDate,
     };
   }
 
@@ -126,8 +134,39 @@ class AdminReleaseList extends Component {
     ReleaseActions.updateEndDate(newDate);
   };
 
+  /**
+   * Change StartDate into Button
+   */
+  setStartDate = (changeNum) => {
+    const { ReleaseActions } = this.props;
+    const newStartDate = new Date();
+
+    newStartDate.setDate(newStartDate.getDate() + changeNum);
+    ReleaseActions.updateStartDate(newStartDate);
+    ReleaseActions.updateEndDate(new Date());
+  };
+
+  setMonthlyDate = ({ type, changeDate }) => {
+    this.setState(prevState => ({
+      ...prevState,
+      selectMonthDate: { ...prevState.selectMonthDate, [type]: changeDate },
+    }));
+  };
+
+  setMonthly = () => {
+    const { ReleaseActions } = this.props;
+    const { year, month } = this.state.selectMonthDate;
+    
+    const newStartDate = new Date(year, month - 1, 1);
+    const newEndDate = CommonUtil.getEndOfDay(year, month-1);;
+
+    // newStartDate.setDate(newStartDate.getDate() + changeNum);
+    ReleaseActions.updateStartDate(newStartDate);
+    ReleaseActions.updateEndDate(newEndDate);
+  };
+
   render() {
-    const { searchingData, radioBtnSetting } = this.state;
+    const { searchingData, radioBtnSetting, selectMonthDate } = this.state;
     const {
       store, list, currentId, custNo, startDate, endDate,
     } = this.props;
@@ -143,6 +182,10 @@ class AdminReleaseList extends Component {
           endDate={endDate}
           handleChangeStartDate={this.handleChangeStartDate}
           handleChangeEndDate={this.handleChangeEndDate}
+          setStartDate={this.setStartDate}
+          selectMonthDate={selectMonthDate}
+          setMonthlyDate={this.setMonthlyDate}
+          setMonthly={this.setMonthly}
         >
           <FormBtn style={{ width: '80px', margin: '0' }}>조회</FormBtn>
         </ViewForRelease>

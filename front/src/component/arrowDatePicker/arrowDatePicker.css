@@ -1,0 +1,28 @@
+.__arrow-date-picker-container {
+  display: inline-block;
+  color: #000;
+  padding: 1.5px;
+  border: 1.5px solid rgba(100, 100, 100, 0.3);
+  border-radius: 2px;
+}
+
+.__arrow-date-picker-container div {
+  display: inline-block;
+}
+
+.sideArrow {
+  padding: 0px 7px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.middleLine {
+  font-size: 1rem;
+}
+
+.monthText {
+  padding: 0px 5px;
+  text-align: center;
+  font-size: 0.8rem;
+  width: 4rem;
+}

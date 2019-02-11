@@ -94,7 +94,7 @@ export default handleActions(
       type: GET_ORDER_LIST,
       onSuccess: (state, action) => state
         .setIn(['releaseList', 'list'], action.payload.data)
-        .setIn(['releaseList', 'custNo'], action.payload.data[0]._id),
+        .setIn(['releaseList', 'custNo'], action.payload.data[0] && action.payload.data[0]._id),
     }),
     ...pender({
       type: GET_ORDER_DATA,
