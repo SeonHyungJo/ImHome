@@ -30,7 +30,7 @@ const OrderListTableList = ({ orderList }) => (
           <div className={classNames('tbodyTd')}>{order.itemName}</div>
           <div className={classNames('tbodyTd', 'text-center')}>{order.itemCount}</div>
           <div className={classNames('tbodyTd')}>
-            {`: $ ${CommonUtil.setCostFormat(order.itemCost)}`}
+            {`: ￦ ${CommonUtil.setCostFormat(order.itemCost)}`}
           </div>
         </div>
       ))}
