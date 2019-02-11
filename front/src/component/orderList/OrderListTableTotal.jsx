@@ -6,7 +6,7 @@ const OrderListTableTotal = ({ totalCost }) => (
     <div className="footerTd"> ORDER TOTAL </div>
     <div className="footerTd">
       {' '}
-      {`: $ ${CommonUtil.setCostFormat(totalCost)}`}
+      {`: ￦ ${CommonUtil.setCostFormat(totalCost)}`}
       {' '}
     </div>
   </div>
