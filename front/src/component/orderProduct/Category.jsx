@@ -8,7 +8,6 @@ import ProductTable from './ProductTable';
 
 const ProductComponent = styled.div`
   overflow-y: auto;
-  height: 85%;
 
   .category {
     display: flex;

@@ -17,21 +17,21 @@ const Header = styled.div`
 class OrderProduct extends Component {
   render() {
     const { form } = this.props;
-    const companyCode = form.toJS().companyCode;
-    let content;
+    // const companyCode = form.toJS().companyCode;
+    // let content;
 
-    if (companyCode === '001') {
-      content = <Imhome />;
-    } else if (companyCode === '') {
-      content = <Imhome />;
-    } else {
-      // content = <DefaultProduct />;
-      content = 1;
-    }
+    // if (companyCode === '001') {
+    //   content = <Imhome />;
+    // } else if (companyCode === '') {
+    //   content = <Imhome />;
+    // } else {
+    //   // content = <DefaultProduct />;
+    //   content = 1;
+    // }
     return (
       <div>
         <Header>{`${form.toJS().companyName} Order`}</Header>
-        {content}
+        <Imhome />
       </div>
     );
   }

@@ -8,7 +8,9 @@ import * as AuthActions from '../../redux/modules/auth';
 import * as OrderListActions from '../../redux/modules/orderList';
 
 import Category from './Category';
+import ProductTable from './ProductTable';
 import { OrderListTable } from '../orderList';
+import { FormBtn } from '../common';
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -23,43 +25,15 @@ const MainContainer = styled.div`
   padding: 0px 0px 0px 10px;
   width: 36vw;
   height: 75vh;
-  overflow: hidden;
-
-  .footerContainer {
-    padding: 0px 0px 10px 0px;
-    width: 100%;
-    display: flex;
-    // border: solid 1px black;
-    position: static;
-    bottom: 0;
-    height: 10%;
-  }
+  overflow: auto;
 `;
 
 const OrderContainer = styled.div`
   width: 39vw;
-  height: 85%;
+  height: 100%;
   background-color: white;
   padding: 10px 0px 0px 10px;
-  overflow-y: auto;
-`;
-
-const Button = styled.button`
-  margin-top: 1rem;
-  margin-right: 0.5rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-
-  border: 2px solid #fe4c8d;
-  border-radius: 3px;
-  background: white;
-  color: #fe4c8d;
-
-  text-align: center;
-  font-size: 0.8rem;
-  width: 8rem;
-  cursor: pointer;
-  font-weight: bold;
+  overflow-y: hidden;
 `;
 
 class Imhome extends Component {
@@ -90,31 +64,29 @@ class Imhome extends Component {
 
   render() {
     const { form, orderForm } = this.props;
-    const { categories, clickedCate } = form.toJS();
+    const { categories, clickedCate, companyCode } = form.toJS();
     const items = orderForm.items;
 
     return (
       <ContentWrapper>
         <MainContainer>
-          <Category
-            categories={categories}
-            clickedCate={clickedCate}
-            _clickCategory={this._clickCategory}
-          />
-          {!!categories.length > 0 ? (
-            <div className="footerContainer">
-              <Button onClick={() => console.log('h')}>메뉴 전체보기</Button>
-            </div>
+          {companyCode === '001' ? (
+            <Category
+              categories={categories}
+              clickedCate={clickedCate}
+              _clickCategory={this._clickCategory}
+            />
           ) : (
-            <div />
+            <ProductTable />
           )}
         </MainContainer>
         <OrderContainer>
           <OrderListTable
             headerName="YourOrder"
             orderList={items}
-            buttonList={[{ name: '주문저장' }, { name: '주문하기' }]}
-            clickComplete={this._order}
+            buttonList={[{ name: '주문저장' }, { name: '바로주문하기' }]}
+            clickComplete={()=>console.log(1)}
+            style={{'height': '100%'}}
           />
         </OrderContainer>
       </ContentWrapper>

@@ -138,9 +138,9 @@ const Button = styled.button`
 `;
 
 const OrderListTable = ({
-  headerName, orderList, buttonList = [], clickComplete,
+  headerName, orderList, buttonList = [], clickComplete, style = {},
 }) => (
-  <ContentWrapper>
+  <ContentWrapper style={style}>
     <div className="dashedContainer">
       <div className="mainContainer">
         <Header>{headerName}</Header>

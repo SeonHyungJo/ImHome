@@ -145,10 +145,10 @@ class ProductTable extends Component {
 
   render() {
     const { form, productOrder } = this.props;
-    const { clickedCate, items } = form.toJS();
+    const { clickedCate, items, companyCode } = form.toJS();
     const productOrderCount = productOrder.toJS().itemCount;
     const productOrderKeys = Object.keys(productOrderCount);
-    const detailItem = items.filter(item => item.parentId === clickedCate._id);
+    const detailItem = companyCode === '001' ? items.filter(item => item.parentId === clickedCate._id) : items;
     return (
       <Table>
         <tbody>
@@ -156,7 +156,6 @@ class ProductTable extends Component {
             <th className={classNames('tableNameTd')}>품 목</th>
             <th>단 위</th>
             <th>가 격</th>
-            <th>재 고</th>
             <th className={classNames('tableOrderTd')}>주 문</th>
           </tr>
           {detailItem.map(
@@ -165,10 +164,6 @@ class ProductTable extends Component {
                 <td className={classNames('tableNameTd', 'tableAlignCenter')}>{item.itemName}</td>
                 <td className={classNames('tableAlignCenter')}>{item.itemVolume}</td>
                 <td className={classNames('tableAlignRight')}>{item.itemCost}</td>
-                <td className={classNames('tableAlignCenter')}>
-                  {item.itemCount}
-                    /10
-                </td>
                 <td className={classNames('tableOrderTd', 'tableAlignCenter')}>
                   <IosRemove color="#ffffff" onClick={() => this._changeOrder('minus', item)} />
                   <input
@@ -185,10 +180,6 @@ class ProductTable extends Component {
                 <td className={classNames('tableNameTd', 'tableAlignCenter')}>{item.itemName}</td>
                 <td className={classNames('tableAlignCenter')}>{item.itemVolume}</td>
                 <td className={classNames('tableAlignRight')}>{item.itemCost}</td>
-                <td className={classNames('tableAlignCenter')}>
-                  {item.itemCount}
-                    /10
-                </td>
                 <td className={classNames('tableOrderTd', 'tableAlignCenter')}>
                   <IosRemove onClick={() => this._changeOrder('minus', item)} />
                   <input className={classNames('orderInput')} type="number" value={0} readOnly />
