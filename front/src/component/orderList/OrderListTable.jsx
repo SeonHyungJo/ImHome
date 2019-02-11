@@ -176,15 +176,11 @@ const Thead = () => (
 
 const Buttons = ({ buttonList, clickComplete }) => (
   <div className="buttonContainer">
-    {buttonList.map(
-      (button, index) => (index === 1 ? (
-        <Button key={`${button.name}_${index}`} onClick={() => clickComplete()}>
-          {`${button.name}`}
-        </Button>
-      ) : (
-        <Button key={`${button.name}_${index}`}>{`${button.name}`}</Button>
-      )),
-    )}
+    {buttonList.map((button, index) => (
+      <Button key={`${button.name}_${index}`} onClick={() => clickComplete(button.event)}>
+        {`${button.name}`}
+      </Button>
+    ))}
   </div>
 );
 

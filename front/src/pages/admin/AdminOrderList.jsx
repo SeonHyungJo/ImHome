@@ -17,7 +17,6 @@ class AdminOrderList extends Component {
 
     // 버튼 Setting
     const buttons = [
-      { name: '주문저장', event: 'SAVE_ORDER' },
       { name: '배송처리', event: 'DELIVER_OK' },
       { name: '주문서 취소', event: 'CANCLE_ORDER' },
     ];
@@ -55,22 +54,31 @@ class AdminOrderList extends Component {
     }
   };
 
-  // 출고완료처리하기
-  setComplete = async () => {
+  // Button Event 처리하기
+  setComplete = async (eventName) => {
     try {
       const { OrderListActions, currentOrder } = this.props;
-      // 선택한 지점 출고처리하기
-      const result = await OrderListActions.updateComplete(currentOrder.branchCode);
 
-      if (result.data.success === '0000') {
-        // 주문내역 브랜치 리스트 가져오기
-        const storeList = await OrderListActions.getStoreList();
-        await this.getNavData(storeList.data[0].branchCode);
-      }
-      this.setState({ displayAlert: true });
+      // 배송처리 && 주문서 취소
+      eventName === 'DELIVER_OK'
+        ? OrderListActions.updateComplete(currentOrder.branchCode).then((result) => {
+          result.data.success === '0000' && this.setStoreList();
+          this.setState({ displayAlert: true });
+        })
+        : OrderListActions.deleteOrderData(currentOrder._id).then(
+          result => result.data.success === '0000' && this.setStoreList(),
+        );
     } catch (e) {
       console.log(e);
     }
+  };
+
+  // 좌측 브랜치 리스트 초기화
+  setStoreList = () => {
+    const { OrderListActions } = this.props;
+    OrderListActions.getStoreList().then(
+      result => result.data[0] && result.data[0].branchCode && this.getNavData(result.data[0].branchCode),
+    );
   };
 
   completeRelease = () => {
