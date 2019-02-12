@@ -12,6 +12,7 @@ import {
 } from './pages/admin';
 import { Login } from './pages/common';
 import * as AuthActions from './redux/modules/auth';
+import * as OrderListActions from './redux/modules/orderList';
 
 import './App.scss';
 
@@ -20,6 +21,7 @@ class App extends PureComponent {
   state = {
     admin: null,
     routeList: null,
+    orderList: {},
   };
 
   initializeUserInfo = async () => {
@@ -54,7 +56,37 @@ class App extends PureComponent {
   }
 
   componentDidMount() {
+    const { OrderListActions } = this.props;
+
     this.initializeUserInfo();
+
+    window.requestIdleCallback = window.requestIdleCallback
+      || function (cb) {
+        const start = Date.now();
+        return setTimeout(() => {
+          cb({
+            didTimeout: false,
+            timeRemaining() {
+              console.log(Date.now());
+              return Math.max(0, 50 - (Date.now() - start));
+            },
+          });
+        }, 1);
+      };
+
+    const newOrderCheck = () => setTimeout(() => {
+      OrderListActions.getStoreList().then((result) => {
+        this.setState({
+          orderList: {
+            ...result.data,
+          },
+        });
+      });
+
+      newOrderCheck();
+    }, 2000);
+
+    window.requestIdleCallback(newOrderCheck, { timeout: 0 });
   }
 
   render() {
@@ -105,5 +137,6 @@ export default connect(
   }),
   dispatch => ({
     AuthActions: bindActionCreators(AuthActions, dispatch),
+    OrderListActions: bindActionCreators(OrderListActions, dispatch),
   }),
 )(App);
