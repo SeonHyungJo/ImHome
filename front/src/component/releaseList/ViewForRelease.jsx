@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import DatePicker from 'react-datepicker';
 import { ViewWrapper, ViewWithContent } from '../view';
 import { WhiteBtn, DefaultRadio, MonthPicker } from '../common';
-import { ArrowDatePicker } from '../arrowDatePicker';
+import { InlineDatePicker } from '../inlineDatePicker';
 
 import './react-datepicker.css';
 
@@ -68,12 +68,12 @@ class ViewForUser extends Component {
                   <WhiteBtn onClick={() => setStartDate(90)}>3개월</WhiteBtn>
                 </div>
                 <div>
-                  <ArrowDatePicker
+                  <InlineDatePicker
                     type="year"
                     year={selectMonthDate.year}
                     onClick={setMonthlyDate}
                   />
-                  <ArrowDatePicker
+                  <InlineDatePicker
                     type="month"
                     month={selectMonthDate.month}
                     onClick={setMonthlyDate}

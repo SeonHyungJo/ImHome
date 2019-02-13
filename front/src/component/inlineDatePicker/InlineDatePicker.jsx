@@ -1,10 +1,10 @@
 import React from 'react';
 
-import './arrowDatePicker.css';
+import './InlineDatePicker.css';
 
 const MONTH_LIST = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-class ArrowDatePicker extends React.Component {
+class InlineDatePicker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,7 +34,8 @@ class ArrowDatePicker extends React.Component {
 
   setMonth = (changeNum) => {
     const { currentData } = this.state;
-    const changeMonth = MONTH_LIST[(currentData + changeNum - 1) % 12];
+    const month  = currentData + changeNum - 1 <= 0 ? currentData + changeNum + 11 : currentData + changeNum - 1;
+    const changeMonth = MONTH_LIST[month % 12];
 
     this.setState(prevState => ({
       ...prevState,
@@ -70,4 +71,4 @@ class ArrowDatePicker extends React.Component {
   }
 }
 
-export default ArrowDatePicker;
+export default InlineDatePicker;
