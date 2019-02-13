@@ -3,41 +3,41 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 const Schema = mongoose.Schema;
 
 const itemsSchema = new Schema({
-    itemName: { type: String, required: true },
-    itemCount: { type: String },
-    itemCost: { type: String },
-    itemVolume: { type: String },
-    itemDepth: { type: Number, required: true },
-    parentId: { type: String, required: true },
-    itemDesc: { type: String }
+  itemName: { type: String, required: true },
+  itemCount: { type: String },
+  itemCost: { type: String },
+  itemVolume: { type: String },
+  itemDepth: { type: Number, required: true },
+  parentId: { type: String, required: true },
+  itemDesc: { type: String }
 });
 
 const productsSchema = new Schema(
-    {
-        companyName: { type: String, required: true },
-        companyCode: { type: String, required: true, unique: true },
-        order: { type: Number, required: true },
-        items: [itemsSchema]
-    },
-    {
-        timestamps: true
-    }
+  {
+    companyName: { type: String, required: true },
+    companyCode: { type: String, required: true, unique: true },
+    order: { type: Number, required: true },
+    items: [itemsSchema]
+  },
+  {
+    timestamps: true
+  }
 );
 
 productsSchema.statics.findAll = function() {
-    return this.find({}).sort({ order: 1 });
+  return this.find({}).sort({ order: 1 });
 };
 
 productsSchema.statics.findByCompanyCode = function(companyCode) {
-    return this.findOne({ companyCode });
+  return this.findOne({ companyCode });
 };
 
 productsSchema.statics.findOneUpdateById = function(id, payload) {
-    return this.findOneAndUpdate({ id }, payload, { new: true });
+  return this.findOneAndUpdate({ id }, payload, { new: true });
 };
 
 productsSchema.statics.deleteById = function(productId) {
-    return this.deleteOne({ _id: productId });
+  return this.deleteOne({ _id: productId });
 };
 
 /**
@@ -47,7 +47,11 @@ productsSchema.statics.deleteById = function(productId) {
  * @returns product
  */
 productsSchema.statics.findOneAndUpdateNew = function(companyCode, itemInfo) {
-    return this.findOneAndUpdate({ companyCode }, { $push: { items: itemInfo } }, { new: true });
+  return this.findOneAndUpdate(
+    { companyCode },
+    { $push: { items: itemInfo } },
+    { new: true }
+  );
 };
 
 /**
@@ -57,16 +61,16 @@ productsSchema.statics.findOneAndUpdateNew = function(companyCode, itemInfo) {
  * @returns product
  */
 productsSchema.statics.findOneAndUpdateItem = function(companyCode, itemInfo) {
-    return this.findOneAndUpdate(
-        { companyCode: companyCode, 'items._id': itemInfo._id },
-        {
-            'items.$.itemName': itemInfo.itemName,
-            'items.$.itemCount': itemInfo.itemCount,
-            'items.$.itemCost': itemInfo.itemCost,
-            'items.$.itemVolume': itemInfo.itemVolume
-        },
-        { new: true }
-    );
+  return this.findOneAndUpdate(
+    { companyCode: companyCode, 'items._id': itemInfo._id },
+    {
+      'items.$.itemName': itemInfo.itemName,
+      'items.$.itemCount': itemInfo.itemCount,
+      'items.$.itemCost': itemInfo.itemCost,
+      'items.$.itemVolume': itemInfo.itemVolume
+    },
+    { new: true }
+  );
 };
 
 /**
@@ -75,8 +79,15 @@ productsSchema.statics.findOneAndUpdateItem = function(companyCode, itemInfo) {
  * @param companyCode: 부모 컴퍼니의 코드, iteminfo: 삭제 item id
  * @returns product
  */
-productsSchema.statics.findOneAndUpdateDelete = function(companyCode, itemInfo) {
-    return this.findOneAndUpdate({ companyCode }, { $pull: { items: itemInfo } }, { new: true });
+productsSchema.statics.findOneAndUpdateDelete = function(
+  companyCode,
+  itemInfo
+) {
+  return this.findOneAndUpdate(
+    { companyCode },
+    { $pull: { items: itemInfo } },
+    { new: true }
+  );
 };
 
 /**
@@ -86,8 +97,8 @@ productsSchema.statics.findOneAndUpdateDelete = function(companyCode, itemInfo) 
  * @returns product.save()
  */
 productsSchema.statics.create = function(newProduct) {
-    const product = new this(newProduct);
-    return product.save();
+  const product = new this(newProduct);
+  return product.save();
 };
 
 module.exports = mongoose.model('products', productsSchema);

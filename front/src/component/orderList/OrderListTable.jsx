@@ -138,7 +138,12 @@ const Button = styled.button`
 `;
 
 const OrderListTable = ({
-  headerName, orderList, buttonList = [], clickComplete, style = {},
+  headerName,
+  orderList,
+  buttonList = [],
+  clickComplete,
+  style = {},
+  addReleaseList,
 }) => (
   <ContentWrapper style={style}>
     <div className="dashedContainer">
@@ -146,7 +151,7 @@ const OrderListTable = ({
         <Header>{headerName}</Header>
         <OrderTable>
           <Thead />
-          <OrderListTableList orderList={orderList} />
+          <OrderListTableList orderList={orderList} addReleaseList={addReleaseList} />
           <OrderListTableTotal totalCost={calTotalCost(orderList)} />
         </OrderTable>
       </div>

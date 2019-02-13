@@ -60,33 +60,33 @@ class App extends PureComponent {
 
     this.initializeUserInfo();
 
-    window.requestIdleCallback = window.requestIdleCallback
-      || function (cb) {
-        const start = Date.now();
-        return setTimeout(() => {
-          cb({
-            didTimeout: false,
-            timeRemaining() {
-              console.log(Date.now());
-              return Math.max(0, 50 - (Date.now() - start));
-            },
-          });
-        }, 1);
-      };
+    // window.requestIdleCallback = window.requestIdleCallback
+    //   || function (cb) {
+    //     const start = Date.now();
+    //     return setTimeout(() => {
+    //       cb({
+    //         didTimeout: false,
+    //         timeRemaining() {
+    //           console.log(Date.now());
+    //           return Math.max(0, 50 - (Date.now() - start));
+    //         },
+    //       });
+    //     }, 1);
+    //   };
 
-    const newOrderCheck = () => setTimeout(() => {
-      OrderListActions.getStoreList().then((result) => {
-        this.setState({
-          orderList: {
-            ...result.data,
-          },
-        });
-      });
+    // const newOrderCheck = () => setTimeout(() => {
+    //   OrderListActions.getStoreList().then((result) => {
+    //     this.setState({
+    //       orderList: {
+    //         ...result.data,
+    //       },
+    //     });
+    //   });
 
-      newOrderCheck();
-    }, 2000);
+    //   newOrderCheck();
+    // }, 2000);
 
-    window.requestIdleCallback(newOrderCheck, { timeout: 0 });
+    // window.requestIdleCallback(newOrderCheck, { timeout: 0 });
   }
 
   render() {
