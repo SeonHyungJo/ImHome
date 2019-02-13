@@ -12,7 +12,6 @@ const itemsSchema = new Schema(
   },
   {
     sparse: true,
-    _id: false
   }
 );
 

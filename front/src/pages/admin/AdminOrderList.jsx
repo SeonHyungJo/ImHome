@@ -88,6 +88,14 @@ class AdminOrderList extends Component {
     this.setState({ displayAlert: false });
   };
 
+  // 우측으로 이동시키기
+  addReleaseList = (payload) => {
+    console.log(payload);
+    this.setState(state => ({
+      specificationItems: [...state.specificationItems, payload],
+    }));
+  };
+
   render() {
     const { store, currentOrder = '', currentId } = this.props;
     const {
@@ -100,6 +108,7 @@ class AdminOrderList extends Component {
     } = this.state;
     const updateAt = currentOrder.updatedAt || new Date();
     const role = 'admin';
+    console.log(specificationItems);
 
     return (
       <>
@@ -119,6 +128,7 @@ class AdminOrderList extends Component {
             orderList={currentOrder.items}
             buttonList={buttons}
             clickComplete={this.setComplete}
+            addReleaseList={this.addReleaseList}
           />
           <SpecificationTable
             headerName={currentOrder.branchName}

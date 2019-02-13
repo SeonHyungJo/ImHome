@@ -22,11 +22,15 @@ const TableList = styled.div`
   }
 `;
 
-const OrderListTableList = ({ orderList }) => (
+const OrderListTableList = ({ orderList, addReleaseList }) => (
   <TableList className={classNames('tbody', 'underLineDash')}>
     {orderList instanceof Array
       && orderList.map((order, index) => (
-        <div key={`${order.itemCode}_${index}`} className="tbodyTr">
+        <div
+          key={`${order.itemCode}_${index}`}
+          className="tbodyTr"
+          onClick={() => addReleaseList(order)}
+        >
           <div className={classNames('tbodyTd')}>{order.itemName}</div>
           <div className={classNames('tbodyTd', 'text-center')}>{order.itemCount}</div>
           <div className={classNames('tbodyTd')}>
