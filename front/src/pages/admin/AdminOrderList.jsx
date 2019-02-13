@@ -26,11 +26,14 @@ class AdminOrderList extends Component {
       { name: '명세표 출력', event: 'PRINT_SPECIFICATION' },
     ];
 
+    const specificationItems = [];
+
     this.state = {
       buttons,
       specificationBtns,
       displayAlert: false,
       alertMessage: '출고완료 처리 되었습니다.',
+      specificationItems,
     };
   }
 
@@ -88,9 +91,15 @@ class AdminOrderList extends Component {
   render() {
     const { store, currentOrder = '', currentId } = this.props;
     const {
-      alertMessage, displayAlert, buttons, storeId, orders, specificationBtns,
+      alertMessage,
+      displayAlert,
+      buttons,
+      storeId,
+      specificationBtns,
+      specificationItems,
     } = this.state;
     const updateAt = currentOrder.updatedAt || new Date();
+    const role = 'admin';
 
     return (
       <>
@@ -100,7 +109,7 @@ class AdminOrderList extends Component {
           displayAlertPop={displayAlert}
           clickEvent={this.completeRelease}
         />
-        <PageTemplate role="admin" navData={store} id={currentId} clickNav={this.getNavData}>
+        <PageTemplate role={role} navData={store} id={currentId} clickNav={this.getNavData}>
           <header>
             {'주문일자 :'}
             {CommonUtil.setHangleDateTime(updateAt)}
@@ -115,7 +124,7 @@ class AdminOrderList extends Component {
             headerName={currentOrder.branchName}
             tradeDate={CommonUtil.setHangleDate(updateAt)}
             branchName={`${storeId} 주문내역`}
-            orderList={currentOrder.items}
+            orderList={specificationItems}
             buttonList={specificationBtns}
           />
         </PageTemplate>

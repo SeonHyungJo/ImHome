@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { PageTemplate } from '../../component/template';
 import { OrderProduct } from '../../component/orderProduct';
-import { OrderListTable } from '../../component/orderList';
 import * as ProductListActions from '../../redux/modules/productList';
 
 class UserProduct extends Component {
@@ -49,10 +48,11 @@ class UserProduct extends Component {
 
   render() {
     const { lists } = this.props;
+    const role = 'user';
 
     return (
       <PageTemplate
-        role="user"
+        role={role}
         navData={lists}
         id={this.state.companyCode}
         clickNav={this.getNavData}

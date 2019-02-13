@@ -10,7 +10,6 @@ import * as OrderListActions from '../../redux/modules/orderList';
 import Category from './Category';
 import ProductTable from './ProductTable';
 import { OrderListTable } from '../orderList';
-import { FormBtn } from '../common';
 
 const ContentWrapper = styled.div`
   display: flex;

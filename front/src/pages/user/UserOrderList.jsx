@@ -5,11 +5,8 @@ import { bindActionCreators } from 'redux';
 
 import { PageTemplate } from '../../component/template';
 import { OrderListTable } from '../../component/orderList';
-import { SpecificationTable } from '../../component/specificationTable';
-import { AlertPopup } from '../../component/common';
 
 import * as OrderListActions from '../../redux/modules/orderList';
-import * as CommonUtil from '../../util/commonUtil';
 
 class AdminOrderList extends Component {
   constructor(props) {
@@ -46,17 +43,14 @@ class AdminOrderList extends Component {
   render() {
     const { store, currentId } = this.state;
     const { currentOrder } = this.props;
-
-    console.log(currentOrder);
     const orderListProps = {
       headerName: 'Your Order',
       orderList: currentOrder && currentOrder.items ? currentOrder.items : '',
     };
-
-    console.log(orderListProps);
+    const role = 'user';
 
     return (
-      <PageTemplate role="user" navData={store} id={currentId} clickNav={this.getNavData}>
+      <PageTemplate role={role} navData={store} id={currentId} clickNav={this.getNavData}>
         <OrderListTable {...orderListProps} />
       </PageTemplate>
     );

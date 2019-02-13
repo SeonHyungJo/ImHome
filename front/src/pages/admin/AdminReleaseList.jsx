@@ -156,9 +156,9 @@ class AdminReleaseList extends Component {
   setMonthly = () => {
     const { ReleaseActions } = this.props;
     const { year, month } = this.state.selectMonthDate;
-    
+
     const newStartDate = new Date(year, month - 1, 1);
-    const newEndDate = CommonUtil.getEndOfDay(year, month-1);;
+    const newEndDate = CommonUtil.getEndOfDay(year, month - 1);
 
     // newStartDate.setDate(newStartDate.getDate() + changeNum);
     ReleaseActions.updateStartDate(newStartDate);
@@ -170,8 +170,10 @@ class AdminReleaseList extends Component {
     const {
       store, list, currentId, custNo, startDate, endDate,
     } = this.props;
+    const role = 'admin';
+
     return (
-      <PageTemplate role="admin" navData={store} id={currentId} clickNav={this.getNavData}>
+      <PageTemplate role={role} navData={store} id={currentId} clickNav={this.getNavData}>
         <ViewForRelease
           type="date"
           viewTitle="출고내역 및 세금계산서 발행내역 조회"

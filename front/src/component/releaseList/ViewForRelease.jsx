@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import DatePicker from 'react-datepicker';
 import { ViewWrapper, ViewWithContent } from '../view';
-import { WhiteBtn, DefaultRadio, MonthPicker } from '../common';
+import { WhiteBtn, DefaultRadio } from '../common';
 import { InlineDatePicker } from '../inlineDatePicker';
 
 import './react-datepicker.css';

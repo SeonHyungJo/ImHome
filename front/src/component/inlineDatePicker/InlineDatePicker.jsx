@@ -34,7 +34,7 @@ class InlineDatePicker extends React.Component {
 
   setMonth = (changeNum) => {
     const { currentData } = this.state;
-    const month  = currentData + changeNum - 1 <= 0 ? currentData + changeNum + 11 : currentData + changeNum - 1;
+    const month = currentData + changeNum - 1 <= 0 ? currentData + changeNum + 11 : currentData + changeNum - 1;
     const changeMonth = MONTH_LIST[month % 12];
 
     this.setState(prevState => ({
@@ -49,7 +49,6 @@ class InlineDatePicker extends React.Component {
     const {
       type, onClick, year, month,
     } = this.props;
-    const { currentData } = this.state;
 
     return (
       <div className="__arrow-date-picker-container">

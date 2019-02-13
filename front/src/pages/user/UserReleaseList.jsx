@@ -134,9 +134,10 @@ class AdminReleaseList extends Component {
     const {
       list, custNo, startDate, endDate,
     } = this.props;
+    const role = 'user';
 
     return (
-      <PageTemplate role="user" navData={store} id={currentId}>
+      <PageTemplate role={role} navData={store} id={currentId}>
         <ViewForRelease
           type="date"
           viewTitle="주문내역조회"
@@ -165,7 +166,8 @@ class AdminReleaseList extends Component {
           gridTitle="조회내용"
           clickRow={this.getRowData}
           id={custNo}
-          bottom={['Total', '', '', '총 주문건수', this.getTotalCost(list)]} w
+          bottom={['Total', '', '', '총 주문건수', this.getTotalCost(list)]}
+          w
           ref={el => (this.componentRef = el)}
         />
       </PageTemplate>

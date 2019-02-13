@@ -171,8 +171,10 @@ class AdminUser extends Component {
     const {
       store, list, currentStoreId, currentCustNo,
     } = this.props;
+    const role = 'admin';
+
     return (
-      <PageTemplate role="admin" navData={store} id={currentStoreId} clickNav={this.getNavData}>
+      <PageTemplate role={role} navData={store} id={currentStoreId} clickNav={this.getNavData}>
         <ViewForUser viewTitle="회원정보 조회" />
         {currentCustNo && currentCustNo !== '0' ? (
           <div style={{ textAlign: 'right', marginRight: '1rem' }}>
