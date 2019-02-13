@@ -4,6 +4,7 @@ import { Map, List } from 'immutable';
 import * as orderListAPI from '../../lib/api/orderList';
 
 const CHANGE_CURRENTID = 'orderList/CHANGE_CURRENTID'; // Nav 위치 변경
+const REMOVE_ITEM_LIST = 'orderList/REMOVE_ITEM_LIST'; // ITEMS 내역에서 제거
 
 const GET_STORE_LIST = 'orderList/GET_STORE_LIST'; // 매장 목록 가져오기
 const GET_ORDER_DATA = 'orderList/GET_ORDER_DATA'; // 주문내역 가져오기
@@ -13,6 +14,7 @@ const DELETE_ORDER = 'orderList/DELETE_ORDER'; // 주문내역 취소하기
 const CREATE_ORDER = 'orderList/CREATE_ORDER'; // 주문하기
 
 export const updateCurrentId = createAction(CHANGE_CURRENTID);
+export const removeItemList = createAction(REMOVE_ITEM_LIST);
 
 export const getStoreList = createAction(GET_STORE_LIST, orderListAPI.getStoreList);
 export const getOrderData = createAction(GET_ORDER_DATA, orderListAPI.getOrderData);
@@ -59,6 +61,7 @@ const initialState = Map({
 export default handleActions(
   {
     [CHANGE_CURRENTID]: (state, action) => state.setIn(['orderList', 'currentId'], action.payload),
+    [REMOVE_ITEM_LIST]: (state, action) => state.set(['orderList', 'currentOrder', 'items'], List(action.payload)),
     ...pender({
       type: GET_STORE_LIST,
       onSuccess: (state, action) => state

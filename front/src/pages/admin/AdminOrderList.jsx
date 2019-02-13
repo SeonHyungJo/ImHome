@@ -79,6 +79,7 @@ class AdminOrderList extends Component {
   // 좌측 브랜치 리스트 초기화
   setStoreList = () => {
     const { OrderListActions } = this.props;
+
     OrderListActions.getStoreList().then(
       result => result.data[0] && result.data[0].branchCode && this.getNavData(result.data[0].branchCode),
     );
@@ -90,7 +91,16 @@ class AdminOrderList extends Component {
 
   // 우측으로 이동시키기
   addReleaseList = (payload) => {
-    console.log(payload);
+    const { OrderListActions, currentOrder } = this.props;
+    const newItems = currentOrder.items;
+    const currentId = newItems.map((item, index) => {
+      if (item._id === payload._id) {
+        return index;
+      }
+    });
+    delete newItems[currentId];
+
+    OrderListActions.removeItemList(newItems);
     this.setState(state => ({
       specificationItems: [...state.specificationItems, payload],
     }));
@@ -108,7 +118,6 @@ class AdminOrderList extends Component {
     } = this.state;
     const updateAt = currentOrder.updatedAt || new Date();
     const role = 'admin';
-    console.log(specificationItems);
 
     return (
       <>
