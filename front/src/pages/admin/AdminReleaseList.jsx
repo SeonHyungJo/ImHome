@@ -62,6 +62,7 @@ class AdminReleaseList extends Component {
       searchingData,
       radioBtnSetting,
       selectMonthDate,
+      detailPop: false
     };
   }
 
@@ -101,9 +102,14 @@ class AdminReleaseList extends Component {
   };
 
   getRowData = async (changeNo) => {
-    const { ReleaseActions } = this.props;
+    const { ReleaseActions, list } = this.props;
 
     await ReleaseActions.updateCustNo(changeNo);
+    list.map((item) => {
+      if (item._id === changeNo)
+        return console.log(item._id, item.items);
+    });
+    // @TODO redux에 현재 클릭한 데이터 담고 팝업 컴포넌트와 connect시켜 설정(props로 넘기지 않을거임)
     // await ReleaseActions.getOrderData(changeNo);
   };
 
