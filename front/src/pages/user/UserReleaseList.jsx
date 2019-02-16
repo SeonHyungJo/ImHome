@@ -8,6 +8,7 @@ import { ViewForRelease, TableWithScroll } from '../../component/releaseList';
 import { FormBtn } from '../../component/common';
 import * as ReleaseActions from '../../redux/modules/releaseList';
 import * as CommonUtil from '../../util/commonUtil';
+import { PopOrderList } from '../../component/orderList';
 
 class AdminReleaseList extends Component {
   constructor(props) {
@@ -62,6 +63,12 @@ class AdminReleaseList extends Component {
       radioBtnSetting,
       store: leftNavList,
       currentId: '001',
+      displayPop: false,
+      currentBranchName: '',
+      itemList: [],
+      buttons: [
+        { name: '확인' }
+      ]
     };
   }
 
@@ -109,9 +116,27 @@ class AdminReleaseList extends Component {
   };
 
   getRowData = async (changeNo) => {
-    const { ReleaseActions } = this.props;
+    const { ReleaseActions, list } = this.props;
+    let branchName = '';
+    let itemList = [];
+    let orderDate = '';
 
     await ReleaseActions.updateCustNo(changeNo);
+    list.map(item => {
+      if (item && item._id === changeNo) {
+        branchName = item.branchName;
+        itemList = item.items;
+        orderDate = item.updatedAt
+      }
+    });
+
+    this.setState({
+      displayPop: true,
+      currentBranchName: branchName,
+      itemList: itemList,
+      orderDate: orderDate
+    });
+
     // await ReleaseActions.getOrderData(changeNo);
   };
 
@@ -126,6 +151,10 @@ class AdminReleaseList extends Component {
 
     ReleaseActions.updateEndDate(newDate);
   };
+
+  closePop = () => {
+    this.setState({ displayPop: false });
+  }
 
   render() {
     const {
@@ -169,6 +198,14 @@ class AdminReleaseList extends Component {
           bottom={['Total', '', '', '총 주문건수', this.getTotalCost(list)]}
           w
           ref={el => (this.componentRef = el)}
+        />
+        <PopOrderList
+          displayPop={this.state.displayPop}
+          headerName={this.state.currentBranchName}
+          orderList={this.state.itemList}
+          buttonList={this.state.buttons}
+          clickComplete={this.closePop}
+          orderDate={this.state.orderDate}
         />
       </PageTemplate>
     );
