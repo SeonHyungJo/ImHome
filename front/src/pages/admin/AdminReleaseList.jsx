@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import { PageTemplate } from '../../component/template';
 import { ViewForRelease, TableWithScroll } from '../../component/releaseList';
+import { PopOrderList } from '../../component/orderList';
 import { FormBtn } from '../../component/common';
 import * as ReleaseActions from '../../redux/modules/releaseList';
 import * as CommonUtil from '../../util/commonUtil';
@@ -62,7 +63,12 @@ class AdminReleaseList extends Component {
       searchingData,
       radioBtnSetting,
       selectMonthDate,
-      detailPop: false
+      displayPop: false,
+      currentBranchName: '',
+      itemList: [],
+      buttons: [
+        { name: '확인' }
+      ]
     };
   }
 
@@ -103,11 +109,24 @@ class AdminReleaseList extends Component {
 
   getRowData = async (changeNo) => {
     const { ReleaseActions, list } = this.props;
-
+    let branchName = '';
+    let itemList = [];
+    let orderDate = '';
     await ReleaseActions.updateCustNo(changeNo);
     list.map((item) => {
-      if (item._id === changeNo)
+      if (item._id === changeNo) {
+        branchName = item.branchName;
+        itemList = item.items;
+        orderDate = item.updatedAt
         return console.log(item._id, item.items);
+      }
+    });
+
+    this.setState({
+      displayPop: true,
+      currentBranchName: branchName,
+      itemList: itemList,
+      orderDate: orderDate
     });
     // @TODO redux에 현재 클릭한 데이터 담고 팝업 컴포넌트와 connect시켜 설정(props로 넘기지 않을거임)
     // await ReleaseActions.getOrderData(changeNo);
@@ -171,6 +190,10 @@ class AdminReleaseList extends Component {
     ReleaseActions.updateEndDate(newEndDate);
   };
 
+  closePop = () => {
+    this.setState({ displayPop: false });
+  }
+
   render() {
     const { searchingData, radioBtnSetting, selectMonthDate } = this.state;
     const {
@@ -226,6 +249,14 @@ class AdminReleaseList extends Component {
           id={custNo}
           bottom={['Total', '', '', '총 발행건수', this.getTotalCost(list)]}
           ref={el => (this.componentRef = el)}
+        />
+        <PopOrderList
+          displayPop={this.state.displayPop}
+          headerName={this.state.currentBranchName}
+          orderList={this.state.itemList}
+          buttonList={this.state.buttons}
+          clickComplete={this.closePop}
+          orderDate={this.state.orderDate}
         />
       </PageTemplate>
     );
