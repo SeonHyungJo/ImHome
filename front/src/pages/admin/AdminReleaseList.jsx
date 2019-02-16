@@ -113,12 +113,11 @@ class AdminReleaseList extends Component {
     let itemList = [];
     let orderDate = '';
     await ReleaseActions.updateCustNo(changeNo);
-    list.map((item) => {
-      if (item._id === changeNo) {
+    list.map(item => {
+      if (item && item._id === changeNo) {
         branchName = item.branchName;
         itemList = item.items;
         orderDate = item.updatedAt
-        return console.log(item._id, item.items);
       }
     });
 
@@ -128,8 +127,6 @@ class AdminReleaseList extends Component {
       itemList: itemList,
       orderDate: orderDate
     });
-    // @TODO redux에 현재 클릭한 데이터 담고 팝업 컴포넌트와 connect시켜 설정(props로 넘기지 않을거임)
-    // await ReleaseActions.getOrderData(changeNo);
   };
 
   getTotalCost = (list) => {
