@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import * as ProductListActions from '../../redux/modules/productList';
 import * as AuthActions from '../../redux/modules/auth';
 import * as OrderListActions from '../../redux/modules/orderList';
+import * as TempOrderActions from '../../redux/modules/tempOrder';
 
 import Category from './Category';
 import ProductTable from './ProductTable';
@@ -50,15 +51,15 @@ class Imhome extends Component {
     });
   };
 
-  _order = () => {
-    const { orderForm, auth, OrderListActions } = this.props;
+  _tempOrder = () => {
+    const { orderForm, auth, TempOrderActions } = this.props;
     const branchCode = auth.toJS().info.branchCode;
     const data = {
       complete: false,
       branchCode,
       ...orderForm,
     };
-    OrderListActions.createOrder(data);
+    TempOrderActions.createTempOrder(data);
   };
 
   render() {
@@ -84,8 +85,8 @@ class Imhome extends Component {
             headerName="YourOrder"
             orderList={items}
             buttonList={[{ name: '주문저장' }, { name: '바로주문하기' }]}
-            clickComplete={()=>console.log(1)}
-            style={{'height': '100%'}}
+            clickComplete={this._tempOrder}
+            style={{ height: '100%' }}
           />
         </OrderContainer>
       </ContentWrapper>
@@ -107,5 +108,6 @@ export default connect(
     ProductListActions: bindActionCreators(ProductListActions, dispatch),
     AuthActions: bindActionCreators(AuthActions, dispatch),
     OrderListActions: bindActionCreators(OrderListActions, dispatch),
+    TempOrderActions: bindActionCreators(TempOrderActions, dispatch),
   }),
 )(Imhome);
