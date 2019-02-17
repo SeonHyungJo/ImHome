@@ -129,7 +129,7 @@ exports.getOrderList = (req, res) => {
 };
 
 /**
- * POST /api/tempOrders
+ * POST /api/tempOrder
  *
  * @author Jinseong
  * @summary 주문내역 추가 또는 수정진행

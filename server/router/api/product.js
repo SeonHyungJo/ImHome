@@ -101,17 +101,19 @@ exports.createItem = (req, res) => {
             }
  */
 exports.deleteItem = (req, res) => {
-  Products.findOneAndUpdateDelete(req.params.companyCode, req.body)
-    .then(product => {
-      if (!product) {
-        reponseError(res, 'CANT_FIND_PRODUCT');
-      }
-      res.json(product);
-    })
-    .catch(err => {
-      console.log(err);
-      reponseError(res, 'UPDATE_ITEM_ERROR');
-    });
+  req.body._id === undefined && req.body._id === '' && req.params.companyCode === undefined
+    ? reponseError(res, 'DELETE_ITEM_ERROR')
+    : Products.findOneAndUpdateDelete(req.params.companyCode, req.body)
+        .then(product => {
+          if (!product) {
+            reponseError(res, 'CANT_FIND_PRODUCT');
+          }
+          res.json(product);
+        })
+        .catch(err => {
+          console.log(err);
+          reponseError(res, 'DELETE_ITEM_ERROR');
+        });
 };
 
 /**

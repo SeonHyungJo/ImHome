@@ -4,6 +4,7 @@ import User from './user';
 import Store from './store';
 import Order from './order';
 import Product from './product';
+import TempOrder from './tempOrder';
 
 // Import AuthMiddleware
 import AuthMiddleware from '../common/authMiddleware';
@@ -55,5 +56,8 @@ router.put('/product/:companyCode/item', Product.updateItem);
 // Product API
 router.post('/product', Product.createProduct);
 router.delete('/product/:productId', Product.deleteProduct);
+
+// TempOrder API
+router.post('/tempOrder', TempOrder.updateOrderList);
 
 module.exports = router;

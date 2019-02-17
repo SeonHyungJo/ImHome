@@ -122,6 +122,9 @@ const reponseErrorType = (res, type) => {
     case 'UPDATE_ITEM_ERROR':
       res.status(200).send({ fail: '3013' });
       break;
+    case 'DELETE_ITEM_ERROR':
+      res.status(200).send({ fail: '3014' });
+      break;
     //------------------------------------------------------
     default:
       res.status(200).send({ fail: '9999' });
