@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import { PageTemplate } from '../../component/template';
 import { OrderListTable } from '../../component/orderList';
+import { FormBtn } from '../../component/common';
 
 import * as OrderListActions from '../../redux/modules/orderList';
 
@@ -52,6 +53,7 @@ class AdminOrderList extends Component {
     return (
       <PageTemplate role={role} navData={store} id={currentId} clickNav={this.getNavData}>
         <OrderListTable {...orderListProps} />
+        <FormBtn>주문취소</FormBtn>
       </PageTemplate>
     );
   }

@@ -78,10 +78,7 @@ export default handleActions(
     }),
     ...pender({
       type: CREATE_TEMP_ORDER,
-      onSuccess: (state, action) => {
-        console.log(action.payload.data);
-        return state.setIn(['result'], Map(action.payload.data));
-      },
+      onSuccess: (state, action) => state.setIn(['result'], Map(action.payload.data)),
     }),
   },
   initialState,

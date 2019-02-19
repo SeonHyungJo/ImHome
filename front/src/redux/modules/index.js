@@ -6,6 +6,7 @@ import user from './user';
 import orderList from './orderList';
 import releaseList from './releaseList';
 import productList from './productList';
+import tempOrder from './tempOrder';
 
 export default combineReducers({
   auth,
@@ -13,5 +14,6 @@ export default combineReducers({
   orderList,
   productList,
   releaseList,
+  tempOrder,
   pender: penderReducer,
 });

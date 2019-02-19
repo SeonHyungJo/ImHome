@@ -7,6 +7,7 @@ import * as ProductListActions from '../../redux/modules/productList';
 import * as AuthActions from '../../redux/modules/auth';
 import * as OrderListActions from '../../redux/modules/orderList';
 import * as TempOrderActions from '../../redux/modules/tempOrder';
+import { AlertPopup } from '../../component/common';
 
 import Category from './Category';
 import ProductTable from './ProductTable';
@@ -36,11 +37,29 @@ const OrderContainer = styled.div`
   overflow-y: hidden;
 `;
 
+const buttonList = [
+  { name: '주문저장', event: 'TEMP_ORDER' },
+  { name: '바로주문하기', event: 'CREATE_ORDER' },
+];
+
 class Imhome extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      displayAlertPop: false,
+    };
   }
+  
+  _closeAlertPop = () => this.setState({ displayAlertPop: false });
+
+  setMessage = message => {
+    const { ProductListActions } = this.props;
+    ProductListActions.setMessage({
+        form: 'productList',
+        message
+    });
+    return false;
+  };
 
   _clickCategory = (index, _id, itemName) => {
     const { ProductListActions } = this.props;
@@ -51,19 +70,37 @@ class Imhome extends Component {
     });
   };
 
-  _tempOrder = () => {
-    const { orderForm, auth, TempOrderActions } = this.props;
+  _orderFunc = (eventName) => {
+    const { orderForm, auth, TempOrderActions, OrderListActions } = this.props;
     const branchCode = auth.toJS().info.branchCode;
     const data = {
       complete: false,
       branchCode,
       ...orderForm,
     };
-    TempOrderActions.createTempOrder(data);
+    
+    try {
+      eventName === 'TEMP_ORDER' ? 
+        TempOrderActions.createTempOrder(data).then(result => {
+          this.setMessage('임시저장 되었습니다');
+          this.setState({ displayAlertPop: true });
+        }
+      ) : 
+        console.log("임시");
+      // OrderListActions.createOrder(data).then(result => {
+      //     console.log(result.data);
+      //     this.setMessage('주문 되었습니다');
+      //     this.setState({ displayAlertPop: true });
+      // })
+    } catch (e) {
+      console.log(e);
+      this.setMessage('실패하였습니다. 관리자에게 문의해주세요. f_order');
+      this.setState({ displayAlertPop: true });
+    }
   };
 
   render() {
-    const { form, orderForm } = this.props;
+    const { form, orderForm, message } = this.props;
     const { categories, clickedCate, companyCode } = form.toJS();
     const items = orderForm.items;
 
@@ -84,11 +121,17 @@ class Imhome extends Component {
           <OrderListTable
             headerName="YourOrder"
             orderList={items}
-            buttonList={[{ name: '주문저장' }, { name: '바로주문하기' }]}
-            clickComplete={this._tempOrder}
+            buttonList={buttonList}
+            clickComplete={this._orderFunc}
             style={{ height: '100%' }}
           />
         </OrderContainer>
+        <AlertPopup
+          title={message}
+          clickEvent={this._closeAlertPop}
+          buttonName="확인"
+          displayAlertPop={this.state.displayAlertPop}
+        />
       </ContentWrapper>
     );
   }
@@ -100,7 +143,8 @@ export default connect(
     lists: state.productList.getIn(['productList', 'lists']),
     message: state.productList.getIn(['productList', 'message']),
     error: state.productList.getIn(['productList', 'error']),
-    result: state.productList.get('result'),
+    tempResult: state.tempOrder.get('result'),
+    orderResult: state.orderList.get('result'),
     orderForm: state.productList.getIn(['productOrder', 'form']),
     auth: state.auth.get('result'),
   }),
