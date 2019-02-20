@@ -67,7 +67,7 @@ orderSchema.statics.findOrderList = function(branchCode, startDate, endDate) {
   return this.find({
     branchCode,
     complete: true,
-    updatedAt: { $gte: startDate, $lt: endDate }
+    updatedAt: { $gte: startDate, $lte: endDate }
   }).select({
     _id: 1,
     branchCode: 1,
