@@ -158,6 +158,14 @@ class AdminReleaseList extends Component {
     ReleaseActions.updateEndDate(newDate);
   };
 
+  searchRelease = () => {
+    const {
+      ReleaseActions, startDate, endDate, currentId,
+    } = this.props;
+
+    ReleaseActions.getOrderList(currentId, startDate, endDate);
+  };
+
   closePop = () => {
     this.setState({ displayPop: false });
   };
@@ -219,7 +227,9 @@ class AdminReleaseList extends Component {
           setMonthlyDate={this.setMonthlyDate}
           setMonthly={this.setMonthly}
         >
-          <FormBtn style={{ width: '80px', margin: '0' }}>조회</FormBtn>
+          <FormBtn style={{ width: '80px', margin: '0' }} onClick={this.searchRelease}>
+            조회
+          </FormBtn>
         </ViewForRelease>
 
         <ViewForRelease
