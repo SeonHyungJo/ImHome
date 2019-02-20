@@ -47,11 +47,7 @@ productsSchema.statics.deleteById = function(productId) {
  * @returns product
  */
 productsSchema.statics.findOneAndUpdateNew = function(companyCode, itemInfo) {
-  return this.findOneAndUpdate(
-    { companyCode },
-    { $push: { items: itemInfo } },
-    { new: true }
-  );
+  return this.findOneAndUpdate({ companyCode }, { $push: { items: itemInfo } }, { new: true });
 };
 
 /**
@@ -79,15 +75,8 @@ productsSchema.statics.findOneAndUpdateItem = function(companyCode, itemInfo) {
  * @param companyCode: 부모 컴퍼니의 코드, iteminfo: 삭제 item id
  * @returns product
  */
-productsSchema.statics.findOneAndUpdateDelete = function(
-  companyCode,
-  itemInfo
-) {
-  return this.findOneAndUpdate(
-    { companyCode },
-    { $pull: { items: itemInfo } },
-    { new: true }
-  );
+productsSchema.statics.findOneAndUpdateDelete = function(companyCode, itemInfo) {
+  return this.findOneAndUpdate({ companyCode }, { $pull: { items: itemInfo.data } }, { new: true });
 };
 
 /**
