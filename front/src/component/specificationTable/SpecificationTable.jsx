@@ -239,7 +239,7 @@ const SpecificationTable = ({
         </div>
         <BranchContainer>
           <div className="branchInfo">
-            <p>{`아임홈 ${headerName} 귀하`}</p>
+            <p>{`아임홈 ${headerName || '00점'} 귀하`}</p>
             <p className="branchInfo_bottomText">아래와 같이 계산합니다.</p>
           </div>
           <div className="masterInfo">
