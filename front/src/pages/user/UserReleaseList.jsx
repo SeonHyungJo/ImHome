@@ -56,6 +56,13 @@ class AdminReleaseList extends Component {
       },
     ];
 
+    const currentDate = new Date();
+
+    const selectMonthDate = {
+      year: currentDate.getFullYear(),
+      month: currentDate.getMonth() + 1,
+    };
+
     this.state = {
       custNo: 1,
       headerData,
@@ -66,9 +73,8 @@ class AdminReleaseList extends Component {
       displayPop: false,
       currentBranchName: '',
       itemList: [],
-      buttons: [
-        { name: '확인' }
-      ]
+      buttons: [{ name: '확인' }],
+      selectMonthDate,
     };
   }
 
@@ -122,19 +128,19 @@ class AdminReleaseList extends Component {
     let orderDate = '';
 
     await ReleaseActions.updateCustNo(changeNo);
-    list.map(item => {
+    list.map((item) => {
       if (item && item._id === changeNo) {
         branchName = item.branchName;
         itemList = item.items;
-        orderDate = item.updatedAt
+        orderDate = item.updatedAt;
       }
     });
 
     this.setState({
       displayPop: true,
       currentBranchName: branchName,
-      itemList: itemList,
-      orderDate: orderDate
+      itemList,
+      orderDate,
     });
 
     // await ReleaseActions.getOrderData(changeNo);
@@ -154,11 +160,42 @@ class AdminReleaseList extends Component {
 
   closePop = () => {
     this.setState({ displayPop: false });
-  }
+  };
+
+  /**
+   * Change StartDate into Button
+   */
+  setStartDate = (changeNum) => {
+    const { ReleaseActions } = this.props;
+    const newStartDate = new Date();
+
+    newStartDate.setDate(newStartDate.getDate() + changeNum);
+    ReleaseActions.updateStartDate(newStartDate);
+    ReleaseActions.updateEndDate(new Date());
+  };
+
+  setMonthlyDate = ({ type, changeDate }) => {
+    this.setState(prevState => ({
+      ...prevState,
+      selectMonthDate: { ...prevState.selectMonthDate, [type]: changeDate },
+    }));
+  };
+
+  setMonthly = () => {
+    const { ReleaseActions } = this.props;
+    const { year, month } = this.state.selectMonthDate;
+
+    const newStartDate = new Date(year, month - 1, 1);
+    const newEndDate = CommonUtil.getEndOfDay(year, month - 1);
+
+    // newStartDate.setDate(newStartDate.getDate() + changeNum);
+    ReleaseActions.updateStartDate(newStartDate);
+    ReleaseActions.updateEndDate(newEndDate);
+  };
 
   render() {
     const {
-      store, currentId, searchingData, radioBtnSetting,
+      store, currentId, searchingData, radioBtnSetting, selectMonthDate,
     } = this.state;
     const {
       list, custNo, startDate, endDate,
@@ -177,6 +214,10 @@ class AdminReleaseList extends Component {
           endDate={endDate}
           handleChangeStartDate={this.handleChangeStartDate}
           handleChangeEndDate={this.handleChangeEndDate}
+          setStartDate={this.setStartDate}
+          selectMonthDate={selectMonthDate}
+          setMonthlyDate={this.setMonthlyDate}
+          setMonthly={this.setMonthly}
         >
           <FormBtn style={{ width: '80px', margin: '0' }}>조회</FormBtn>
         </ViewForRelease>
