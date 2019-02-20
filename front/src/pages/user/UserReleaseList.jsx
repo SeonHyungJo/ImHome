@@ -169,7 +169,7 @@ class AdminReleaseList extends Component {
     const { ReleaseActions } = this.props;
     const newStartDate = new Date();
 
-    newStartDate.setDate(newStartDate.getDate() + changeNum);
+    newStartDate.setDate(newStartDate.getDate() - changeNum);
     ReleaseActions.updateStartDate(newStartDate);
     ReleaseActions.updateEndDate(new Date());
   };
