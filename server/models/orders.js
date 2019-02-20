@@ -11,7 +11,7 @@ const itemsSchema = new Schema(
     itemDepth: { type: String, required: true }
   },
   {
-    sparse: true,
+    sparse: true
   }
 );
 
@@ -63,8 +63,12 @@ orderSchema.statics.findAllOrder = function(payload) {
  * @see None
  * @returns «Query»
  */
-orderSchema.statics.findOrderList = function(branchCode) {
-  return this.find({ branchCode, complete: true }).select({
+orderSchema.statics.findOrderList = function(branchCode, startDate, endDate) {
+  return this.find({
+    branchCode,
+    complete: true,
+    updatedAt: { $gte: startDate, $lt: endDate }
+  }).select({
     _id: 1,
     branchCode: 1,
     branchName: 1,
