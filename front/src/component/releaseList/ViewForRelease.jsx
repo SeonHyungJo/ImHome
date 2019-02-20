@@ -63,7 +63,7 @@ class ViewForUser extends Component {
                     selected={endDate}
                     onChange={handleChangeEndDate}
                   />
-                  <WhiteBtn onClick={() => setStartDate(1)}>1주일</WhiteBtn>
+                  <WhiteBtn onClick={() => setStartDate(7)}>1주일</WhiteBtn>
                   <WhiteBtn onClick={() => setStartDate(15)}>15일</WhiteBtn>
                   <WhiteBtn onClick={() => setStartDate(30)}>1개월</WhiteBtn>
                   <WhiteBtn onClick={() => setStartDate(90)}>3개월</WhiteBtn>
