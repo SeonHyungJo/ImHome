@@ -1,10 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import classNames from 'classnames';
+
 import { SpecificationTableList, SpecificationTableTotal } from '.';
+import { FormBtn } from '../common';
+import { ReactToPrint } from '../external';
 
 const ContentWrapper = styled.div`
-  width: 35vw;
+  min-width: 35vw;
   height: 75vh;
   border: 1px solid black;
   padding: 10px;
@@ -25,7 +28,7 @@ const ContentWrapper = styled.div`
 
   .buttonContainer {
     display: flex;
-    padding: 0px 20px 10px 20px;
+    padding: 10px 20px 10px 20px;
     height: 40px;
     flex-wrap: nowrap;
     align-content: center;
@@ -223,42 +226,79 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const SpecificationTable = ({
-  headerName,
-  tradeDate = '2018년 05월 10일',
-  orderList,
-  buttonList = [],
-}) => (
-  <ContentWrapper>
-    <div className="dashedContainer">
-      <div className="mainContainer">
-        <Header>거 래 명 세 표</Header>
-        <div className="subContainer">
-          <div className="leftSide">{tradeDate}</div>
-          <div className="rightSide">공급받는자용</div>
+class SpecificationTable extends React.Component {
+  constructor() {
+    super();
+    this.componentRef = React.createRef();
+  }
+
+  render() {
+    const {
+      headerName, tradeDate = '2018년 05월 10일', orderList, buttonList = [],
+    } = this.props;
+
+    return (
+      <ContentWrapper ref={this.componentRef}>
+        <div className="dashedContainer">
+          <div className="mainContainer">
+            <Header>거 래 명 세 표</Header>
+            <div className="subContainer">
+              <div className="leftSide">{tradeDate}</div>
+              <div className="rightSide">공급받는자용</div>
+            </div>
+            <BranchContainer>
+              <div className="branchInfo">
+                <p>{`아임홈 ${headerName || '00점'} 귀하`}</p>
+                <p className="branchInfo_bottomText">아래와 같이 계산합니다.</p>
+              </div>
+              <div className="masterInfo">
+                <p className="masterInfo_mainText">공급자 : (주)아임홈 본사</p>
+                <p className="masterInfo_subText">등록번호 : 222-222-22222</p>
+                <p className="masterInfo_subText">업 태 : 제조/도 소매</p>
+                <p className="masterInfo_subText">사업장 : 성남시 분당구 백현동 582-8번지 1층</p>
+              </div>
+            </BranchContainer>
+            <ContentTable>
+              <Thead />
+              <SpecificationTableList orderList={orderList} />
+              <SpecificationTableTotal totalCost={calTotalCost(orderList)} />
+            </ContentTable>
+          </div>
+          <div className="buttonContainer">
+            {buttonList.map(
+              (button, index) => (index === 0 ? (
+                <Buttons key={`${button.name}_${index}`} name={button.name} />
+              ) : (
+                <ReactToPrint
+                  trigger={() => (
+                    <FormBtn
+                      style={{
+                        margin: '0',
+                        color: 'black',
+                        backgroundColor: '#c2baba',
+                        border: '0px',
+                        borderRadius: '3px',
+                        fontSize: '18px',
+                        fontHeight: '800',
+                        maxHeight: '40px',
+                        padding: '5px 15px',
+                        margin: '0 5px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {button.name}
+                    </FormBtn>
+                  )}
+                  content={() => this.componentRef.current}
+                />
+              )),
+            )}
+          </div>
         </div>
-        <BranchContainer>
-          <div className="branchInfo">
-            <p>{`아임홈 ${headerName || '00점'} 귀하`}</p>
-            <p className="branchInfo_bottomText">아래와 같이 계산합니다.</p>
-          </div>
-          <div className="masterInfo">
-            <p className="masterInfo_mainText">공급자 : (주)아임홈 본사</p>
-            <p className="masterInfo_subText">등록번호 : 222-222-22222</p>
-            <p className="masterInfo_subText">업 태 : 제조/도 소매</p>
-            <p className="masterInfo_subText">사업장 : 성남시 분당구 백현동 582-8번지 1층</p>
-          </div>
-        </BranchContainer>
-        <ContentTable>
-          <Thead />
-          <SpecificationTableList orderList={orderList} />
-          <SpecificationTableTotal totalCost={calTotalCost(orderList)} />
-        </ContentTable>
-      </div>
-      <Buttons buttonList={buttonList} />
-    </div>
-  </ContentWrapper>
-);
+      </ContentWrapper>
+    );
+  }
+}
 
 /**
  * @summary 주문내역 총 가격 계산
@@ -281,18 +321,10 @@ const Thead = () => (
   </div>
 );
 
-const Buttons = ({ buttonList, clickComplete }) => (
-  <div className="buttonContainer">
-    {buttonList.map(
-      (button, index) => (index === 1 ? (
-        <Button key={`${button.name}_${index}`} onClick={() => clickComplete()}>
-          {`${button.name}`}
-        </Button>
-      ) : (
-        <Button key={`${button.name}_${index}`}>{`${button.name}`}</Button>
-      )),
-    )}
-  </div>
+const Buttons = ({ key, name, clickComplete }) => (
+  <Button key={key} onClick={clickComplete}>
+    {name}
+  </Button>
 );
 
 export default SpecificationTable;

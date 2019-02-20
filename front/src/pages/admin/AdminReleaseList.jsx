@@ -14,6 +14,7 @@ import { ReactToPrint } from '../../component/external';
 class AdminReleaseList extends Component {
   constructor() {
     super();
+    this.componentRef = React.createRef();
 
     const headerData = [
       {
@@ -235,7 +236,7 @@ class AdminReleaseList extends Component {
         >
           <ReactToPrint
             trigger={() => <FormBtn style={{ margin: '0' }}>거래내역출력</FormBtn>}
-            content={() => this.componentRef}
+            content={() => this.componentRef.current}
           />
           {/* 파일저장용 */}
           {/* <Button
@@ -253,7 +254,7 @@ class AdminReleaseList extends Component {
           clickRow={this.getRowData}
           id={custNo}
           bottom={['Total', '', '', '총 발행건수', this.getTotalCost(list)]}
-          ref={el => (this.componentRef = el)}
+          ref={this.componentRef}
         />
         <PopOrderList
           displayPop={this.state.displayPop}
