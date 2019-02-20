@@ -66,9 +66,7 @@ class AdminReleaseList extends Component {
       displayPop: false,
       currentBranchName: '',
       itemList: [],
-      buttons: [
-        { name: '확인' }
-      ]
+      buttons: [{ name: '확인' }],
     };
   }
 
@@ -113,19 +111,19 @@ class AdminReleaseList extends Component {
     let itemList = [];
     let orderDate = '';
     await ReleaseActions.updateCustNo(changeNo);
-    list.map(item => {
+    list.map((item) => {
       if (item && item._id === changeNo) {
         branchName = item.branchName;
         itemList = item.items;
-        orderDate = item.updatedAt
+        orderDate = item.updatedAt;
       }
     });
 
     this.setState({
       displayPop: true,
       currentBranchName: branchName,
-      itemList: itemList,
-      orderDate: orderDate
+      itemList,
+      orderDate,
     });
   };
 
@@ -187,9 +185,17 @@ class AdminReleaseList extends Component {
     ReleaseActions.updateEndDate(newEndDate);
   };
 
+  searchRelease = () => {
+    const {
+      ReleaseActions, startDate, endDate, currentId,
+    } = this.props;
+
+    ReleaseActions.getOrderList(currentId, startDate, endDate);
+  };
+
   closePop = () => {
     this.setState({ displayPop: false });
-  }
+  };
 
   render() {
     const { searchingData, radioBtnSetting, selectMonthDate } = this.state;
@@ -215,7 +221,9 @@ class AdminReleaseList extends Component {
           setMonthlyDate={this.setMonthlyDate}
           setMonthly={this.setMonthly}
         >
-          <FormBtn style={{ width: '80px', margin: '0' }}>조회</FormBtn>
+          <FormBtn style={{ width: '80px', margin: '0' }} onClick={this.searchRelease}>
+            조회
+          </FormBtn>
         </ViewForRelease>
 
         <ViewForRelease
