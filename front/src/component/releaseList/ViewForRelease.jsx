@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import { ViewWrapper, ViewWithContent } from '../view';
 import { WhiteBtn, DefaultRadio } from '../common';
 import { InlineDatePicker } from '../inlineDatePicker';
+import { setCostFormat } from '../../util/commonUtil';
 
 import './react-datepicker.css';
 
@@ -36,7 +37,7 @@ class ViewForUser extends Component {
             <tr>
               <th>거래합계(건수)</th>
               <td colSpan="2" style={{ textAlign: 'right', color: '#fe4c8d' }}>
-                {`${totalCost} 원(${totalList}건)`}
+                {`${setCostFormat(totalCost)} 원(${totalList}건)`}
               </td>
               <td colSpan="3" style={{ textAlign: 'right' }}>
                 {children}
