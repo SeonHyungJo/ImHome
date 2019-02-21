@@ -43,7 +43,6 @@ const initialState = Map({
       branchName: '',
       items: List([
         Map({
-          itemCode: '',
           itemName: '',
           itemCount: '',
           itemCost: '',
