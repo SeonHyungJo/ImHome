@@ -125,6 +125,9 @@ const reponseErrorType = (res, type) => {
     case 'DELETE_ITEM_ERROR':
       res.status(200).send({ fail: '3014' });
       break;
+    case 'EXISTED_ORDER':
+      res.status(200).send({ fail: '3015' });
+      break;
     //------------------------------------------------------
     default:
       res.status(200).send({ fail: '9999' });

@@ -40,9 +40,7 @@ exports.getAllOrderList = (req, res) => {
   today.setDate(today.getDate() - 30);
   const startDate = req.query.startDate ? req.query.startDate : today;
   const endDate = req.query.endDate ? req.query.endDate : new Date();
-  const branchCode = req.decoded.admin
-    ? req.params.branchCode
-    : req.decoded.branchCode;
+  const branchCode = req.decoded.admin ? req.params.branchCode : req.decoded.branchCode;
 
   Orders.findOrderList(branchCode, startDate, endDate)
     .then(orderList => {
@@ -116,9 +114,7 @@ exports.getCompleteBranchList = (req, res) => {
  * @returns «Query»
  */
 exports.getOrderList = (req, res) => {
-  const branchCode = req.decoded.admin
-    ? req.params.branchCode
-    : req.decoded.branchCode;
+  const branchCode = req.decoded.admin ? req.params.branchCode : req.decoded.branchCode;
 
   Stores.find({ branchCode })
     .then(store => {
@@ -159,14 +155,14 @@ exports.updateOrderList = (req, res) => {
     })
     .then(order => {
       if (order.length !== 0) {
-        //기존에 complete:false인 내역이 있을 경우 수정진행
         console.log('Modified');
-        const modifiedOrder = Object.assign({}, order, req.body);
-
-        return Orders.findOneAndUpdateNew(req.body.branchCode, modifiedOrder);
-        //throw new Error('Already exit');
+        // const modifiedOrder = Object.assign({}, order, req.body);
+        // return Orders.findOneAndUpdateNew(req.body.branchCode, modifiedOrder);
+        throw new Error('Already exist');
       }
       // 기존에 complete:false인 내역이 없을 경우 주문내역 추가
+      console.log('create');
+
       return Orders.create(req.body);
     })
     .then(() => {
@@ -174,7 +170,7 @@ exports.updateOrderList = (req, res) => {
     })
     .catch(err => {
       console.log(err);
-      reponseError(res, 'CREATE_ODER_ERROR');
+      reponseError(res, 'EXISTED_ORDER');
     });
 };
 

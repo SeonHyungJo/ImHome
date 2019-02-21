@@ -1,6 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 import { pender } from 'redux-pender';
 import { Map, List } from 'immutable';
+
 import * as orderListAPI from '../../lib/api/orderList';
 
 const CHANGE_CURRENTID = 'orderList/CHANGE_CURRENTID'; // Nav 위치 변경
@@ -88,10 +89,8 @@ export default handleActions(
     }),
     ...pender({
       type: CREATE_ORDER,
-      onSuccess: (state, action) => {
-        console.log(action.payload.data);
-        return state.setIn(['result'], Map(action.payload.data));
-      },
+      onSuccess: (state, action) => state.setIn(['result'], Map(action.payload.data)),
+      onFailure: (state, action) => state.setIn(['result'], action.payload),
     }),
   },
   initialState,

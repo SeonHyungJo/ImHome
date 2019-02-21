@@ -71,26 +71,33 @@ class Imhome extends Component {
   };
 
   _orderFunc = (eventName) => {
-    const {tempOrder, auth, TempOrderActions,} = this.props;
+    const {
+      tempOrder, auth, TempOrderActions, OrderListActions,
+    } = this.props;
     const branchCode = auth.toJS().info.branchCode;
-    const data = {
+    let data = {
       complete: false,
       branchCode,
       ...tempOrder.toJS(),
     };
+    delete data['_id'];
 
     try {
       eventName === 'TEMP_ORDER'
         ? TempOrderActions.createTempOrder(data).then((result) => {
-          this.setMessage('임시저장 되었습니다');
+          this.setMessage('주문저장 되었습니다');
           this.setState({ displayAlertPop: true });
         })
-        : console.log('임시');
-      // OrderListActions.createOrder(data).then(result => {
-      //     console.log(result.data);
-      //     this.setMessage('주문 되었습니다');
-      //     this.setState({ displayAlertPop: true });
-      // })
+        : OrderListActions.createOrder(data).then((result) => {
+          console.log(data)
+          if (result.data.fail === '3015') {
+            this.setMessage('출고처리되지 않은 주문이 있습니다.');
+            this.setState({ displayAlertPop: true });
+          } else if (result.data.success === '0000') {
+            this.setMessage('주문 되었습니다.');
+            this.setState({ displayAlertPop: true });
+          }
+        });
     } catch (e) {
       console.log(e);
       this.setMessage('실패하였습니다. 관리자에게 문의해주세요. f_order');

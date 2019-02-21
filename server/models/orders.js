@@ -1,23 +1,16 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const itemsSchema = new Schema(
-  {
-    itemCode: { type: String, required: true },
-    itemName: { type: String, required: true },
-    itemCount: { type: String, required: true },
-    itemCost: { type: String, required: true },
-    itemVolume: { type: String, required: true },
-    itemDepth: { type: String, required: true }
-  },
-  {
-    sparse: true
-  }
-);
+const itemsSchema = new Schema({
+  itemName: { type: String, required: true },
+  itemCount: { type: String, required: true },
+  itemCost: { type: String, required: true },
+  itemVolume: { type: String, required: true },
+  itemDepth: { type: String, required: true }
+});
 
 const orderSchema = new Schema(
   {
-    orderId: { type: String, required: true },
     branchName: { type: String, required: true },
     branchCode: { type: String, required: true },
     items: [itemsSchema],
@@ -101,9 +94,9 @@ orderSchema.statics.findInCompleteBranches = function() {
  * @see None
  * @returns «Query»
  */
-orderSchema.statics.findInCompleteOrderByBranchcode = function(_id) {
-  return this.find({ _id, complete: false });
-};
+// orderSchema.statics.findInCompleteOrderByBranchcode = function(_id) {
+//   return this.find({ _id, complete: false });
+// };
 
 /**
  * @author seonhyungjo
@@ -163,10 +156,7 @@ orderSchema.statics.findOneAndUpdateNew = function(branchCode, productInfo) {
  * @returns «Query»
  */
 orderSchema.statics.changeCompleteTrue = function(branchCode) {
-  return this.findOneAndUpdate(
-    { branchCode, complete: false },
-    { complete: true }
-  );
+  return this.findOneAndUpdate({ branchCode, complete: false }, { complete: true });
 };
 
 /**
