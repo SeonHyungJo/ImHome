@@ -17,7 +17,7 @@ const router = express.Router();
 // Setting Middleware
 router.get('/user', AuthMiddleware);
 router.use('/order', AuthMiddleware);
-router.use('/store', AuthMiddleware);
+//router.use('/store', AuthMiddleware);
 
 // Auth API
 router.get('/check', Auth.check);
@@ -39,7 +39,7 @@ router.put('/store/:branchCode', Store.updateStore);
 router.delete('/store/:branchCode', Store.deleteStore);
 
 // Order API
-router.get('/order/list/:branchCode?', Order.getAllOrderList);
+router.get('/order/list/:branchCode', Order.getAllOrderList);
 router.get('/order/branch/incomplete', Order.getIncompleteBranchList);
 router.get('/order/branch/complete', Order.getCompleteBranchList);
 router.get('/order/:branchCode?', Order.getOrderList);
@@ -53,6 +53,7 @@ router.get('/product/:companyCode', Product.getProduct);
 router.post('/product/:companyCode/item', Product.createItem);
 router.delete('/product/:companyCode/item', Product.deleteItem);
 router.put('/product/:companyCode/item', Product.updateItem);
+
 // Product API
 router.post('/product', Product.createProduct);
 router.delete('/product/:productId', Product.deleteProduct);

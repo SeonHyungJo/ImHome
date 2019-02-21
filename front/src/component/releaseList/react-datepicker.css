@@ -477,6 +477,12 @@
 }
 
 .react-datepicker__input-container input {
+  font-size: 0.9rem !important;
+  text-align: center;
+  font-weight: bold;
+}
+
+.react-datepicker__input-container input {
   font-size: 12px;
   padding: 6px;
   border: 1.5px solid rgba(100, 100, 100, 0.3);

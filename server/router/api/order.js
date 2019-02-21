@@ -34,12 +34,19 @@ const reponseError = require('../common/responseError');
  */
 
 exports.getAllOrderList = (req, res) => {
+  // 2019-02-20 QueryString 적용
+  // startDate, endDate, type
+  const today = new Date();
+  today.setDate(today.getDate() - 30);
+  const startDate = req.query.startDate ? req.query.startDate : today;
+  const endDate = req.query.endDate ? req.query.endDate : new Date();
   const branchCode = req.decoded.admin
     ? req.params.branchCode
     : req.decoded.branchCode;
 
-  Orders.findOrderList(branchCode)
+  Orders.findOrderList(branchCode, startDate, endDate)
     .then(orderList => {
+      console.log(orderList);
       if (!orderList) throw new Error('order not found');
       res.status(200).send(orderList);
     })

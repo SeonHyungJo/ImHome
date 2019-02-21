@@ -14,6 +14,7 @@ import { ReactToPrint } from '../../component/external';
 class AdminReleaseList extends Component {
   constructor() {
     super();
+    this.componentRef = React.createRef();
 
     const headerData = [
       {
@@ -66,9 +67,7 @@ class AdminReleaseList extends Component {
       displayPop: false,
       currentBranchName: '',
       itemList: [],
-      buttons: [
-        { name: '확인' }
-      ]
+      buttons: [{ name: '확인' }],
     };
   }
 
@@ -113,19 +112,19 @@ class AdminReleaseList extends Component {
     let itemList = [];
     let orderDate = '';
     await ReleaseActions.updateCustNo(changeNo);
-    list.map(item => {
+    list.map((item) => {
       if (item && item._id === changeNo) {
         branchName = item.branchName;
         itemList = item.items;
-        orderDate = item.updatedAt
+        orderDate = item.updatedAt;
       }
     });
 
     this.setState({
       displayPop: true,
       currentBranchName: branchName,
-      itemList: itemList,
-      orderDate: orderDate
+      itemList,
+      orderDate,
     });
   };
 
@@ -163,7 +162,7 @@ class AdminReleaseList extends Component {
     const { ReleaseActions } = this.props;
     const newStartDate = new Date();
 
-    newStartDate.setDate(newStartDate.getDate() + changeNum);
+    newStartDate.setDate(newStartDate.getDate() - changeNum);
     ReleaseActions.updateStartDate(newStartDate);
     ReleaseActions.updateEndDate(new Date());
   };
@@ -187,9 +186,17 @@ class AdminReleaseList extends Component {
     ReleaseActions.updateEndDate(newEndDate);
   };
 
+  searchRelease = () => {
+    const {
+      ReleaseActions, startDate, endDate, currentId,
+    } = this.props;
+
+    ReleaseActions.getOrderList(currentId, startDate, endDate);
+  };
+
   closePop = () => {
     this.setState({ displayPop: false });
-  }
+  };
 
   render() {
     const { searchingData, radioBtnSetting, selectMonthDate } = this.state;
@@ -215,7 +222,9 @@ class AdminReleaseList extends Component {
           setMonthlyDate={this.setMonthlyDate}
           setMonthly={this.setMonthly}
         >
-          <FormBtn style={{ width: '80px', margin: '0' }}>조회</FormBtn>
+          <FormBtn style={{ width: '80px', margin: '0' }} onClick={this.searchRelease}>
+            조회
+          </FormBtn>
         </ViewForRelease>
 
         <ViewForRelease
@@ -227,7 +236,7 @@ class AdminReleaseList extends Component {
         >
           <ReactToPrint
             trigger={() => <FormBtn style={{ margin: '0' }}>거래내역출력</FormBtn>}
-            content={() => this.componentRef}
+            content={() => this.componentRef.current}
           />
           {/* 파일저장용 */}
           {/* <Button
@@ -245,7 +254,7 @@ class AdminReleaseList extends Component {
           clickRow={this.getRowData}
           id={custNo}
           bottom={['Total', '', '', '총 발행건수', this.getTotalCost(list)]}
-          ref={el => (this.componentRef = el)}
+          ref={this.componentRef}
         />
         <PopOrderList
           displayPop={this.state.displayPop}
