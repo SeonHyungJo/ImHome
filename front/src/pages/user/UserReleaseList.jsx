@@ -100,6 +100,7 @@ class AdminReleaseList extends Component {
   getNavData = async () => {
     try {
       const { ReleaseActions } = this.props;
+      await ReleaseActions.getStoreList();
       await ReleaseActions.getOrderList();
     } catch (e) {
       console.log(e);
@@ -160,10 +161,10 @@ class AdminReleaseList extends Component {
 
   searchRelease = () => {
     const {
-      ReleaseActions, startDate, endDate, currentId,
+      ReleaseActions, startDate, endDate, branchId,
     } = this.props;
 
-    ReleaseActions.getOrderList(currentId, startDate, endDate);
+    ReleaseActions.getOrderList(branchId, startDate, endDate);
   };
 
   closePop = () => {
@@ -265,6 +266,7 @@ class AdminReleaseList extends Component {
 
 export default connect(
   state => ({
+    branchId: state.releaseList.getIn(['releaseList', 'currentId']),
     form: state.releaseList.getIn(['releaseList', 'form']),
     list: state.releaseList.getIn(['releaseList', 'list']),
     store: state.releaseList.getIn(['releaseList', 'store']),
