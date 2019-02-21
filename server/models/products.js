@@ -76,13 +76,9 @@ productsSchema.statics.findOneAndUpdateItem = function(companyCode, itemInfo) {
  * @returns product
  */
 productsSchema.statics.findOneAndUpdateDelete = function(companyCode, itemInfo) {
-<<<<<<< HEAD
-  return this.findOneAndUpdate({ companyCode }, { $pull: { items: itemInfo.data } }, { new: true });
-=======
   return itemInfo.data === undefined
     ? this.findOneAndUpdate({ companyCode }, { $pull: { items: itemInfo } }, { new: true })
     : this.findOneAndUpdate({ companyCode }, { $pull: { items: itemInfo.data } }, { new: true });
->>>>>>> jinseong
 };
 
 /**
