@@ -23,7 +23,7 @@ const ContentWrapper = styled.div`
 `;
 
 const MainContainer = styled.div`
-  padding: 0px 0px 0px 10px;
+  padding: 10px 10px 10px 10px;
   width: 36vw;
   height: 75vh;
   overflow: auto;
@@ -129,7 +129,7 @@ class Imhome extends Component {
             orderList={items}
             buttonList={buttonList}
             clickComplete={this._orderFunc}
-            style={{ height: '100%' }}
+            style={{ height: '96%' }}
           />
         </OrderContainer>
         <AlertPopup
