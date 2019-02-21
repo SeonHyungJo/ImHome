@@ -109,6 +109,7 @@ class Login extends Component {
     if (loggedInfo.success === '0000') {
       localStorage.setItem('accessToken', loggedInfo.imhomeToken);
       localStorage.setItem('checkAdmin', loggedInfo.checkAdmin);
+      localStorage.setItem('branchName', loggedInfo.branchName);
 
       this.setMessage('성공적으로 로그인 하였습니다.');
       this.setState({ displayAlertPop: true, resultCode: loggedInfo.success });

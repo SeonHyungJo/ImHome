@@ -97,28 +97,28 @@ class App extends PureComponent {
       <Provider store={store}>
         <BrowserRouter>
           <>
-            {this.state.admin !== null ? (
-              this.state.admin ? (
+          {this.state.admin !== null ? (
+            this.state.admin ? (
+              <>
+              {/* Admin router : 관리자 라우터 */}
+              <Route exact component={AdminUser} path={`${ADMIN_PATH}/users`} />
+              <Route exact component={AdminOrderList} path={`${ADMIN_PATH}/orderlist`} />
+              <Route exact component={AdminReleaseList} path={`${ADMIN_PATH}/releaselist`} />
+              <Route exact component={AdminProduct} path={`${ADMIN_PATH}/product`} />
+              </>
+            ) : (
                 <>
-                  {/* Admin router : 관리자 라우터 */}
-                  <Route exact component={AdminUser} path={`${ADMIN_PATH}/users`} />
-                  <Route exact component={AdminOrderList} path={`${ADMIN_PATH}/orderlist`} />
-                  <Route exact component={AdminReleaseList} path={`${ADMIN_PATH}/releaselist`} />
-                  <Route exact component={AdminProduct} path={`${ADMIN_PATH}/product`} />
-                </>
-              ) : (
-                <>
-                  {/* User router : 사용자 라우터 */}
-                  <Route exact component={UserProduct} path="/product" />
-                  <Route exact component={UserOrderList} path="/orderlist" />
-                  <Route exact component={UserReleaseList} path="/releaselist" />
+                {/* User router : 사용자 라우터 */}
+                <Route exact component={UserProduct} path="/product" />
+                <Route exact component={UserOrderList} path="/orderlist" />
+                <Route exact component={UserReleaseList} path="/releaselist" />
                 </>
               )
-            ) : null}
-            {/* Common router : 관리자와 사용자 공통 라우터 */}
-            <Route exact component={UserRegister} path="/register" />
-            <Route component={Login} path="/login" />
-            <Route exact component={Login} path="/" />
+          ) : null}
+          {/* Common router : 관리자와 사용자 공통 라우터 */}
+          <Route exact component={UserRegister} path="/register" />
+          <Route component={Login} path="/login" />
+          <Route exact component={Login} path="/" />
           </>
         </BrowserRouter>
       </Provider>
