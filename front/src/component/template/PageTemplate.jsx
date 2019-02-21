@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import HeaderContainer from '../header/HeaderContainer';
 import { NavTemplate } from '../nav';
 import Content from '../content/ContentContainer';
 import ContentTwoDivContainer from '../content/ContentTwoDivContainer';
+import * as UserActions from '../../redux/modules/user';
+import * as OrderListActions from '../../redux/modules/orderList';
+import * as ProductListActions from '../../redux/modules/releaseList';
+import * as ReleaseActions from '../../redux/modules/productList';
+import * as TempOrderActions from '../../redux/modules/tempOrder';
 
 class PageTemplate extends Component {
   constructor(props) {
@@ -70,13 +77,33 @@ class PageTemplate extends Component {
    * @author
    * @description 로그아웃
    */
-  logout = () => {
+  logout = async () => {
+    try {
+      await this.initializeForm();
+      await this.removeStorageData();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  removeStorageData = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('checkAdmin');
     localStorage.removeItem('branchName');
 
     this.setState({ isLogin: false });
-  };
+  }
+
+  initializeForm = () => {
+    const { UserActions, OrderListActions,
+      ProductListActions, ReleaseActions, TempOrderActions } = this.props;
+
+    UserActions.initializeForm('user');
+    OrderListActions.initializeForm('orderList');
+    ProductListActions.initializeForm('releaseList');
+    ReleaseActions.initializeForm('productList');
+    TempOrderActions.initializeForm('tempOrder');
+  }
 
   render() {
     const { adminHeaderList, userHeaderList, role } = this.state;
@@ -125,4 +152,19 @@ class PageTemplate extends Component {
   }
 }
 
-export default PageTemplate;
+export default connect(
+  state => ({
+    form: state.user.getIn(['user', 'form']),
+    list: state.orderList.getIn(['orderList', 'list']),
+    lists: state.productList.getIn(['productList', 'lists']),
+    forms: state.releaseList.getIn(['releaseList', 'form']),
+    currentOrder: state.tempOrder.getIn(['tempOrder', 'currentOrder']),
+  }),
+  dispatch => ({
+    UserActions: bindActionCreators(UserActions, dispatch),
+    OrderListActions: bindActionCreators(OrderListActions, dispatch),
+    ProductListActions: bindActionCreators(ProductListActions, dispatch),
+    ReleaseActions: bindActionCreators(ReleaseActions, dispatch),
+    TempOrderActions: bindActionCreators(TempOrderActions, dispatch),
+  }),
+)(PageTemplate);

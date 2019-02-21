@@ -79,6 +79,7 @@ export default handleActions(
       return state.setIn([form, targetForm || 'form', name], value);
     },
     [INITIALIZE_FORM]: (state, action) => {
+      console.log(state, action)
       const initialForm = initialState.get(action.payload);
       return state.set(action.payload, initialForm);
     },

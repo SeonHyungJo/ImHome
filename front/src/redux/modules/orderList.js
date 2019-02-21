@@ -5,6 +5,7 @@ import * as orderListAPI from '../../lib/api/orderList';
 
 const CHANGE_CURRENTID = 'orderList/CHANGE_CURRENTID'; // Nav 위치 변경
 const REMOVE_ITEM_LIST = 'orderList/REMOVE_ITEM_LIST'; // ITEMS 내역에서 제거
+const INITIALIZE_FORM = 'orderList/INITIALIZE_FORM'; // form 초기화
 
 const GET_STORE_LIST = 'orderList/GET_STORE_LIST'; // 매장 목록 가져오기
 const GET_ORDER_DATA = 'orderList/GET_ORDER_DATA'; // 주문내역 가져오기
@@ -15,6 +16,7 @@ const CREATE_ORDER = 'orderList/CREATE_ORDER'; // 주문하기
 
 export const updateCurrentId = createAction(CHANGE_CURRENTID);
 export const removeItemList = createAction(REMOVE_ITEM_LIST);
+export const initializeForm = createAction(INITIALIZE_FORM); // form
 
 export const getStoreList = createAction(GET_STORE_LIST, orderListAPI.getStoreList);
 export const getOrderData = createAction(GET_ORDER_DATA, orderListAPI.getOrderData);
@@ -68,6 +70,10 @@ export default handleActions(
         .setIn(['orderList', 'store'], action.payload.data)
         .setIn(['orderList', 'currentId'], action.payload.data[0].branchCode),
     }),
+    [INITIALIZE_FORM]: (state, action) => {
+      const initialForm = initialState.get(action.payload);
+      return state.set(action.payload, initialForm);
+    },
     ...pender({
       type: GET_ORDER_DATA,
       onSuccess: (state, action) => state.setIn(['orderList', 'currentOrder'], action.payload.data[0]),

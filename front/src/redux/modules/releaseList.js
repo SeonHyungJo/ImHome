@@ -7,6 +7,7 @@ const CHANGE_CURRENTID = 'orderList/CHANGE_CURRENTID'; // Nav 위치 변경
 const CHANGE_CUSTNO = 'orderList/CHANGE_CURRENTNO'; // RELEAST 리스트 위치변경
 const CHANGE_STARTDATE = 'orderList/CHANGE_STARTDATE'; // STARTDATE 변경
 const CHANGE_ENDDATE = 'orderList/CHANGE_ENDDATE'; // ENDDATE 변경
+const INITIALIZE_FORM = 'release/INITIALIZE_FORM'; // form 초기화
 
 const GET_STORE_LIST = 'release/GET_STORE_LIST'; // 매장 목록 가져오기
 const GET_ORDER_LIST = 'release/GET_ORDER_LIST'; // 해당 매장의 전체 주문 목록 가져오기
@@ -17,6 +18,7 @@ export const updateCurrentId = createAction(CHANGE_CURRENTID);
 export const updateCustNo = createAction(CHANGE_CUSTNO);
 export const updateStartDate = createAction(CHANGE_STARTDATE);
 export const updateEndDate = createAction(CHANGE_ENDDATE);
+export const initializeForm = createAction(INITIALIZE_FORM); // form
 
 export const getStoreList = createAction(GET_STORE_LIST, releaseAPI.getStoreList);
 export const getOrderList = createAction(GET_ORDER_LIST, releaseAPI.getOrderList);
@@ -84,6 +86,10 @@ export default handleActions(
     [CHANGE_CUSTNO]: (state, action) => state.setIn(['releaseList', 'custNo'], action.payload),
     [CHANGE_STARTDATE]: (state, action) => state.setIn(['releaseList', 'startDate'], action.payload),
     [CHANGE_ENDDATE]: (state, action) => state.setIn(['releaseList', 'endDate'], action.payload),
+    [INITIALIZE_FORM]: (state, action) => {
+      const initialForm = initialState.get(action.payload);
+      return state.set(action.payload, initialForm);
+    },
     ...pender({
       type: GET_STORE_LIST,
       onSuccess: (state, action) => state
