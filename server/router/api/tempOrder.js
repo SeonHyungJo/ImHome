@@ -107,7 +107,7 @@ exports.getCompleteBranchList = (req, res) => {
  * @returns «Query»
  */
 exports.getOrderList = (req, res) => {
-  const branchCode = req.decoded.admin ? req.params.branchCode : req.decoded.branchCode;
+  const branchCode = req.params.branchCode ? req.params.branchCode : '002';
 
   Stores.find({ branchCode })
     .then(store => {

@@ -60,5 +60,6 @@ router.delete('/product/:productId', Product.deleteProduct);
 
 // TempOrder API
 router.post('/tempOrder', TempOrder.updateOrderList);
+router.get('/tempOrder/:branchCode?', TempOrder.getOrderList);
 
 module.exports = router;

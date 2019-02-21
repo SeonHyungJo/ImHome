@@ -1,16 +1,18 @@
 import { createAction, handleActions } from 'redux-actions';
 import { pender } from 'redux-pender';
-import { Map, List } from 'immutable';
+import { Map, List, fromJS } from 'immutable';
 import * as tempOrderAPI from '../../lib/api/tempOrder';
 
-const CHANGE_CURRENTID = 'orderList/CHANGE_CURRENTID'; // Nav 위치 변경
+const CHANGE_CURRENTID = 'tempOrder/CHANGE_CURRENTID'; // Nav 위치 변경
 
-const GET_STORE_LIST = 'orderList/GET_STORE_LIST'; // 매장 목록 가져오기
-const GET_ORDER_DATA = 'orderList/GET_ORDER_DATA'; // 주문내역 가져오기
-const UPDATE_ORDER_COMPLETE = 'orderList/UPDATE_ORDER_COMPLETE'; // 배송 완료 처리하기
-const DELETE_ORDER = 'orderList/DELETE_ORDER'; // 주문내역 취소하기
+const GET_STORE_LIST = 'tempOrder/GET_STORE_LIST'; // 매장 목록 가져오기
+const GET_ORDER_DATA = 'tempOrder/GET_ORDER_DATA'; // 주문내역 가져오기
+const UPDATE_ORDER_COMPLETE = 'tempOrder/UPDATE_ORDER_COMPLETE'; // 배송 완료 처리하기
+const DELETE_ORDER = 'tempOrder/DELETE_ORDER'; // 주문내역 취소하기
 
-const CREATE_TEMP_ORDER = 'orderList/CREATE_TEMP_ORDER'; // 주문하기
+const CREATE_TEMP_ORDER = 'tempOrder/CREATE_TEMP_ORDER'; // 주문하기
+const CHANGE_TEMP_ITEM = 'tempOrder/CHANGE_TEMP_ITEM';
+const CHAGNE_TEMP_COUNT = 'tempOrder/CHAGNE_TEMP_COUNT';
 
 export const updateCurrentId = createAction(CHANGE_CURRENTID);
 
@@ -21,16 +23,15 @@ export const updateComplete = createAction(UPDATE_ORDER_COMPLETE, tempOrderAPI.u
 export const deleteOrderData = createAction(DELETE_ORDER, tempOrderAPI.deleteOrderData);
 
 export const createTempOrder = createAction(CREATE_TEMP_ORDER, tempOrderAPI.createTempOrder);
+export const changeTempItem = createAction(CHANGE_TEMP_ITEM);
+export const changeTempCount = createAction(CHAGNE_TEMP_COUNT);
 
-// 초기값 설정
 const initialState = Map({
-  tempOrderList: Map({
+  tempOrder: Map({
     initialForm: Map({
-      _id: '',
+      complete: false,
       branchCode: '',
-      branchName: '',
-      items: '',
-      updatedAt: '',
+      items: {},
     }),
     currentOrder: Map({
       _id: '',
@@ -47,34 +48,34 @@ const initialState = Map({
       ]),
       updatedAt: '',
     }),
+    itemCount: Map({}),
     error: null,
-    store: [],
-    currentId: [],
-    list: [],
   }),
   result: Map({}),
 });
 
 export default handleActions(
   {
-    [CHANGE_CURRENTID]: (state, action) => state.setIn(['orderList', 'currentId'], action.payload),
+    [CHANGE_CURRENTID]: (state, action) => state.setIn(['tempOrder', 'currentId'], action.payload),
+    [CHANGE_TEMP_ITEM]: (state, action) => state.setIn(['tempOrder', 'currentOrder', 'items'], fromJS(action.payload)),
+    [CHAGNE_TEMP_COUNT]: (state, action) => state.setIn(['tempOrder', 'itemCount'], Map(action.payload)),
     ...pender({
       type: GET_STORE_LIST,
       onSuccess: (state, action) => state
-        .setIn(['orderList', 'store'], action.payload.data)
-        .setIn(['orderList', 'currentId'], action.payload.data[0].branchCode),
+        .setIn(['tempOrder', 'store'], action.payload.data)
+        .setIn(['tempOrder', 'currentId'], action.payload.data[0].branchCode),
     }),
     ...pender({
       type: GET_ORDER_DATA,
-      onSuccess: (state, action) => state.setIn(['orderList', 'currentOrder'], action.payload.data[0]),
+      onSuccess: (state, action) => state.setIn(['tempOrder', 'currentOrder'], Map(action.payload.data[0])),
     }),
     ...pender({
       type: UPDATE_ORDER_COMPLETE,
-      onSuccess: (state, action) => state.setIn(['orderList', 'form'], Map(action.payload.data)),
+      onSuccess: (state, action) => state.setIn(['tempOrder', 'form'], Map(action.payload.data)),
     }),
     ...pender({
       type: DELETE_ORDER,
-      onSuccess: (state, action) => state.setIn(['orderList', 'form'], Map(action.payload.data)),
+      onSuccess: (state, action) => state.setIn(['tempOrder', 'form'], Map(action.payload.data)),
     }),
     ...pender({
       type: CREATE_TEMP_ORDER,

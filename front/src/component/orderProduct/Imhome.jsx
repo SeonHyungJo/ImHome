@@ -7,7 +7,7 @@ import * as ProductListActions from '../../redux/modules/productList';
 import * as AuthActions from '../../redux/modules/auth';
 import * as OrderListActions from '../../redux/modules/orderList';
 import * as TempOrderActions from '../../redux/modules/tempOrder';
-import { AlertPopup } from '../../component/common';
+import { AlertPopup } from '../common';
 
 import Category from './Category';
 import ProductTable from './ProductTable';
@@ -49,14 +49,14 @@ class Imhome extends Component {
       displayAlertPop: false,
     };
   }
-  
+
   _closeAlertPop = () => this.setState({ displayAlertPop: false });
 
-  setMessage = message => {
+  setMessage = (message) => {
     const { ProductListActions } = this.props;
     ProductListActions.setMessage({
-        form: 'productList',
-        message
+      form: 'productList',
+      message,
     });
     return false;
   };
@@ -71,22 +71,21 @@ class Imhome extends Component {
   };
 
   _orderFunc = (eventName) => {
-    const { orderForm, auth, TempOrderActions, OrderListActions } = this.props;
+    const {tempOrder, auth, TempOrderActions,} = this.props;
     const branchCode = auth.toJS().info.branchCode;
     const data = {
       complete: false,
       branchCode,
-      ...orderForm,
+      ...tempOrder.toJS(),
     };
-    
+
     try {
-      eventName === 'TEMP_ORDER' ? 
-        TempOrderActions.createTempOrder(data).then(result => {
+      eventName === 'TEMP_ORDER'
+        ? TempOrderActions.createTempOrder(data).then((result) => {
           this.setMessage('임시저장 되었습니다');
           this.setState({ displayAlertPop: true });
-        }
-      ) : 
-        console.log("임시");
+        })
+        : console.log('임시');
       // OrderListActions.createOrder(data).then(result => {
       //     console.log(result.data);
       //     this.setMessage('주문 되었습니다');
@@ -100,9 +99,9 @@ class Imhome extends Component {
   };
 
   render() {
-    const { form, orderForm, message } = this.props;
+    const { form, message, tempOrder } = this.props;
     const { categories, clickedCate, companyCode } = form.toJS();
-    const items = orderForm.items;
+    const items = tempOrder.toJS().items;
 
     return (
       <ContentWrapper>
@@ -146,6 +145,7 @@ export default connect(
     tempResult: state.tempOrder.get('result'),
     orderResult: state.orderList.get('result'),
     orderForm: state.productList.getIn(['productOrder', 'form']),
+    tempOrder: state.tempOrder.getIn(['tempOrder', 'currentOrder']),
     auth: state.auth.get('result'),
   }),
   dispatch => ({

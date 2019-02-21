@@ -7,7 +7,7 @@ import IosRemove from 'react-ionicons/lib/IosRemove';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as ProductListActions from '../../redux/modules/productList';
+import * as TempOrderActions from '../../redux/modules/tempOrder';
 
 const Table = styled.table`
   // border-top: 2px solid #fe4c8d;
@@ -89,65 +89,54 @@ class ProductTable extends Component {
   }
 
   _changeOrder = (type, item) => {
-    const { ProductListActions, productOrder } = this.props;
+    const {tempOrder, TempOrderActions} = this.props;
 
     // itemCount는 {id: 주문할 갯수}
     // items는 {id: 실제 item 정보}
-    const itemCount = productOrder.toJS().itemCount;
-    let items = productOrder.toJS().items;
+    const itemCount = this.props.itemCount.toJS();
+    let items = tempOrder.toJS().items === undefined? [] : tempOrder.toJS().items
 
-    // itemCount을 변경하는 로직
-    // 1. plus를 눌렀을 때
-    //   1. 이미 있으면(1 이상) +1
-    //   2. 처음 누른거면 1
-    // 2. minus를 눌렀을 때
-    //   1. 이미 있을 때
-    //      **** 이부분 수정 ****
-    //      1. 1이라 0이 되는 상황이면 delete
-    //      2. 1 이상이면 -1만 해준다.
-    //   2. 처음 누른거면 아무것도 안함
-    if (type === 'plus') {
-      itemCount.hasOwnProperty(item._id)
-        ? (itemCount[item._id] = itemCount[item._id] + 1)
-        : (itemCount[item._id] = 1);
-    } else if (type === 'minus') {
-      if (itemCount.hasOwnProperty(item._id)) {
-        itemCount[item._id] < 2
-          ? delete itemCount[item._id]
-          : (itemCount[item._id] = itemCount[item._id] - 1);
-      }
-    }
-
-    // item을 변경하는 로직
-    // itemCount에 처음 들어가는 경우 item정보를 추가.
-    // itemCount에서 delete되었다면 같이 제거
-    if (itemCount.hasOwnProperty(item._id) && itemCount[item._id] > 0) {
-      item = {
-        ...item,
-        itemCount: `${itemCount[item._id]}`,
-      };
-      items = {
-        ...items,
-        [item._id]: item,
-      };
-    } else {
-      delete items[item._id];
-    }
-
-    ProductListActions.changeOrder({
-      itemCount,
-      items,
-      form: {
-        items: [...Object.values(items)],
-      },
-    });
+    // itemCount을 변경하는 로직, 경우의 수는 총 5가지
+    // 0 => 1 
+    // 1 => 2
+    // 2 => 1
+    // 1 => 0
+    // 0 => 0
+    type === 'plus' ?
+      !itemCount.hasOwnProperty(item._id)
+        ? itemCount[item._id] = 1
+        : itemCount[item._id] = itemCount[item._id] + 1
+    : itemCount.hasOwnProperty(item._id) && itemCount[item._id] !== 1
+        ? itemCount[item._id] = itemCount[item._id] - 1
+        : delete itemCount[item._id]
+      
+    item = {
+      ...item,
+      itemCount: `${itemCount[item._id]}`,
+    };
+    
+    // item을 변경하는 로직, 경우의 수는 총 4가지
+    // 0 => 1 
+    // 1 => 2
+    // 2 => 1
+    // 1 => 0
+    type === 'plus'
+    ? itemCount[item._id] < 2
+      ? items.push(item)
+      : items.forEach(i => {if (i._id === item._id) i.itemCount = itemCount[item._id]})
+    : !itemCount.hasOwnProperty(item._id) 
+      ? items = items.filter(i => item._id !== i._id)
+      : items.forEach(i => {if (i._id === item._id) i.itemCount = itemCount[item._id]})
+    
+    TempOrderActions.changeTempCount(itemCount);
+    TempOrderActions.changeTempItem(items);
   };
 
   render() {
-    const { form, productOrder } = this.props;
+    const { form } = this.props;
     const { clickedCate, items, companyCode } = form.toJS();
-    const productOrderCount = productOrder.toJS().itemCount;
-    const productOrderKeys = Object.keys(productOrderCount);
+    const itemCount = this.props.itemCount.toJS();
+    const tempOrderKeys = Object.keys(itemCount);
     const detailItem = companyCode === '001' ? items.filter(item => item.parentId === clickedCate._id) : items;
     return (
       <Table>
@@ -159,7 +148,7 @@ class ProductTable extends Component {
             <th className={classNames('tableOrderTd')}>주 문</th>
           </tr>
           {detailItem.map(
-            item => (productOrderKeys.includes(item._id) ? (
+            item => (tempOrderKeys.includes(item._id) ? (
               <tr key={item._id} className={classNames('itemOn')}>
                 <td className={classNames('tableNameTd', 'tableAlignCenter')}>{item.itemName}</td>
                 <td className={classNames('tableAlignCenter')}>{item.itemVolume}</td>
@@ -169,7 +158,7 @@ class ProductTable extends Component {
                   <input
                     className={classNames('orderInput')}
                     type="number"
-                    value={productOrderCount[item._id]}
+                    value={itemCount[item._id]}
                     readOnly
                   />
                   <IosAdd color="#ffffff" onClick={() => this._changeOrder('plus', item)} />
@@ -202,8 +191,10 @@ export default connect(
     error: state.productList.getIn(['productList', 'error']),
     result: state.productList.get('result'),
     productOrder: state.productList.get('productOrder'),
+    tempOrder: state.tempOrder.getIn(['tempOrder', 'currentOrder']),
+    itemCount: state.tempOrder.getIn(['tempOrder', 'itemCount']),
   }),
   dispatch => ({
-    ProductListActions: bindActionCreators(ProductListActions, dispatch),
+    TempOrderActions: bindActionCreators(TempOrderActions, dispatch),
   }),
 )(ProductTable);

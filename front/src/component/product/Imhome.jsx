@@ -600,14 +600,12 @@ class Imhome extends Component {
                         )}
                     </div>
                     <hr />
-                    {!!categories.length > 0 ? (
+                    
                         <div className={'footerContainer'}>
                             <Button onClick={() => this._newItem('newCategory')}>메뉴추가</Button>
                             <Button onClick={() => this._deleteItem('category')}>메뉴삭제</Button>
                         </div>
-                    ) : (
-                        <div />
-                    )}
+                   
                 </MainContainer>
                 <ProductFormContainer>
                     <div className={'productComponent'}>
