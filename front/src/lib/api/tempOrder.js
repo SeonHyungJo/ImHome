@@ -41,10 +41,10 @@ export const updateComplete = branchCode => ApiService.put(`/api/tempOrder/compl
 
 /**
  * @summary 주문 취소하기
- * @param branchCode : 주문취소할 브랜치 코드
- * @returns returnCode
+ * @param id : 주문취소할 id
+ * @returns returnCode {success : 0000, fail: 3016}
  */
-export const deleteOrderData = branchCode => ApiService.del(`/api/tempOrder/${branchCode || ''}`);
+export const deleteTempOrder = id => ApiService.del(`/api/tempOrder/${id || ''}`);
 
 /**
  * @author jinseong

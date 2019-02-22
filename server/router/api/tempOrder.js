@@ -207,13 +207,13 @@ exports.setComplete = (req, res) => {
  * @see None
  * @returns «Query»
  */
-exports.deleteOrderList = (req, res) => {
-  TempOrders.deleteByBranchCode(req.params._id)
+exports.deleteTempOrder = (req, res) => {
+  TempOrders.deleteById(req.params.tempOrderId)
     .then(() => {
       res.status(200).send({ success: '0000' });
     })
     .catch(err => {
       console.log(err);
-      reponseError(res, 'DELETE_ODER_ERROR');
+      reponseError(res, 'DELETE_TEMP_ORDER_ERROR');
     });
 };

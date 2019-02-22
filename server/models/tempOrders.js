@@ -164,7 +164,7 @@ tempOrder.statics.changeCompleteTrue = function(branchCode) {
  * @see None
  * @returns «Query»
  */
-tempOrder.statics.deleteByBranchCode = function(_id) {
+tempOrder.statics.deleteById = function(_id) {
   return this.remove({ _id });
 };
 

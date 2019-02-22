@@ -80,22 +80,37 @@ class Imhome extends Component {
       branchCode,
       ...tempOrder.toJS(),
     };
+    
+    // 주문 완료 후 임시 주문 삭제를 위해 id를 저장한다.
+    // 실제 주문시 tempOrdre의 id는 필요하지 않으므로 data에서 제거
+    const tempOrderid = data._id;
     delete data['_id'];
-
+    
     try {
       eventName === 'TEMP_ORDER'
         ? TempOrderActions.createTempOrder(data).then((result) => {
           this.setMessage('주문저장 되었습니다');
           this.setState({ displayAlertPop: true });
+          TempOrderActions.getOrderData(branchCode);
         })
         : OrderListActions.createOrder(data).then((result) => {
-          console.log(data)
+          // console.log(data)
           if (result.data.fail === '3015') {
             this.setMessage('출고처리되지 않은 주문이 있습니다.');
             this.setState({ displayAlertPop: true });
           } else if (result.data.success === '0000') {
-            this.setMessage('주문 되었습니다.');
-            this.setState({ displayAlertPop: true });
+            
+            // 임시 주문 삭제
+            TempOrderActions.deleteTempOrder(tempOrderid).then(result => {
+              if (result.data.fail === '3016') {
+                this.setMessage('주문 되었습니다. (임시주문 미삭제)');
+                this.setState({ displayAlertPop: true });
+              } else if (result.data.success === '0000') {
+                this.setMessage('주문 되었습니다.');
+                this.setState({ displayAlertPop: true });
+                TempOrderActions.initializeForm()
+              }
+            })
           }
         });
     } catch (e) {

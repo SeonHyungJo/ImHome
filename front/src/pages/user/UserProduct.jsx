@@ -50,10 +50,12 @@ class UserProduct extends Component {
   };
 
   getTempOrder = async () => {
-    const { TempOrderActions } = this.props;
-
+    const { TempOrderActions, auth } = this.props;
+    // console.log(auth.toJS());
+    // const branchCode = auth.toJS().info.branchCode;
+    const branchCode = '002';
     try {
-      await TempOrderActions.getOrderData('002');
+      await TempOrderActions.getOrderData(branchCode);
     } catch (e) {
       console.log(e);
     }
@@ -97,6 +99,7 @@ export default connect(
   state => ({
     lists: state.productList.getIn(['productList', 'lists']),
     currentOrder: state.tempOrder.getIn(['tempOrder', 'currentOrder']),
+    auth: state.auth.get('result'),
   }),
   dispatch => ({
     ProductListActions: bindActionCreators(ProductListActions, dispatch),
