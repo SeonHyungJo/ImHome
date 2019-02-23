@@ -234,7 +234,10 @@ class SpecificationTable extends React.Component {
 
   render() {
     const {
-      headerName, tradeDate = '2018년 05월 10일', orderList, buttonList = [],
+      headerName,
+      tradeDate = '2018년 05월 10일',
+      orderList = [],
+      buttonList = [],
     } = this.props;
 
     return (
@@ -270,8 +273,10 @@ class SpecificationTable extends React.Component {
                 <Buttons key={`${button.name}_${index}`} name={button.name} />
               ) : (
                 <ReactToPrint
+                  key={`${button.name}_${index}_print`}
                   trigger={() => (
                     <FormBtn
+                      key={`${button.name}_${index}_btn`}
                       style={{
                         margin: '0',
                         color: 'black',

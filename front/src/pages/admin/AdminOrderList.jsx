@@ -15,7 +15,6 @@ class AdminOrderList extends Component {
   constructor() {
     super();
 
-    // 버튼 Setting
     const buttons = [
       { name: '배송처리', event: 'DELIVER_OK' },
       { name: '주문서 취소', event: 'CANCLE_ORDER' },
@@ -26,14 +25,11 @@ class AdminOrderList extends Component {
       { name: '명세표 출력', event: 'PRINT_SPECIFICATION' },
     ];
 
-    const specificationItems = [];
-
     this.state = {
       buttons,
       specificationBtns,
-      displayAlert: false,
-      alertMessage: '출고완료 처리 되었습니다.',
-      specificationItems,
+      deliveryAlert: false,
+      cancelAlert: false,
     };
   }
 
@@ -49,34 +45,42 @@ class AdminOrderList extends Component {
   getNavData = async (changeId) => {
     try {
       const { OrderListActions, currentId } = this.props;
-      if (changeId) OrderListActions.updateCurrentId(changeId);
-      // 선택한 지점 주문내역 불러오기
-      OrderListActions.getOrderData(changeId || currentId);
+      const setId = changeId || currentId;
+
+      OrderListActions.updateCurrentId(setId);
+      OrderListActions.getOrderData(setId);
     } catch (e) {
       console.log(e);
     }
   };
 
-  // Button Event 처리하기
+  // 배송처리
   setComplete = async (eventName) => {
     try {
       const { OrderListActions, currentOrder } = this.props;
 
+      console.log(eventName);
+      debugger;
       // 배송처리 && 주문서 취소
       eventName === 'DELIVER_OK'
         ? OrderListActions.updateComplete(currentOrder.branchCode).then((result) => {
-          result.data.success === '0000' && this.setStoreList();
-          this.setState({ displayAlert: true });
+          if (result.data.success === '0000') {
+            this.setStoreList();
+            this.setPopup('deliveryAlert', true);
+          }
         })
-        : OrderListActions.deleteOrderData(currentOrder._id).then(
-          result => result.data.success === '0000' && this.setStoreList(),
-        );
+        : OrderListActions.deleteOrderData(currentOrder._id).then((result) => {
+          if (result.data.success === '0000') {
+            this.setStoreList();
+            this.setPopup('cancelAlert', true);
+          }
+        });
     } catch (e) {
       console.log(e);
     }
   };
 
-  // 좌측 브랜치 리스트 초기화
+  // 브랜치 리스트 & 세부항목 초기화
   setStoreList = () => {
     const { OrderListActions } = this.props;
 
@@ -85,11 +89,11 @@ class AdminOrderList extends Component {
     );
   };
 
-  completeRelease = () => {
-    this.setState({ displayAlert: false });
+  setPopup = (alertName, setBoolean) => {
+    this.setState({ [alertName]: setBoolean });
   };
 
-  // 우측으로 이동시키기
+  // 거래명세표 추가
   addReleaseList = (payload) => {
     const { OrderListActions, currentOrder } = this.props;
     const newItems = currentOrder.items;
@@ -98,11 +102,9 @@ class AdminOrderList extends Component {
         return index;
       }
     });
-    // 아래는 원래 코드입니다
-    // delete newItems[currentId];
-    newItems.splice(currentId, 1);
 
-    OrderListActions.removeItemList(newItems);
+    newItems.splice(currentId, 1) && OrderListActions.removeItemList(newItems);
+
     this.setState(state => ({
       specificationItems: [...state.specificationItems, payload],
     }));
@@ -111,8 +113,8 @@ class AdminOrderList extends Component {
   render() {
     const { store, currentOrder = '', currentId } = this.props;
     const {
-      alertMessage,
-      displayAlert,
+      deliveryAlert,
+      cancelAlert,
       buttons,
       storeId,
       specificationBtns,
@@ -124,10 +126,16 @@ class AdminOrderList extends Component {
     return (
       <>
         <AlertPopup
-          title={alertMessage}
+          title="출고완료 처리 되었습니다."
           buttonName="확인"
-          displayAlertPop={displayAlert}
-          clickEvent={this.completeRelease}
+          displayAlertPop={deliveryAlert}
+          clickEvent={() => this.setPopup('deliveryAlert', false)}
+        />
+        <AlertPopup
+          title="주문서 취소 되었습니다."
+          buttonName="확인"
+          displayAlertPop={cancelAlert}
+          clickEvent={() => this.setPopup('cancelAlert', false)}
         />
         <PageTemplate role={role} navData={store} id={currentId} clickNav={this.getNavData}>
           <header>
