@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
 import { PageTemplate } from '../../component/template';
 import { Product } from '../../component/product';
 import * as ProductListActions from '../../redux/modules/productList';
@@ -9,6 +10,7 @@ class AdminProduct extends Component {
   constructor() {
     super();
 
+    // Redux로 빼는 걸 추천
     this.state = {
       companyCode: '0',
     };
@@ -17,7 +19,9 @@ class AdminProduct extends Component {
   async componentDidMount() {
     const { ProductListActions } = this.props;
 
+    // Get Product Category List
     await ProductListActions.getProducts();
+    // Get Product Items
     await this.getCompanyList();
   }
 
@@ -47,7 +51,7 @@ class AdminProduct extends Component {
       console.log(e);
     }
 
-    // setstate
+    // set companyCode => #5 Redux로 빼는걸 추천
     this.setState({ companyCode: id });
   };
 
