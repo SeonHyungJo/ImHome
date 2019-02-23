@@ -17,8 +17,8 @@ import * as OrderListActions from './redux/modules/orderList';
 
 class App extends PureComponent {
   // transform-class-properties 적용
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
     // Create history
     const customHistory = createBrowserHistory();
@@ -113,6 +113,7 @@ class App extends PureComponent {
       // #2 this.props 위에서 선언하도록 변경 진행
       const loggedInfo = result.toJS();
 
+      console.log('여기');
       // Fail login
       // 로그인 관련 정보가 맞지 않을 경우
       if (loggedInfo.success && loggedInfo.success === false) {
@@ -134,7 +135,6 @@ class App extends PureComponent {
   };
 
   render() {
-    const ADMIN_PATH = '/admin';
     const { store } = this.props;
     const { customHistory } = this.state;
 
@@ -142,34 +142,40 @@ class App extends PureComponent {
       <Provider store={store}>
         <Router history={customHistory}>
           <>
-            {this.state.admin !== null ? (
-              this.state.admin ? (
-                <>
-                  {/* Admin router : 관리자 라우터 */}
-                  <Route exact component={AdminUser} path={`${ADMIN_PATH}/users`} />
-                  <Route exact component={AdminOrderList} path={`${ADMIN_PATH}/orderlist`} />
-                  <Route exact component={AdminReleaseList} path={`${ADMIN_PATH}/releaselist`} />
-                  <Route exact component={AdminProduct} path={`${ADMIN_PATH}/product`} />
-                </>
-              ) : (
-                <>
-                  {/* User router : 사용자 라우터 */}
-                  <Route exact component={UserProduct} path="/product" />
-                  <Route exact component={UserOrderList} path="/orderlist" />
-                  <Route exact component={UserReleaseList} path="/releaselist" />
-                </>
-              )
-            ) : null}
             {/* Common router : 관리자와 사용자 공통 라우터 */}
             <Route exact component={UserRegister} path="/register" />
             <Route component={Login} path="/login" />
             <Route exact component={Login} path="/" />
+            {this.state.admin ? <AdminRouter /> : <UserRouter />}
           </>
         </Router>
       </Provider>
     );
   }
 }
+
+const AdminRouter = () => {
+  const ADMIN_PATH = '/admin';
+
+  return (
+    <>
+      {/* Admin router : 관리자 라우터 */}
+      <Route exact component={AdminUser} path={`${ADMIN_PATH}/users`} />
+      <Route exact component={AdminOrderList} path={`${ADMIN_PATH}/orderlist`} />
+      <Route exact component={AdminReleaseList} path={`${ADMIN_PATH}/releaselist`} />
+      <Route exact component={AdminProduct} path={`${ADMIN_PATH}/product`} />
+    </>
+  );
+};
+
+const UserRouter = () => (
+  <>
+    {/* User router : 사용자 라우터 */}
+    <Route exact component={UserProduct} path="/product" />
+    <Route exact component={UserOrderList} path="/orderlist" />
+    <Route exact component={UserReleaseList} path="/releaselist" />
+  </>
+);
 
 export default connect(
   state => ({
