@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Route, Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -14,50 +15,26 @@ import { Login } from './pages/common';
 import * as AuthActions from './redux/modules/auth';
 import * as OrderListActions from './redux/modules/orderList';
 
-import './App.scss';
-
 class App extends PureComponent {
   // transform-class-properties 적용
-  state = {
-    admin: null,
-    routeList: null,
-    orderList: {},
-  };
+  constructor(props) {
+    super(props);
 
-  initializeUserInfo = async () => {
-    const { history } = this.props;
-    const loggedInfo = localStorage.getItem('accessToken'); // 로그인 정보를 로컬스토리지에서 가져옵니다.
-    if (!loggedInfo) return; // 로그인 정보가 없다면 여기서 멈춥니다.
+    // Create history
+    const customHistory = createBrowserHistory();
 
-    const { AuthActions } = this.props;
-
-    try {
-      await AuthActions.checkStatus();
-      const loggedInfo = this.props.result.toJS();
-
-      if (loggedInfo.success && loggedInfo.success === false) {
-        localStorage.removeItem('accessToken');
-        history.push('/login');
-      }
-    } catch (e) {
-      localStorage.removeItem('accessToken');
-      console.log(e);
-
-      // history.push('/login');
-    }
-  };
-
-  componentDidUpdate(prevProps) {
-    const result = this.props.result.toJS();
-
-    result.checkAdmin || (result.info && result.info.admin)
-      ? this.setState({ admin: true })
-      : this.setState({ admin: false });
+    this.state = {
+      admin: null,
+      routeList: null,
+      orderList: {},
+      customHistory,
+    };
   }
 
   componentDidMount() {
     const { OrderListActions } = this.props;
 
+    // Check Login info(init, updated)
     this.initializeUserInfo();
 
     // window.requestIdleCallback = window.requestIdleCallback
@@ -89,45 +66,108 @@ class App extends PureComponent {
     // window.requestIdleCallback(newOrderCheck, { timeout: 0 });
   }
 
-  render() {
-    const ADMIN_PATH = '/admin';
-    const { store } = this.props;
+  // React Add new LifeCycle in version 16.3
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { result } = nextProps;
+    const { customHistory } = prevState;
 
-    return (
-      <Provider store={store}>
-        <BrowserRouter>
-          <>
-          {this.state.admin !== null ? (
-            this.state.admin ? (
-              <>
-              {/* Admin router : 관리자 라우터 */}
-              <Route exact component={AdminUser} path={`${ADMIN_PATH}/users`} />
-              <Route exact component={AdminOrderList} path={`${ADMIN_PATH}/orderlist`} />
-              <Route exact component={AdminReleaseList} path={`${ADMIN_PATH}/releaselist`} />
-              <Route exact component={AdminProduct} path={`${ADMIN_PATH}/product`} />
-              </>
-            ) : (
-                <>
-                {/* User router : 사용자 라우터 */}
-                <Route exact component={UserProduct} path="/product" />
-                <Route exact component={UserOrderList} path="/orderlist" />
-                <Route exact component={UserReleaseList} path="/releaselist" />
-                </>
-              )
-          ) : null}
-          {/* Common router : 관리자와 사용자 공통 라우터 */}
-          <Route exact component={UserRegister} path="/register" />
-          <Route component={Login} path="/login" />
-          <Route exact component={Login} path="/" />
-          </>
-        </BrowserRouter>
-      </Provider>
-    );
+    // #3 loggedInfo fail일 경우
+    // history가 App.jsx에서 없는 경우 처리 진행 && this 접근이 안됨처리
+    if (result.toJS().fail) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('checkAdmin');
+      localStorage.removeItem('branchName');
+      customHistory.push('/login');
+    }
+
+    return false;
+  }
+
+  componentDidUpdate() {
+    // rendering 이전에 이루어지는 것은 getDerivedStateFromProps에서 작동하는 것을 권장
+    const { result } = this.props;
+    const resultInfo = result.toJS();
+
+    resultInfo.checkAdmin || (resultInfo.info && resultInfo.info.admin)
+      ? this.setState({ admin: true })
+      : this.setState({ admin: false });
   }
 
   componentWillUnmount() {
+    this.resetLocalStorage();
+  }
+
+  initializeUserInfo = async () => {
+    const { AuthActions, result } = this.props;
+    const { customHistory } = this.props;
+
+    // #1 초기 한번 작동을 하는데 있어서 필요가 없어보여 주석 처리
+    // 로그인 정보를 로컬스토리지에서 가져옵니다.
+    // const loggedInfo = localStorage.getItem('accessToken');
+
+    // 로그인 정보가 없다면 여기서 멈춥니다.
+    // if (!loggedInfo) return;
+    try {
+      // Auth Check
+      await AuthActions.checkStatus();
+      // #2 this.props 위에서 선언하도록 변경 진행
+      const loggedInfo = result.toJS();
+
+      // Fail login
+      // 로그인 관련 정보가 맞지 않을 경우
+      if (loggedInfo.success && loggedInfo.success === false) {
+        this.resetLocalStorage();
+        customHistory.push('/login');
+      }
+    } catch (e) {
+      console.log(e);
+      this.resetLocalStorage();
+      customHistory.push('/login');
+    }
+  };
+
+  // reset localStorage
+  resetLocalStorage = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('checkAdmin');
+    localStorage.removeItem('branchName');
+  };
+
+  render() {
+    const ADMIN_PATH = '/admin';
+    const { store } = this.props;
+    const { customHistory } = this.state;
+
+    return (
+      <Provider store={store}>
+        <Router history={customHistory}>
+          <>
+            {this.state.admin !== null ? (
+              this.state.admin ? (
+                <>
+                  {/* Admin router : 관리자 라우터 */}
+                  <Route exact component={AdminUser} path={`${ADMIN_PATH}/users`} />
+                  <Route exact component={AdminOrderList} path={`${ADMIN_PATH}/orderlist`} />
+                  <Route exact component={AdminReleaseList} path={`${ADMIN_PATH}/releaselist`} />
+                  <Route exact component={AdminProduct} path={`${ADMIN_PATH}/product`} />
+                </>
+              ) : (
+                <>
+                  {/* User router : 사용자 라우터 */}
+                  <Route exact component={UserProduct} path="/product" />
+                  <Route exact component={UserOrderList} path="/orderlist" />
+                  <Route exact component={UserReleaseList} path="/releaselist" />
+                </>
+              )
+            ) : null}
+            {/* Common router : 관리자와 사용자 공통 라우터 */}
+            <Route exact component={UserRegister} path="/register" />
+            <Route component={Login} path="/login" />
+            <Route exact component={Login} path="/" />
+          </>
+        </Router>
+      </Provider>
+    );
   }
 }
 
