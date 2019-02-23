@@ -21,6 +21,5 @@ export function put(path, id = '', data) {
 }
 
 export function del(path, id = '', data) {
-  console.log(axiosConfig());
   return axios.delete(path + id, data, axiosConfig());
 }
