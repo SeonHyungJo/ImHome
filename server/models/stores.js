@@ -20,7 +20,7 @@ const storeSchema = new Schema(
  * @see None
  * @returns product.save()
  */
-storeSchema.statics.create = function(newBranch) {
+storeSchema.statics.create = function (newBranch) {
     const product = new this(newBranch);
     return product.save();
 };
@@ -34,7 +34,7 @@ storeSchema.statics.create = function(newBranch) {
  * @see None
  * @returns storeList
  */
-storeSchema.statics.findAll = function() {
+storeSchema.statics.findAll = function () {
     return this.find().select({ _id: 0, branchCode: 1, branchName: 1 });
 };
 
@@ -47,7 +47,7 @@ storeSchema.statics.findAll = function() {
  * @see None
  * @returns «Query»
  */
-storeSchema.statics.findStoreByBranchcode = function(branchCode) {
+storeSchema.statics.findStoreByBranchcode = function (branchCode) {
     return this.findOne({ branchCode });
 };
 
@@ -61,7 +61,7 @@ storeSchema.statics.findStoreByBranchcode = function(branchCode) {
  * @see None
  * @returns store
  */
-storeSchema.statics.findOneAndUpdateNew = function(branchCode, productInfo) {
+storeSchema.statics.findOneAndUpdateNew = function (branchCode, productInfo) {
     return this.findOneAndUpdate({ branchCode }, productInfo, { new: true });
 };
 
@@ -74,7 +74,7 @@ storeSchema.statics.findOneAndUpdateNew = function(branchCode, productInfo) {
  * @see None
  * @returns «Query»
  */
-storeSchema.statics.deleteByBranchCode = function(branchCode) {
+storeSchema.statics.deleteByBranchCode = function (branchCode) {
     return this.remove({ branchCode });
 };
 
@@ -87,8 +87,21 @@ storeSchema.statics.deleteByBranchCode = function(branchCode) {
  * @see None
  * @returns «Query»
  */
-storeSchema.statics.checkBranch = function(branchCode) {
+storeSchema.statics.checkBranch = function (branchCode) {
     return this.findOne({ branchCode });
+};
+
+/**
+ * @author BKJang
+ * @summary 지점 이름으로 정보 가져오기
+ * @private
+ * @memberof Admin
+ * @param branchName 지점 이름
+ * @see None
+ * @returns «Query»
+ */
+storeSchema.statics.checkBranchWithName = function (branchName) {
+    return this.findOne({ branchName });
 };
 
 module.exports = mongoose.model('stores', storeSchema);
