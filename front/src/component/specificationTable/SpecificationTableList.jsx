@@ -27,7 +27,7 @@ const OrderListTableList = ({ orderList }) => (
   <TableList className={classNames('tbody')}>
     {orderList instanceof Array
       && orderList.map((order, index) => (
-        <div key={`${order.itemCode}_${index}`} className="tbodyTr">
+        <div key={`${order._id}_${index}`} className="tbodyTr">
           <div className={classNames('tbodyTd')}>{order.itemName}</div>
           <div className={classNames('tbodyTd', 'text-center')}>{order.itemCount}</div>
           <div className={classNames('tbodyTd', 'text-center')}>

@@ -128,6 +128,9 @@ const reponseErrorType = (res, type) => {
     case 'EXISTED_ORDER':
       res.status(200).send({ fail: '3015' });
       break;
+    case 'DELETE_TEMP_ORDER_ERROR':
+      res.status(200).send({ fail: '3016' });
+      break;
     //------------------------------------------------------
     default:
       res.status(200).send({ fail: '9999' });

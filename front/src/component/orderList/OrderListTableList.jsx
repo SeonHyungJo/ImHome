@@ -27,9 +27,11 @@ const OrderListTableList = ({ orderList, addReleaseList }) => (
     {orderList instanceof Array
       && orderList.map((order, index) => (
         <div
-          key={`${order.itemCode}_${index}`}
+          key={`${order._id}_${index}`}
           className="tbodyTr"
-          onClick={() => addReleaseList(order)}
+          onClick={() => {
+            // addReleaseList(order)
+          }}
         >
           <div className={classNames('tbodyTd')}>{order.itemName}</div>
           <div className={classNames('tbodyTd', 'text-center')}>{order.itemCount}</div>

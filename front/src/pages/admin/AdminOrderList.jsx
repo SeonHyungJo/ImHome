@@ -98,7 +98,9 @@ class AdminOrderList extends Component {
         return index;
       }
     });
-    delete newItems[currentId];
+    // 아래는 원래 코드입니다
+    // delete newItems[currentId];
+    newItems.splice(currentId, 1);
 
     OrderListActions.removeItemList(newItems);
     this.setState(state => ({
