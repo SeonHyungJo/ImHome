@@ -160,9 +160,17 @@ class UserRegister extends Component {
       this.setMessage(null);
       return true;
     },
-    branchCode: (value) => {
-      if (!value) {
-        this.setMessage('지점명을 선택해주세요.');
+    // branchCode: (value) => {
+    //   if (!value) {
+    //     this.setMessage('지점명을 선택해주세요.');
+    //     return false;
+    //   }
+    //   this.setMessage(null);
+    //   return true;
+    // },
+    branchName: (value) => {
+      if (isEmpty(value)) {
+        this.setMessage('지점명은 필수 입력사항입니다.');
         return false;
       }
       this.setMessage(null);
@@ -238,7 +246,7 @@ class UserRegister extends Component {
       cName,
       email,
       bPhoneNumber,
-      branchCode,
+      branchName,
     } = this.props.form.toJS();
     const { validate } = this;
 
@@ -252,7 +260,7 @@ class UserRegister extends Component {
       || !validate.cName(cName)
       || !validate.email(email)
       || !validate.bPhoneNumber(bPhoneNumber)
-      || !validate.branchCode(branchCode)
+      || !validate.branchName(branchName)
     ) {
       this.setState({ displayAlertPop: true });
       return;
@@ -269,7 +277,7 @@ class UserRegister extends Component {
         cName,
         email,
         bPhoneNumber,
-        branchCode,
+        branchName,
       });
 
       const loggedInfo = this.props.result.toJS();
@@ -305,7 +313,7 @@ class UserRegister extends Component {
       cName,
       email,
       bPhoneNumber,
-      branchCode,
+      branchName,
     } = this.props.form.toJS();
     const { store } = this.props;
     const { message } = this.props;
@@ -391,7 +399,7 @@ class UserRegister extends Component {
               onChange={this.handleChange}
               placeholder="휴대폰 번호"
             />
-            <SelectboxWithLabel
+            {/* <SelectboxWithLabel
               label="지점명"
               name="branchCode"
               value={branchCode}
@@ -404,14 +412,15 @@ class UserRegister extends Component {
                     {item.branchName}
                   </option>
                 ))}
-            </SelectboxWithLabel>
-            {/* <InputWithLabel label="지점명"
-                            type="text"
-                            name="branchName"
-                            value={branchName}
-                            onChange={this.handleChange}
-                            placeholder="지점명"
-                        /> */}
+            </SelectboxWithLabel> */}
+            <InputWithLabel
+              label="지점명"
+              type="text"
+              name="branchName"
+              value={branchName}
+              onChange={this.handleChange}
+              placeholder="지점명"
+            />
           </RegisterContent>
           <Button style={{ marginRight: '10px' }} onClick={this.goLogin}>
             취소
