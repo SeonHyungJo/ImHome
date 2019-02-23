@@ -69,19 +69,29 @@ exports.register = (req, res) => {
   };
 
   // BranchName 확인
-  const checkBranchCode = cryptoInfo => {
+  const checkBranchName = cryptoInfo => {
+    let branchCode = '';
     return new Promise((resolve, reject) => {
-      Store.checkBranch(cryptoInfo.branchCode)
+      Store.checkBranchWithName(cryptoInfo.branchName)
         .then(foundBranch => {
           if (foundBranch) {
-            cryptoInfo = {
-              ...cryptoInfo,
-              branchName: foundBranch.branchName,
-              checkUser: true
-            };
-
-            resolve(cryptoInfo);
+            branchCode = foundBranch.branchCode;
+          } else {
+            branchCode = Math.random().toString(36);
+            Store.create({
+              branchName: cryptoInfo.branchName,
+              branchCode: branchCode
+            });
           }
+
+          cryptoInfo = {
+            ...cryptoInfo,
+            branchName: cryptoInfo.branchName,
+            branchCode: branchCode,
+            checkUser: true
+          };
+
+          resolve(cryptoInfo);
 
           reject(new Error('BLANK_BRANCHNAME'));
         })
@@ -112,7 +122,7 @@ exports.register = (req, res) => {
   blankCheck(userInfo)
     .then(cryptoUserInfo)
     .then(checkUserId)
-    .then(checkBranchCode)
+    .then(checkBranchName)
     .then(create)
     .catch(onError);
 };
