@@ -113,7 +113,6 @@ class App extends PureComponent {
       // #2 this.props 위에서 선언하도록 변경 진행
       const loggedInfo = result.toJS();
 
-      console.log('여기');
       // Fail login
       // 로그인 관련 정보가 맞지 않을 경우
       if (loggedInfo.success && loggedInfo.success === false) {

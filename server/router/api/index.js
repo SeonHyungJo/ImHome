@@ -17,6 +17,8 @@ const router = express.Router();
 // Setting Middleware
 router.get('/user', AuthMiddleware);
 router.use('/order', AuthMiddleware);
+router.use('/product', AuthMiddleware);
+router.use('/tempOrder', AuthMiddleware);
 //router.use('/store', AuthMiddleware);
 
 // Auth API

@@ -14,10 +14,12 @@ const UPDATE_ORDER_COMPLETE = 'orderList/UPDATE_ORDER_COMPLETE'; // 배송 완�
 const DELETE_ORDER = 'orderList/DELETE_ORDER'; // 주문내역 취소하기
 
 const CREATE_ORDER = 'orderList/CREATE_ORDER'; // 주문하기
+const SET_MESSAGE = 'user/SET_MESSAGE';
 
 export const updateCurrentId = createAction(CHANGE_CURRENTID);
 export const removeItemList = createAction(REMOVE_ITEM_LIST);
 export const initializeForm = createAction(INITIALIZE_FORM); // form
+export const setMessage = createAction(SET_MESSAGE); // { form, message }
 
 export const getStoreList = createAction(GET_STORE_LIST, orderListAPI.getStoreList);
 export const getOrderData = createAction(GET_ORDER_DATA, orderListAPI.getOrderData);
@@ -34,7 +36,7 @@ const initialState = Map({
       _id: '',
       branchCode: '',
       branchName: '',
-      items: '',
+      items: List([Map({})]),
       updatedAt: '',
     }),
     currentOrder: Map({
@@ -53,6 +55,7 @@ const initialState = Map({
       updatedAt: '',
     }),
     error: null,
+    message: null,
     store: [],
     currentId: [],
     list: [],
@@ -72,7 +75,11 @@ export default handleActions(
     }),
     [INITIALIZE_FORM]: (state, action) => {
       const initialForm = initialState.get(action.payload);
-      return state.set(action.payload, initialForm);
+      return state.setIn(['orderList', 'currentOrder'], initialForm);
+    },
+    [SET_MESSAGE]: (state, action) => {
+      const { message } = action.payload;
+      return state.setIn(['orderList', 'message'], message);
     },
     ...pender({
       type: GET_ORDER_DATA,
@@ -84,7 +91,8 @@ export default handleActions(
     }),
     ...pender({
       type: DELETE_ORDER,
-      onSuccess: (state, action) => state.setIn(['orderList', 'form'], Map(action.payload.data)),
+      onSuccess: (state, action) => state.setIn(['result'], action.payload.data),
+      onFailure: (state, action) => state.setIn(['result'], action.payload.data),
     }),
     ...pender({
       type: CREATE_ORDER,

@@ -20,6 +20,8 @@ export function put(path, id = '', data) {
   return axios.put(path + id, data, axiosConfig());
 }
 
-export function del(path, id = '', data) {
-  return axios.delete(path + id, data, axiosConfig());
+// 2019. 2. 24 delete data삭제 - jinseong
+// axios에 data는 put, post, patch에만 존재
+export function del(path, id = '') {
+  return axios.delete(path + id, axiosConfig());
 }

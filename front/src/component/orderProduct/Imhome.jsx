@@ -74,7 +74,8 @@ class Imhome extends Component {
     const {
       tempOrder, auth, TempOrderActions, OrderListActions,
     } = this.props;
-    const branchCode = auth.toJS().info.branchCode;
+    // const branchCode = auth.toJS().info.branchCode;
+    const branchCode = '002';
     let data = {
       complete: false,
       branchCode,
