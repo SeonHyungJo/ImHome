@@ -14,7 +14,6 @@ class NavTemplate extends PureComponent {
     const { navData = [], clickNav, id } = this.props;
     const isCompany = !!(navData[0] && navData[0].hasOwnProperty('companyCode'));
 
-    console.log(isCompany);
     return (
       <NavContainer>
         {/* 1-2 */}
