@@ -28,23 +28,23 @@ class UserRegister extends Component {
 
     try {
       // #4 history 적용에 따른 주석처리(회원가입 들어갈 경우 다시 나오게 됨)
-      // await AuthActions.checkStatus();
-      // const loggedInfo = this.props.result.toJS();
-      // if (
-      //   loggedInfo.success
-      //   && loggedInfo.success === '0000'
-      //   && localStorage.getItem('accessToken')
-      // ) {
-      //   if (
-      //     localStorage.getItem('checkAdmin') === 'true'
-      //     || localStorage.getItem('checkAdmin') === true
-      //   ) {
-      //     history.push('/admin/product');
-      //     return;
-      //   }
-      //   history.push('/product');
-      //   return;
-      // }
+      await AuthActions.checkStatus();
+      const loggedInfo = this.props.result.toJS();
+      if (
+        loggedInfo.success
+        && loggedInfo.success === '0000'
+        && localStorage.getItem('accessToken')
+      ) {
+        if (
+          localStorage.getItem('checkAdmin') === 'true'
+          || localStorage.getItem('checkAdmin') === true
+        ) {
+          history.push('/admin/product');
+          return;
+        }
+        history.push('/product');
+        return;
+      }
     } catch (error) {
       console.log(error);
     }

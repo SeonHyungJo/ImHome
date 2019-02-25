@@ -71,7 +71,8 @@ class App extends PureComponent {
 
     // #3 loggedInfo fail일 경우
     // history가 App.jsx에서 없는 경우 처리 진행 && this 접근이 안됨처리
-    if (result.toJS().fail) {
+    // 로그인되지 않은 상태에서 회원가입은 예외처리
+    if (result.toJS().fail && customHistory.location.pathname !== '/register') {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('checkAdmin');
       localStorage.removeItem('branchName');
@@ -120,7 +121,7 @@ class App extends PureComponent {
     } catch (e) {
       console.log(e);
       this.resetLocalStorage();
-      customHistory.push('/login');
+      // customHistory.push('/login');
     }
   };
 
