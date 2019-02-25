@@ -28,6 +28,7 @@ class ViewForUser extends Component {
       selectMonthDate,
       setMonthlyDate,
       setMonthly,
+      setMode = true,
     } = this.props;
 
     return (
@@ -56,17 +57,27 @@ class ViewForUser extends Component {
                     dateFormat="yyyy.MM.dd"
                     selected={startDate}
                     onChange={handleChangeStartDate}
+                    disabled={!setMode}
                   />
                   ~
                   <DatePicker
                     dateFormat="yyyy.MM.dd"
                     selected={endDate}
                     onChange={handleChangeEndDate}
+                    disabled={!setMode}
                   />
-                  <WhiteBtn onClick={() => setStartDate(7)}>1주일</WhiteBtn>
-                  <WhiteBtn onClick={() => setStartDate(15)}>15일</WhiteBtn>
-                  <WhiteBtn onClick={() => setStartDate(30)}>1개월</WhiteBtn>
-                  <WhiteBtn onClick={() => setStartDate(90)}>3개월</WhiteBtn>
+                  <WhiteBtn onClick={() => setStartDate(7)} disabled={!setMode}>
+                    1주일
+                  </WhiteBtn>
+                  <WhiteBtn onClick={() => setStartDate(15)} disabled={!setMode}>
+                    15일
+                  </WhiteBtn>
+                  <WhiteBtn onClick={() => setStartDate(30)} disabled={!setMode}>
+                    1개월
+                  </WhiteBtn>
+                  <WhiteBtn onClick={() => setStartDate(90)} disabled={!setMode}>
+                    3개월
+                  </WhiteBtn>
                 </div>
                 <div>
                   <InlineDatePicker

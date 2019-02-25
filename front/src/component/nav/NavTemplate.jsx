@@ -11,11 +11,13 @@ class NavTemplate extends PureComponent {
     // 2019-02-25 Refactoring 진행
     // 1. 코드 간소화, 2. 필요없는 소스제거
 
-    const { navData = [], clickNav, id } = this.props;
+    const {
+      navData = [], clickNav, id, changeModeInfo, changeMode,
+    } = this.props;
     const isCompany = !!(navData[0] && navData[0].hasOwnProperty('companyCode'));
 
     return (
-      <NavContainer>
+      <NavContainer changeModeInfo={changeModeInfo} changeMode={changeMode}>
         {/* 1-2 */}
         {navData.map((data, index) => (
           <NavList

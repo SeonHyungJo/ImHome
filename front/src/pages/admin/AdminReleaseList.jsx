@@ -58,6 +58,12 @@ class AdminReleaseList extends Component {
       month: currentDate.getMonth() + 1,
     };
 
+    const changeModeInfo = {
+      releaseMode: true,
+      buttonMode: true,
+      clickPath: '',
+    };
+
     this.state = {
       custNo: 1,
       headerData,
@@ -68,6 +74,7 @@ class AdminReleaseList extends Component {
       currentBranchName: '',
       itemList: [],
       buttons: [{ name: '확인' }],
+      changeModeInfo,
     };
   }
 
@@ -198,15 +205,31 @@ class AdminReleaseList extends Component {
     this.setState({ displayPop: false });
   };
 
+  changeMode = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      changeModeInfo: { ...prevState.changeModeInfo, buttonMode: !prevState.changeModeInfo.buttonMode },
+    }));
+  };
+
   render() {
-    const { searchingData, radioBtnSetting, selectMonthDate } = this.state;
+    const {
+      searchingData, radioBtnSetting, selectMonthDate, changeModeInfo,
+    } = this.state;
     const {
       store, list, currentId, custNo, startDate, endDate,
     } = this.props;
     const role = 'admin';
 
     return (
-      <PageTemplate role={role} navData={store} id={currentId} clickNav={this.getNavData}>
+      <PageTemplate
+        role={role}
+        navData={store}
+        id={currentId}
+        clickNav={this.getNavData}
+        changeModeInfo={changeModeInfo}
+        changeMode={this.changeMode}
+      >
         <ViewForRelease
           type="date"
           viewTitle="출고내역 및 세금계산서 발행내역 조회"
@@ -221,6 +244,7 @@ class AdminReleaseList extends Component {
           selectMonthDate={selectMonthDate}
           setMonthlyDate={this.setMonthlyDate}
           setMonthly={this.setMonthly}
+          setMode={changeModeInfo.buttonMode}
         >
           <FormBtn style={{ width: '80px', margin: '0' }} onClick={this.searchRelease}>
             조회

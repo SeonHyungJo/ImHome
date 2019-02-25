@@ -92,18 +92,23 @@ class PageTemplate extends Component {
     localStorage.removeItem('branchName');
 
     this.setState({ isLogin: false });
-  }
+  };
 
   initializeForm = () => {
-    const { UserActions, OrderListActions,
-      ProductListActions, ReleaseActions, TempOrderActions } = this.props;
+    const {
+      UserActions,
+      OrderListActions,
+      ProductListActions,
+      ReleaseActions,
+      TempOrderActions,
+    } = this.props;
 
     UserActions.initializeForm('user');
     OrderListActions.initializeForm('orderList');
     ProductListActions.initializeForm('releaseList');
     ReleaseActions.initializeForm('productList');
     TempOrderActions.initializeForm('tempOrder');
-  }
+  };
 
   render() {
     const { adminHeaderList, userHeaderList, role } = this.state;
@@ -116,35 +121,37 @@ class PageTemplate extends Component {
     return (
       // Fragments로 전환 (by seonhyungjo)
       <>
-      <HeaderContainer caption={caption}>
-        {/* role에 따른 다른 헤더 출력하기 */}
-        <li>
-          <button onClick={this.logout}>로그아웃</button>
-        </li>
-        {/*
+        <HeaderContainer caption={caption}>
+          {/* role에 따른 다른 헤더 출력하기 */}
+          <li>
+            <button onClick={this.logout}>로그아웃</button>
+          </li>
+          {/*
             id: 리스트 아이디,
             pathName: 리스트 명,
             path: 리스트 주소,
           */}
-        {headerList.map(({ id, pathName, path }) => (
-          <li key={id}>
-            <NavLink to={path} activeClassName="on">
-              {pathName}
-            </NavLink>
-          </li>
-        ))}
-      </HeaderContainer>
+          {headerList.map(({ id, pathName, path }) => (
+            <li key={id}>
+              <NavLink to={path} activeClassName="on">
+                {pathName}
+              </NavLink>
+            </li>
+          ))}
+        </HeaderContainer>
 
-      <NavTemplate
-        navData={this.props.navData}
-        id={this.props.id}
-        clickNav={this.props.clickNav}
-      />
+        <NavTemplate
+          navData={this.props.navData}
+          id={this.props.id}
+          clickNav={this.props.clickNav}
+          changeModeInfo={this.props.changeModeInfo}
+          changeMode={this.props.changeMode}
+        />
 
-      {/* Main영역에 있어 1개인 경우와 2개인 경우를 나눔 */}
-      {!!this.props.children[0] === true && this.props.children[0].type === 'header' ? (
-        <ContentTwoDivContainer>{this.props.children}</ContentTwoDivContainer>
-      ) : (
+        {/* Main영역에 있어 1개인 경우와 2개인 경우를 나눔 */}
+        {!!this.props.children[0] === true && this.props.children[0].type === 'header' ? (
+          <ContentTwoDivContainer>{this.props.children}</ContentTwoDivContainer>
+        ) : (
           <Content>{this.props.children}</Content>
         )}
       </>

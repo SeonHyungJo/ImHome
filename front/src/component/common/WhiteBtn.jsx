@@ -20,6 +20,12 @@ const Wrapper = styled.button`
     border: 1.5px solid rgba(100, 100, 100, 0);
   }
 
+  &.off {
+    background-color: rgb(224, 224, 224);
+    color: #000;
+    border: 1.5px solid rgba(100, 100, 100, 0.3);
+  }
+
   &:active {
     background-color: #fe4c8d;
     color: #fff;
@@ -27,8 +33,10 @@ const Wrapper = styled.button`
   }
 `;
 
-const WhiteBtn = ({ children, onClick, style }) => (
-  <Wrapper style={style || {}} onClick={onClick}>
+const WhiteBtn = ({
+  children, onClick, style, disabled,
+}) => (
+  <Wrapper className={disabled && 'off'} style={style || {}} onClick={onClick} disabled={disabled}>
     {children}
   </Wrapper>
 );

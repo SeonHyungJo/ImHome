@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { NavBottomBtn } from '.';
 
 const Wrapper = styled.div`
   background-color: white;
@@ -7,32 +8,17 @@ const Wrapper = styled.div`
   float: left;
 
   width: 15rem;
-  max-height: 66.8vh;
-
-  overflow-y: scroll;
-  z-index: 10;
-
-  /* Scroll Custom */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-button {
-    width: 0px;
-    height: 0px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #fe4c8d;
-    border-radius: 5px;
-  }
+  min-height: 89.8vh;
 `;
 
 const NavWrapper = styled.ul`
   background: white;
   text-align: left;
   list-style: none;
-  padding: 0.3rem 1.5rem;
+  padding: 0.3rem 0.5rem 0.3rem 1rem;
+
+  overflow-y: scroll;
+  height: 69vh;
 
   li {
     box-sizing: border-box;
@@ -64,11 +50,30 @@ const NavWrapper = styled.ul`
     background-image: url('/images/icon_w.png');
     background-repeat: no-repeat;
   }
+
+  /* Scroll Custom */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #fe4c8d;
+    border-radius: 5px;
+  }
 `;
 
-const NavContainer = ({ children }) => (
+const NavContainer = ({ changeModeInfo, changeMode, children }) => (
   <Wrapper>
     <NavWrapper>{children}</NavWrapper>
+    {changeModeInfo
+      && changeModeInfo.releaseMode && (
+        <NavBottomBtn changeModeInfo={changeModeInfo} changeMode={changeMode} />
+    )}
   </Wrapper>
 );
 
