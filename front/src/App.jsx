@@ -32,8 +32,6 @@ class App extends PureComponent {
   }
 
   componentDidMount() {
-    const { OrderListActions } = this.props;
-
     // Check Login info(init, updated)
     this.initializeUserInfo();
 
