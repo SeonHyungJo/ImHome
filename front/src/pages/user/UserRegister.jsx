@@ -288,7 +288,7 @@ class UserRegister extends Component {
         return;
         // this.closeAlertPop();
       }
-      if (loggedInfo.fail === '0003') {
+      if (loggedInfo.fail === '0300') {
         this.setMessage('이미 존재하는 ID 입니다.');
       } else {
         this.setMessage('회원가입에 실패했습니다. 나중에 다시 시도해주세요.');
