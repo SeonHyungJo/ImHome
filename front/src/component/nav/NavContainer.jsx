@@ -2,16 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  position: relative;
   background-color: white;
-  background-position: 0 0;
   color: black;
-  text-align: center;
   float: left;
+
+  width: 15rem;
+  max-height: 66.8vh;
+
   overflow-y: scroll;
-  width: 17rem;
-  max-height: 89.8vh;
-  z-index: 3;
+  z-index: 10;
 
   /* Scroll Custom */
   ::-webkit-scrollbar {
@@ -25,7 +24,7 @@ const Wrapper = styled.div`
 
   ::-webkit-scrollbar-thumb {
     background: #fe4c8d;
-    border-radius: 8px;
+    border-radius: 5px;
   }
 `;
 
@@ -33,28 +32,32 @@ const NavWrapper = styled.ul`
   background: white;
   text-align: left;
   list-style: none;
-  padding-top: 0.5rem;
-  width: 13rem;
+  padding: 0.3rem 1.5rem;
 
   li {
     box-sizing: border-box;
-    padding: 1.4rem 0.5rem 0.5rem 2.5rem;
-    font-size: 1.1rem;
+    border-bottom: 1px solid #d7d7d7;
+
+    padding: 0.9rem 0.5rem 0.8rem 3rem;
+
     color: #555555;
     cursor: pointer;
+    font-size: 1.2rem;
     font-weight: bold;
     text-decoration: none;
+
     background-image: url('/images/icon_b.png');
     background-repeat: no-repeat;
-    background-position: 8% 70%;
-    background-size: 1.1rem;
-    border-bottom: 1px solid #d7d7d7;
+    background-position: 8% 55%;
+    background-size: 1.4rem;
   }
+
   li:hover {
-    background-color: #fe4c8d;
-    color: #ffffff;
-    background-image: url('/images/icon_w.png');
+    /* background-color: #fe4c8d; */
+    /* color: #ffffff; */
+    /* background-image: url('/images/icon_w.png'); */
   }
+
   .on {
     background-color: #fe4c8d;
     color: #ffffff;
