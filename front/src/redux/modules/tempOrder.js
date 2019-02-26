@@ -31,9 +31,11 @@ export const changeTempCount = createAction(CHAGNE_TEMP_COUNT);
 const initialState = Map({
   tempOrder: Map({
     initialForm: Map({
-      complete: false,
+      _id: '',
       branchCode: '',
-      items: {},
+      branchName: '',
+      items: List([]),
+      updatedAt: '',
     }),
     currentOrder: Map({
       _id: '',
@@ -62,7 +64,7 @@ export default handleActions(
     [CHANGE_TEMP_ITEM]: (state, action) => state.setIn(['tempOrder', 'currentOrder', 'items'], fromJS(action.payload)),
     [CHAGNE_TEMP_COUNT]: (state, action) => state.setIn(['tempOrder', 'itemCount'], Map(action.payload)),
     [INITIALIZE_FORM]: (state, action) => {
-      const initialTempOrder = initialState.get('tempOrder').get('currentOrder');
+      const initialTempOrder = initialState.get('tempOrder').get('initialForm');
       const initialItemCount = initialState.get('tempOrder').get('itemCount');
 
       return state
