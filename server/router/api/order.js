@@ -147,10 +147,13 @@ exports.getOrderList = (req, res) => {
  * @returns «Query»
  */
 exports.updateOrderList = (req, res) => {
-  Stores.findStoreByBranchcode(req.body.branchCode)
+  const branchCode = req.decoded.admin ? req.params.branchCode : req.decoded.branchCode;
+
+  Stores.findStoreByBranchcode(branchCode)
     .then(store => {
       // branchName을 잘못 넣을 것을 대비해서 만듬
       req.body.branchName = store.branchName;
+      req.body.branchCode = store.branchCode;
       return Orders.findInCompleteOrderByBranchcode(store.branchCode);
     })
     .then(order => {

@@ -72,13 +72,12 @@ class Imhome extends Component {
 
   _orderFunc = (eventName) => {
     const {
-      tempOrder, auth, TempOrderActions, OrderListActions,
+      tempOrder, TempOrderActions, OrderListActions,
     } = this.props;
     // const branchCode = auth.toJS().info.branchCode;
-    const branchCode = '002';
+    // const branchCode = '002';
     let data = {
       complete: false,
-      branchCode,
       ...tempOrder.toJS(),
     };
     
@@ -92,7 +91,7 @@ class Imhome extends Component {
         ? TempOrderActions.createTempOrder(data).then((result) => {
           this.setMessage('주문저장 되었습니다');
           this.setState({ displayAlertPop: true });
-          TempOrderActions.getOrderData(branchCode);
+          TempOrderActions.getOrderData();
         })
         : OrderListActions.createOrder(data).then((result) => {
           // console.log(data)

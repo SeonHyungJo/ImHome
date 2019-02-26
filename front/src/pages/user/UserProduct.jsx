@@ -50,12 +50,15 @@ class UserProduct extends Component {
   };
 
   getTempOrder = async () => {
-    const { TempOrderActions, auth } = this.props;
+    const { TempOrderActions } = this.props;
+
+    // 2019. 2. 26 Jinseong
+    // branchCode -> server decoded로 변경
     // console.log(auth.toJS());
     // const branchCode = auth.toJS().info.branchCode;
-    const branchCode = '002';
+    // const branchCode = '002';
     try {
-      await TempOrderActions.getOrderData(branchCode);
+      await TempOrderActions.getOrderData();
     } catch (e) {
       console.log(e);
     }
