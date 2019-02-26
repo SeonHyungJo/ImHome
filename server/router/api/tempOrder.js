@@ -154,7 +154,7 @@ exports.updateOrderList = (req, res) => {
         console.log('Modified');
         const modifiedOrder = Object.assign({}, order, req.body);
 
-        return TempOrders.findOneAndUpdateNew(req.body.branchCode, modifiedOrder);
+        return TempOrders.findOneAndUpdateNew(branchCode, modifiedOrder);
         //throw new Error('Already exit');
       }
       // 기존에 complete:false인 내역이 없을 경우 주문내역 추가

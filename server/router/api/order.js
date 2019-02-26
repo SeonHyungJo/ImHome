@@ -159,14 +159,29 @@ exports.updateOrderList = (req, res) => {
     .then(order => {
       if (order.length !== 0) {
         console.log('Modified');
-        // const modifiedOrder = Object.assign({}, order, req.body);
-        // return Orders.findOneAndUpdateNew(req.body.branchCode, modifiedOrder);
-        throw new Error('Already exist');
-      }
-      // 기존에 complete:false인 내역이 없을 경우 주문내역 추가
-      console.log('create');
 
-      return Orders.create(req.body);
+        req.body.items.map(reqItem => {
+          let modyFlag = order[0].items.some(item => {
+            if (String(item._id) === reqItem._id) {
+              item.itemCount = reqItem.itemCount;
+              return true;
+            } else {
+              return false;
+            }
+          });
+
+          if (!modyFlag) {
+            order[0].items.push(reqItem);
+          }
+        });
+
+        return Orders.findOneAndUpdateNew(branchCode, order[0]);
+      } else {
+        // 기존에 complete:false인 내역이 없을 경우 주문내역 추가
+        console.log('create');
+
+        return Orders.create(req.body);
+      }
     })
     .then(() => {
       res.status(200).send({ success: '0000' });
