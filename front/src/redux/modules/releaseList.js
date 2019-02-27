@@ -13,6 +13,8 @@ const GET_STORE_LIST = 'release/GET_STORE_LIST'; // 매장 목록 가져오기
 const GET_ORDER_LIST = 'release/GET_ORDER_LIST'; // 해당 매장의 전체 주문 목록 가져오기
 const GET_ORDER_DATA = 'release/GET_ORDER_DATA'; // 해당 매장의 주문 상세 정보 가져오기
 const DELETE_ORDER_DATA = 'release/DELETE_ORDER_DATA';
+const DOWNLOAD_EXCEL = 'release/DOWNLOAD_EXCEL';
+
 
 export const updateCurrentId = createAction(CHANGE_CURRENTID);
 export const updateCustNo = createAction(CHANGE_CUSTNO);
@@ -24,6 +26,7 @@ export const getStoreList = createAction(GET_STORE_LIST, releaseAPI.getStoreList
 export const getOrderList = createAction(GET_ORDER_LIST, releaseAPI.getOrderList);
 export const getOrderData = createAction(GET_ORDER_DATA, releaseAPI.getOrderData);
 export const deleteOrderData = createAction(DELETE_ORDER_DATA, releaseAPI.deleteOrderData);
+export const downloadExcel = createAction(DOWNLOAD_EXCEL, releaseAPI.downloadExcel);
 
 // 초기값 설정
 const initialState = Map({
@@ -109,6 +112,10 @@ export default handleActions(
       type: DELETE_ORDER_DATA,
       onSuccess: (state, action) => state.set('result', Map(action.payload.data)),
     }),
+    ...pender({
+      type: DOWNLOAD_EXCEL,
+      onSuccess: (state, action) => state.set('result', Map(action.payload.data)),
+    })
   },
   initialState,
 );

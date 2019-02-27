@@ -212,6 +212,14 @@ class AdminReleaseList extends Component {
     }));
   };
 
+  downloadExcel = () => {
+    const {
+      ReleaseActions, startDate, endDate, currentId,
+    } = this.props;
+
+    ReleaseActions.downloadExcel(currentId, startDate, endDate);
+  }
+
   render() {
     const {
       searchingData, radioBtnSetting, selectMonthDate, changeModeInfo,
@@ -263,12 +271,7 @@ class AdminReleaseList extends Component {
             content={() => this.componentRef.current}
           />
           {/* 파일저장용 */}
-          {/* <Button
-                        exportData={list}
-                        trigger={
-                            <FormBtn style={{ margin: '0', marginLeft: '10px' }}>파일저장</FormBtn>
-                        }
-                    /> */}
+          <FormBtn style={{ margin: '0', marginLeft: '10px' }} onClick={this.downloadExcel}>파일저장</FormBtn>
         </ViewForRelease>
 
         <TableWithScroll
