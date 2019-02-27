@@ -29,9 +29,7 @@ const OrderListTableList = ({ orderList, addReleaseList }) => (
         <div
           key={`${order._id}_${index}`}
           className="tbodyTr"
-          onClick={() => {
-            addReleaseList(order);
-          }}
+          onClick={addReleaseList && (() => addReleaseList(order))}
         >
           <div className={classNames('tbodyTd')}>{order.itemName}</div>
           <div className={classNames('tbodyTd', 'text-center')}>{order.itemCount}</div>
@@ -43,4 +41,4 @@ const OrderListTableList = ({ orderList, addReleaseList }) => (
   </TableList>
 );
 
-export default React.memo(OrderListTableList);
+export default OrderListTableList;

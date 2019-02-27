@@ -189,4 +189,4 @@ const Buttons = ({ buttonList, clickComplete }) => (
   </div>
 );
 
-export default React.memo(OrderListTable);
+export default OrderListTable;
