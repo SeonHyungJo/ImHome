@@ -108,7 +108,7 @@ class AdminReleaseList extends Component {
   };
 
   getTotalCost = (list) => {
-    if (!list.length) {
+    if (!list || !list.length || !list[0].items) {
       return 0;
     }
 
@@ -243,7 +243,7 @@ class AdminReleaseList extends Component {
 
         <TableWithScroll
           headerData={this.state.headerData}
-          data={list}
+          contentsList={list}
           gridTitle="조회내용"
           clickRow={this.getRowData}
           id={custNo}

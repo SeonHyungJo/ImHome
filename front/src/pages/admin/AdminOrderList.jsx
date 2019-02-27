@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -11,7 +11,7 @@ import { AlertPopup } from '../../component/common';
 import * as OrderListActions from '../../redux/modules/orderList';
 import * as CommonUtil from '../../util/commonUtil';
 
-class AdminOrderList extends Component {
+class AdminOrderList extends PureComponent {
   constructor() {
     super();
 
@@ -30,6 +30,7 @@ class AdminOrderList extends Component {
       specificationBtns,
       deliveryAlert: false,
       cancelAlert: false,
+      specificationItems: [],
     };
   }
 
@@ -47,8 +48,8 @@ class AdminOrderList extends Component {
       const { OrderListActions, currentId } = this.props;
       const setId = changeId || currentId;
 
-      OrderListActions.updateCurrentId(setId);
-      OrderListActions.getOrderData(setId);
+      await OrderListActions.updateCurrentId(setId);
+      await OrderListActions.getOrderData(setId);
     } catch (e) {
       console.log(e);
     }
@@ -59,20 +60,28 @@ class AdminOrderList extends Component {
     try {
       const { OrderListActions, currentOrder } = this.props;
 
-      console.log(eventName);
-      debugger;
       // 배송처리 && 주문서 취소
       eventName === 'DELIVER_OK'
-        ? OrderListActions.updateComplete(currentOrder.branchCode).then((result) => {
-          if (result.data.success === '0000') {
-            this.setStoreList();
-            this.setPopup('deliveryAlert', true);
-          }
-        })
+        ? this.state.specificationItems.length > 0
+          && OrderListActions.updateComplete(
+            currentOrder.branchCode,
+            this.state.specificationItems,
+          ).then((result) => {
+            if (result.data.success === '0000') {
+              this.setStoreList();
+              this.setPopup('deliveryAlert', true);
+              this.setState(prevState => ({
+                specificationItems: [],
+              }));
+            }
+          })
         : OrderListActions.deleteOrderData(currentOrder._id).then((result) => {
           if (result.data.success === '0000') {
             this.setStoreList();
             this.setPopup('cancelAlert', true);
+            this.setState(prevState => ({
+              specificationItems: [],
+            }));
           }
         });
     } catch (e) {
@@ -81,7 +90,7 @@ class AdminOrderList extends Component {
   };
 
   // 브랜치 리스트 & 세부항목 초기화
-  setStoreList = () => {
+  setStoreList = async () => {
     const { OrderListActions } = this.props;
 
     OrderListActions.getStoreList().then(
@@ -97,16 +106,19 @@ class AdminOrderList extends Component {
   addReleaseList = (payload) => {
     const { OrderListActions, currentOrder } = this.props;
     const newItems = currentOrder.items;
-    const currentId = newItems.map((item, index) => {
-      if (item._id === payload._id) {
-        return index;
+    let currentId = -1;
+
+    for (let i = 0; i < newItems.length; i++) {
+      const element = newItems[i];
+      if (newItems[i]._id === payload._id) {
+        currentId = i;
       }
-    });
+    }
 
-    newItems.splice(currentId, 1) && OrderListActions.removeItemList(newItems);
+    currentId !== -1 && newItems.splice(currentId, 1) && OrderListActions.removeItemList(newItems);
 
-    this.setState(state => ({
-      specificationItems: [...state.specificationItems, payload],
+    this.setState(prevState => ({
+      specificationItems: [...prevState.specificationItems, payload],
     }));
   };
 
@@ -120,8 +132,11 @@ class AdminOrderList extends Component {
       specificationBtns,
       specificationItems,
     } = this.state;
+
     const updateAt = currentOrder.updatedAt || new Date();
     const role = 'admin';
+
+    console.log(currentOrder.items);
 
     return (
       <>
@@ -138,10 +153,7 @@ class AdminOrderList extends Component {
           clickEvent={() => this.setPopup('cancelAlert', false)}
         />
         <PageTemplate role={role} navData={store} id={currentId} clickNav={this.getNavData}>
-          <header>
-            {'주문일자 :'}
-            {CommonUtil.setHangleDateTime(updateAt)}
-          </header>
+          <header>{`주문일자 :${CommonUtil.setHangleDateTime(updateAt)}`}</header>
           <OrderListTable
             headerName={currentOrder.branchName}
             orderList={currentOrder.items}

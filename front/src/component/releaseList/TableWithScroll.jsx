@@ -84,16 +84,17 @@ const TableMain = ({
 
 const TableFooter = ({ footer }) => (
   <tr>
-    {footer.map((context, index) => (
-      <th
-        key={index}
-        style={
-          footer.length === index + 1 ? { border: '0px', textAlign: 'right' } : { border: '0px' }
-        }
-      >
-        {CommonUtil.setCostFormat(context)}
-      </th>
-    ))}
+    {footer
+      && footer.map((context, index) => (
+        <th
+          key={index}
+          style={
+            footer.length === index + 1 ? { border: '0px', textAlign: 'right' } : { border: '0px' }
+          }
+        >
+          {typeof context === 'string' ? context : CommonUtil.setCostFormat(context)}
+        </th>
+      ))}
   </tr>
 );
 
