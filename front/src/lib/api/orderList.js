@@ -35,9 +35,10 @@ export const getOrderData = branchCode => ApiService.get(`/api/order/${branchCod
 /**
  * @summary 출고 완료 처리하기
  * @param branchCode : 출고처리할 지점 코드
+ * @param completeList : 출고처리할 배송리스트
  * @returns returnCode
  */
-export const updateComplete = branchCode => ApiService.put(`/api/order/complete/${branchCode || ''}`);
+export const updateComplete = (branchCode, completeList) => ApiService.post(`/api/order/complete/${branchCode || ''}`, completeList);
 
 /**
  * @summary 주문 취소하기

@@ -286,6 +286,7 @@ class AdminReleaseList extends Component {
           footer={['Total', '', '', '총 발행건수', this.getTotalCost(list)]}
           ref={this.componentRef}
         />
+
         <PopOrderList
           displayPop={this.state.displayPop}
           headerName={this.state.currentBranchName}
@@ -301,7 +302,6 @@ class AdminReleaseList extends Component {
 
 export default connect(
   state => ({
-    form: state.releaseList.getIn(['releaseList', 'form']),
     list: state.releaseList.getIn(['releaseList', 'list']),
     store: state.releaseList.getIn(['releaseList', 'store']),
     startDate: state.releaseList.getIn(['releaseList', 'startDate']),
@@ -309,7 +309,6 @@ export default connect(
     currentId: state.releaseList.getIn(['releaseList', 'currentId']),
     custNo: state.releaseList.getIn(['releaseList', 'custNo']),
     error: state.releaseList.getIn(['releaseList', 'error']),
-    result: state.releaseList.get('result'),
   }),
   dispatch => ({
     ReleaseActions: bindActionCreators(ReleaseActions, dispatch),

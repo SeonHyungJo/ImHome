@@ -21,7 +21,7 @@ export function setHangleDate(str) {
 }
 
 export function setCostFormat(num) {
-  const cost = num;
+  const cost = Number(num);
   return cost.toLocaleString();
 }
 
@@ -34,8 +34,11 @@ export function getEndOfDay(year, month) {
 }
 
 export function getTotalCost(items) {
-  return items.reduce(
-    (total, order) => parseInt(order.itemCount, 10) * parseInt(order.itemCost, 10) + total,
-    0,
+  return (
+    items
+    && items.reduce(
+      (total, order) => parseInt(order.itemCount, 10) * parseInt(order.itemCost, 10) + total,
+      0,
+    )
   );
 }

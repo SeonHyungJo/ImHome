@@ -41,7 +41,9 @@ exports.getAllOrderList = (req, res) => {
   today.setDate(today.getDate() - 30);
   const startDate = req.query.startDate ? req.query.startDate : today;
   const endDate = req.query.endDate ? req.query.endDate : new Date();
-  const branchCode = req.decoded.admin ? req.params.branchCode : req.decoded.branchCode;
+  const branchCode = req.decoded.admin
+    ? req.params.branchCode
+    : req.decoded.branchCode;
 
   Orders.findOrderList(branchCode, startDate, endDate)
     .then(orderList => {
@@ -115,7 +117,9 @@ exports.getCompleteBranchList = (req, res) => {
  * @returns «Query»
  */
 exports.getOrderList = (req, res) => {
-  const branchCode = req.decoded.admin ? req.params.branchCode : req.decoded.branchCode;
+  const branchCode = req.decoded.admin
+    ? req.params.branchCode
+    : req.decoded.branchCode;
 
   Stores.find({ branchCode })
     .then(store => {
@@ -148,7 +152,9 @@ exports.getOrderList = (req, res) => {
  * @returns «Query»
  */
 exports.updateOrderList = (req, res) => {
-  const branchCode = req.decoded.admin ? req.params.branchCode : req.decoded.branchCode;
+  const branchCode = req.decoded.admin
+    ? req.params.branchCode
+    : req.decoded.branchCode;
 
   Stores.findStoreByBranchcode(branchCode)
     .then(store => {
@@ -194,7 +200,7 @@ exports.updateOrderList = (req, res) => {
 };
 
 /**
- * PUT /api/order/complete/:branchCode
+ * POST /api/order/complete/:branchCode
  *
  * @author seonhyungjo
  * @summary 지점별 출고완료 처리하기
@@ -205,13 +211,56 @@ exports.updateOrderList = (req, res) => {
  * @returns «Query»
  */
 exports.setComplete = (req, res) => {
-  Orders.findInCompleteOrderByBranchcode(req.params.branchCode)
-    .then(order => {
-      if (order.length == 0) {
-        console.log('Dont exit');
-        reponseError(res, 'DONT_EXIT');
-      }
-      return Orders.changeCompleteTrue(req.params.branchCode);
+  const reqBranchCode = req.params.branchCode;
+  const completeList = req.body;
+
+  Stores.find({ branchCode: reqBranchCode })
+    .then(storeInfo => {
+      const completeOrder = {
+        branchCode: reqBranchCode,
+        branchName: storeInfo[0].branchName,
+        items: completeList,
+        complete: true
+      };
+
+      return completeOrder;
+    })
+    .then(completeOrder => {
+      // 배송처리내역을 완전히 새로 만든다.
+      // create
+      return Orders.create(completeOrder).then(result => {
+        console.log(result);
+      });
+    })
+    .then(() => {
+      // 기존의 내역을 가져와서 배송처리된 내용은 빼고 다시 저장한다.
+      // findOneAndUpdateNew
+      return Orders.findInCompleteOrderByBranchcode(reqBranchCode).then(
+        result => {
+          const prevItems = result[0].items;
+          const compIds = completeList.map(compItem => compItem._id);
+          const newItems = prevItems.filter(
+            item => !compIds.includes(item._id.toString())
+          );
+
+          return newItems.map(newItem => {
+            return {
+              itemName: newItem.itemName,
+              itemCount: newItem.itemCount,
+              itemCost: newItem.itemCost,
+              itemVolume: newItem.itemVolume,
+              itemDepth: newItem.itemDepth
+            };
+          });
+        }
+      );
+    })
+    .then(newItems => {
+      // update orderlist
+      const items = { items: newItems };
+      return newItems.length > 0
+        ? Orders.findOneAndUpdateNew(reqBranchCode, items)
+        : Orders.changeCompleteTrue(reqBranchCode);
     })
     .then(() => {
       res.status(200).send({ success: '0000' });
@@ -220,6 +269,22 @@ exports.setComplete = (req, res) => {
       console.log(err);
       reponseError(res, 'AREADY_COMPLETE');
     });
+
+  // Orders.findInCompleteOrderByBranchcode(req.params.branchCode)
+  //   .then(order => {
+  //     if (order.length == 0) {
+  //       console.log('Dont exit');
+  //       reponseError(res, 'DONT_EXIT');
+  //     }
+  //     return Orders.changeCompleteTrue(req.params.branchCode);
+  //   })
+  //   .then(() => {
+  //     res.status(200).send({ success: '0000' });
+  //   })
+  //   .catch(err => {
+  //     console.log(err);
+  //     reponseError(res, 'AREADY_COMPLETE');
+  //   });
 };
 
 /**

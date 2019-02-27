@@ -1,4 +1,5 @@
 import React from 'react';
+
 import * as CommonUtil from '../../util/commonUtil';
 
 const OrderListTableTotal = ({ totalCost }) => (
@@ -12,4 +13,4 @@ const OrderListTableTotal = ({ totalCost }) => (
   </div>
 );
 
-export default OrderListTableTotal;
+export default React.memo(OrderListTableTotal);
