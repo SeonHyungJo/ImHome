@@ -17,6 +17,7 @@ const Table = styled.table`
   table-layout: fixed;
   border-spacing: 0;
   width: 100%;
+
   th {
     text-align: center;
     border-right: 1px solid #e0e0e0;
@@ -32,6 +33,7 @@ const Table = styled.table`
     -moz-box-sizing: border-box;
     box-sizing: border-box;
   }
+
   td {
     border-right: 1px solid #e0e0e0;
     border-bottom: 1px solid #e0e0e0;
@@ -45,6 +47,7 @@ const Table = styled.table`
     letter-spacing: -0.04em;
     cursor: pointer;
   }
+
   .on {
     background-color: #fe4c8d;
     td {

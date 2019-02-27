@@ -22,6 +22,7 @@ const TableWithScroll = ({
       {contentsList.length > 0 ? (
         contentsList.map((content, index) => (
           <TableMain
+            key={index}
             content={content}
             headerData={headerData}
             index={index}
