@@ -6,9 +6,9 @@ import * as productList from '../../lib/api/productList';
 const CHANGE_INPUT = 'productList/CHANGE_INPUT'; // input 값 변경
 const INITIALIZE_FORM = 'productList/INITIALIZE_FORM'; // form 초기화
 const GET_COMPANY_LIST = 'productList/GET_COMPANY_LIST'; // 회사 목록 가져오기 => deprecated
-const CHANGE_CATE = 'productList/CHANGE_CATE'; // 카테고리 변경
+const CHANGE_CATE = 'productList/CHANGE_CATE'; // 카테고리 변경 (관리자)
+const CHANGE_CATEGORIES = 'productList/CHANGE_CATEGORIES'; // 카테고리 변경 (사용자)
 const SET_MESSAGE = 'user/SET_MESSAGE';
-const CHANGE_ORDER = 'productList/CHANGE_ORDER'; // [사용자] 주문
 
 const GET_PRODUCTS = 'productList/GET_PRODUCTS'; // 품목 가져오기
 const GET_PRODUCT_DATA = 'productList/GET_PRODUCT_DATA'; // 품목의 상세 정보 가져오기
@@ -19,10 +19,10 @@ const UPDATE_ITEM = 'productList/UPDATE_ITEM'; // 아이템 삭제
 
 export const changeInput = createAction(CHANGE_INPUT); // {form, name, value}
 export const initializeForm = createAction(INITIALIZE_FORM); // form
-export const changeCate = createAction(CHANGE_CATE);
+export const changeCate = createAction(CHANGE_CATE); // 관리자용
+export const changeCategories = createAction(CHANGE_CATEGORIES);  // 사용자용
 export const getCompanyList = createAction(GET_COMPANY_LIST, productList.getCompanyList);
 export const setMessage = createAction(SET_MESSAGE); // { form, message }
-export const changeOrder = createAction(CHANGE_ORDER); // { branchCode, branchName, items: [] }
 
 export const getProducts = createAction(GET_PRODUCTS, productList.getProducts);
 export const getProductData = createAction(GET_PRODUCT_DATA, productList.getProductData);
@@ -86,17 +86,9 @@ const initialState = Map({
     message: null,
     error: null,
     lists: [],
+    clickedCategories: List(),
   }),
   result: Map({}),
-  productOrder: Map({
-    itemCount: {},
-    items: {},
-    form: {
-      complete: false,
-      branchCode: '',
-      items: {},
-    }
-  }),
 });
 
 export default handleActions(
@@ -115,14 +107,10 @@ export default handleActions(
       const { index, _id, itemName } = action.payload;
       return state.setIn(['productList', 'form', 'clickedCate'], { index, _id, itemName });
     },
+    [CHANGE_CATEGORIES]: (state, action) => state.setIn(['productList', 'clickedCategories'], List(action.payload)),
     [SET_MESSAGE]: (state, action) => {
       const { form, message } = action.payload;
       return state.setIn([form, 'message'], message);
-    },
-    [CHANGE_ORDER]: (state, action) => {
-      const productOrder = action.payload;
-      // console.log(action.payload)
-      return state.setIn(['productOrder'], Map(productOrder));
     },
     ...pender({
       type: GET_COMPANY_LIST,

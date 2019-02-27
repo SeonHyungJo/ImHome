@@ -63,11 +63,11 @@ const Category = ({ categories, clickedCate, _clickCategory }) => (
   <ProductComponent>
     {!!categories.length > 0 ? (
       categories.map((item, index) => (
-          clickedCate.index === index ? (
+          clickedCate.includes(item._id) ? (
             <div key={index}>
               <div
                 className={classNames('category', 'clicked')}
-                onClick={() => _clickCategory(index, item._id, item.itemName)}
+                onClick={() => _clickCategory(item._id)}
               >
                 <div className="categoryMain">
                   <div className="name">{item.itemName}</div>
@@ -79,13 +79,13 @@ const Category = ({ categories, clickedCate, _clickCategory }) => (
                   </span>
                 </div>
               </div>
-              <ProductTable />
+              <ProductTable categoryId={item._id} />
             </div>
           ) : (
             <div
               className={classNames('category')}
               key={index}
-              onClick={() => _clickCategory(index, item._id, item.itemName)}
+              onClick={() => _clickCategory(item._id)}
             >
               <div className="categoryMain">
                 <div className="name">{item.itemName}</div>

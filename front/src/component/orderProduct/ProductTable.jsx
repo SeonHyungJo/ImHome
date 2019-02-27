@@ -133,11 +133,14 @@ class ProductTable extends Component {
   };
 
   render() {
-    const { form } = this.props;
-    const { clickedCate, items, companyCode } = form.toJS();
+    const { form, categoryId } = this.props;
+    const { items, companyCode } = form.toJS();
     const itemCount = this.props.itemCount.toJS();
     const tempOrderKeys = Object.keys(itemCount);
-    const detailItem = companyCode === '001' ? items.filter(item => item.parentId === clickedCate._id) : items;
+
+    const detailItem = companyCode === '001' && categoryId !== ''
+      ? items.filter(item => categoryId == item.parentId)
+      : items;
     return (
       <Table>
         <tbody>

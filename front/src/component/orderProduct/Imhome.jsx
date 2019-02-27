@@ -61,13 +61,14 @@ class Imhome extends Component {
     return false;
   };
 
-  _clickCategory = (index, _id, itemName) => {
+  _clickCategory = (_id) => {
     const { ProductListActions } = this.props;
-    ProductListActions.changeCate({
-      index,
-      _id,
-      itemName,
-    });
+    let categories = this.props.clickedCategories.toJS();
+    const modifiedCate = !categories.includes(_id)
+      ? categories.concat(_id)
+      : categories.filter(val => val !== _id);
+
+    ProductListActions.changeCategories(modifiedCate);
   };
 
   _orderFunc = (eventName) => {
@@ -121,17 +122,17 @@ class Imhome extends Component {
   };
 
   render() {
-    const { form, message, tempOrder } = this.props;
-    const { categories, clickedCate, companyCode } = form.toJS();
+    const { form, message, tempOrder, clickedCategories} = this.props;
+    const { categories, companyCode } = form.toJS();
     const items = tempOrder.toJS().items;
-
+    
     return (
       <ContentWrapper>
         <MainContainer>
           {companyCode === '001' ? (
             <Category
               categories={categories}
-              clickedCate={clickedCate}
+              clickedCate={clickedCategories}
               _clickCategory={this._clickCategory}
             />
           ) : (
@@ -168,7 +169,7 @@ export default connect(
     orderResult: state.orderList.get('result'),
     orderForm: state.productList.getIn(['productOrder', 'form']),
     tempOrder: state.tempOrder.getIn(['tempOrder', 'currentOrder']),
-    auth: state.auth.get('result'),
+    clickedCategories: state.productList.getIn(['productList', 'clickedCategories']),
   }),
   dispatch => ({
     ProductListActions: bindActionCreators(ProductListActions, dispatch),
