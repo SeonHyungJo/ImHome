@@ -59,32 +59,22 @@ const ProductComponent = styled.div`
   }
 `;
 
-const Category = ({ categories, clickedCate, _clickCategory }) => (
+const Category = ({
+  categories,
+  clickedCate,
+  _clickCategory,
+  itemCount,
+  tempOrderKeys,
+  items,
+  _changeCount,
+}) => (
   <ProductComponent>
     {!!categories.length > 0 ? (
-      categories.map((item, index) => (
-          clickedCate.includes(item._id) ? (
-            <div key={index}>
-              <div
-                className={classNames('category', 'clicked')}
-                onClick={() => _clickCategory(item._id)}
-              >
-                <div className="categoryMain">
-                  <div className="name">{item.itemName}</div>
-                  <div className="desc">{item.itemDesc}</div>
-                </div>
-                <div className="categorySub">
-                  <span>
-                    <IosArrowDown fontSize="2.5rem" color="#ffffff" />
-                  </span>
-                </div>
-              </div>
-              <ProductTable categoryId={item._id} />
-            </div>
-          ) : (
+      categories.map(
+        (item, index) => (clickedCate.includes(item._id) ? (
+          <div key={index}>
             <div
-              className={classNames('category')}
-              key={index}
+              className={classNames('category', 'clicked')}
               onClick={() => _clickCategory(item._id)}
             >
               <div className="categoryMain">
@@ -93,12 +83,35 @@ const Category = ({ categories, clickedCate, _clickCategory }) => (
               </div>
               <div className="categorySub">
                 <span>
-                  <IosArrowUp fontSize="2.5rem" />
+                  <IosArrowDown fontSize="2.5rem" color="#ffffff" />
                 </span>
               </div>
             </div>
-          )
-      ))
+            <ProductTable
+              itemCount={itemCount}
+              tempOrderKeys={tempOrderKeys}
+              detailItem={items.filter(allItem => item._id === allItem.parentId)}
+              _changeCount={_changeCount}
+            />
+          </div>
+        ) : (
+          <div
+            className={classNames('category')}
+            key={index}
+            onClick={() => _clickCategory(item._id)}
+          >
+            <div className="categoryMain">
+              <div className="name">{item.itemName}</div>
+              <div className="desc">{item.itemDesc}</div>
+            </div>
+            <div className="categorySub">
+              <span>
+                <IosArrowUp fontSize="2.5rem" />
+              </span>
+            </div>
+          </div>
+        )),
+      )
     ) : (
       <div>로딩중입니다...</div>
     )}

@@ -1,1 +1,2 @@
-export { default as OrderProduct } from './OrderProduct';
+export { default as Category } from './Category';
+export { default as ProductTable } from './ProductTable';
