@@ -61,13 +61,15 @@ orderSchema.statics.findOrderList = function(branchCode, startDate, endDate) {
     branchCode,
     complete: true,
     updatedAt: { $gte: startDate, $lte: endDate }
-  }).select({
-    _id: 1,
-    branchCode: 1,
-    branchName: 1,
-    items: 1,
-    updatedAt: 1
-  });
+  })
+    .select({
+      _id: 1,
+      branchCode: 1,
+      branchName: 1,
+      items: 1,
+      updatedAt: 1
+    })
+    .sort({ updatedAt: -1 });
 };
 
 /**
@@ -156,7 +158,10 @@ orderSchema.statics.findOneAndUpdateNew = function(branchCode, productInfo) {
  * @returns «Query»
  */
 orderSchema.statics.changeCompleteTrue = function(branchCode) {
-  return this.findOneAndUpdate({ branchCode, complete: false }, { complete: true });
+  return this.findOneAndUpdate(
+    { branchCode, complete: false },
+    { complete: true }
+  );
 };
 
 /**

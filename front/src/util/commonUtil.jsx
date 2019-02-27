@@ -32,3 +32,10 @@ export function getEndOfDay(year, month) {
     .endOf('month')
     .toDate();
 }
+
+export function getTotalCost(items) {
+  return items.reduce(
+    (total, order) => parseInt(order.itemCount, 10) * parseInt(order.itemCost, 10) + total,
+    0,
+  );
+}
