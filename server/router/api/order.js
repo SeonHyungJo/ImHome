@@ -1,6 +1,7 @@
 const Orders = require('../../models/orders');
 const Stores = require('../../models/stores');
 const reponseError = require('../common/responseError');
+const orderExcel = require('../external/orderExcel');
 
 /**
  * @author seonhyungjo
@@ -240,5 +241,32 @@ exports.deleteOrderList = (req, res) => {
     .catch(err => {
       console.log(err);
       reponseError(res, 'DELETE_ODER_ERROR');
+    });
+};
+
+/**
+ * POST /api/order/excel
+ *
+ * @author BKJang
+ * @summary 거래내역 엑셀 저장
+ * @private
+ * @memberof Admin
+ * @param
+ * @see None
+ * @returns «Query»
+ */
+exports.downloadExcel = (req, res) => {
+  const body = req.body;
+  const startDate = body.startDate ? body.startDate : new Date().setDate(new Date().getDate() - 7);
+  const endDate = body.endDate ? body.endDate : new Date();
+  const branchCode = body.storeId;
+
+  Orders.findOrderList(branchCode, startDate, endDate)
+    .then(orderList => {
+      orderExcel.getOrderExcel(orderList, res);
+    })
+    .catch(err => {
+      console.log(err);
+      reponseError(res, 'NOT_FIND_ODER');
     });
 };

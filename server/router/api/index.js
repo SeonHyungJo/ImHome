@@ -48,6 +48,7 @@ router.get('/order/:branchCode?', Order.getOrderList);
 router.post('/order', Order.updateOrderList);
 router.put('/order/complete/:branchCode', Order.setComplete);
 router.delete('/order/:_id', Order.deleteOrderList);
+router.post('/order/excel', Order.downloadExcel);
 
 // Product & Item API
 router.get('/products', Product.getAllProducts);
