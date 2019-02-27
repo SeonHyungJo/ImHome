@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import classNames from 'classnames';
+
 import * as CommonUtil from '../../util/commonUtil';
-import { OrderListTableList, OrderListTableTotal } from '.';
+import { OrderListTable } from '.';
 
 const MaskingWrapper = styled.div`
   top: 0;
@@ -152,66 +153,56 @@ const Button = styled.button`
 `;
 
 const RightSpan = styled.span`
-  float : right;
-  text-align : right;
-`
+  float: right;
+  text-align: right;
+`;
 
-const OrderListTable = ({
-    headerName,
-    displayPop,
-    buttonList = [],
-    clickComplete,
-    style = {},
-    orderList,
-    orderDate
+const OrderListTablePopup = ({
+  headerName,
+  displayPop,
+  buttonList = [],
+  clickComplete,
+  orderList,
+  orderDate,
 }) => (
-        <MaskingWrapper style={{ display: !displayPop ? 'none' : '' }}>
-            <ContentWrapper style={style}>
-                <div className="dashedContainer">
-                    <div className="mainContainer">
-                        <Header>
-                            {headerName}
-                            <RightSpan>{CommonUtil.setDate(orderDate)}</RightSpan>
-                        </Header>
-                        <OrderTable>
-                            <Thead />
-                            <OrderListTableList orderList={orderList} />
-                            <OrderListTableTotal totalCost={calTotalCost(orderList)} />
-                        </OrderTable>
-                    </div>
-                    <Buttons buttonList={buttonList} clickComplete={clickComplete} />
-                </div>
-            </ContentWrapper>
-        </MaskingWrapper>
-    );
+  <MaskingWrapper style={{ display: !displayPop ? 'none' : '' }}>
+    <OrderListTable
+      headerName={headerName}
+      orderList={orderList}
+      buttonList={buttonList}
+      clickComplete={clickComplete}
+      releaseDate={CommonUtil.setDate(orderDate)}
+    />
+  </MaskingWrapper>
+);
 
 /**
  * @summary 주문내역 총 가격 계산
  * @param orderList
  */
 const calTotalCost = orderList => (orderList instanceof Array
-    ? orderList.reduce(
-        (total, order) => parseInt(order.itemCount, 10) * parseInt(order.itemCost, 10) + total,
-        0,
-    )
-    : 0);
+  ? orderList.reduce(
+    (total, order) => parseInt(order.itemCount, 10) * parseInt(order.itemCost, 10) + total,
+    0,
+  )
+  : 0);
 
 const Thead = () => (
-    <div className={classNames('thead', 'underLineDash')}>
-        <div className={classNames('theadTh')}>PRODUCT</div>
-        <div className={classNames('theadTh', 'text-center')}>수량</div>
-        <div className={classNames('theadTh')}>단가</div>
-    </div>
+  <div className={classNames('thead', 'underLineDash')}>
+    <div className={classNames('theadTh')}>PRODUCT</div>
+    <div className={classNames('theadTh', 'text-center')}>수량</div>
+    <div className={classNames('theadTh')}>단가</div>
+  </div>
 );
 
 const Buttons = ({ buttonList, clickComplete }) => (
-    <div className="buttonContainer">
-        {buttonList.map((button, index) => (
-            <Button key={`${button.name}_${index}`} onClick={() => clickComplete(button.event)}>
-                {`${button.name}`}
-            </Button>
-        ))}
-    </div>
+  <div className="buttonContainer">
+    {buttonList.map((button, index) => (
+      <Button key={`${button.name}_${index}`} onClick={() => clickComplete(button.event)}>
+        {`${button.name}`}
+      </Button>
+    ))}
+  </div>
 );
 
-export default OrderListTable;
+export default React.memo(OrderListTablePopup);

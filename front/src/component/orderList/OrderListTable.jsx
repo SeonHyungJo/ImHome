@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import classNames from 'classnames';
+
 import { OrderListTableList, OrderListTableTotal } from '.';
+import * as CommonUtil from '../../util/commonUtil';
 
 const ContentWrapper = styled.div`
   width: 35vw;
@@ -137,39 +139,37 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const RightSpan = styled.span`
+  float: right;
+  text-align: right;
+`;
+
 const OrderListTable = ({
   headerName,
-  orderList,
+  orderList = [],
   buttonList = [],
   clickComplete,
   style = {},
   addReleaseList,
+  releaseDate = '',
 }) => (
   <ContentWrapper style={style}>
     <div className="dashedContainer">
       <div className="mainContainer">
-        <Header>{headerName}</Header>
+        <Header>
+          {headerName}
+          <RightSpan>{releaseDate}</RightSpan>
+        </Header>
         <OrderTable>
           <Thead />
           <OrderListTableList orderList={orderList} addReleaseList={addReleaseList} />
-          <OrderListTableTotal totalCost={calTotalCost(orderList)} />
+          <OrderListTableTotal totalCost={CommonUtil.getTotalCost(orderList)} />
         </OrderTable>
       </div>
       <Buttons buttonList={buttonList} clickComplete={clickComplete} />
     </div>
   </ContentWrapper>
 );
-
-/**
- * @summary 주문내역 총 가격 계산
- * @param orderList
- */
-const calTotalCost = orderList => (orderList instanceof Array
-  ? orderList.reduce(
-    (total, order) => parseInt(order.itemCount, 10) * parseInt(order.itemCost, 10) + total,
-    0,
-  )
-  : 0);
 
 const Thead = () => (
   <div className={classNames('thead', 'underLineDash')}>
@@ -189,4 +189,4 @@ const Buttons = ({ buttonList, clickComplete }) => (
   </div>
 );
 
-export default OrderListTable;
+export default React.memo(OrderListTable);
