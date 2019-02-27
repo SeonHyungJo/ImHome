@@ -1,161 +1,100 @@
 import React from 'react';
+
 import { TableWrapper, TableWithTitle } from '../table';
-import { TableWithContent } from './';
+import { TableWithContent } from '.';
 import * as CommonUtil from '../../util/commonUtil';
 
-class TableWithScroll extends React.Component {
-    render() {
-        return (
-            <TableWrapper title={this.props.gridTitle}>
-                <TableWithTitle>
-                    <tr>
-                        {this.props.headerData &&
-                            this.props.headerData.map((column, index) => {
-                                return <th key={index}>{column.label}</th>;
-                            }, this)}
-                    </tr>
-                </TableWithTitle>
-                <TableWithContent>
-                    {this.props.data != null && this.props.data.length > 0 ? (
-                        this.props.data.map((n, index) => {
-                            /* 선택된 항목 일경우 처리 */
-                            return this.props.id && n._id === this.props.id ? (
-                                <tr
-                                    className="on"
-                                    key={index}
-                                    onClick={() => this.props.clickRow(n._id)}
-                                >
-                                    {this.props.headerData &&
-                                        this.props.headerData.map((data, index) => {
-                                            let textAlign = data.numeric ? 'right' : 'center';
-                                            if (
-                                                typeof data.formatter === 'function' &&
-                                                data.formatter
-                                            ) {
-                                                return (
-                                                    <td
-                                                        key={index}
-                                                        style={{ textAlign: textAlign }}
-                                                    >
-                                                        {data.formatter(n[data.id])}
-                                                    </td>
-                                                );
-                                            } else {
-                                                return (
-                                                    <td
-                                                        key={index}
-                                                        style={{ textAlign: textAlign }}
-                                                    >
-                                                        {data.id === 'totalDealCost'
-                                                            ? CommonUtil.setCostFormat(
-                                                                  n['items'].reduce(
-                                                                      (total, order) => {
-                                                                          return (
-                                                                              parseInt(
-                                                                                  order.itemCount,
-                                                                                  10
-                                                                              ) *
-                                                                                  parseInt(
-                                                                                      order.itemCost,
-                                                                                      10
-                                                                                  ) +
-                                                                              total
-                                                                          );
-                                                                      },
-                                                                      0
-                                                                  )
-                                                              )
-                                                            : n[data.id] == null
-                                                            ? '-'
-                                                            : n[data.id]}
-                                                    </td>
-                                                );
-                                            }
-                                        })}
-                                </tr>
-                            ) : (
-                                /* 선택되지 않은 항목 일경우 처리 */
-                                <tr key={index} onClick={() => this.props.clickRow(n._id)}>
-                                    {this.props.headerData &&
-                                        this.props.headerData.map((data, index) => {
-                                            let textAlign = data.numeric ? 'right' : 'center';
-                                            if (
-                                                typeof data.formatter === 'function' &&
-                                                data.formatter
-                                            ) {
-                                                return (
-                                                    <td
-                                                        key={index}
-                                                        style={{ textAlign: textAlign }}
-                                                    >
-                                                        {' '}
-                                                        {data.formatter(n[data.id])}
-                                                    </td>
-                                                );
-                                            } else {
-                                                return (
-                                                    <td
-                                                        key={index}
-                                                        style={{ textAlign: textAlign }}
-                                                    >
-                                                        {data.id === 'totalDealCost'
-                                                            ? CommonUtil.setCostFormat(
-                                                                  n['items'].reduce(
-                                                                      (total, order) => {
-                                                                          return (
-                                                                              parseInt(
-                                                                                  order.itemCount,
-                                                                                  10
-                                                                              ) *
-                                                                                  parseInt(
-                                                                                      order.itemCost,
-                                                                                      10
-                                                                                  ) +
-                                                                              total
-                                                                          );
-                                                                      },
-                                                                      0
-                                                                  )
-                                                              )
-                                                            : n[data.id] == null
-                                                            ? '-'
-                                                            : n[data.id]}
-                                                    </td>
-                                                );
-                                            }
-                                        })}
-                                </tr>
-                            );
-                        })
-                    ) : (
-                        <tr>
-                            <td
-                                style={{ textAlign: 'center' }}
-                                colSpan={Object.keys(this.props.headerData).length}
-                            >
-                                데이터가 없습니다.
-                            </td>
-                        </tr>
-                    )}
-                </TableWithContent>
-                <TableWithContent>
-                    <tr>
-                        {this.props.bottom.map((context, index) => {
-                            return this.props.bottom.length === index + 1 ? (
-                                <th key={index} style={{ border: '0px', textAlign: 'right' }}>
-                                    {CommonUtil.setCostFormat(context)}
-                                </th>
-                            ) : (
-                                <th key={index} style={{ border: '0px' }}>
-                                    {context}
-                                </th>
-                            );
-                        })}
-                    </tr>
-                </TableWithContent>
-            </TableWrapper>
-        );
-    }
-}
+/* Updated 2019-02-27 */
+/* 컴포넌트 정리진행 */
+const TableWithScroll = ({
+  gridTitle,
+  headerData = [],
+  contentsList = [],
+  id,
+  clickRow,
+  footer,
+}) => (
+  <TableWrapper title={gridTitle}>
+    <TableWithTitle>
+      <TableHeader headerData={headerData} />
+    </TableWithTitle>
+    <TableWithContent>
+      {contentsList.length > 0 ? (
+        contentsList.map((content, index) => (
+          <TableMain
+            content={content}
+            headerData={headerData}
+            index={index}
+            clickRow={clickRow}
+            standardId={id}
+          />
+        ))
+      ) : (
+        <TableDataZero headerData={headerData} />
+      )}
+    </TableWithContent>
+    <TableWithContent>
+      <TableFooter footer={footer} />
+    </TableWithContent>
+  </TableWrapper>
+);
 
-export default TableWithScroll;
+/**
+ * @description TableHeader
+ * @param {*} headerData
+ */
+const TableHeader = ({ headerData }) => (
+  <tr>{headerData && headerData.map((column, index) => <th key={index}>{column.label}</th>)}</tr>
+);
+
+const TableDataZero = ({ headerData }) => (
+  <tr>
+    <td style={{ textAlign: 'center' }} colSpan={Object.keys(headerData).length}>
+      {'데이터가 없습니다.'}
+    </td>
+  </tr>
+);
+
+const TableMain = ({
+  content, headerData, index, clickRow, standardId,
+}) => (
+  <tr
+    className={standardId && content._id === standardId ? 'on' : ''}
+    key={index}
+    onClick={() => clickRow(content._id)}
+  >
+    {headerData
+      && headerData.map((data, index) => {
+        const textAlign = data.numeric ? 'right' : 'center';
+
+        return data.formatter ? (
+          <td key={index} style={{ textAlign }}>
+            {data.formatter(content[data.id])}
+          </td>
+        ) : (
+          <td key={index} style={{ textAlign }}>
+            {data.id === 'totalDealCost'
+              ? CommonUtil.setCostFormat(CommonUtil.getTotalCost(content.items))
+              : content[data.id] || '-'}
+          </td>
+        );
+      })}
+  </tr>
+);
+
+const TableFooter = ({ footer }) => (
+  <tr>
+    {footer.map((context, index) => (
+      <th
+        key={index}
+        style={
+          footer.length === index + 1 ? { border: '0px', textAlign: 'right' } : { border: '0px' }
+        }
+      >
+        {CommonUtil.setCostFormat(context)}
+      </th>
+    ))}
+  </tr>
+);
+
+export default React.memo(TableWithScroll);

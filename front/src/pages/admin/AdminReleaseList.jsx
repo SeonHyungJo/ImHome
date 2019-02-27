@@ -185,8 +185,8 @@ class AdminReleaseList extends Component {
     const { ReleaseActions } = this.props;
     const { year, month } = this.state.selectMonthDate;
 
-    const newStartDate = new Date(year, month - 1, 1);
-    const newEndDate = CommonUtil.getEndOfDay(year, month - 1);
+    const newStartDate = new Date(year, month - 1, 1, 0, 0, 0, 0);
+    const newEndDate = new Date();
 
     // newStartDate.setDate(newStartDate.getDate() + changeNum);
     ReleaseActions.updateStartDate(newStartDate);
@@ -208,7 +208,10 @@ class AdminReleaseList extends Component {
   changeMode = () => {
     this.setState(prevState => ({
       ...prevState,
-      changeModeInfo: { ...prevState.changeModeInfo, buttonMode: !prevState.changeModeInfo.buttonMode },
+      changeModeInfo: {
+        ...prevState.changeModeInfo,
+        buttonMode: !prevState.changeModeInfo.buttonMode,
+      },
     }));
   };
 
@@ -273,11 +276,11 @@ class AdminReleaseList extends Component {
 
         <TableWithScroll
           headerData={this.state.headerData}
-          data={list}
+          contentsList={list}
           gridTitle="조회내용"
           clickRow={this.getRowData}
           id={custNo}
-          bottom={['Total', '', '', '총 발행건수', this.getTotalCost(list)]}
+          footer={['Total', '', '', '총 발행건수', this.getTotalCost(list)]}
           ref={this.componentRef}
         />
         <PopOrderList
