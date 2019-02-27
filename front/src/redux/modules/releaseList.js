@@ -59,7 +59,7 @@ const initialState = Map({
     store: [],
     currentId: '',
     custNo: '',
-    startDate: new Date(),
+    startDate: new Date().setDate(new Date().getDate() - 7),
     endDate: new Date(),
     list: List([
       Map({
