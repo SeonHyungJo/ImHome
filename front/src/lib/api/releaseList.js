@@ -9,6 +9,6 @@ export const deleteOrderData = custNo => ApiService.del('/api/order/', custNo);
 export const downloadExcel = (storeId, startDate, endDate) => (startDate && endDate
   ? ApiService.post(
     '/api/order/excel/',
-    { storeId, startDate, endDate },
+    { storeId, startDate, endDate }
   )
-  : ApiService.get('/api/order/excel/', storeId));
+  : ApiService.post('/api/order/excel/', { storeId }));
