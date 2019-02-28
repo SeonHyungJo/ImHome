@@ -12,7 +12,7 @@ import cors from 'cors';
 
 // api uri
 import apiRouter from './router/api';
-import { Excel } from './router/external';
+import { Excel, SpecifyExcel } from './router/external';
 
 // 서버 기동
 const app = express();
@@ -47,6 +47,7 @@ mongoose
   .catch(e => console.error(e));
 
 app.get('/excel', Excel);
+app.get('/specifyexcel', SpecifyExcel);
 
 // SETTING TO API
 app.use('/api', apiRouter);

@@ -270,7 +270,12 @@ class SpecificationTable extends React.Component {
           <div className="buttonContainer">
             {buttonList.map(
               (button, index) => (index === 0 ? (
-                <Buttons key={`${button.name}_${index}`} name={button.name} />
+                <Buttons
+                  key={`${button.name}_${index}`}
+                  name={button.name}
+                  clickComplete={() => (window.location.href = 'http://localhost:3100/specifyexcel')
+                    }
+                />
               ) : (
                 <ReactToPrint
                   key={`${button.name}_${index}_print`}
