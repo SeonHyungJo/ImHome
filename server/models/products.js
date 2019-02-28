@@ -72,13 +72,13 @@ productsSchema.statics.findOneAndUpdateItem = function(companyCode, itemInfo) {
 /**
  * @author jinseong
  * @summary item 삭제
- * @param companyCode: 부모 컴퍼니의 코드, iteminfo: 삭제 item id
+ * @param companyCode: 부모 컴퍼니의 코드, item id : 삭제할 itemId
  * @returns product
  */
-productsSchema.statics.findOneAndUpdateDelete = function(companyCode, itemInfo) {
-  return itemInfo.data === undefined
-    ? this.findOneAndUpdate({ companyCode }, { $pull: { items: itemInfo } }, { new: true })
-    : this.findOneAndUpdate({ companyCode }, { $pull: { items: itemInfo.data } }, { new: true });
+productsSchema.statics.findOneAndUpdateDelete = function(companyCode, itemId) {
+  return itemId !== undefined || itemId !== ''
+    ? this.findOneAndUpdate({ companyCode }, { $pull: { items: { _id: itemId } } }, { new: true })
+    : false;
 };
 
 /**

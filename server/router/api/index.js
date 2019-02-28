@@ -54,7 +54,7 @@ router.post('/order/excel', Order.downloadExcel);
 router.get('/products', Product.getAllProducts);
 router.get('/product/:companyCode', Product.getProduct);
 router.post('/product/:companyCode/item', Product.createItem);
-router.delete('/product/:companyCode/item', Product.deleteItem);
+router.delete('/product/:companyCode/item/:itemId', Product.deleteItem);
 router.put('/product/:companyCode/item', Product.updateItem);
 
 // Product API

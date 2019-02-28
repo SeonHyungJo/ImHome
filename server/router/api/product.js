@@ -101,9 +101,11 @@ exports.createItem = (req, res) => {
             }
  */
 exports.deleteItem = (req, res) => {
-  req.body._id === undefined && req.body._id === '' && req.params.companyCode === undefined
+  req.params.itemId === undefined &&
+  req.params.itemId === '' &&
+  req.params.companyCode === undefined
     ? reponseError(res, 'DELETE_ITEM_ERROR')
-    : Products.findOneAndUpdateDelete(req.params.companyCode, req.body)
+    : Products.findOneAndUpdateDelete(req.params.companyCode, req.params.itemId)
         .then(product => {
           if (!product) {
             reponseError(res, 'CANT_FIND_PRODUCT');
