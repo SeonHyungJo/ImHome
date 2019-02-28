@@ -1,50 +1,86 @@
-export function getOrderExcel(orderList, res) {
-    // Require library
-    var xl = require('excel4node');
-    var today = new Date();
-    var month = today.getMonth() + 1 < 10 ? `0${today.getMonth() + 1}` : today.getMonth();
-    var fileName = `거래내역_${today.getFullYear()}${month}${today.getDate()}.xlsx`;
+const commonUtil = require('./commonUtil');
 
-    // Create a new instance of a Workbook class
+export function getOrderExcel(orderList, startDate, endDate, res) {
+    var xl = require('excel4node');
+    var fileName = `${orderList[0]['branchName']} 거래내역_${commonUtil.setRawDate(startDate)}~${commonUtil.setRawDate(endDate)}.xlsx`;
+
     var wb = new xl.Workbook();
 
-    // Add Worksheets to the workbook
     var ws = wb.addWorksheet('Sheet 1');
 
-    // Create a reusable style
     var style = wb.createStyle({
         font: {
-            color: '#FF0800',
+            color: '#666666',
             size: 12,
         },
-        numberFormat: '$#,##0.00; ($#,##0.00); -',
+        alignment: {
+            horizontal: ['center'],
+            vertical: ['center']
+        },
+        numberFormat: '#,##0; (#,##0); -',
     });
 
-    // Set value of cell A1 to 100 as a number type styled with paramaters of style
+    //4번쨰, 5번째 셀 너비 지정
+    ws.column(4).setWidth(23);
+    ws.column(5).setWidth(13);
+    //Header 셀 지정
     ws.cell(1, 1)
-        .number(100)
+        .string("거래일자")
         .style(style);
 
-    // Set value of cell B1 to 200 as a number type styled with paramaters of style
     ws.cell(1, 2)
-        .number(200)
+        .string("거래시간")
         .style(style);
 
-    // Set value of cell C1 to a formula styled with paramaters of style
     ws.cell(1, 3)
-        .formula('A1 + B1')
+        .string("거래처")
         .style(style);
 
-    // Set value of cell A2 to 'string' styled with paramaters of style
-    ws.cell(2, 1)
-        .string('string')
+    ws.cell(1, 4)
+        .string("거래명세표 발행건수")
         .style(style);
 
-    // Set value of cell A3 to true as a boolean type styled with paramaters of style but with an adjustment to the font size.
-    ws.cell(3, 1)
-        .bool(true)
+    ws.cell(1, 5)
+        .string("거래금액(원)")
+        .style(style);
+
+    let total = 0;
+    const totlaRow = orderList.length + 2;
+
+    orderList.map((item, index) => {
+        ws.cell(index + 2, 1)
+            .string(commonUtil.setTotalDate(item.updatedAt))
+            .style(style);
+
+        ws.cell(index + 2, 2)
+            .string(commonUtil.setTotalTime(item.updatedAt))
+            .style(style);
+
+        ws.cell(index + 2, 3)
+            .string(item.branchName)
+            .style(style);
+
+        ws.cell(index + 2, 4)
+            .string(item.bNumber ? item.bNumber : '-')
+            .style(style);
+
+        ws.cell(index + 2, 5)
+            .number(commonUtil.getTotalCost(item.items))
+            .style(style);
+        total += commonUtil.getTotalCost(item.items);
+    })
+
+    ws.cell(totlaRow, 1, totlaRow, 3, true)
+        .string('Total')
         .style(style)
-        .style({ font: { size: 14 } });
+
+    ws.cell(totlaRow, 4)
+        .string('총 발행건수')
+        .style(style)
+
+    ws.cell(totlaRow, 5)
+        .number(total)
+        .style(style)
 
     wb.write(fileName);
 }
