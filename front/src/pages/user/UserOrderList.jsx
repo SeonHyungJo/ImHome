@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 
 import { PageTemplate } from '../../component/template';
 import { OrderListTable } from '../../component/orderList';
-import { FormBtn } from '../../component/common';
 import { AlertPopup } from '../../component/common';
 
 import * as OrderListActions from '../../redux/modules/orderList';
