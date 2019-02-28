@@ -328,7 +328,7 @@ exports.downloadExcel = (req, res) => {
 
   Orders.findOrderList(branchCode, startDate, endDate)
     .then(orderList => {
-      orderExcel.getOrderExcel(orderList, res);
+      orderExcel.getOrderExcel(orderList, startDate, endDate, res);
     })
     .catch(err => {
       console.log(err);
