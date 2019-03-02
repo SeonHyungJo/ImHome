@@ -77,4 +77,4 @@ export const createOrder = data => ApiService.post('/api/order', data);
  * @returns
  */
 
-export const saveSpecify = releaseList => ApiService.excelDownload('/specifyexcel', releaseList);
+export const saveSpecify = (releaseList, fileName) => ApiService.excelDownload('/specifyexcel', releaseList, fileName);

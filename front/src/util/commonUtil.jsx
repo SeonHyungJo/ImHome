@@ -43,12 +43,12 @@ export function getTotalCost(items) {
   );
 }
 
-export function downloadExcel(res) {
+export function downloadExcel(res, fileName) {
   const url = window.URL.createObjectURL(new Blob([res.data]));
   const link = document.createElement('a');
 
   link.href = url;
-  link.setAttribute('download', 'file.xlsx');
+  link.setAttribute('download', `${fileName}.xlsx`);
 
   document.body.appendChild(link);
 

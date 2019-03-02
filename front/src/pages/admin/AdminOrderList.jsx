@@ -92,9 +92,18 @@ class AdminOrderList extends PureComponent {
   // 명세표 저장
   saveSpecify = () => {
     try {
-      const { OrderListActions } = this.props;
+      const { OrderListActions, currentOrder } = this.props;
+      const now = new Date();
+      const requestData = {
+        date: CommonUtil.setHangleDate(now),
+        branchName: currentOrder.branchName,
+        specificationItems: this.state.specificationItems,
+      };
 
-      OrderListActions.saveSpecify(this.state.specificationItems);
+      OrderListActions.saveSpecify(
+        requestData,
+        `${currentOrder.branchName}_${now.getDate()}월_거래명세표`,
+      );
     } catch (e) {
       console.log(e);
     }

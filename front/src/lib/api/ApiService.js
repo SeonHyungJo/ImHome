@@ -36,7 +36,9 @@ export function del(path, id = '') {
 }
 
 // 2019. 3. 3 ExcelDown를 위한 추가 진행 - seonhyungjo
-export function excelDownload(path, data) {
+export function excelDownload(path, data, fileName) {
   const requestData = data || '';
-  return axios.post(path, requestData, axiosExcelConfig()).then(res => downloadExcel(res));
+  return axios
+    .post(path, requestData, axiosExcelConfig())
+    .then(res => downloadExcel(res, fileName));
 }
