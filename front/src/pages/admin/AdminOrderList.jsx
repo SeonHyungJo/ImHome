@@ -89,6 +89,17 @@ class AdminOrderList extends PureComponent {
     }
   };
 
+  // 명세표 저장
+  saveSpecify = () => {
+    try {
+      const { OrderListActions } = this.props;
+
+      OrderListActions.saveSpecify(this.state.specificationItems);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   // 브랜치 리스트 & 세부항목 초기화
   setStoreList = async () => {
     const { OrderListActions } = this.props;
@@ -167,6 +178,7 @@ class AdminOrderList extends PureComponent {
             branchName={`${storeId} 주문내역`}
             orderList={specificationItems}
             buttonList={specificationBtns}
+            saveSpecify={this.saveSpecify}
           />
         </PageTemplate>
       </>

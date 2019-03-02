@@ -238,6 +238,7 @@ class SpecificationTable extends React.Component {
       tradeDate = '2018년 05월 10일',
       orderList = [],
       buttonList = [],
+      saveSpecify,
     } = this.props;
 
     return (
@@ -273,8 +274,8 @@ class SpecificationTable extends React.Component {
                 <Buttons
                   key={`${button.name}_${index}`}
                   name={button.name}
-                  clickComplete={() => (window.location.href = 'http://localhost:3100/specifyexcel')
-                    }
+                  clickComplete={() => saveSpecify()}
+                  //(window.location.href = 'http://localhost:3100/specifyexcel'
                 />
               ) : (
                 <ReactToPrint
