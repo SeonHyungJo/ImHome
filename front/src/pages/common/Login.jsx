@@ -110,6 +110,7 @@ class Login extends Component {
       localStorage.setItem('accessToken', loggedInfo.imhomeToken);
       localStorage.setItem('checkAdmin', loggedInfo.checkAdmin);
       localStorage.setItem('branchName', loggedInfo.branchName);
+      localStorage.setItem('branchCode', loggedInfo.branchCode);
 
       this.setMessage('성공적으로 로그인 하였습니다.');
       this.setState({ displayAlertPop: true, resultCode: loggedInfo.success });

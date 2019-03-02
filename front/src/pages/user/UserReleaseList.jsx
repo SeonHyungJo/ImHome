@@ -78,8 +78,8 @@ class AdminReleaseList extends Component {
     };
   }
 
-  async componentDidMount() {
-    await this.getNavData();
+  componentDidMount() {
+    this.getNavData();
   }
 
   // 리스트 클릭시 주문내역 리스트 가져오기
@@ -97,10 +97,11 @@ class AdminReleaseList extends Component {
     }
   };
 
-  getNavData = async () => {
+  getNavData = () => {
     try {
       const { ReleaseActions } = this.props;
-      await ReleaseActions.getOrderList();
+      const branchCode = localStorage.getItem('branchCode');
+      ReleaseActions.getOrderList(branchCode);
     } catch (e) {
       console.log(e);
     }
@@ -246,8 +247,7 @@ class AdminReleaseList extends Component {
           gridTitle="조회내용"
           clickRow={this.getRowData}
           id={custNo}
-          bottom={['Total', '', '', '총 주문건수', this.getTotalCost(list)]}
-          w
+          footer={['Total', '', '', '총 주문건수', this.getTotalCost(list)]}
           ref={el => (this.componentRef = el)}
         />
         <PopOrderList

@@ -159,41 +159,49 @@ exports.login = (req, res) => {
         reject(new Error('ID_INCORRECT'));
       }
 
-      const { id, username, branchCode, branchName, checkAdmin = false } = userInfo;
+      const {
+        id,
+        username,
+        branchCode,
+        branchName,
+        checkAdmin = false
+      } = userInfo;
       const checkPassword = userInfo.verify(loginInfo.password);
       const secret = req.app.get('jwt-secret');
 
       checkPassword
         ? resolve({
-          imhomeToken: jwt.sign(
-            {
-              id,
-              username,
-              branchCode,
-              admin: checkAdmin
-            },
-            secret,
-            {
-              expiresIn: '1d',
-              issuer: 'imhome.com',
-              subject: 'lets_check_imhome_token',
-              algorithm: 'HS512'
-            }
-          ),
-          checkAdmin,
-          branchName
-        })
+            imhomeToken: jwt.sign(
+              {
+                id,
+                username,
+                branchCode,
+                admin: checkAdmin
+              },
+              secret,
+              {
+                expiresIn: '1d',
+                issuer: 'imhome.com',
+                subject: 'lets_check_imhome_token',
+                algorithm: 'HS512'
+              }
+            ),
+            checkAdmin,
+            branchName,
+            branchCode
+          })
         : reject(new Error('PASSWORD_INCORRECT'));
     });
   };
 
   const respond = resultObj => {
-    const { imhomeToken, checkAdmin, branchName } = resultObj;
+    const { imhomeToken, checkAdmin, branchName, branchCode } = resultObj;
 
     reponseSuccess(res, {
       imhomeToken,
       checkAdmin,
-      branchName
+      branchName,
+      branchCode
     });
   };
 
