@@ -47,7 +47,7 @@ mongoose
   .catch(e => console.error(e));
 
 app.get('/excel', Excel);
-app.get('/specifyexcel', SpecifyExcel);
+app.post('/specifyexcel', SpecifyExcel);
 
 // SETTING TO API
 app.use('/api', apiRouter);
