@@ -38,7 +38,7 @@ exports.getAllOrderList = (req, res) => {
   // 2019-02-20 QueryString 적용
   // startDate, endDate, type
   const today = new Date();
-  today.setDate(today.getDate() - 30);
+  today.setDate(today.getDate() - 7);
   const startDate = req.query.startDate ? req.query.startDate : today;
   const endDate = req.query.endDate ? req.query.endDate : new Date();
   const branchCode = req.decoded.admin
@@ -47,7 +47,6 @@ exports.getAllOrderList = (req, res) => {
 
   Orders.findOrderList(branchCode, startDate, endDate)
     .then(orderList => {
-      console.log(orderList);
       if (!orderList) throw new Error('order not found');
       res.status(200).send(orderList);
     })
@@ -123,7 +122,6 @@ exports.getOrderList = (req, res) => {
 
   Stores.find({ branchCode })
     .then(store => {
-      console.log(store);
       if (store.length == 0) {
         throw new Error('Dont exit branchCode');
       }
@@ -165,8 +163,6 @@ exports.updateOrderList = (req, res) => {
     })
     .then(order => {
       if (order.length !== 0) {
-        console.log('Modified');
-
         req.body.items.map(reqItem => {
           let modyFlag = order[0].items.some(item => {
             if (String(item._id) === reqItem._id) {
@@ -185,8 +181,6 @@ exports.updateOrderList = (req, res) => {
         return Orders.findOneAndUpdateNew(branchCode, order[0]);
       } else {
         // 기존에 complete:false인 내역이 없을 경우 주문내역 추가
-        console.log('create');
-
         return Orders.create(req.body);
       }
     })
@@ -322,7 +316,9 @@ exports.deleteOrderList = (req, res) => {
  */
 exports.downloadExcel = (req, res) => {
   const body = req.body;
-  const startDate = body.startDate ? body.startDate : new Date().setDate(new Date().getDate() - 7);
+  const startDate = body.startDate
+    ? body.startDate
+    : new Date().setDate(new Date().getDate() - 7);
   const endDate = body.endDate ? body.endDate : new Date();
   const branchCode = body.storeId;
 
