@@ -118,8 +118,10 @@ class AdminReleaseList extends Component {
     let branchName = '';
     let itemList = [];
     let orderDate = '';
+    
     await ReleaseActions.updateCustNo(changeNo);
-    list.map((item) => {
+
+    list.forEach((item) => {
       if (item && item._id === changeNo) {
         branchName = item.branchName;
         itemList = item.items;
@@ -221,7 +223,7 @@ class AdminReleaseList extends Component {
     } = this.props;
 
     ReleaseActions.downloadExcel(currentId, startDate, endDate);
-  }
+  };
 
   render() {
     const {
@@ -274,7 +276,9 @@ class AdminReleaseList extends Component {
             content={() => this.componentRef.current}
           />
           {/* 파일저장용 */}
-          <FormBtn style={{ margin: '0', marginLeft: '10px' }} onClick={this.downloadExcel}>파일저장</FormBtn>
+          <FormBtn style={{ margin: '0', marginLeft: '10px' }} onClick={this.downloadExcel}>
+            파일저장
+          </FormBtn>
         </ViewForRelease>
 
         <TableWithScroll

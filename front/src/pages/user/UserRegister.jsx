@@ -6,9 +6,7 @@ import { isEmpty, isEmail, isLength } from 'validator';
 import * as AuthActions from '../../redux/modules/auth';
 import { RegisterTemplate } from '../../component/template';
 import { RegisterWrapper, RegisterTitle, RegisterContent } from '../../component/auth';
-import {
-  Button, InputWithLabel, AlertPopup, SelectboxWithLabel,
-} from '../../component/common';
+import { Button, InputWithLabel, AlertPopup } from '../../component/common';
 
 class UserRegister extends Component {
   constructor() {
@@ -24,7 +22,7 @@ class UserRegister extends Component {
     const { AuthActions, history } = this.props;
 
     // 지점명 리스트를 보여주기 위해 추가 **추후 제거 대상**
-    //await AuthActions.getStoreList();
+    // await AuthActions.getStoreList();
 
     try {
       // #4 history 적용에 따른 주석처리(회원가입 들어갈 경우 다시 나오게 됨)
@@ -315,8 +313,8 @@ class UserRegister extends Component {
       bPhoneNumber,
       branchName,
     } = this.props.form.toJS();
-    const { store } = this.props;
     const { message } = this.props;
+
     return (
       <RegisterTemplate>
         <RegisterWrapper>

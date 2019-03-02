@@ -100,7 +100,6 @@ class AdminReleaseList extends Component {
   getNavData = async () => {
     try {
       const { ReleaseActions } = this.props;
-      await ReleaseActions.getStoreList();
       await ReleaseActions.getOrderList();
     } catch (e) {
       console.log(e);
@@ -129,7 +128,7 @@ class AdminReleaseList extends Component {
     let orderDate = '';
 
     await ReleaseActions.updateCustNo(changeNo);
-    list.map((item) => {
+    list.forEach((item) => {
       if (item && item._id === changeNo) {
         branchName = item.branchName;
         itemList = item.items;

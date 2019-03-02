@@ -129,7 +129,6 @@ class AdminOrderList extends PureComponent {
     let currentId = -1;
 
     for (let i = 0; i < newItems.length; i++) {
-      const element = newItems[i];
       if (newItems[i]._id === payload._id) {
         currentId = i;
       }

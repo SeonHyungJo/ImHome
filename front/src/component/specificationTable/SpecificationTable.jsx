@@ -275,7 +275,6 @@ class SpecificationTable extends React.Component {
                   key={`${button.name}_${index}`}
                   name={button.name}
                   clickComplete={() => saveSpecify()}
-                  //(window.location.href = 'http://localhost:3100/specifyexcel'
                 />
               ) : (
                 <ReactToPrint
@@ -284,7 +283,6 @@ class SpecificationTable extends React.Component {
                     <FormBtn
                       key={`${button.name}_${index}_btn`}
                       style={{
-                        margin: '0',
                         color: 'black',
                         backgroundColor: '#c2baba',
                         border: '0px',
@@ -293,7 +291,7 @@ class SpecificationTable extends React.Component {
                         fontHeight: '800',
                         maxHeight: '40px',
                         padding: '5px 15px',
-                        margin: '0 5px',
+                        margin: '0px 5px',
                         cursor: 'pointer',
                       }}
                     >
