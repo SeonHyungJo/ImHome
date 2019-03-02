@@ -1,6 +1,15 @@
 import axios from 'axios';
+import { downloadExcel } from '../../util/commonUtil';
 
 const axiosConfig = () => ({
+  headers: {
+    'x-access-token': localStorage.getItem('accessToken'),
+  },
+});
+
+// Excel Download를 위한 추가 설정
+const axiosExcelConfig = () => ({
+  responseType: 'blob',
   headers: {
     'x-access-token': localStorage.getItem('accessToken'),
   },
@@ -24,4 +33,10 @@ export function put(path, id = '', data) {
 // axios에 data는 put, post, patch에만 존재
 export function del(path, id = '') {
   return axios.delete(path + id, axiosConfig());
+}
+
+// 2019. 3. 3 ExcelDown를 위한 추가 진행 - seonhyungjo
+export function excelDownload(path, data) {
+  const requestData = data || '';
+  return axios.post(path, requestData, axiosExcelConfig()).then(res => downloadExcel(res));
 }

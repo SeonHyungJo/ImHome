@@ -16,6 +16,8 @@ const DELETE_ORDER = 'orderList/DELETE_ORDER'; // 주문내역 취소하기
 const CREATE_ORDER = 'orderList/CREATE_ORDER'; // 주문하기
 const SET_MESSAGE = 'user/SET_MESSAGE';
 
+const SAVE_SPECIFY = 'orderList/SAVE_SPECIFY';
+
 export const updateCurrentId = createAction(CHANGE_CURRENTID);
 export const removeItemList = createAction(REMOVE_ITEM_LIST);
 export const initializeForm = createAction(INITIALIZE_FORM); // form
@@ -28,6 +30,8 @@ export const updateComplete = createAction(UPDATE_ORDER_COMPLETE, orderListAPI.u
 export const deleteOrderData = createAction(DELETE_ORDER, orderListAPI.deleteOrderData);
 
 export const createOrder = createAction(CREATE_ORDER, orderListAPI.createOrder);
+
+export const saveSpecify = createAction(SAVE_SPECIFY, orderListAPI.saveSpecify);
 
 // 초기값 설정
 const initialState = Map({

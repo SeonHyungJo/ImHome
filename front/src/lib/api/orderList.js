@@ -66,3 +66,15 @@ export const deleteOrderData = id => ApiService.del(`/api/order/${id || ''}`);
  * @returns
  */
 export const createOrder = data => ApiService.post('/api/order', data);
+
+/**
+ * @author seonhyungjo
+ * @summary 명세표 저장
+ * @param
+ *  {
+        품목리스트
+    }
+ * @returns
+ */
+
+export const saveSpecify = releaseList => ApiService.excelDownload('/specifyexcel', releaseList);
