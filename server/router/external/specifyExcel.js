@@ -45,14 +45,14 @@ exports.downloadExcel = (req, res) => {
       horizontal: 'left',
       vertical: 'center'
     },
-    numberFormat: '￦#,##0; (￦#,##0); -'
+    numberFormat: '#,##0; (#,##0); -'
   });
 
   const currencyStyle = workbook.createStyle({
     font: {
       size: 10
     },
-    numberFormat: '￦#,##0; (￦#,##0); -'
+    numberFormat: '#,##0; (#,##0); -'
   });
 
   const FONT = {
