@@ -48,12 +48,12 @@ class AdminUser extends Component {
         disablePadding: true,
         label: '사업자번호',
       },
-      {
-        id: '__v',
-        numeric: true,
-        disablePadding: true,
-        label: '총 거래금액(원)',
-      },
+      // {
+      //   id: '__v',
+      //   numeric: true,
+      //   disablePadding: true,
+      //   label: '총 거래금액(원)',
+      // },
     ];
     this.state = {
       headerData,
@@ -181,8 +181,8 @@ class AdminUser extends Component {
             <FormBtn onClick={this.popUpdateForm}>회원정보수정</FormBtn>
           </div>
         ) : (
-          <div />
-        )}
+            <div />
+          )}
         <TableWithScroll
           headerData={this.state.headerData}
           data={list}
