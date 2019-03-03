@@ -118,7 +118,7 @@ class AdminReleaseList extends Component {
     let branchName = '';
     let itemList = [];
     let orderDate = '';
-    
+
     await ReleaseActions.updateCustNo(changeNo);
 
     list.forEach((item) => {
@@ -219,10 +219,20 @@ class AdminReleaseList extends Component {
 
   downloadExcel = () => {
     const {
-      ReleaseActions, startDate, endDate, currentId,
+      ReleaseActions, startDate, endDate, currentId, store
     } = this.props;
+    let branchName;
 
-    ReleaseActions.downloadExcel(currentId, startDate, endDate);
+    store && store.map(item => {
+      if (item.branchCode === currentId)
+        branchName = item.branchName
+    });
+
+    let fileName = branchName ?
+      `${branchName} 거래내역_${CommonUtil.setRawDate(startDate)}~${CommonUtil.setRawDate(endDate)}`
+      : 'Excel'
+
+    ReleaseActions.downloadExcel(currentId, startDate, endDate, fileName);
   };
 
   render() {

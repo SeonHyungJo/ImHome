@@ -2,7 +2,7 @@ const commonUtil = require('./commonUtil');
 
 export function getOrderExcel(orderList, startDate, endDate, res) {
     var xl = require('excel4node');
-    var fileName = `${orderList[0]['branchName']} 거래내역_${commonUtil.setRawDate(startDate)}~${commonUtil.setRawDate(endDate)}.xlsx`;
+    //var fileName = `${orderList[0]['branchName']} 거래내역_${commonUtil.setRawDate(startDate)}~${commonUtil.setRawDate(endDate)}.xlsx`;
 
     var wb = new xl.Workbook();
 
@@ -45,42 +45,48 @@ export function getOrderExcel(orderList, startDate, endDate, res) {
         .style(style);
 
     let total = 0;
-    const totlaRow = orderList.length + 2;
 
-    orderList.map((item, index) => {
-        ws.cell(index + 2, 1)
-            .string(commonUtil.setTotalDate(item.updatedAt))
-            .style(style);
+    if (orderList.length <= 0) {
+        ws.cell(2, 1, 2, 5, true)
+            .string('데이터가 없습니다.')
+            .style(style)
+    } else {
+        const totalRow = orderList.length + 2;
 
-        ws.cell(index + 2, 2)
-            .string(commonUtil.setTotalTime(item.updatedAt))
-            .style(style);
+        orderList.map((item, index) => {
+            ws.cell(index + 2, 1)
+                .string(commonUtil.setTotalDate(item.updatedAt))
+                .style(style);
 
-        ws.cell(index + 2, 3)
-            .string(item.branchName)
-            .style(style);
+            ws.cell(index + 2, 2)
+                .string(commonUtil.setTotalTime(item.updatedAt))
+                .style(style);
 
-        ws.cell(index + 2, 4)
-            .string(item.bNumber ? item.bNumber : '-')
-            .style(style);
+            ws.cell(index + 2, 3)
+                .string(item.branchName)
+                .style(style);
 
-        ws.cell(index + 2, 5)
-            .number(commonUtil.getTotalCost(item.items))
-            .style(style);
-        total += commonUtil.getTotalCost(item.items);
-    })
+            ws.cell(index + 2, 4)
+                .string(item.bNumber ? item.bNumber : '-')
+                .style(style);
 
-    ws.cell(totlaRow, 1, totlaRow, 3, true)
-        .string('Total')
-        .style(style)
+            ws.cell(index + 2, 5)
+                .number(commonUtil.getTotalCost(item.items))
+                .style(style);
+            total += commonUtil.getTotalCost(item.items);
+        })
 
-    ws.cell(totlaRow, 4)
-        .string('총 발행건수')
-        .style(style)
+        ws.cell(totalRow, 1, totalRow, 3, true)
+            .string('Total')
+            .style(style)
 
-    ws.cell(totlaRow, 5)
-        .number(total)
-        .style(style)
+        ws.cell(totalRow, 4)
+            .string('총 발행건수')
+            .style(style)
 
-    wb.write(fileName);
+        ws.cell(totalRow, 5)
+            .number(total)
+            .style(style)
+    }
+    wb.write('Excel', res);
 }
