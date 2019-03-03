@@ -20,6 +20,10 @@ export function setHangleDate(str) {
   return moment(str).format('YYYY년 MM월 DD일');
 }
 
+export function setRawDate(str) {
+  return moment(str).format('YYYYMMDD');
+}
+
 export function setCostFormat(num) {
   const cost = Number(num);
   return cost.toLocaleString();
