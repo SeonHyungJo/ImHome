@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 import IosAdd from 'react-ionicons/lib/IosAdd';
 import IosRemove from 'react-ionicons/lib/IosRemove';
+import * as CommonUtil from '../../util/commonUtil'
 
 const Table = styled.table`
   // border-top: 2px solid #fe4c8d;
@@ -94,7 +95,7 @@ const ProductTable = ({
           <tr key={item._id} className={classNames('itemOn')}>
             <td className={classNames('tableNameTd', 'tableAlignCenter')}>{item.itemName}</td>
             <td className={classNames('tableAlignCenter')}>{item.itemVolume}</td>
-            <td className={classNames('tableAlignRight')}>{item.itemCost}</td>
+            <td className={classNames('tableAlignRight')}>{CommonUtil.setCostFormat(item.itemCost)}</td>
             <td className={classNames('tableOrderTd', 'tableAlignCenter')}>
               <IosRemove color="#ffffff" onClick={() => _changeCount('minus', item)} />
               <input
@@ -110,7 +111,7 @@ const ProductTable = ({
           <tr key={item._id}>
             <td className={classNames('tableNameTd', 'tableAlignCenter')}>{item.itemName}</td>
             <td className={classNames('tableAlignCenter')}>{item.itemVolume}</td>
-            <td className={classNames('tableAlignRight')}>{item.itemCost}</td>
+            <td className={classNames('tableAlignRight')}>{CommonUtil.setCostFormat(item.itemCost)}</td>
             <td className={classNames('tableOrderTd', 'tableAlignCenter')}>
               <IosRemove onClick={() => _changeCount('minus', item)} />
               <input className={classNames('orderInput')} type="number" value={0} readOnly />

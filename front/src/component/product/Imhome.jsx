@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ProductListActions from '../../redux/modules/productList';
+import * as CommonUtil from '../../util/commonUtil'
 import { AlertPopup } from '../../component/common';
 import PopDeleteConfirm from './PopDeleteConfirm';
 import { isEmpty, isInt } from 'validator';
@@ -686,7 +687,7 @@ class Imhome extends Component {
                                                         {child.itemVolume}
                                                     </td>
                                                     <td className={classNames('tableAlignRight')}>
-                                                        {child.itemCost}
+                                                        {CommonUtil.setCostFormat(child.itemCost)}
                                                     </td>
                                                     <td
                                                         className={classNames('tableAlignCenter')}

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ProductListActions from '../../redux/modules/productList';
 import { AlertPopup } from '../../component/common';
+import * as CommonUtil from '../../util/commonUtil'
 import PopDeleteConfirm from './PopDeleteConfirm';
 import { isEmpty, isInt } from 'validator';
 
@@ -457,7 +458,7 @@ class DefaultProduct extends Component {
                                                 {child.itemVolume}
                                             </td>
                                             <td className={classNames('tableAlignRight')}>
-                                                {child.itemCost}
+                                                {CommonUtil.setCostFormat(child.itemCost)}
                                             </td>
                                             <td
                                                 className={classNames('tableAlignCenter')}
