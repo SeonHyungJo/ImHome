@@ -4,6 +4,8 @@ import { Route, Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import {
   UserRegister, UserOrderList, UserProduct, UserReleaseList,
@@ -17,11 +19,21 @@ import * as OrderListActions from './redux/modules/orderList';
 
 class App extends PureComponent {
   // transform-class-properties 적용
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     // Create history
     const customHistory = createBrowserHistory();
+    // const checkOrderFunc = setInterval(() => {
+    //   props.OrderListActions.getStoreList().then((result) => {
+    //     this.setState({
+    //       orderList: {
+    //         ...result.data,
+    //       },
+    //     });
+    //     this.notify();
+    //   });
+    // }, 2000);
 
     this.state = {
       admin: null,
@@ -31,37 +43,51 @@ class App extends PureComponent {
     };
   }
 
+  notify = () => toast('주문내역이 업데이트 되었습니다.');
+
   componentDidMount() {
     // Check Login info(init, updated)
     this.initializeUserInfo();
 
-    // window.requestIdleCallback = window.requestIdleCallback
-    //   || function (cb) {
-    //     const start = Date.now();
-    //     return setTimeout(() => {
-    //       cb({
-    //         didTimeout: false,
-    //         timeRemaining() {
-    //           return Math.max(0, 50 - (Date.now() - start));
-    //         },
-    //       });
-    //     }, 1);
-    //   };
+    window.requestIdleCallback = window.requestIdleCallback
+      || function (cb) {
+        const start = Date.now();
+        return setTimeout(() => {
+          cb({
+            didTimeout: false,
+            timeRemaining() {
+              return Math.max(0, 50 - (Date.now() - start));
+            },
+          });
+        }, 1);
+      };
 
-    // const newOrderCheck = () => setTimeout(() => {
-    //   // OrderListActions.getStoreList().then((result) => {
-    //   //   this.setState({
-    //   //     orderList: {
-    //   //       ...result.data,
-    //   //     },
-    //   //   });
-    //   // });
-
-    //   newOrderCheck();
-    // }, 2000);
-
-    // window.requestIdleCallback(newOrderCheck, { timeout: 0 });
+    const adminCheck = localStorage.getItem('checkAdmin');
+    // adminCheck && this.newOrderCheck();
   }
+
+  newOrderCheck = () => {
+    const { OrderListActions } = this.props;
+
+    clearInterval(this.checkOrderFunc);
+
+    this.checkOrderFunc = setInterval(() => {
+      OrderListActions.getStoreList().then((result) => {
+        if (
+          !this.state.orderList.length
+          || (this.state.orderList.length > 0
+            && this.state.orderList[0].branchCode !== result.data[0].branchCode)
+        ) {
+          this.setState(prevState => ({
+            ...prevState,
+            orderList: result.data,
+          }));
+
+          this.notify();
+        }
+      });
+    }, 2000);
+  };
 
   // React Add new LifeCycle in version 16.3
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -161,6 +187,15 @@ const AdminRouter = () => {
       <Route exact component={AdminOrderList} path={`${ADMIN_PATH}/orderlist`} />
       <Route exact component={AdminReleaseList} path={`${ADMIN_PATH}/releaselist`} />
       <Route exact component={AdminProduct} path={`${ADMIN_PATH}/product`} />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnVisibilityChange={false}
+        draggable
+      />
     </>
   );
 };
