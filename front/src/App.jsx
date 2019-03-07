@@ -42,7 +42,6 @@ class App extends PureComponent {
     //       cb({
     //         didTimeout: false,
     //         timeRemaining() {
-    //           console.log(Date.now());
     //           return Math.max(0, 50 - (Date.now() - start));
     //         },
     //       });
@@ -50,13 +49,13 @@ class App extends PureComponent {
     //   };
 
     // const newOrderCheck = () => setTimeout(() => {
-    //   OrderListActions.getStoreList().then((result) => {
-    //     this.setState({
-    //       orderList: {
-    //         ...result.data,
-    //       },
-    //     });
-    //   });
+    //   // OrderListActions.getStoreList().then((result) => {
+    //   //   this.setState({
+    //   //     orderList: {
+    //   //       ...result.data,
+    //   //     },
+    //   //   });
+    //   // });
 
     //   newOrderCheck();
     // }, 2000);
@@ -119,7 +118,7 @@ class App extends PureComponent {
         customHistory.push('/login');
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
       this.resetLocalStorage();
       // customHistory.push('/login');
     }

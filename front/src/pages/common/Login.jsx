@@ -45,8 +45,8 @@ class Login extends Component {
         return;
       }
       return;
-    } catch (error) {
-      console.log(error);
+    } catch (e) {
+      console.error(e);
     }
   }
 

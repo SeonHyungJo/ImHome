@@ -43,8 +43,8 @@ class UserRegister extends Component {
         history.push('/product');
         return;
       }
-    } catch (error) {
-      console.log(error);
+    } catch (e) {
+      console.error(e);
     }
   }
 
@@ -294,7 +294,7 @@ class UserRegister extends Component {
 
       this.setState({ displayAlertPop: true });
     } catch (e) {
-      console.log(e);
+      console.error(e);
       this.setMessage('회원가입에 실패했습니다. 나중에 다시 시도해주세요.');
       this.setState({ displayAlertPop: true });
     }

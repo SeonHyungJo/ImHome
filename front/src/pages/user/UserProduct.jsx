@@ -51,9 +51,7 @@ const buttonList_imhome = [
   { name: '바로주문하기', event: 'CREATE_ORDER' },
 ];
 
-const buttonList_default = [
-  { name: '주문저장', event: 'TEMP_ORDER' },
-];
+const buttonList_default = [{ name: '주문저장', event: 'TEMP_ORDER' }];
 
 class UserProduct extends Component {
   constructor() {
@@ -81,12 +79,12 @@ class UserProduct extends Component {
   getNavData = async (companyCode) => {
     const { ProductListActions } = this.props;
     this.setState({ companyCode });
-    
+
     try {
       await ProductListActions.getProductData(companyCode);
       await this.getTempOrder(companyCode);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
 
     // setstate
@@ -109,13 +107,14 @@ class UserProduct extends Component {
     /*
       2019. 3. 5 Jinseong
       tempOrder의 데이터가 branchCode 기준이었다면
-      branchCode와 companyCode가 필요하게 바뀜.      
-    */ 
+      branchCode와 companyCode가 필요하게 바뀜.
+    */
+
     try {
       await TempOrderActions.getOrderData(companyCode);
       await this.setItemCount();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -135,7 +134,7 @@ class UserProduct extends Component {
     try {
       TempOrderActions.changeTempCount(count);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -225,7 +224,7 @@ class UserProduct extends Component {
           }
         });
     } catch (e) {
-      console.log(e);
+      console.error(e);
       setAlert('실패하였습니다. 관리자에게 문의해주세요. f_order');
       this.setState({ displayAlertPop: true });
     }
@@ -329,7 +328,7 @@ class UserProduct extends Component {
             <OrderListTable
               headerName="YourOrder"
               orderList={tempOrderItems}
-              buttonList={companyCode === '001'? buttonList_imhome : buttonList_default}
+              buttonList={companyCode === '001' ? buttonList_imhome : buttonList_default}
               clickComplete={this._orderFunc}
               style={{ height: '96%' }}
             />

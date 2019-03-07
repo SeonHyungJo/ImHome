@@ -183,7 +183,7 @@ class PopUserInfo extends Component {
             }
 
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
     }
 

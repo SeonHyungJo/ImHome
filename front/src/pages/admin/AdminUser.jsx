@@ -125,7 +125,7 @@ class AdminUser extends Component {
         result: loggedInfo.firstUser,
       });
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -144,7 +144,7 @@ class AdminUser extends Component {
         result: custNo,
       });
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -181,8 +181,8 @@ class AdminUser extends Component {
             <FormBtn onClick={this.popUpdateForm}>회원정보수정</FormBtn>
           </div>
         ) : (
-            <div />
-          )}
+          <div />
+        )}
         <TableWithScroll
           headerData={this.state.headerData}
           data={list}

@@ -82,7 +82,7 @@ class PageTemplate extends Component {
       await this.initializeForm();
       await this.removeStorageData();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 

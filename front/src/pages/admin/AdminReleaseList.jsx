@@ -96,7 +96,7 @@ class AdminReleaseList extends Component {
         searchingData: { ...prevState.searchingData, term: newTerm },
       }));
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -109,7 +109,7 @@ class AdminReleaseList extends Component {
       await ReleaseActions.getOrderList(id || currentId);
       await ReleaseActions.updateCurrentId(id || currentId);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -219,18 +219,20 @@ class AdminReleaseList extends Component {
 
   downloadExcel = () => {
     const {
-      ReleaseActions, startDate, endDate, currentId, store
+      ReleaseActions, startDate, endDate, currentId, store,
     } = this.props;
     let branchName;
 
-    store && store.map(item => {
-      if (item.branchCode === currentId)
-        branchName = item.branchName
-    });
+    store
+      && store.map((item) => {
+        if (item.branchCode === currentId) branchName = item.branchName;
+      });
 
-    let fileName = branchName ?
-      `${branchName} 거래내역_${CommonUtil.setRawDate(startDate)}~${CommonUtil.setRawDate(endDate)}`
-      : 'Excel'
+    const fileName = branchName
+      ? `${branchName} 거래내역_${CommonUtil.setRawDate(startDate)}~${CommonUtil.setRawDate(
+        endDate,
+      )}`
+      : 'Excel';
 
     ReleaseActions.downloadExcel(currentId, startDate, endDate, fileName);
   };

@@ -44,7 +44,7 @@ class AdminProduct extends Component {
     try {
       await ProductListActions.getProductData(productCode);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
 
     this.setState({ productCode });

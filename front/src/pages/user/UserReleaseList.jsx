@@ -93,7 +93,7 @@ class AdminReleaseList extends Component {
         searchingData: { ...prevState.searchingData, term: newTerm },
       }));
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -103,7 +103,7 @@ class AdminReleaseList extends Component {
       const branchCode = localStorage.getItem('branchCode');
       ReleaseActions.getOrderList(branchCode);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 

@@ -51,7 +51,7 @@ class AdminOrderList extends Component {
 
       OrderListActions.getOrderData();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -71,7 +71,7 @@ class AdminOrderList extends Component {
           }
         });
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     } else {
       this.setMessage('현재 주문이 없습니다.');

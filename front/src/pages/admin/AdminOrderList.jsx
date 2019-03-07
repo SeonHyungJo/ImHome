@@ -51,7 +51,7 @@ class AdminOrderList extends PureComponent {
       await OrderListActions.updateCurrentId(setId);
       await OrderListActions.getOrderData(setId);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -85,7 +85,7 @@ class AdminOrderList extends PureComponent {
           }
         });
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -105,7 +105,7 @@ class AdminOrderList extends PureComponent {
         `${currentOrder.branchName}_${now.getDate()}월_거래명세표`,
       );
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -154,8 +154,6 @@ class AdminOrderList extends PureComponent {
 
     const updateAt = currentOrder.updatedAt || new Date();
     const role = 'admin';
-
-    console.log(currentOrder.items);
 
     return (
       <>
