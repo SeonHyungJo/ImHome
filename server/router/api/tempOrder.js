@@ -48,58 +48,10 @@ exports.getAllOrderList = (req, res) => {
 };
 
 /**
- * GET /api/tempOrders/branch/incomplete
+ * GET /api/tempOrders/:companyCode
  *
  * @author Jinseong
- * @summary 주문내역 관련 브랜치 리스트 가져오기
- * @private
- * @memberof Admin
- * @param
- * @see None
- * @returns «Query»
- */
-exports.getIncompleteBranchList = (req, res) => {
-  TempOrders.findInCompleteBranches()
-    .then(branchList => {
-      if (!branchList) throw new Error('branch not found');
-      res.status(200).send(branchList);
-    })
-    .catch(err => {
-      console.log(err);
-      reponseError(res, 'NOT_FIND_BRANCH');
-    });
-};
-
-/**
- * GET /api/tempOrders/branch/complete
- *
- * @author Jinseong
- * @summary 출고내역 관련 브랜치 리스트 가져오기
- * @private
- * @memberof Admin
- * @param
- * @see None
- * @returns «Query»
- * @deprecated
- */
-exports.getCompleteBranchList = (req, res) => {
-  // TempOrders.findCompleteBranches()
-  //     .then(branchList => {
-  //         if (!branchList) throw new Error('branch not found');
-  //         res.status(200).send(branchList);
-  //     })
-  //     .catch(err => {
-  //         console.log(err);
-  //         reponseError(res, 'NOT_FIND_BRANCH');
-  //     });
-  reponseError(res, 'NOT_FIND_BRANCH');
-};
-
-/**
- * GET /api/tempOrders/:branchCode
- *
- * @author Jinseong
- * @summary 출고되지 않은 지점 주문내역 조회
+ * @summary 임시저장 주문내역 조회
  * @private
  * @memberof Admin, User
  * @param
@@ -108,14 +60,17 @@ exports.getCompleteBranchList = (req, res) => {
  */
 exports.getOrderList = (req, res) => {
   const branchCode = req.decoded.admin ? req.params.branchCode : req.decoded.branchCode;
+  const companyCode = req.params.companyCode ? req.params.companyCode : '';
 
   Stores.find({ branchCode })
     .then(store => {
       if (store.length == 0) {
         throw new Error('Dont exit branchCode');
+      } else if (companyCode === '') {
+        throw new Error('Dont have companyCode');
       }
-
-      return TempOrders.findInCompleteOrderByBranchcode(branchCode);
+      // console.log(companyCode);
+      return TempOrders.findTempOrderByBranchcodeAndCompanyCode(branchCode, companyCode);
     })
     .then(order => {
       if (!order) throw new Error('order not found');
@@ -139,14 +94,19 @@ exports.getOrderList = (req, res) => {
  * @returns «Query»
  */
 exports.updateOrderList = (req, res) => {
-  const branchCode = req.decoded.admin ? req.params.branchCode : req.decoded.branchCode;
-
+  const branchCode = req.decoded.branchCode;
+  const companyCode = req.body.companyCode ? req.body.companyCode : '';
   Stores.findStoreByBranchcode(branchCode)
     .then(store => {
-      // branchName을 잘못 넣을 것을 대비해서 만듬
-      req.body.branchName = store.branchName;
+      if (store.length == 0) {
+        throw new Error('Dont exit branchCode');
+      } else if (companyCode === '') {
+        throw new Error('Dont have companyCode');
+      }
       req.body.branchCode = store.branchCode;
-      return TempOrders.findInCompleteOrderByBranchcode(store.branchCode);
+      req.body.branchName = store.branchName;
+
+      return TempOrders.findTempOrderByBranchcodeAndCompanyCode(branchCode, companyCode);
     })
     .then(order => {
       if (order.length !== 0) {
@@ -154,11 +114,13 @@ exports.updateOrderList = (req, res) => {
         console.log('Modified');
         const modifiedOrder = Object.assign({}, order, req.body);
 
-        return TempOrders.findOneAndUpdateNew(branchCode, modifiedOrder);
+        return TempOrders.findOneAndUpdateNew(branchCode, companyCode, modifiedOrder);
         //throw new Error('Already exit');
+      } else {
+        // 기존에 complete:false인 내역이 없을 경우 주문내역 추가
+        // console.log(req.body);
+        return TempOrders.create(req.body);
       }
-      // 기존에 complete:false인 내역이 없을 경우 주문내역 추가
-      return TempOrders.create(req.body);
     })
     .then(() => {
       res.status(200).send({ success: '0000' });
@@ -166,35 +128,6 @@ exports.updateOrderList = (req, res) => {
     .catch(err => {
       console.log(err);
       reponseError(res, 'CREATE_ODER_ERROR');
-    });
-};
-
-/**
- * PUT /api/tempOrders/complete/:branchCode
- *
- * @author Jinseong
- * @summary 지점별 출고완료 처리하기
- * @private
- * @memberof Admin
- * @param
- * @see None
- * @returns «Query»
- */
-exports.setComplete = (req, res) => {
-  TempOrders.findInCompleteOrderByBranchcode(req.params.branchCode)
-    .then(order => {
-      if (order.length == 0) {
-        console.log('Dont exit');
-        reponseError(res, 'DONT_EXIT');
-      }
-      return TempOrders.changeCompleteTrue(req.params.branchCode);
-    })
-    .then(() => {
-      res.status(200).send({ success: '0000' });
-    })
-    .catch(err => {
-      console.log(err);
-      reponseError(res, 'AREADY_COMPLETE');
     });
 };
 

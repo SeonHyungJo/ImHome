@@ -63,7 +63,7 @@ router.delete('/product/:productId', Product.deleteProduct);
 
 // TempOrder API
 router.post('/tempOrder', TempOrder.updateOrderList);
-router.get('/tempOrder/:branchCode?', TempOrder.getOrderList);
-router.delete('/tempOrder/:tempOrderId?', TempOrder.deleteTempOrder);
+router.get('/tempOrder/:companyCode', TempOrder.getOrderList);
+router.delete('/tempOrder/:tempOrderId', TempOrder.deleteTempOrder);
 
 module.exports = router;

@@ -13,6 +13,7 @@ const tempOrder = new Schema(
   {
     branchName: { type: String, required: true },
     branchCode: { type: String, required: true },
+    companyCode: { type: String, required: true },
     items: [itemsSchema],
     tradeStatementCount: { type: Number, default: 0 },
     complete: { type: Boolean, default: false }
@@ -81,18 +82,18 @@ tempOrder.statics.findInCompleteBranches = function() {
     .sort({ updatedAt: -1 });
 };
 
-/**
- * @author Jinseong
- * @summary 출고완료되지 않은 주문내역 가져오기
- * @private
- * @memberof Admin
- * @param _id : 주문 아이디
- * @see None
- * @returns «Query»
- */
-tempOrder.statics.findInCompleteOrderByBranchcode = function(_id) {
-  return this.find({ _id, complete: false });
-};
+// /**
+//  * @author Jinseong
+//  * @summary 출고완료되지 않은 주문내역 가져오기
+//  * @private
+//  * @memberof Admin
+//  * @param _id : 주문 아이디
+//  * @see None
+//  * @returns «Query»
+//  */
+// tempOrder.statics.findInCompleteOrderByBranchcode = function(_id) {
+//   return this.find({ _id, complete: false });
+// };
 
 /**
  * @author Jinseong
@@ -109,16 +110,17 @@ tempOrder.statics.findCompleteOrderByBranchcode = function(branchCode) {
 
 /**
  * @author Jinseong
- * @summary 출고완료되지 않은 주문내역 가져오기
+ * @summary 임시저장 주문 가져오기
  * @private
  * @memberof Admin
- * @param branchCode : 지점코드로 구분
+ * @param branchCode : 지점코드로 구분, companyCode : 업체코드로 구분
  * @see None
  * @returns «Query»
  */
-tempOrder.statics.findInCompleteOrderByBranchcode = function(branchCode) {
-  return this.find({ branchCode, complete: false }).select({
+tempOrder.statics.findTempOrderByBranchcodeAndCompanyCode = function(branchCode, companyCode) {
+  return this.find({ branchCode, companyCode, complete: false }).select({
     _id: 1,
+    companyCode: 1,
     branchCode: 1,
     branchName: 1,
     items: 1,
@@ -132,12 +134,13 @@ tempOrder.statics.findInCompleteOrderByBranchcode = function(branchCode) {
  * @private
  * @memberof Admin
  * @param branchCode : 지점코드로 구분
+ * @param companyCode : 업체코드
  * @param productInfo : 수정하는 Json형식 데이터
  * @see None
  * @returns «Query»
  */
-tempOrder.statics.findOneAndUpdateNew = function(branchCode, productInfo) {
-  return this.findOneAndUpdate({ branchCode, complete: false }, productInfo, {
+tempOrder.statics.findOneAndUpdateNew = function(branchCode, companyCode, productInfo) {
+  return this.findOneAndUpdate({ branchCode, companyCode, complete: false }, productInfo, {
     new: true
   });
 };

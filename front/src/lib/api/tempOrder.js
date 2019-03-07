@@ -14,9 +14,10 @@ export const getStoreList = () => ApiService.get('/api/tempOrder/branch/incomple
 
 /**
  * @summary 해당 지점에 맞는 주문 정보 가져오기
- * @param branchCode : 가져올 지점 코드
+ * @param companyCode : 가져올 업체의 코드
  * @returns [ {
         "_id": 주문 아이디
+        "companyCode": 업체코드(product),
         "branchCode": 지점 코드,
         "branchName": 지점명,
         "irems" [
@@ -30,17 +31,17 @@ export const getStoreList = () => ApiService.get('/api/tempOrder/branch/incomple
         "updatedAt": 최근 수정 시간
     }]
  */
-export const getOrderData = branchCode => ApiService.get(`/api/tempOrder/${branchCode || ''}`);
+export const getOrderData = companyCode => ApiService.get(`/api/tempOrder/${companyCode || ''}`);
 
 /**
- * @summary 출고 완료 처리하기
- * @param branchCode : 출고처리할 지점 코드
+ * @summary 임시주문 변경하기
+ * @param companyCode :
  * @returns returnCode
  */
-export const updateComplete = branchCode => ApiService.put(`/api/tempOrder/complete/${branchCode || ''}`);
+export const updateComplete = companyCode => ApiService.put(`/api/tempOrder/complete/${companyCode || ''}`);
 
 /**
- * @summary 주문 취소하기
+ * @summary 임시주문 취소하기
  * @param id : 주문취소할 id
  * @returns returnCode {success : 0000, fail: 3016}
  */
@@ -52,7 +53,7 @@ export const deleteTempOrder = id => ApiService.del(`/api/tempOrder/${id || ''}`
  * @param
  *  {
         "complete": 출고처리(false),
-        "branchCode": 지점 코드,
+        "companyCode": 업체 코드,
         "items" [
             "itemCode" : 물품 코드
             "itemName" : 물품 이름

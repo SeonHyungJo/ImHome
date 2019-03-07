@@ -46,9 +46,13 @@ const OrderContainer = styled.div`
 `;
 
 // 주문서에 들어가는 button list
-const buttonList = [
+const buttonList_imhome = [
   { name: '주문저장', event: 'TEMP_ORDER' },
   { name: '바로주문하기', event: 'CREATE_ORDER' },
+];
+
+const buttonList_default = [
+  { name: '주문저장', event: 'TEMP_ORDER' },
 ];
 
 class UserProduct extends Component {
@@ -56,43 +60,42 @@ class UserProduct extends Component {
     super();
 
     this.state = {
-      productCode: '001', // 좌측 nav product 초기값
+      companyCode: '001', // 좌측 nav product 초기값
       displayAlertPop: false, // 알림 팝업
     };
   }
 
   async componentDidMount() {
     const { ProductListActions } = this.props;
-    const { productCode } = this.state;
+    const { companyCode } = this.state;
 
     await ProductListActions.getProducts(); // 프로덕트 리스트 모두 가져오기
-    await this.getNavData(productCode);
-    await this.getTempOrder();
-    await this.setItemCount();
+    await this.getNavData(companyCode);
   }
 
   /*
     getNavData: 프로덕트 데이터 가져오기
     params:
-      productCode : product의 고유코드
+      companyCode : product의 고유코드
   */
-  getNavData = async (productCode) => {
+  getNavData = async (companyCode) => {
     const { ProductListActions } = this.props;
-
+    this.setState({ companyCode });
+    
     try {
-      await ProductListActions.getProductData(productCode);
+      await ProductListActions.getProductData(companyCode);
+      await this.getTempOrder(companyCode);
     } catch (e) {
       console.log(e);
     }
 
     // setstate
-    this.setState({ productCode });
   };
 
   /*
     getTempOrder: 임시 주문 저장 가져오기
   */
-  getTempOrder = async () => {
+  getTempOrder = async (companyCode) => {
     const { TempOrderActions } = this.props;
 
     /*
@@ -103,8 +106,14 @@ class UserProduct extends Component {
       const branchCode = auth.toJS().info.branchCode;
       const branchCode = '002';
     */
+    /*
+      2019. 3. 5 Jinseong
+      tempOrder의 데이터가 branchCode 기준이었다면
+      branchCode와 companyCode가 필요하게 바뀜.      
+    */ 
     try {
-      await TempOrderActions.getOrderData();
+      await TempOrderActions.getOrderData(companyCode);
+      await this.setItemCount();
     } catch (e) {
       console.log(e);
     }
@@ -169,6 +178,7 @@ class UserProduct extends Component {
   */
   _orderFunc = (eventName) => {
     const { tempOrder, TempOrderActions, OrderListActions } = this.props;
+    const { companyCode } = this.state;
 
     // 알림창을 세팅하는 메서드
     const setAlert = (message) => {
@@ -183,6 +193,7 @@ class UserProduct extends Component {
       const branchCode = '002';
     */
     const data = {
+      companyCode,
       complete: false,
       ...tempOrder.toJS(),
     };
@@ -278,6 +289,7 @@ class UserProduct extends Component {
     const {
       lists, form, message, tempOrder, clickedCategories, itemCount,
     } = this.props;
+    // const {companyCode} = this.state;
     const role = 'user';
     const { categories, companyCode, items } = form.toJS();
     const tempOrderItems = tempOrder.toJS().items;
@@ -288,7 +300,7 @@ class UserProduct extends Component {
       <PageTemplate
         role={role}
         navData={lists}
-        id={this.state.productCode}
+        id={this.state.companyCode}
         clickNav={this.getNavData}
       >
         <Header>{`${form.toJS().companyName} Order`}</Header>
@@ -317,7 +329,7 @@ class UserProduct extends Component {
             <OrderListTable
               headerName="YourOrder"
               orderList={tempOrderItems}
-              buttonList={buttonList}
+              buttonList={companyCode === '001'? buttonList_imhome : buttonList_default}
               clickComplete={this._orderFunc}
               style={{ height: '96%' }}
             />
