@@ -273,6 +273,7 @@ class SpecificationTable extends React.Component {
               (button, index) => (index === 0 ? (
                 <Buttons
                   key={`${button.name}_${index}`}
+                  defaultKey={`${button.name}_${index}`}
                   name={button.name}
                   clickComplete={() => saveSpecify()}
                 />
@@ -330,8 +331,8 @@ const Thead = () => (
   </div>
 );
 
-const Buttons = ({ key, name, clickComplete }) => (
-  <Button key={key} onClick={clickComplete}>
+const Buttons = ({ defaultKey, name, clickComplete }) => (
+  <Button key={`${defaultKey}`} onClick={clickComplete}>
     {name}
   </Button>
 );

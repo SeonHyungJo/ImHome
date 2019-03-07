@@ -225,7 +225,7 @@ class AdminReleaseList extends Component {
 
     store
       && store.map((item) => {
-        if (item.branchCode === currentId) branchName = item.branchName;
+        return (item.branchCode === currentId) ? branchName = item.branchName : '';
       });
 
     const fileName = branchName

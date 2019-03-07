@@ -22,9 +22,16 @@ const Button = styled.button`
 //     text-align: right;
 // `;
 
-const FormBtn = ({ children, style, onClick }) => (
-  <Button style={style || {}} onClick={onClick}>
-    {children}
-  </Button>
-);
+class FormBtn extends React.PureComponent {
+  render() {
+    const { style, children, onClick } = this.props;
+
+    return (
+      <Button style={style || {}} onClick={onClick}>
+        {children}
+      </Button>
+    );
+  }
+}
+
 export default FormBtn;
