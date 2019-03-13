@@ -188,7 +188,7 @@ class AdminReleaseList extends Component {
     const { year, month } = this.state.selectMonthDate;
 
     const newStartDate = new Date(year, month - 1, 1, 0, 0, 0, 0);
-    const newEndDate = new Date();
+    const newEndDate = CommonUtil.getEndOfDay(year, month - 1);
 
     // newStartDate.setDate(newStartDate.getDate() + changeNum);
     ReleaseActions.updateStartDate(newStartDate);
