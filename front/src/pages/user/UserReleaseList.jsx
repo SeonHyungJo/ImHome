@@ -164,7 +164,7 @@ class AdminReleaseList extends Component {
       ReleaseActions, startDate, endDate, branchId,
     } = this.props;
 
-    ReleaseActions.getOrderList(branchId, startDate, endDate);
+    ReleaseActions.getOrderList(localStorage.getItem('branchCode'), startDate, endDate);
   };
 
   closePop = () => {
