@@ -48,6 +48,10 @@ class AdminOrderList extends PureComponent {
       const { OrderListActions, currentId } = this.props;
       const setId = changeId || currentId;
 
+      this.setState(prevState => ({
+        ...prevState,
+        specificationItems: [],
+      }));
       await OrderListActions.updateCurrentId(setId);
       await OrderListActions.getOrderData(setId);
     } catch (e) {
@@ -124,6 +128,25 @@ class AdminOrderList extends PureComponent {
 
   // 거래명세표 추가
   addReleaseList = (payload) => {
+    const { OrderListActions, currentOrder } = this.props;
+    const newItems = currentOrder.items;
+    let currentId = -1;
+
+    for (let i = 0; i < newItems.length; i++) {
+      if (newItems[i]._id === payload._id) {
+        currentId = i;
+      }
+    }
+
+    currentId !== -1 && newItems.splice(currentId, 1) && OrderListActions.removeItemList(newItems);
+
+    this.setState(prevState => ({
+      specificationItems: [...prevState.specificationItems, payload],
+    }));
+  };
+
+  // 거래명세표 삭제(미구현)
+  delReleaseList = (payload) => {
     const { OrderListActions, currentOrder } = this.props;
     const newItems = currentOrder.items;
     let currentId = -1;
