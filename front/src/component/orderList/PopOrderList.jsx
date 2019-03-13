@@ -31,7 +31,7 @@ const OrderListTablePopup = ({
       orderList={orderList}
       buttonList={buttonList}
       clickComplete={clickComplete}
-      releaseDate={CommonUtil.setDate(orderDate)}
+      releaseDate={CommonUtil.setHangleDateTime(orderDate)}
     />
   </MaskingWrapper>
 );

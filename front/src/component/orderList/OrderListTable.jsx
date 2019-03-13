@@ -140,6 +140,7 @@ const Button = styled.button`
 `;
 
 const RightSpan = styled.span`
+  font-size: 0.8rem;
   float: right;
   text-align: right;
 `;
@@ -158,7 +159,7 @@ const OrderListTable = ({
       <div className="mainContainer">
         <Header>
           {headerName}
-          <RightSpan>{releaseDate}</RightSpan>
+          <RightSpan>{`주문일자 : ${releaseDate}`}</RightSpan>
         </Header>
         <OrderTable>
           <Thead />
