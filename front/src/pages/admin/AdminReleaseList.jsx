@@ -224,9 +224,7 @@ class AdminReleaseList extends Component {
     let branchName;
 
     store
-      && store.map((item) => {
-        return (item.branchCode === currentId) ? branchName = item.branchName : '';
-      });
+      && store.map(item => (item.branchCode === currentId ? (branchName = item.branchName) : ''));
 
     const fileName = branchName
       ? `${branchName} 거래내역_${CommonUtil.setRawDate(startDate)}~${CommonUtil.setRawDate(

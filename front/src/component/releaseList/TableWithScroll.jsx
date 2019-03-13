@@ -6,39 +6,40 @@ import * as CommonUtil from '../../util/commonUtil';
 
 /* Updated 2019-02-27 */
 /* 컴포넌트 정리진행 */
-const TableWithScroll = ({
-  gridTitle,
-  headerData = [],
-  contentsList = [],
-  id,
-  clickRow,
-  footer,
-}) => (
-  <TableWrapper title={gridTitle}>
-    <TableWithTitle>
-      <TableHeader headerData={headerData} />
-    </TableWithTitle>
-    <TableWithContent>
-      {contentsList.length > 0 ? (
-        contentsList.map((content, index) => (
-          <TableMain
-            key={index}
-            content={content}
-            headerData={headerData}
-            index={index}
-            clickRow={clickRow}
-            standardId={id}
-          />
-        ))
-      ) : (
-        <TableDataZero headerData={headerData} />
-      )}
-    </TableWithContent>
-    <TableWithContent>
-      <TableFooter footer={footer} />
-    </TableWithContent>
-  </TableWrapper>
-);
+class TableWithScroll extends React.Component {
+  render() {
+    const {
+      gridTitle, headerData = [], contentsList = [], id, clickRow, footer,
+    } = this.props;
+
+    return (
+      <TableWrapper title={gridTitle}>
+        <TableWithTitle>
+          <TableHeader headerData={headerData} />
+        </TableWithTitle>
+        <TableWithContent>
+          {contentsList.length > 0 ? (
+            contentsList.map((content, index) => (
+              <TableMain
+                key={index}
+                content={content}
+                headerData={headerData}
+                index={index}
+                clickRow={clickRow}
+                standardId={id}
+              />
+            ))
+          ) : (
+            <TableDataZero headerData={headerData} />
+          )}
+        </TableWithContent>
+        <TableWithContent>
+          <TableFooter footer={footer} />
+        </TableWithContent>
+      </TableWrapper>
+    );
+  }
+}
 
 /**
  * @description TableHeader
