@@ -112,10 +112,10 @@ export default handleActions(
       type: DELETE_ORDER_DATA,
       onSuccess: (state, action) => state.set('result', Map(action.payload.data)),
     }),
-    ...pender({
-      type: DOWNLOAD_EXCEL,
-      onSuccess: (state, action) => state.set('result', Map(action.payload.data)),
-    })
+    // ...pender({
+    //   type: DOWNLOAD_EXCEL,
+    //   onSuccess: (state, action) => state.set('result', Map(action.payload.data)),
+    // })
   },
   initialState,
 );
