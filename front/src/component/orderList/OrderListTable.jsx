@@ -159,7 +159,7 @@ const OrderListTable = ({
       <div className="mainContainer">
         <Header>
           {headerName}
-          <RightSpan>{`주문일자 : ${releaseDate}`}</RightSpan>
+          <RightSpan>{releaseDate && `주문일자 : ${releaseDate}`}</RightSpan>
         </Header>
         <OrderTable>
           <Thead />
