@@ -179,7 +179,7 @@ class AdminReleaseList extends Component {
     const newStartDate = new Date();
 
     newStartDate.setDate(newStartDate.getDate() - changeNum);
-    ReleaseActions.updateStartDate(newStartDate);
+    ReleaseActions.updateStartDate(newStartDate.toISOString());
     ReleaseActions.updateEndDate(new Date());
   };
 
@@ -198,8 +198,8 @@ class AdminReleaseList extends Component {
     const newEndDate = CommonUtil.getEndOfDay(year, month - 1);
 
     // newStartDate.setDate(newStartDate.getDate() + changeNum);
-    ReleaseActions.updateStartDate(newStartDate);
-    ReleaseActions.updateEndDate(newEndDate);
+    ReleaseActions.updateStartDate(newStartDate.toISOString());
+    ReleaseActions.updateEndDate(newEndDate.toISOString());
   };
 
   render() {
