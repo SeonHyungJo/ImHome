@@ -29,7 +29,7 @@
         "mongoose-sequence": "^4.0.1",
         "morgan": "^1.9.1",
         "nodemon": "^1.18.9",
-        "yarn": "^1.12.3"
+        "yarn": "^1.17.3"
     },
     "engines": {
         "node": "8.11.2",
