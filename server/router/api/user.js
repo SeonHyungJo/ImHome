@@ -1,6 +1,6 @@
-const Users = require('../../models/users');
-const reponseError = require('../common/responseError');
-const crypto = require('../common/cryptoModule');
+import Users from '../../models/users';
+import reponseError from '../common/responseError';
+import { decryptoUserInfo, cryptoUserInfo } from '../common/cryptoModule';
 
 /**
  * GET /api/user
@@ -20,7 +20,7 @@ exports.getAllUser = (req, res) => {
 
       user.map((item, index) => {
         // 복호화 진행
-        user[index] = crypto.decryptoUserInfo(item.toObject());
+        user[index] = decryptoUserInfo(item.toObject());
       });
 
       res.status(200).send(user);
@@ -47,7 +47,7 @@ exports.getUser = (req, res) => {
     .then(user => {
       if (!user) throw new Error("Can't find user");
 
-      const decryptoUser = crypto.decryptoUserInfo(user.toObject());
+      const decryptoUser = decryptoUserInfo(user.toObject());
 
       res.status(200).send(decryptoUser);
     })
@@ -75,7 +75,7 @@ exports.getUserInStore = (req, res) => {
         throw new Error("Can't find users");
       }
       user.map((item, index) => {
-        const userInfo = crypto.decryptoUserInfo(item.toObject());
+        const userInfo = decryptoUserInfo(item.toObject());
         user[index] = userInfo;
       });
       var firstUser = user[0];
@@ -101,7 +101,7 @@ exports.getUserInStore = (req, res) => {
  * @returns
  */
 exports.updateUser = (req, res) => {
-  const userInfo = crypto.cryptoUserInfo(req.body);
+  const userInfo = cryptoUserInfo(req.body);
   Users.updateById(req.params._id, userInfo)
     .then(user => {
       if (!user) throw new Error("Can't find _id");

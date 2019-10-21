@@ -1,6 +1,6 @@
 const Orders = require('../../models/orders');
 const Stores = require('../../models/stores');
-const reponseError = require('../common/responseError');
+import reponseError from '../common/responseError';
 const orderExcel = require('../external/orderExcel');
 
 /**
@@ -229,25 +229,25 @@ exports.setComplete = (req, res) => {
     .then(() => {
       // 기존의 내역을 가져와서 배송처리된 내용은 빼고 다시 저장한다.
       // findOneAndUpdateNew
-      return Orders.findInCompleteOrderByBranchcode(reqBranchCode).then(
-        result => {
-          const prevItems = result[0].items;
-          const compIds = completeList.map(compItem => compItem._id);
-          const newItems = prevItems.filter(
-            item => !compIds.includes(item._id.toString())
-          );
+      return Orders.findInCompleteOrderByBranchcode(
+        reqBranchCode
+      ).then(result => {
+        const prevItems = result[0].items;
+        const compIds = completeList.map(compItem => compItem._id);
+        const newItems = prevItems.filter(
+          item => !compIds.includes(item._id.toString())
+        );
 
-          return newItems.map(newItem => {
-            return {
-              itemName: newItem.itemName,
-              itemCount: newItem.itemCount,
-              itemCost: newItem.itemCost,
-              itemVolume: newItem.itemVolume,
-              itemDepth: newItem.itemDepth
-            };
-          });
-        }
-      );
+        return newItems.map(newItem => {
+          return {
+            itemName: newItem.itemName,
+            itemCount: newItem.itemCount,
+            itemCost: newItem.itemCost,
+            itemVolume: newItem.itemVolume,
+            itemDepth: newItem.itemDepth
+          };
+        });
+      });
     })
     .then(newItems => {
       // update orderlist

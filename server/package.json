@@ -5,7 +5,7 @@
     "main": "app.js",
     "scripts": {
         "start": "babel-node app.js",
-        "dev": "nodemon app.js --exec babel-node",
+        "dev": "nodemon app.js --exec babel-node"
     },
     "keywords": [
         "imhome"
@@ -13,30 +13,25 @@
     "author": "",
     "license": "MIT",
     "dependencies": {
-        "body-parser": "^1.18.3",
         "cool-ascii-faces": "^1.3.4",
         "cors": "^2.8.5",
         "crypto": "^1.0.1",
-        "dotenv": "^6.1.0",
-        "excel4node": "^1.7.0",
-        "express": "^4.16.4",
-        "express-session": "^1.15.6",
-        "helmet": "^3.14.0",
-        "jsonwebtoken": "^8.3.0",
+        "dotenv": "8.2.0",
+        "excel4node": "1.7.2",
+        "express": "4.17.1",
+        "express-session": "1.17.0",
+        "helmet": "3.21.1",
+        "jsonwebtoken": "8.5.1",
         "moment": "^2.24.0",
-        "mongoose": "^5.3.4",
-        "mongoose-sequence": "^4.0.1",
+        "mongoose": "5.7.5",
+        "mongoose-sequence": "5.2.2",
         "morgan": "^1.9.1",
-        "nodemon": "^1.18.9",
-    },
-    "engines": {
-        "node": "8.11.2",
-        "npm": "5.6.0"
+        "nodemon": "1.19.4"
     },
     "devDependencies": {
-        "@babel/cli": "^7.0.0",
-        "@babel/core": "^7.1.6",
-        "@babel/node": "^7.0.0",
-        "@babel/preset-env": "^7.0.0"
+        "@babel/cli": "7.6.4",
+        "@babel/core": "7.6.4",
+        "@babel/node": "7.6.3",
+        "@babel/preset-env": "7.6.3"
     }
 }

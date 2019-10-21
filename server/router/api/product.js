@@ -1,5 +1,5 @@
 const Products = require('../../models/products');
-const reponseError = require('../common/responseError');
+import reponseError from '../common/responseError';
 
 // exports.use('/product', function timeLog(req, res, next) {
 //   console.log('Time: ', Date.now());

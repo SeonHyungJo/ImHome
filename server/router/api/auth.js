@@ -1,6 +1,6 @@
 import Users from '../../models/users';
 import Store from '../../models/stores';
-import crypto from '../common/cryptoModule';
+import { cryptoUserInfo } from '../common/cryptoModule';
 import reponseError from '../common/responseError';
 import reponseSuccess from '../common/responseSuccess';
 import jwt from 'jsonwebtoken';
@@ -43,14 +43,14 @@ exports.register = (req, res) => {
   };
 
   // 비밀번호 암호화
-  const cryptoUserInfo = insertUserInfo => {
+  const cryptoUserInfof = insertUserInfo => {
     return new Promise(resolve => {
-      const cryptoUserInfo = {
+      const cryptoUserInfoObj = {
         ...insertUserInfo,
-        ...crypto.cryptoUserInfo(userInfo)
+        ...cryptoUserInfo(userInfo)
       };
 
-      resolve(cryptoUserInfo);
+      resolve(cryptoUserInfoObj);
     });
   };
 
@@ -120,7 +120,7 @@ exports.register = (req, res) => {
   };
 
   blankCheck(userInfo)
-    .then(cryptoUserInfo)
+    .then(cryptoUserInfof)
     .then(checkUserId)
     .then(checkBranchName)
     .then(create)
@@ -269,8 +269,5 @@ exports.check = (req, res) => {
       : reponseError(res, 'CHECK_FAIL');
   };
 
-  checkToken(token)
-    .then(verifyToken)
-    .then(respond)
-    .catch(onError);
+  checkToken(token).then(verifyToken).then(respond).catch(onError);
 };

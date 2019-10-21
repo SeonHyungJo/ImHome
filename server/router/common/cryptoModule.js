@@ -34,84 +34,59 @@ const decryptoCipher = (value, key) => {
 const getRandomNumber = () =>
   Math.round(new Date().valueOf() * Math.random()) + '';
 
-/* ---------------------------------------------------------------- */
+/**
+ * @description 단방향 암호화(복호화 불가능 - 비밀번호에 적용)
+ * @param : userInfo{password, salt}
+ * @return : userInfo
+ */
+const cryptoPassword = ({ password, salt = getRandomNumber() }) => {
+  if (!password) throw new Error('password param is not set.');
 
-const cryptoModule = {
-  /**
-   * @description 단방향 암호화(복호화 불가능 - 비밀번호에 적용)
-   * @param : userInfo{password, salt}
-   * @return : userInfo
-   */
-  cryptoPassword({ password, salt = getRandomNumber() }) {
-    if (!password) throw new Error('password param is not set.');
+  const hashPassword = crypto
+    .createHash('sha512')
+    .update(password + salt)
+    .digest('hex');
 
-    const hashPassword = crypto
-      .createHash('sha512')
-      .update(password + salt)
-      .digest('hex');
+  const newUserInfo = {
+    password: hashPassword,
+    salt
+  };
 
-    const newUserInfo = {
-      password: hashPassword,
-      salt
-    };
-
-    return newUserInfo;
-  },
-
-  /**
-   * @description 양방향 암호화 - 개인정보 암호화(복호화 가능)
-   * @param : userInfo
-   * @return : object(userInfo)
-   */
-  cryptoUserInfo(userInfo) {
-    Object.keys(userInfo).map(key => {
-      keyCheckList.includes(key) &&
-        (userInfo[key] = cryptoCipher(userInfo[key], key));
-    });
-
-    if (userInfo.password) {
-      userInfo = this.cryptoPassword(userInfo);
-    }
-
-    // 기존 코드
-    // for (const key of Object.keys(userInfo)) {
-    //   if (
-    //     key === 'name' ||
-    //     key === 'bNumber' ||
-    //     key === 'email' ||
-    //     key === 'bPhoneNumber'
-    //   ) {
-    //     userInfo[key] = cryptoCipher(userInfo[key], key);
-    //   }
-    // }
-
-    return userInfo;
-  },
-
-  /**
-   * @description 양방향 암호화 - 개인정보 복호화
-   * @param : userInfo
-   * @return : userInfo
-   */
-  decryptoUserInfo(userInfo) {
-    Object.keys(userInfo).map(key => {
-      keyCheckList.includes(key) &&
-        (userInfo[key] = decryptoCipher(userInfo[key], key));
-    });
-
-    // 기존코드
-    // for (const key of Object.keys(userInfo.toObject())) {
-    //   if (
-    //     key === 'name' ||
-    //     key === 'bNumber' ||
-    //     key === 'email' ||
-    //     key === 'bPhoneNumber'
-    //   ) {
-    //     userInfo[key] = decryptoCipher(userInfo[key], key);
-    //   }
-    // }
-    return userInfo;
-  }
+  return newUserInfo;
 };
 
-module.exports = cryptoModule;
+/**
+ * @description 양방향 암호화 - 개인정보 암호화(복호화 가능)
+ * @param : userInfo
+ * @return : object(userInfo)
+ */
+const cryptoUserInfo = userInfo => {
+  Object.keys(userInfo).map(key => {
+    keyCheckList.includes(key) &&
+      (userInfo[key] = cryptoCipher(userInfo[key], key));
+  });
+
+  if (userInfo.password) {
+    userInfo = this.cryptoPassword(userInfo);
+  }
+  return userInfo;
+};
+
+/**
+ * @description 양방향 암호화 - 개인정보 복호화
+ * @param : userInfo
+ * @return : userInfo
+ */
+const decryptoUserInfo = userInfo => {
+  Object.keys(userInfo).map(key => {
+    keyCheckList.includes(key) &&
+      (userInfo[key] = decryptoCipher(userInfo[key], key));
+  });
+  return userInfo;
+};
+
+module.export = {
+  cryptoPassword,
+  cryptoUserInfo,
+  decryptoUserInfo
+};

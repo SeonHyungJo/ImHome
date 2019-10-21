@@ -1,6 +1,6 @@
 const TempOrders = require('../../models/tempOrders');
 const Stores = require('../../models/stores');
-const reponseError = require('../common/responseError');
+import reponseError from '../common/responseError';
 
 /**
  * @author Jinseong
@@ -34,7 +34,9 @@ const reponseError = require('../common/responseError');
  */
 
 exports.getAllOrderList = (req, res) => {
-  const branchCode = req.decoded.admin ? req.params.branchCode : req.decoded.branchCode;
+  const branchCode = req.decoded.admin
+    ? req.params.branchCode
+    : req.decoded.branchCode;
 
   TempOrders.findOrderList(branchCode)
     .then(orderList => {
@@ -59,7 +61,9 @@ exports.getAllOrderList = (req, res) => {
  * @returns «Query»
  */
 exports.getOrderList = (req, res) => {
-  const branchCode = req.decoded.admin ? req.params.branchCode : req.decoded.branchCode;
+  const branchCode = req.decoded.admin
+    ? req.params.branchCode
+    : req.decoded.branchCode;
   const companyCode = req.params.companyCode ? req.params.companyCode : '';
 
   Stores.find({ branchCode })
@@ -70,7 +74,10 @@ exports.getOrderList = (req, res) => {
         throw new Error('Dont have companyCode');
       }
       // console.log(companyCode);
-      return TempOrders.findTempOrderByBranchcodeAndCompanyCode(branchCode, companyCode);
+      return TempOrders.findTempOrderByBranchcodeAndCompanyCode(
+        branchCode,
+        companyCode
+      );
     })
     .then(order => {
       if (!order) throw new Error('order not found');
@@ -106,7 +113,10 @@ exports.updateOrderList = (req, res) => {
       req.body.branchCode = store.branchCode;
       req.body.branchName = store.branchName;
 
-      return TempOrders.findTempOrderByBranchcodeAndCompanyCode(branchCode, companyCode);
+      return TempOrders.findTempOrderByBranchcodeAndCompanyCode(
+        branchCode,
+        companyCode
+      );
     })
     .then(order => {
       if (order.length !== 0) {
@@ -114,7 +124,11 @@ exports.updateOrderList = (req, res) => {
         console.log('Modified');
         const modifiedOrder = Object.assign({}, order, req.body);
 
-        return TempOrders.findOneAndUpdateNew(branchCode, companyCode, modifiedOrder);
+        return TempOrders.findOneAndUpdateNew(
+          branchCode,
+          companyCode,
+          modifiedOrder
+        );
         //throw new Error('Already exit');
       } else {
         // 기존에 complete:false인 내역이 없을 경우 주문내역 추가

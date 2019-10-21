@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import { cryptoPassword } from '../router/common/cryptoModule';
+
 const Schema = mongoose.Schema;
-const crypto = require('../router/common/cryptoModule');
 
 // usersSchema
 const usersSchema = new Schema(
@@ -210,7 +211,7 @@ usersSchema.methods.verify = function(password) {
     password,
     salt: this.salt
   };
-  const newUserInfo = crypto.cryptoPassword(userInfo);
+  const newUserInfo = cryptoPassword(userInfo);
 
   return this.password === newUserInfo.password;
 };

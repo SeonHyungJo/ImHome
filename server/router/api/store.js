@@ -1,6 +1,6 @@
 const Stores = require('../../models/stores');
 const Users = require('../../models/users');
-const reponseError = require('../common/responseError');
+import reponseError from '../common/responseError';
 
 /**
  * GET /api/store/list
